@@ -11,7 +11,7 @@ import sys
 # nametest="low_mach_vortex_64_512"
 # space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
 # time_schemes          =[-82]
-# epsilons             =[1e-0,1e-1,1e-2,1e-3,1e-4,1e-5,1e-6] #[1e-0,1e-1,1e-2,1e-3,1e-4] #[1.0]
+# epsilons             =[1e-4]#[1e-0,1e-1,1e-2,1e-3,1e-4,1e-5,1e-6] #[1e-0,1e-1,1e-2,1e-3,1e-4] #[1.0]
 # # K_coefficients       =[0.0,1.0,2.0,5.0,10.0]
 # K_coefficients       =[0.0]
 # N_refinements = {1:4,2:4,20:4,21:4,22:4,23:4,24:4,25:4,26:4,27:4,-1:4,-2:4,-20:4,-21:4,-22:4,-23:4,-24:4,-25:4,-26:4,-27:4}
@@ -24,26 +24,26 @@ import sys
 # CFL=0.475 #0.2
 
 
-numbertest=-99
-starting_elements_X=128
-nametest="gresho_longer_time_gamma1.4_"+str(starting_elements_X)
-space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
-time_schemes          =[-82]
-epsilons             =[1e-6]#,1e-1,1e-2,1e-3,1e-4,1e-5,1e-6]#,1e-3,1e-4,1e-5,1e-6] #[1.0,1e-1,1e-2,1e-3,1e-4,1e-5,1e-6] #[1.0]
-K_coefficients       =[0.0]
-N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
-starting_elements_X_dict = {key: starting_elements_X for key in space_reconstructions}  # use elements of 'orders' as keys
-test_type="2D" #"1D" #"2D" #Depending on this I will modify or not the elements in the Y direction
-starting_elements_Y=starting_elements_X
-starting_elements_Y_dict = {key: starting_elements_Y for key in space_reconstructions}  # use elements of 'orders' as keys
-speed_estimate=0
-CFL=0.475 #0.2
+# numbertest=-99
+# starting_elements_X=128
+# nametest="gresho_longer_time_gamma1.4_"+str(starting_elements_X)
+# space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
+# time_schemes          =[-82]
+# epsilons             =[1.0,1e-1,1e-2,1e-3,1e-4,1e-5,1e-6] #,1e-1,1e-2,1e-3,1e-4,1e-5,1e-6]#,1e-3,1e-4,1e-5,1e-6] #[1.0,1e-1,1e-2,1e-3,1e-4,1e-5,1e-6] #[1.0]
+# K_coefficients       =[0.0]
+# N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
+# starting_elements_X_dict = {key: starting_elements_X for key in space_reconstructions}  # use elements of 'orders' as keys
+# test_type="2D" #"1D" #"2D" #Depending on this I will modify or not the elements in the Y direction
+# starting_elements_Y=starting_elements_X
+# starting_elements_Y_dict = {key: starting_elements_Y for key in space_reconstructions}  # use elements of 'orders' as keys
+# speed_estimate=0
+# CFL=0.475 #0.2
 
 
 # numbertest=301
 # nametest="baroclinic_vorticity_generation"
 # space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
-# time_schemes         =[-52]
+# time_schemes         =[-82]
 # epsilons             =[0.05] #[1.0]
 # K_coefficients       =[0.0]
 # N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
@@ -60,7 +60,7 @@ CFL=0.475 #0.2
 # starting_elements_X=256 #200
 # nametest="double_shear_layer_"+str(starting_elements_X)
 # space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
-# time_schemes          =[-52]
+# time_schemes          =[-82]
 # epsilons             = [1e-0]#[1.0,1e-1,1e-2,1e-3,1e-4] #[1.0]
 # K_coefficients       =[0.0]
 # N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
@@ -69,7 +69,7 @@ CFL=0.475 #0.2
 # starting_elements_Y=starting_elements_X
 # starting_elements_Y_dict = {key: starting_elements_Y for key in space_reconstructions}  # use elements of 'orders' as keys
 # speed_estimate=0
-# CFL=0.475 #0.475 #0.1
+# CFL=0.1 #0.475 #0.1
 
 
 
@@ -77,7 +77,7 @@ CFL=0.475 #0.2
 # numbertest=8
 # nametest="sod1.0"
 # space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
-# time_schemes         =[-52]
+# time_schemes         =[-82]
 # epsilons             =[1.0] #[1.0]
 # K_coefficients       =[0.0]
 # N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
@@ -92,7 +92,7 @@ CFL=0.475 #0.2
 # numbertest=88
 # nametest="sod1.0_with_timestep_relaxation"
 # space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
-# time_schemes         =[-52]
+# time_schemes         =[-82]
 # epsilons             =[1.0] #[1.0]
 # K_coefficients       =[0.0]
 # N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
@@ -118,14 +118,14 @@ CFL=0.475 #0.2
 # starting_elements_Y=3
 # starting_elements_Y_dict = {key: starting_elements_Y for key in space_reconstructions}  # use elements of 'orders' as keys
 # speed_estimate=0
-# CFL=0.2 #0.475 #0.2
+# CFL=0.475 #0.475 #0.2
 
 
 # numbertest=-80
 # eps=0.3 #0.3 #0.6 #0.9
 # nametest="sod"+str(eps)+"_with_timestep_relaxation"
 # space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
-# time_schemes         =[-52]
+# time_schemes         =[-82]
 # epsilons             =[eps] #[1.0]
 # K_coefficients       =[0.0]
 # N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
@@ -146,7 +146,7 @@ CFL=0.475 #0.2
 # starting_elements_X=400 #200
 # nametest="sod2d1.0"
 # space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
-# time_schemes          =[-52]
+# time_schemes          =[-82]
 # epsilons             = [1.0]#[1.0,1e-1,1e-2,1e-3,1e-4] #[1.0]
 # K_coefficients       =[0.0]
 # N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
@@ -160,7 +160,7 @@ CFL=0.475 #0.2
 # numbertest=77
 # nametest="sod2d1.0_with_timestep_relaxation"
 # space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
-# time_schemes         =[-52]
+# time_schemes         =[-82]
 # epsilons             =[1.0] #[1.0]
 # K_coefficients       =[0.0]
 # N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
@@ -175,7 +175,7 @@ CFL=0.475 #0.2
 
 
 # numbertest=-7
-# eps=0.3 #0.3 (works <=0.05) #0.6 (works <=0.2) #0.9
+# eps=0.9 #0.3 (works <=0.05) #0.6 (works <=0.2) #0.9
 # nametest="sod2d"+str(eps)
 # space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
 # time_schemes          =[-82]
@@ -188,24 +188,24 @@ CFL=0.475 #0.2
 # starting_elements_Y=starting_elements_X
 # starting_elements_Y_dict = {key: starting_elements_Y for key in space_reconstructions}  # use elements of 'orders' as keys
 # speed_estimate=0
-# CFL=0.1 #0.475 #0.2
-
-
-# numbertest=-70
-# eps=0.3 #0.3 #0.6 #0.9
-# nametest="sod2d"+str(eps)+"_with_timestep_relaxation"
-# space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
-# time_schemes          =[-52,-82]
-# epsilons             = [eps]#[1.0,1e-1,1e-2,1e-3,1e-4] #[1.0]
-# K_coefficients       =[0.0]
-# N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
-# starting_elements_X=400 #200
-# starting_elements_X_dict = {key: starting_elements_X for key in space_reconstructions}  # use elements of 'orders' as keys
-# test_type="2D" #"1D" #"2D" #Depending on this I will modify or not the elements in the Y direction
-# starting_elements_Y=starting_elements_X
-# starting_elements_Y_dict = {key: starting_elements_Y for key in space_reconstructions}  # use elements of 'orders' as keys
-# speed_estimate=0
 # CFL=0.475 #0.475 #0.2
+
+
+numbertest=-70
+eps=0.9 #0.3 #0.6 #0.9
+nametest="sod2d"+str(eps)+"_with_timestep_relaxation"
+space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
+time_schemes          =[-82,-82]
+epsilons             = [eps]#[1.0,1e-1,1e-2,1e-3,1e-4] #[1.0]
+K_coefficients       =[0.0]
+N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
+starting_elements_X=400 #200
+starting_elements_X_dict = {key: starting_elements_X for key in space_reconstructions}  # use elements of 'orders' as keys
+test_type="2D" #"1D" #"2D" #Depending on this I will modify or not the elements in the Y direction
+starting_elements_Y=starting_elements_X
+starting_elements_Y_dict = {key: starting_elements_Y for key in space_reconstructions}  # use elements of 'orders' as keys
+speed_estimate=0
+CFL=0.475 #0.475 #0.2
 
 
 

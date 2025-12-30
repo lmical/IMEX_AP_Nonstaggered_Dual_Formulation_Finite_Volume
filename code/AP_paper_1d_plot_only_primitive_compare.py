@@ -6,16 +6,16 @@ fs=10
 
 name_time_scheme={-52:"IMEX_DeC2_Prim_Crank_Nicolson_Cons",-82:"IMEX_DeC2_Prim_Explicit_Cons"}
 
-# eps=1.0
-# nametest="sod"+str(eps)
-# file    ="WC_SOLUTION_OCT_0000000.2000000.dat"
-# ref_file="SOLUTION_OCT_0000000.2000000.dat"
-# CFL_test=0.475 #0.2
-# solution_type="reference solution"
-# xspan=[0,1]
-# teststocompare=[] 
-# #epsilon, space_reconstruction, time_scheme, K_coefficient, CFL
-# teststocompare.append([eps, 27, -82, 0.0, CFL_test]) 
+eps=1.0
+nametest="sod"+str(eps)
+file    ="WC_SOLUTION_OCT_0000000.2000000.dat"
+ref_file="SOLUTION_OCT_0000000.2000000.dat"
+CFL_test=0.475 #0.2
+solution_type="reference solution"
+xspan=[0,1]
+teststocompare=[] 
+#epsilon, space_reconstruction, time_scheme, K_coefficient, CFL
+teststocompare.append([eps, 27, -82, 0.0, CFL_test]) 
 
 # eps=1.0
 # nametest="sod"+str(eps)+"_with_timestep_relaxation"
@@ -26,19 +26,19 @@ name_time_scheme={-52:"IMEX_DeC2_Prim_Crank_Nicolson_Cons",-82:"IMEX_DeC2_Prim_E
 # xspan=[0,1]
 # teststocompare=[] 
 # #epsilon, space_reconstruction, time_scheme, K_coefficient, CFL
-# teststocompare.append([eps, 27, -52, 0.0, CFL_test]) 
+# teststocompare.append([eps, 27, -82, 0.0, CFL_test]) 
 
 
-eps=0.3
-nametest="sod"+str(eps)
-file    ="WC_SOLUTION_OCT_0000000.0500000.dat"
-ref_file="SOLUTION_OCT_0000000.0500000.dat"
-CFL_test=0.15 #0.2
-solution_type="reference solution"
-xspan=[0,1]
-teststocompare=[] 
-#epsilon, space_reconstruction, time_scheme, K_coefficient, CFL
-teststocompare.append([eps, 27, -82, 0.0, CFL_test]) 
+# eps=0.6
+# nametest="sod"+str(eps)
+# file    ="WC_SOLUTION_OCT_0000000.0500000.dat"
+# ref_file="SOLUTION_OCT_0000000.0500000.dat"
+# CFL_test=0.475 #0.2
+# solution_type="reference solution"
+# xspan=[0,1]
+# teststocompare=[] 
+# #epsilon, space_reconstruction, time_scheme, K_coefficient, CFL
+# teststocompare.append([eps, 27, -82, 0.0, CFL_test]) 
 
 
 # eps=0.3
@@ -406,6 +406,11 @@ ax_p.legend(handles, labels,fontsize=fs+2)#,loc='center left', bbox_to_anchor=(1
 
 quit()
 
-save_axis(ax_ro, nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_V_CFL"+str(CFL)+"_rho.pdf")
-save_axis(ax_v, nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_V_CFL"+str(CFL)+"_u.pdf")
-save_axis(ax_p, nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_V_CFL"+str(CFL)+"_p.pdf")
+# save_axis(ax_ro, nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_V_CFL"+str(CFL)+"_rho.pdf")
+# save_axis(ax_v, nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_V_CFL"+str(CFL)+"_u.pdf")
+# save_axis(ax_p, nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_V_CFL"+str(CFL)+"_p.pdf")
+
+
+save_axis(ax_ro, nametest+"_V_CFL"+str(CFL)+"_rho.pdf")
+save_axis(ax_v, nametest+"_V_CFL"+str(CFL)+"_u.pdf")
+save_axis(ax_p, nametest+"_V_CFL"+str(CFL)+"_p.pdf")

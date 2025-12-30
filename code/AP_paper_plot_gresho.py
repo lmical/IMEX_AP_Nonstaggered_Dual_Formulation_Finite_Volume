@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Parameters
-eps = 1e-6
+eps = 1e-1
 CFL = 0.475 #0.2
 gmm = 1.4
 n_levels = 13  # Number of contour levels
@@ -12,12 +12,14 @@ time_scheme=-82
 name_time_scheme={-52:"IMEX_DeC2_Prim_Crank_Nicolson_Cons",-82:"IMEX_DeC2_Prim_Explicit_Cons"}
 
 # File paths
-folder = f"/home/lorenzo/Dropbox/Lorenzo/Git_ActiveFlux/Codes/code_conservative_Euler_2D/IMEX_HYPERBOLIC_TRICK_RHO_P_STAR_STAGE_DEPENDENT/gresho_longer_time_gamma1.4_128/eps{eps}/space_reconstruction27/time_scheme_{time_scheme}/K0.0/CFL{CFL}/"
+folder = f"/home/lorenzo/Desktop/2_WORK/Research/2024_2026_NCSU/Alina_Alex_IMEX_AP_Nonstaggered_Dual_Formulation_Finite_Volume/code/IMEX_HYPERBOLIC_TRICK_RHO_P_STAR_STAGE_DEPENDENT/gresho_longer_time_gamma1.4_128/eps{eps}/space_reconstruction27/time_scheme_{time_scheme}/K0.0/CFL{CFL}/"
+
+
 
 
 print(folder)
-# filename = "WC_SOLUTION_OCT_0000000.0000000.dat"
-filename = "WC_SOLUTION_OCT_0000001.0000000.dat"
+filename = "WC_SOLUTION_OCT_0000000.0000000.dat"
+# filename = "WC_SOLUTION_OCT_0000001.0000000.dat"
 
 # Check folder
 if not os.path.isdir(folder):
@@ -64,9 +66,12 @@ ax.tick_params(axis='both', labelsize=ls)
 plt.tight_layout()
 
 if filename.endswith("0000000.0000000.dat"):
+    plt.title("Initial condition",fontsize=25)
     plt.savefig(f"gresho_initial.pdf", bbox_inches="tight")
 else:
-    plt.savefig("gresho_T1_time_scheme_"+name_time_scheme[time_scheme]+f"_eps{eps}_CFL{CFL}.pdf", bbox_inches="tight")
-
+    # plt.title(r"$\varepsilon=$"+f"{eps}",fontsize=20)
+    plt.title(r"$\varepsilon = 10^{%d}$" % int(np.log10(eps)), fontsize=25)
+    # plt.savefig("gresho_T1_time_scheme_"+name_time_scheme[time_scheme]+f"_eps{eps}_CFL{CFL}.pdf", bbox_inches="tight")
+    plt.savefig("gresho_T1"+f"_eps{eps}_CFL{CFL}.pdf", bbox_inches="tight")
 
 # plt.show()

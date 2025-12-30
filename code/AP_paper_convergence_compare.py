@@ -65,31 +65,31 @@ test="./"; #Actual folder, not used but in case you want to run it from a specif
 
 firsttime=True
 
-fig = plt.figure(1, figsize=(20,6))
+fig = plt.figure(1, figsize=(25,6))
 ax_ro = fig.add_subplot(141)
 ax_u  = fig.add_subplot(142)
 ax_v  = fig.add_subplot(143)
 ax_p  = fig.add_subplot(144)
 
 ax_ro.clear()
-ax_ro.set_title(r"$\rho$")
-ax_ro.set_xlabel('N')
+ax_ro.set_title(r"$\rho$",fontsize=20)
+ax_ro.set_xlabel('N',fontsize=14)
 # ax_ro.set_ylabel('Error')
 
 
 ax_u.clear()
-ax_u.set_title(r"$u$")
-ax_u.set_xlabel('N')
+ax_u.set_title(r"$u$",fontsize=20)
+ax_u.set_xlabel('N',fontsize=14)
 # ax_u.set_ylabel('Error')
 
 ax_v.clear()
-ax_v.set_title(r"$v$")
-ax_v.set_xlabel('N')
+ax_v.set_title(r"$v$",fontsize=20)
+ax_v.set_xlabel('N',fontsize=14)
 # ax_v.set_ylabel('Error')
 
 ax_p.clear()
-ax_p.set_title(r"$p$")
-ax_p.set_xlabel('N')
+ax_p.set_title(r"$p$",fontsize=20)
+ax_p.set_xlabel('N',fontsize=14)
 # ax_p.set_ylabel('Error')
 
 
@@ -186,9 +186,9 @@ lighter_color = (0.7, 0.7, 0.7)  # RGB values for a lighter gray color
 # pl.loglog(numberofelements,200*numberofelements**(-2),":",linewidth=1.8,label="order 2",color="k")
 
 ax_ro.legend(loc='lower left',fontsize='7')
+plt.tick_params(axis='both', labelsize=14)
 params = {'mathtext.default': 'regular' }   
-plt.savefig("AP_paper_convergence_"+nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_CFL"+str(CFL)+".pdf", format="pdf", bbox_inches="tight")
-# pl.savefig("convergenceCOMPARE.png",dpi=600)
+# plt.savefig("AP_paper_convergence_"+nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_CFL"+str(CFL)+".pdf", format="pdf", bbox_inches="tight")
 # plt.show()
 
 
@@ -200,15 +200,46 @@ def save_axis(ax, filename):
     fig.savefig(filename, bbox_inches=extent)
 
 
-ax_ro.legend(fontsize=8,loc='lower left')#, bbox_to_anchor=(1, 0.5),fontsize=fs)
-ax_u.legend(fontsize=8,loc='lower left')#, bbox_to_anchor=(1, 0.5),fontsize=fs)
-ax_v.legend(fontsize=8,loc='lower left')#, bbox_to_anchor=(1, 0.5),fontsize=fs)
-ax_p.legend(fontsize=8,loc='lower left')#, bbox_to_anchor=(1, 0.5),fontsize=fs)
+ax_ro.legend(fontsize=14,loc='lower left')#, bbox_to_anchor=(1, 0.5),fontsize=fs)
+ax_u.legend(fontsize=14,loc='lower left')#, bbox_to_anchor=(1, 0.5),fontsize=fs)
+ax_v.legend(fontsize=14,loc='lower left')#, bbox_to_anchor=(1, 0.5),fontsize=fs)
+ax_p.legend(fontsize=14,loc='lower left')#, bbox_to_anchor=(1, 0.5),fontsize=fs)
 
-ax_p.set_ylim([1e-15,1e-1])
 
-save_axis(ax_ro, "AP_paper_convergence_"+nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_CFL"+str(CFL)+"_rho.pdf")
-save_axis(ax_u, "AP_paper_convergence_"+nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_CFL"+str(CFL)+"_u.pdf")
-save_axis(ax_v, "AP_paper_convergence_"+nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_CFL"+str(CFL)+"_v.pdf")
-save_axis(ax_p, "AP_paper_convergence_"+nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_CFL"+str(CFL)+"_p.pdf")
+ax_ro.set_ylim([1e-9,1e-2])
+ax_u.set_ylim([1e-9,0.5e-1])
+ax_v.set_ylim([1e-9,0.5e-1])
+ax_p.set_ylim([1e-19,1e-1])
 
+ax_ro.tick_params(axis='both', labelsize=14)
+ax_u.tick_params(axis='both', labelsize=14)
+ax_v.tick_params(axis='both', labelsize=14)
+ax_p.tick_params(axis='both', labelsize=14)
+
+xticks = [100, 200, 400]
+
+
+from matplotlib.ticker import ScalarFormatter
+
+from matplotlib.ticker import FixedLocator, FixedFormatter
+
+for ax in [ax_ro, ax_u, ax_v, ax_p]:
+    ax.set_xscale('log')
+
+    ax.xaxis.set_major_locator(FixedLocator(xticks))
+    ax.xaxis.set_major_formatter(FixedFormatter([str(x) for x in xticks]))
+
+    # ax.set_xlim(min(xticks)*0.95, max(xticks)*1.05)
+    ax.minorticks_off()
+
+
+
+# save_axis(ax_ro, "AP_paper_convergence_"+nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_CFL"+str(CFL)+"_rho.pdf")
+# save_axis(ax_u, "AP_paper_convergence_"+nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_CFL"+str(CFL)+"_u.pdf")
+# save_axis(ax_v, "AP_paper_convergence_"+nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_CFL"+str(CFL)+"_v.pdf")
+# save_axis(ax_p, "AP_paper_convergence_"+nametest+"_timescheme_"+name_time_scheme[time_scheme]+"_CFL"+str(CFL)+"_p.pdf")
+
+save_axis(ax_ro, "AP_paper_convergence_"+nametest+"_CFL"+str(CFL)+"_rho.pdf")
+save_axis(ax_u, "AP_paper_convergence_"+nametest+"_CFL"+str(CFL)+"_u.pdf")
+save_axis(ax_v, "AP_paper_convergence_"+nametest+"_CFL"+str(CFL)+"_v.pdf")
+save_axis(ax_p, "AP_paper_convergence_"+nametest+"_CFL"+str(CFL)+"_p.pdf")
