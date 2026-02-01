@@ -564,7 +564,7 @@ SELECT CASE(WhichInitialCondition)
   !*------------------------------------------
   !*[7] Sod - Explosion problem
   !*------------------------------------------
-  CASE(7,-7,-70,77) 
+  CASE(7,-7,-70,77,71,72,73,74,-71,-72,-73,-74) 
 
     r  = SQRT(x(1)**2 + x(2)**2) !*Radial distance from the center
     ri = 0.4

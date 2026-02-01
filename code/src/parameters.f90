@@ -477,6 +477,70 @@ SELECT CASE(InitialCondition)
     NRelaxedTimesteps          = 0
 #endif
 
+  !*------------------------------------------
+  !*[71,72,73,74,-71,-72,-73,-74] Sod - Explosion problem low Mach experiment
+  !*------------------------------------------
+  !*71,72,73,74 with no relaxation
+  !*------------------------------------------
+  !*-71,-72,-73,-74 with relaxation
+  !*------------------------------------------
+  CASE(71,72,73,74,-71,-72,-73,-74) 
+    NameTest="Sod - Explosion problem low Mach"
+
+    SELECT CASE(InitialCondition)
+        CASE(71,-71)
+            EPS_LM  = 1.0
+            TEnd    = 0.25
+        CASE(72,-72)
+            EPS_LM  = 0.9
+            TEnd    = 0.2
+        CASE(73,-73)
+            EPS_LM  = 0.6
+            TEnd    = 0.15
+        CASE(74,-74)
+            EPS_LM  = 0.3
+            TEnd    = 0.1
+        CASE DEFAULT
+            PRINT*, "You should not be here in Sod low Mach in parameter"
+            STOP
+    END SELECT
+
+    Gmm     = 1.4
+    nElemsX = 120
+    nElemsY = nElemsX
+    MESH_X0 = (/-1.0,-1.0/)
+    MESH_X1 = (/ 1.0, 1.0/)
+    BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
+#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#if defined(IMEX) || defined(IMEXMOMENTUM)
+    BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
+#endif
+#endif
+#ifdef ACTIVEFLUX
+#ifdef MULTIFLUID
+    Gmm1 = Gmm
+    Gmm2 = Gmm
+    pinf1=0.0
+    pinf2=0.0
+#endif
+#endif
+    GravitationalPotentialFlag = 0       
+#if defined(IMEX) || defined(IMEXMOMENTUM)
+    SELECT CASE(InitialCondition)
+        CASE(-71,-72,-73,-74)
+            relaxed_dt                 = 1e-4
+            NRelaxedTimesteps          = 10
+        CASE(71,72,73,74)
+            relaxed_dt                 = 0.0
+            NRelaxedTimesteps          = 0
+        CASE DEFAULT
+            PRINT*, "You should not be here in Sod low Mach in parameter"
+            STOP
+    END SELECT
+#else
+    relaxed_dt                 = 0.0
+    NRelaxedTimesteps          = 0
+#endif
 
   !*------------------------------------------
   !*[8] Sod - 1D in X direction
@@ -2014,7 +2078,8 @@ ENDIF
 
 
 WhichOutput  = 1 ! 0 Nothing, 1 Octave, 2 Tecplot, 3 Both
-nOutputFiles = 1 !*1
+nOutputFiles = 5 !*1
+PRINT*, "N OUTPUT FILES", nOutputFiles
 
 VarNameVisu(1) = "Density"
 VarNameVisu(2) = "MomentumX"
@@ -2092,6 +2157,7 @@ END SELECT
 #endif
 PRINT*, "nElemsX = ", nElemsX, ", nElemsY = ", nElemsY 
 PRINT*, "CFL = ", CFL
+PRINT*, "Final time = ", tEnd
 PRINT*, "--------------------------"
 SELECT CASE(WhichSpeedEstimateForDtComputation)
   CASE(0)

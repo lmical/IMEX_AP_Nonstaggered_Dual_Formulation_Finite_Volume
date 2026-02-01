@@ -191,11 +191,44 @@ import sys
 # CFL=0.475 #0.475 #0.2
 
 
-numbertest=-70
-eps=0.9 #0.3 #0.6 #0.9
-nametest="sod2d"+str(eps)+"_with_timestep_relaxation"
+# numbertest=-70
+# eps=0.9 #0.3 #0.6 #0.9
+# nametest="sod2d"+str(eps)+"_with_timestep_relaxation"
+# space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
+# time_schemes          =[-82,-82]
+# epsilons             = [eps]#[1.0,1e-1,1e-2,1e-3,1e-4] #[1.0]
+# K_coefficients       =[0.0]
+# N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
+# starting_elements_X=400 #200
+# starting_elements_X_dict = {key: starting_elements_X for key in space_reconstructions}  # use elements of 'orders' as keys
+# test_type="2D" #"1D" #"2D" #Depending on this I will modify or not the elements in the Y direction
+# starting_elements_Y=starting_elements_X
+# starting_elements_Y_dict = {key: starting_elements_Y for key in space_reconstructions}  # use elements of 'orders' as keys
+# speed_estimate=0
+# CFL=0.475 #0.475 #0.2
+
+
+numbertest=-74
+if abs(numbertest)==71:
+    eps=1.0
+    nametest="new_sod2d"+str(eps)
+elif abs(numbertest)==72:
+    eps=0.9
+    nametest="new_sod2d"+str(eps)
+elif abs(numbertest)==73:
+    eps=0.6 
+    nametest="new_sod2d"+str(eps)
+elif abs(numbertest)==74:
+    eps=0.3 
+    nametest="new_sod2d"+str(eps)
+else:
+    print("No test available in 2D Sod")
+
+if numbertest<0:
+    nametest=nametest+"_with_timestep_relaxation"
+
 space_reconstructions =[27] #-np.array([-1, -20, -21, -22, -23, -24]) #put sign -
-time_schemes          =[-82,-82]
+time_schemes          =[-82]
 epsilons             = [eps]#[1.0,1e-1,1e-2,1e-3,1e-4] #[1.0]
 K_coefficients       =[0.0]
 N_refinements = {1:1,2:1,20:1,21:1,22:1,23:1,24:1,25:1,26:1,27:1,-1:1,-2:1,-20:1,-21:1,-22:1,-23:1,-24:1,-25:1,-26:1,-27:1}
@@ -206,6 +239,7 @@ starting_elements_Y=starting_elements_X
 starting_elements_Y_dict = {key: starting_elements_Y for key in space_reconstructions}  # use elements of 'orders' as keys
 speed_estimate=0
 CFL=0.475 #0.475 #0.2
+
 
 
 
