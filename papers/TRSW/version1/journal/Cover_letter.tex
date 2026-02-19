@@ -1,0 +1,64 @@
+\documentclass[letter,12pt]{letter}
+\usepackage[margin=1.0in]{geometry}
+%\usepackage{moreverb,latexsym}
+\usepackage{graphics,graphicx,curves,epic,eepic,ulem,bbm,mathbbol,enumerate,latexsym,multicol}
+\usepackage{epstopdf}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{empheq}
+\usepackage{bm}
+\usepackage{color}
+
+%\usepackage{setspace}
+%\usepackage[normalem]{ulem}
+\newcommand{\comm}[1]{\textcolor{magenta}{#1}}
+\newcommand{\vla}[1]{\textcolor{red}{#1}}
+\newcommand*\xbar[1]{%
+  \hbox{%
+    \vbox{%
+      \hrule height 0.5pt % The actual bar
+      \kern0.4ex%         % Distance between bar and symbol
+      \hbox{%
+        \kern-0.05em%      % Shortening on the left side
+        \ensuremath{#1}%
+        \kern-0.05em%      % Shortening on the right side
+      }%
+    }%
+  }%
+}
+
+
+% Some of the article customisations are relevant for this class
+
+\name{Nan Zhang} % To be used for the return address on the envelope
+\signature{Nan Zhang} % Goes after the closing (ie at the end of the letter, with space for a signature)
+\address{Nan Zhang\\[1ex]
+Department of Mathematics\\
+Southern University of Science and Technology\\
+Shenzhen, 518055, China}
+% Alternatively, these may be set on an individual basis within each letter environment.
+
+%\makelabels % this command prints envelope labels on the final page of the document
+
+\begin{document}
+\begin{letter}{}
+
+\opening{Dear Editors:} % eg Hello.
+
+\vspace*{1cm}
+I would like to submit my paper entitled {\it An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating
+Shallow Water Equations} for publication in the Journal of Computational Physics. This is a joint work with Alina Chertock, Alexander
+Kurganov, and Lorenzo Micalizzi.
+
+
+\vspace*{2cm}
+\closing{Sincerely} % eg Regards,
+
+\end{letter}
+\end{document}
+
+
+
