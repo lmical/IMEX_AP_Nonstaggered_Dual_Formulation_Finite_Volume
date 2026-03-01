@@ -423,7 +423,7 @@ Instead of the conservative hyperbolic flux splitting approach, which is widely 
 %reformulate the system in the primitive (nonconservative) variables 
 and introduce a nonconservative hyperbolic splitting. The resulting %nonconservative
 system is
-discretized using a semi-implicit \lore{Deferred Correction} approach: the stiff part is handled \lore{implicitly} using %the 
+discretized using a semi-implicit \lore{Deferred Correction} approach: the stiff part is handled \lore{(semi-)implicitly} using %the 
 second-order central differences, while the
 nonstiff part is treated \lore{explicitly} using a second-order path-conservative central-upwind (CU) \lore{discretization}. %scheme. 
 A key feature of our method is that
@@ -450,7 +450,7 @@ methods; deferred correction.
 {\bf AMS subject classification:} 76M12, 65M08, 65L04, 35B40, 35L60.
 
 \section{Introduction}%\label{sec1}
-The paper focuses on compressible Euler equations, which, like any other hyperbolic system of PDEs, are characterized by a finite speed of
+The paper focuses on \lore{the} compressible Euler equations, which, like any other hyperbolic system of PDEs, are characterized by a finite speed of
 propagation. This plays a crucial role in the development of explicit numerical methods, for which a major stability requirement is to keep
 the time steps inversely proportional to the maximum wave speed over the entire computational domain.
 
@@ -458,7 +458,7 @@ It is well-known that low-Mach-number flows pose several major challenges for nu
 the appearance of both slow material waves, which transport quantities like entropy and vorticity, and fast acoustic waves, whose speeds
 scale inversely with the Mach number. As the Mach number decreases, the resulting stiffness imposes severe time-step restrictions on
 explicit methods and leads to excessive numerical diffusion, making such schemes inefficient or even impractical for real applications.
-Fully implicit methods can address the stiffness, but have their own drawbacks: they tend to oversmear material waves (see, e.g.,
+Fully-implicit methods can address the stiffness, but have their own drawbacks: they tend to oversmear material waves (see, e.g.,
 \cite{boscarino2018all}), require the solution of large nonlinear systems, and may fail to capture the correct solution in the
 zero-Mach-number limit.
 
@@ -468,45 +468,73 @@ preserves the conservative structure of the original system. The fast (stiff) pa
 (semi-)implicitly to relax time-step limitations, while the slow (nonstiff) part is handled explicitly to accurately capture the evolution
 of material waves without excessive numerical diffusion.
 
-It is also known that as the Mach number tends to zero, the compressible Euler equations reduce to the incompressible Euler equations. It is
-therefore essential to ensure IMEX or SI numerical schemes also exhibit the same limiting behavior at the discrete level and provide a
+It is also known that, as the Mach number tends to zero, the compressible Euler equations reduce to the incompressible Euler equations. It is
+%therefore 
+essential to ensure \lore{that} %IMEX or SI 
+numerical schemes also exhibit the same \lore{limit} %ing 
+behavior at the discrete level and provide a
 consistent discretization of the incompressible Euler equations as the Mach number tends to zero. Schemes that maintain this property are
-called asymptotic-preserving (AP). They have their origin in capturing steady-state solutions for neutron transport in the diffusive regime
-\cite{LMM,LarMor}, but the term AP schemes was introduced in \cite{GJL,jin1999efficient,Kla99} in the context of stiff kinetic equations.
+called asymptotic-preserving (AP). They \lore{were originally introduced to capture} %have their origin in capturing 
+steady-state solutions for neutron transport in the diffusive regime
+\cite{LMM,LarMor}, but the \lore{specific definition was introduced} %term AP schemes was introduced
+in \cite{GJL,jin1999efficient,Kla99} in the context of stiff kinetic equations.
 In recent years, AP schemes have been extensively studied and applied for simulating low-Mach-number flows; see, e.g.,
 \cite{AllVig,boscarino2019high,boscarino2018all,BDLTV,CGK,cordier2012asymptotic,DJL,degond2011all,DLMV,dimarco2017study,haack2012all,Kle95,arun2014asymptotic,Tang12,TorVaz,zeifang2020novel}
 for a non-exhaustive list of references.
 
 All of the aforementioned AP schemes, which were designed for either the isentropic or full compressible Euler system, are based on 
-different flux splitting strategies. A very simple and robust flux splitting, which was proposed in \cite{haack2012all} for the isentropic 
-Euler equations and later extended to the rotating shallow water equations in \cite{LCK}, seem to be rather optimal from the point of view 
-that they very accurately identify and separate a linear stiff pressure term, which is then discretized implicitly. However, extending this 
+different flux splitting strategies. 
+A very simple and robust flux splitting, which was proposed in \cite{haack2012all} for the isentropic 
+Euler equations and later extended to the rotating shallow water equations in \cite{LCK}, is \lore{remarkably optimal, in the sense that}
+%seem to be rather optimal from the point of view that 
+%they very accurately identify and separate 
+\lore{it very accurately identifies and separates} a linear stiff pressure term, which is then discretized implicitly. However, extending this 
 flux splitting to the full Euler equations presents significant challenges. 
 
-In this paper, we propose an alternative way of accurately identifying and separating a stiff part of the full Euler system: we first
-rewrite the studied system in a nonconservative form and then introduce a nonconservative hyperbolic splitting, which may be naturally
+In this paper, we propose \lore{a way to precisely do this, overcoming the aforementioned difficulties}. %n alternative way of accurately identifying and separating a stiff part of the full Euler system: 
+\lore{More in detail,} we first
+rewrite the %studied 
+system \lore{under investigation}
+in a nonconservative form and then introduce a nonconservative hyperbolic splitting, which may be naturally
 viewed as an extension of the flux splitting from \cite{haack2012all}. We integrate the nonconservative system using a SI method implemented
 as follows. The stiff part is approximated semi-implicitly using a simple second-order accurate central-differencing, and the nonstiff part 
-is discretized using the explicit second-order path-conservative (PC) central-upwind (CU) scheme. The resulting SI discretization is then
-realized in such a way that the pressure at the new time level is obtained by solving a Poisson-type elliptic equation: this helps to
-enforce the AP property.
+is \lore{handled explicitly} %discretized 
+using a %the explicit 
+second-order path-conservative (PC) central-upwind (CU) \lore{discretization}. %scheme. 
+The resulting SI \lore{approach} %discretization 
+is then
+realized in such a way that the \lore{update of the} pressure % at the new time level 
+%is obtained by 
+\lore{consists in} solving a Poisson-type elliptic equation: this \lore{is used}
+%helps 
+to enforce the AP property.
 
-However, the resulting SI method can only be applied in the low-Mach-number regime, where shock waves are negligible. In the large or
-intermediate Mach numbers, solving the nonconservative formulation of the Euler equations in the presence of discontinuities will
-unavoidably lead to nonphysical computed solutions, as was demonstrated in \cite{abgrall2010comment,HouLeF}. We therefore apply a dual
-formulation finite-volume (DF-FV) approach, which was recently introduced in \cite{CFKM} (for other recent works on the dual formulation
+However, the resulting SI method can only be applied in the low-Mach-number regime, where \lore{discontinuities do not occur}. %shock waves are negligible. 
+%In the 
+\lore{For} large 
+%or intermediate 
+Mach numbers, solving \lore{nonconservative formulations} %the nonconservative formulation 
+of the Euler equations in the presence of discontinuities %will 
+\lore{generally leads}
+%unavoidably 
+%NB: There are ways to solve the nonconservative formulation and still converge to the correct solution see Remi staggered
+%lead 
+to nonphysical computed solutions, as was demonstrated in \cite{abgrall2010comment,HouLeF}. We therefore apply a dual
+formulation (DF) approach, which was recently introduced in \cite{CFKM} (for other recent works on dual formulation
 methods, we refer the reader to \cite{Abg2023,ACKM,AbgLiu}), and solve the nonconservative and conservative formulations simultaneously.
-The latter one is discretized using the second-order semi-discrete CU scheme from \cite{KLin} combined with the explicit realization of the
-implicit trapezoidal ODE solver. This way, at each time step, we will evolve two copies of the computed solution: one is AP, but
-nonconservative, while the second one is conservative, but non-AP. Hence, upon the completion of each time step, we post-process the
-obtained solutions to automatically ensure that in the low-Mach-number regime, the overall numerical solution is obtained by the AP
-nonconservative scheme, while in the large (intermediate)-Mach-number regime, the solution reduces to the sharp and conservative solution
-obtained by the CU scheme.
+The latter one is discretized \lore{in a fully-explicit manner} using the second-order semi-discrete CU discretization from \cite{KLin}. %combined with the explicit realization of the implicit trapezoidal ODE solver. 
+This way, at each \lore{stage of the considered Deferred Correction (DeC) time discretization}~\cite{offner2025analysis} %step, 
+we will evolve two copies of the computed solution: one is AP, but
+nonconservative, while the second one is conservative, but non-AP. Hence, 
+%upon the completion of each time step, 
+we post-process the obtained solutions to automatically ensure that in the low-Mach-number regime, the overall numerical solution is obtained by the AP
+nonconservative scheme, while in the large (intermediate)-Mach-number regime, the solution reduces to the sharp and conservative solution obtained by the CU scheme.
 
-The paper is organized as follows. In \S\ref{sec2}, we introduce the governing equations, namely, non-dimensional conservative and
+The \lore{rest of the} paper is organized as follows. In \S\ref{sec2}, we give the necessary preliminaries: we introduce the governing equations, namely, non-dimensional conservative and
 nonconservative (primitive) formulations of the full Euler equations, discuss their zero-Mach-number limit, and briefly review the
-nonstaggered DF-FV framework. In \S\ref{sec4}, we introduce a novel AP DF-FV scheme for compressible Euler equations. In \S\ref{sec6}, we
-demonstrate the performance of the prtoposed scheme on a number of challenging numerical examples. Finally, concluding remarks can be found
+\lore{considered DF framework}. In \S\ref{sec4}, we introduce %a 
+\lore{the} novel AP dual formulation-finite volume (DF-FV) scheme for compressible Euler equations, \lore{providing rigorous proof for its AP character}. In \S\ref{sec6}, we
+demonstrate the performance of the \lore{proposed} scheme on a number of challenging numerical examples. Finally, concluding remarks can be found
 in \S\ref{sec5}.
 
 \section{Preliminaries}\label{sec2}
