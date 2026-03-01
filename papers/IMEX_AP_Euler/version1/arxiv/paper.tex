@@ -387,7 +387,7 @@
 
 \newcommand{\pnpm}[2]{\mathbb P_{#1}\mathbb P_{#2}}  %PNPM schemes
 
-\newcommand{\lore}[1]{{\leavevmode\color{blue} #1}}
+\newcommand{\lore}[1]{{\leavevmode\color{red} #1}}
 \newcommand{\RIIcolor}[1]{{\leavevmode\color{black} #1}}
 
 \newcommand{\hilight}[1]{\colorbox{red}{#1}}
@@ -416,17 +416,25 @@ State University, Raleigh, NC 27695, USA; {\tt lmicali@ncsu.edu}}}
 \begin{abstract}
 The paper focuses on the development of numerical methods for the compressible Euler equations. It is well-known that if the Mach number is
 small, the system becomes stiff and hence explicit schemes suffer from severe time-step restrictions, making them inefficient or even
-impractical. Our objective is to develop an asymptotic preserving (AP) scheme that remains uniformly accurate and stable across a wide range
-of Mach numbers.
+impractical. Our objective is to develop an asymptotic preserving (AP) scheme that remains uniformly accurate and stable across \lore{all} Mach numbers.
+%a wide range of Mach numbers.
 
-Instead of the conservative hyperbolic flux splitting approach, which is widely used to design AP schemes, we reformulate the system in the
-primitive (nonconservative) variables and introduce a nonconservative hyperbolic splitting. The resulting nonconservative system is
-discretized using a semi-implicit approach: the stiff part is handled using the second-order implicit central differences, while the
-nonstiff part is treated using an explicit second-order path-conservative central-upwind (CU) scheme. A key feature of our method is that
-the pressure at each time level is computed by solving a Poisson-type elliptic equation, thereby enforcing the AP property. Simultaneously,
-we evolve the conservative form of the system using a semi-discrete CU scheme. At the end of each time step, we perform a special
-post-processing that selects the appropriate numerical solution depending on the Mach-number regime. This guarantees that in the
-low-Mach-number regime, the solution is obtained by the AP nonconservative scheme, while in higher Mach number regime, sharp and physically 
+Instead of the conservative hyperbolic flux splitting approach, which is widely used to design AP schemes, we \lore{consider a primitive (nonconservative) formulation}
+%reformulate the system in the primitive (nonconservative) variables 
+and introduce a nonconservative hyperbolic splitting. The resulting %nonconservative
+system is
+discretized using a semi-implicit \lore{Deferred Correction} approach: the stiff part is handled \lore{implicitly} using %the 
+second-order central differences, while the
+nonstiff part is treated \lore{explicitly} using a second-order path-conservative central-upwind (CU) \lore{discretization}. %scheme. 
+A key feature of our method is that
+the pressure at each time level is computed by solving a \lore{well-posed} Poisson-type elliptic equation, thereby enforcing the AP property. Simultaneously,
+we evolve the conservative form of the system using a semi-discrete CU \lore{scheme}. 
+At the end of each \lore{stage of the time discretization},
+%step, 
+we perform a special
+post-processing that selects the appropriate numerical solution depending on the Mach-number. %regime. 
+This guarantees that in the
+low-Mach-number regime, the solution is obtained by the AP nonconservative scheme, while in higher Mach number regime, \lore{the} sharp and physically 
 relevant solution is computed by the conservative CU scheme.
 
 Numerical experiments confirm that the proposed AP scheme achieves the expected second order of accuracy and that the time-step constraint
