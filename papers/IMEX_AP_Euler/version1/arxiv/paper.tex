@@ -538,19 +538,24 @@ demonstrate the performance of the \lore{proposed} scheme on a number of challen
 in \S\ref{sec5}.
 
 \section{Preliminaries}\label{sec2}
-The goal of this paper is to develop a new AP scheme for the compressible Euler equations that remains robust and accurate across a wide 
-range of Mach numbers and, in particular, yields a consistent approximation of the incompressible limit as the Mach number tends to zero. 
-Three key ingredients will be essential in designing this scheme:
+%The goal of this paper is to develop a new %AP 
+%scheme for the compressible Euler equations that remains robust and accurate across %a wide range of 
+%\lore{all} Mach numbers and, in particular, yields a consistent approximation of the incompressible limit as the Mach number tends to zero, \lore{i.e., which retains the AP property}. 
+%Three key ingredients will be essential in designing this scheme:
+\lore{The main goal of this section is to provide the necessary basic ingredients for the presentation of the proposed scheme. Specifically, we will describe:}
 \begin{asparaitem}
 \item
-a reformulation of the Euler equations in terms of primitive variables, which allows for a natural decomposition of the terms,
-which are stiff and nonstiff in the low-Mach-number regime: This will facilitate an efficient SI time integration strategy;
+a \lore{nonconservative} reformulation of the Euler equations in terms of primitive variables, which allows for a natural decomposition \lore{characterized by stiff and nonstiff terms, in \S\ref{sec21}}; % : This will facilitate an efficient SI time integration strategy;
 \item
-a formal asymptotic analysis of the studied system in the low-Mach-number regime: This will provide the correct incompressible
-limiting system that the AP scheme must accurately approximate in the zero-Mach-number limit;
-\item
-DF-FV framework, in which both conservative and nonconservative (primitive) formulations of the studied system are numerically solved
-simultaneously utilizing the advantages of each of them in the corresponding Mach-number regimes.
+a formal asymptotic analysis of the studied \lore{equations} in the low-Mach-number regime, \lore{providing} the incompressible system that the AP scheme must accurately \lore{capture} in the zero-Mach-number limit, \lore{in \S\ref{sec22}};
+%: This will provide the correct incompressible
+%limiting system that the AP scheme must accurately approximate in the zero-Mach-number limit;
+\item 
+\lore{the adopted} DF framework, in which both conservative and nonconservative %(primitive)
+formulations of the %studied 
+system \lore{under investigation} are numerically solved
+simultaneously \lore{exploiting} %utilizing 
+the advantages of each of them in the corresponding Mach-number regimes.
 \end{asparaitem}
 
 \subsection{Conservative and Primitive Formulations}\label{sec21}
@@ -564,65 +569,67 @@ conservative form as
 Here, $\rho$, $\bm u:=(u,v)^\top$, and $E$ denote the density, velocity, and total energy, respectively, $p$ is the pressure, $\ve$ is the 
 reference Mach number, and the system is closed by the equation of state, which, in the case of an ideal gas, reads as
 \begin{equation}
-E=\frac{p}{\gamma-1}+\frac{\ve^2}{2}\rho(u^2+v^2)
+E=\frac{p}{\gamma-1}+\frac{\ve^2}{2}\rho(u^2+v^2),
 \label{2.1d}
 \end{equation}
-with $\gamma$ being the specific heat ratio. This system is hyperbolic and features acoustic waves traveling at the speed $|\bm u|+c$, where
-$c$ is a speed of sound given by $c=\frac{1}{\ve}\sqrt{\gamma p/\rho}$. Notice that in the low-Mach-number regime, the acoustic waves
-travel at a high speed proportional to $1/\ve$.
+with $\gamma$ being the specific heat ratio. This system is hyperbolic and features acoustic waves traveling with \lore{(maximum)} speed $\norm{\bm u}_2+c$, where
+$c$ is \lore{the} speed of sound given by $c:=\frac{1}{\ve}\sqrt{\gamma p/\rho}$. Notice that in the low-Mach-number regime, the acoustic waves
+travel at a high \lore{(maximum)} speed proportional to $1/\ve$.
 
-For the purpose of deriving a new AP scheme for the compressible Euler equations, we also consider an equivalent primitive formulation,
-which our AP method will be based on. To this end, we rewrite the system \eref{2.1a}--\eref{2.1d} in terms of the primitive variables
-$\rho$, $\bm u$, and $p$:
+For the purpose of deriving \lore{our} AP scheme, % for the compressible Euler equations, 
+we also consider an equivalent primitive formulation. %, which our AP method will be based on. 
+To this end, we rewrite the system \eref{2.1a}--\eref{2.1d} in terms of the primitive variables
+$\rho$, $\bm u$, and~$p$:
 \begin{align}
 &\rho_t+\bnabla\!\cdot\!(\rho\bm u)=0,\label{2.5a}\\
 &\bm u_t+(\bm u\!\cdot\!\bnabla)\bm u+\frac{1}{\ve^2\rho}\nabla p=\bm0,\label{2.5b}\\
 &p_t+\bm u\!\cdot\!\nabla p+\gamma p\bnabla\!\cdot\!\bm u=0.\label{2.5c}
 \end{align}
-We emphasize that this formulation is equivalent to the conservative system \eref{2.1a}--\eref{2.1d} only for smooth solutions and numerical
-approximations of discontinuous solutions of \eref{2.5a}--\eref{2.5c} typically converge to nonphysical solutions; see 
+We emphasize that this formulation is equivalent to the conservative system \eref{2.1a}--\eref{2.1d} only for smooth solutions, and numerical
+approximations of \eref{2.5a}--\eref{2.5c} typically converge to nonphysical solutions \lore{when discontinuities are present}; see 
 \cite{abgrall2010comment,HouLeF} for a detailed discussion.
 
-\subsection{Zero-Mach-Number Limit}\label{sec22}
+\subsection{\lore{Zero-Mach-Number Limit}}\label{sec22}
 It is well-known (see, e.g., a formal analysis in \cite{Ala,MetSch}) that in the zero-Mach-number limit the compressible Euler equations
 reduce to the incompressible ones. To illustrate this, we examine the formal behavior of the primitive system \eref{2.5a}--\eref{2.5c} as
-$\ve\to0$. We substitute formal expansions
-\begin{equation*}
-\rho=\rho^{(0)}+\ve\rho^{(1)}+\dots,\quad\bm u=\bm u^{(0)}+\ve\bm u^{(1)}+\dots,\quad p=p^{(0)}+\ve p^{(1)}+\dots,
-\end{equation*}
+$\ve\to0$. We substitute the formal expansions
+\begin{align*}
+\rho&:=\rho^{(0)}(x,y,t)+\ve\rho^{(1)}(x,y,t)\lore{+\ve^2\rho^{(3)}(x,y,t)}+\dots,\\
+\bm u&:=\bm u^{(0)}(x,y,t)+\ve\bm u^{(1)}(x,y,t)\lore{+\ve^2\bm u^{(2)}(x,y,t)}+\dots,\\ 
+p&:=p^{(0)}(x,y,t)+\ve p^{(1)}(x,y,t)\lore{+\ve^2 p^{(2)}(x,y,t)}+\dots,
+\end{align*}
 into \eref{2.5a}--\eref{2.5c} and collect terms by powers of $\ve$. This yields
 \begin{equation}
 \begin{aligned}
-{\cal O}(\ve^{-2}):\quad&\nabla p^{(0)}=0,\\
-{\cal O}(\ve^{-1}):\quad&\nabla p^{(1)}=0,\\
+{\cal O}(\ve^{-2}):\quad&\nabla p^{(0)}=\uvec{0},\\
+{\cal O}(\ve^{-1}):\quad&\nabla p^{(1)}=\uvec{0},\\
 {\cal O}(1):\quad&\rho^{(0)}_t+\bnabla\!\cdot\!(\rho^{(0)}\bm u^{(0)})=0,\\
 &\bm u^{(0)}_t+(\bm u^{(0)}\!\cdot\!\bnabla)\bm u^{(0)}+\frac{1}{\rho^{(0)}}\nabla p^{(2)}=\bm0,\\
 &p^{(0)}_t+\gamma p^{(0)}\bnabla\!\cdot\!\bm u^{(0)}=0,\\
-{\cal O}(\ve):\quad&p^{(1)}_t+\gamma\big(p^{(0)}\bnabla\!\cdot\!\bm u^{(1)}+p^{(1)}\bnabla\!\cdot\!\bm u^{(0)}\big)=0.
+{\cal O}(\ve):\quad&p^{(1)}_t+\gamma\big(p^{(1)}\bnabla\!\cdot\!\bm u^{(0)}+p^{(0)}\bnabla\!\cdot\!\bm u^{(1)}\big)=0.
 \end{aligned}
 \label{3.1}
 \end{equation}
 
-It follows from the first two equations in \eref{3.1} that $p^{(0)}(x,y,t)=p^{(0)}(t)$ and $p^{(1)}(x,y,t)=p^{(1)}(t)$ are spatialy uniform.
-One can also show that both $p^{(0)}$ and $p^{(1)}$ are independent of time, provided the following Dirichlet-type boundary condition holds:
+It follows from the first two equations in \eref{3.1} that $p^{(0)}(x,y,t)=p^{(0)}(t)$ and $p^{(1)}(x,y,t)=p^{(1)}(t)$ are \lore{spatially} uniform.
+One can also show that both $p^{(0)}$ and $p^{(1)}$ are independent of time, provided \lore{that} the following Dirichlet-type boundary conditions hold:
 \begin{equation}
-p\equiv\,\xbar p_0+\ve\,\xbar p_1+{\cal O}(\ve^2),\quad\forall(x,y)\in\partial\Omega,
+p\equiv\,\xbar p_0+\ve\,\xbar p_1 \lore{+\ve^2 p_2}+\dots ,\quad\forall(x,y)\in\partial\Omega,\quad \lore{\forall t\in [0,T_f]},
 \label{3.2}			
 \end{equation}
-where $\xbar p_0$ and $\xbar p_1$ are positive constants and $\Omega$ is the spatial domain with the boundary $\partial\Omega$. Moreover,
-the boundary condition \eref{3.2} implies $p^{(0)}\equiv\,\xbar p_0$ and $p^{(1)}\equiv\,\xbar p_1$. Using this in the $p^{(0)}$-equation in
-\eref{3.1}, one concludes that $\bnabla\!\cdot\!\bm u^{(0)}=0$. Hence, the zero-Mach-number limiting equations are
+where $\xbar p_0\in \mathbb{R^+}$ and $\xbar p_1\in\mathbb{R}$ are constants, \lore{$p_k:=p_k(x,y,t)$ with $k\geq 2$ are bounded functions}, $\Omega$ is the spatial domain with boundary $\partial\Omega$, \lore{and $T_f$ is the final time}. 
+%Moreover, the boundary condition \eref{3.2} 
+\lore{In fact, such boundary conditions} imply $p^{(0)}\equiv\,\xbar p_0$ and $p^{(1)}\equiv\,\xbar p_1$. Using this in the $p^{(0)}$-equation in
+\eref{3.1}, one concludes that $\bnabla\!\cdot\!\bm u^{(0)}=0$, which further implies $\bnabla\!\cdot\!\bm u^{(1)}=0$ thanks to the $p^{(1)}$-equation.
+%
+Hence, the zero-Mach-number \lore{limit} equations are
 \begin{align}
 &\rho^{(0)}_t+\bnabla\!\cdot\!(\rho^{(0)}\bm u^{(0)})=0,\label{3.3}\\
 &\bm u^{(0)}_t+(\bm u^{(0)}\!\cdot\!\bnabla)\bm u^{(0)}+\frac{1}{\rho^{(0)}}\nabla p^{(2)}=\bm0,\label{3.4}\\
-&\bnabla\!\cdot\!\bm u^{(0)}=0,\quad p^{(0)}\equiv\,\xbar p_0.\label{3.5}
+&p^{(0)}\equiv\,\xbar p_0,\quad p^{(1)}\equiv\,\xbar p_1,\label{3.5_p}\\
+&\bnabla\!\cdot\!\bm u^{(0)}=0,\quad \bnabla\!\cdot\!\bm u^{(1)}=0.\label{3.5_u}
 \end{align}
 
-In addition, using the last equation in \eref{3.1} and \eref{3.5}, we conclude that the ${cal O}(\ve)$-component of the velocity is also
-divergence-free, that is,
-\begin{equation*}
-\bnabla\!\cdot\!\bm u^{(1)}=0.
-\end{equation*}
 
 \subsection{Dual Formulation Finite-Volume (DF-FV) Framework}\label{sec4a}
 As outlined above, a new AP scheme for the compressible Euler equations will be constructed within the DF-FV framework, in which both
