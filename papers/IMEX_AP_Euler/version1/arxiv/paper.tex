@@ -953,7 +953,7 @@ $$
 &-\frac{\dt}{\rho_{\max}^n}\,\nabla p^{(2),n+1}-\ve \frac{\dt}{\rho_{\max}^n}\,\nabla p^{(3),n+1}-\ve^2 \frac{\dt}{\rho_{\max}^n}\,\nabla p^{(4),n+1}+{\cal O}(\ve^3).
 \end{aligned}
 $$
-From this, we indeed get $\bm u^{n+1}= \bm u^{(0),n+1}+\ve \bm u^{(1),n+1}+\ve^2 \bm u^{(2),n+1}+\dots$, with expansion coefficients $\bm u^{(k),n+1}$ obtained collecting the terms in powers of $\ve$ as done for the density
+From this, we indeed get $\bm u^{n+1}= \bm u^{(0),n+1}+\ve \bm u^{(1),n+1}+\ve^2 \bm u^{(2),n+1}+\dots$, with expansion coefficients $\bm u^{(k),n+1}$ obtained collecting the terms in powers of $\ve$ as done for the density; for example
 \begin{align*}
 	\bm u^{(0),n+1}&=\bm u^{(0),n}-\dt \Big[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n} \Big]-\frac{\dt}{\rho_{\max}^n}\,\nabla p^{(2),n+1},\\
 	\bm u^{(1),n+1}&=\bm u^{(1),n}-\dt \Big[(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}+(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}-\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(3),n}\Big]\\
@@ -1025,8 +1025,8 @@ Consistency with~\eqref{3.3} and~\eqref{3.4} comes directly from the structure o
 \end{align}
 which are consistent with~\eqref{3.3} and~\eqref{3.4} respectively.
 
-We remark that since the zeroth mode of the pressure is constant, the evolution of the
-pressure in the low-Mach-number limit essentially consists of the evolution of the second mode. Thus,
+We remark that since the $(0)$- and $(1)$-modes of the pressure are constant, the evolution of the
+pressure in the low-Mach-number limit essentially consists of the evolution of the $(2)$-mode. Thus,
 $\nabla p^{(2),n+1}-\nabla p^{(2),n}\approx{\cal O}(\dt)$ and the last term in \eref{4.16}, in fact, represents a temporal diffusion term,
 which is proportional to ${\cal O}((\dt)^2)$.
 We also remark that, due to its definition in~\eqref{4.10}, the time step $\dt$ is asymptotically independent of $\ve$.
