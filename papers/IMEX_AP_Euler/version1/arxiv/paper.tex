@@ -853,84 +853,184 @@ where $K_{\rm CFL}$ is a CFL number and $\dx$ and $\dy$ are mesh sizes used in t
 step $\dt$ according to \eref{4.10} makes it \lore{asymptotically} independent of $\ve$ as, according to \eref{4.48f}--\eref{4.7}, $\tilde c={\cal O}(1)$.
 
 \begin{theorem}\label{thm31}
-The first-order SI time discretization \eref{4.8} is AP according to Definition \ref{def41}, provided that $\dt$ is computed according to
+The first-order SI time discretization \eref{4.8} is AP according to Definition \ref{def41}, provided that $\dt$ is computed \lore{as in} %according to
 \eref{4.10}.
 \end{theorem}
 \begin{proof}
-We begin by formally showing that the computed solution $\rho^{n+1}$, $\bm u^{n+1}$, $p^{n+1}$ admits an expansion of the type \eref{4.1}
-with $p^{(0),n}\equiv\,\xbar p_0$, $p^{(1),n}\equiv\,\xbar p_1$, and $\bnabla\!\cdot\!\bm u^{(0),n+1}=\bnabla\!\cdot\!\bm u^{(1),n+1}=0$ in
-the limit as $\ve\to0$. We substitute the corresponding expansion of the numerical solution at time $t^n$ into the scheme \eref{4.8} and use
-the diverence-free assumption \eref{4.2} to obtain
+We begin by formally showing that the computed solution $\rho^{n+1}$, $\bm u^{n+1}$, $p^{n+1}$ admits an expansion of the type \eqref{eq:expansion_tn} \lore{with $(0)$- and $(1)$-pressure and velocity modes satisfying~\eqref{eq:p_const} and~\eqref{eq:u_div_free} respectively}
+%with $p^{(0),n}\equiv\,\xbar p_0$, $p^{(1),n}\equiv\,\xbar p_1$, and $\bnabla\!\cdot\!\bm u^{(0),n+1}=\bnabla\!\cdot\!\bm u^{(1),n+1}=0$ 
+in the limit as $\ve\to0$. 
+We substitute the corresponding expansion of the numerical solution at time $t^n$ into the scheme \eref{4.8} and use \lore{assumptions~\eqref{eq:p_const} and~\eqref{eq:u_div_free}} to obtain
 \begin{align}
-\rho^{n+1}&=\rho^{(0),n}-\dt\bnabla\!\cdot\!\big(\rho^{(0),n}\bm u^{(0),n}\big)+{\cal O}(\ve),\label{4.11}\\
-&\hspace*{-0.9cm}\begin{aligned}
-\bm u^{n+1}=\bm u^{(0),n}&+\ve\Big[\bm u^{(1),n}-
-\dt\left((\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}+(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}\right)\Big]\\
-&-\dt\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}
-+\frac{1}{\ve^2\rho_{\max}^n}\nabla p^{n+1}\bigg]+{\cal O}(\ve^2),
-\end{aligned}\label{4.12}\\[0.5ex]
-p^{n+1}&=\,\xbar p_0+\ve\,\xbar p_1-\dt\gamma p_{\min}^n\bnabla\!\cdot\!\bm u^{n+1}+{\cal O}(\ve^2).\label{4.13}
+	&\begin{aligned}
+	\rho^{n+1}&=\rho^{(0),n}+\ve \rho^{(1),n}+\ve^2 \rho^{(2),n}-\dt\bnabla\!\cdot\!\big(\rho^{(0),n}\bm u^{(0),n}\big)\\
+	&-\ve \dt \big[\bnabla\!\cdot\!\big(\rho^{(1),n}\bm u^{(0),n}\big)+\bnabla\!\cdot\!\big(\rho^{(0),n}\bm u^{(1),n}\big)\big]\\
+	&-\ve^2 \dt \big[\bnabla\!\cdot\!\big(\rho^{(2),n}\bm u^{(0),n}\big)+\bnabla\!\cdot\!\big(\rho^{(1),n}\bm u^{(1),n}\big)+\bnabla\!\cdot\!\big(\rho^{(0),n}\bm u^{(2),n}\big)\big]+{\cal O}(\ve^3),\label{4.11}
+	\end{aligned}\\
+	&\begin{aligned}
+\bm u^{n+1}&=\bm u^{(0),n}+\ve \bm u^{(1),n}+\ve^2 \bm u^{(2),n}-\dt \Big[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n} \Big]
+\\&-\ve\dt \Big[(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}+(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}-\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(3),n}\Big]\\
+&-\ve^2\dt \Big[
+(\bm u^{(2),n}\!\cdot\!\bnabla)\bm u^{(0),n}
++(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(1),n}
++(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(2),n} \\
+&\qquad
+-\frac{\rho^{(2),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}
+-\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(3),n}
+-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(4),n}
+\Big]\\
+&-\frac{\dt}{\ve^2 \rho_{\max}^n}\,\nabla p^{n+1}+{\cal O}(\ve^3),\label{4.12}
+\end{aligned}\\
+p^{n+1}&=\,\xbar p_0+\ve\,\xbar p_1+\ve^2 p^{(2),n}-\ve^2 \dt \bm u^{(0),n}\!\cdot\!\nabla p^{(2),n} -\dt\gamma p_{\min}^n\bnabla\!\cdot\!\bm u^{n+1}+{\cal O}(\ve^3).\label{4.13}
 \end{align}
-From \eref{4.11} we conclude that $\rho^{n+1}$ indeed can be rewritten as $\rho^{n+1}=\rho^{(0),n+1}+\ve\rho^{(1),n+1}+\dots$ with
-$$
-\rho^{(0),n+1}=\rho^{(0),n}-\dt\,\bnabla\!\cdot\!(\rho^{(0),n}\bm u^{(0),n}),
-$$
-which shows that the density equation in the scheme \eref{4.8} is consistent with \eref{3.3} as $\ve\to0$ since according to \eref{4.10},
-$\dt$ is independent of $\ve$.
+Thanks to the explicit nature of the density update in \eref{4.11}, we conclude that indeed $\rho^{n+1}$ admits the required asymptotic expansion $\rho^{n+1}=\rho^{(0),n+1}+\ve\rho^{(1),n+1}+\ve\rho^{(2),n+1}+\dots$, where the different terms of the expansion are obtained by collecting corresponding powers of $\ve$; for example, ones has
+\begin{align*}
+	\rho^{(0),n+1}&=\rho^{(0),n}-\dt\,\bnabla\!\cdot\!(\rho^{(0),n}\bm u^{(0),n}),\\
+	\rho^{(1),n+1}&=\rho^{(1),n}-\dt \big[\bnabla\!\cdot\!\big(\rho^{(1),n}\bm u^{(0),n}\big)+\bnabla\!\cdot\!\big(\rho^{(0),n}\bm u^{(1),n}\big)\big],\\
+	\rho^{(2),n+1}&=\rho^{(2),n}-\dt \big[\bnabla\!\cdot\!\big(\rho^{(2),n}\bm u^{(0),n}\big)+\bnabla\!\cdot\!\big(\rho^{(1),n}\bm u^{(1),n}\big)+\bnabla\!\cdot\!\big(\rho^{(0),n}\bm u^{(2),n}\big)\big].
+\end{align*}
+% with
+%which shows that the density equation in the scheme \eref{4.8} is consistent with \eref{3.3} as $\ve\to0$ since according to \eref{4.10},
+%$\dt$ is independent of $\ve$.
+In order to show that also $p^{n+1}$ admits an expansion of the same type, we will show that it satisfies a specific well-posed elliptic problem. More in detail, we take the divergence of the velocity equation \eref{4.12} and we substitute
+$\bnabla\!\cdot\!\muu^{n+1}$ into the pressure equation \eref{4.13}. Recalling the divergence-free assumption~\eqref{eq:u_div_free}, we obtain
+%, take into account , and 
+%This yields
 
-We now take the divergence of the velocity equation \eref{4.12}, take into account the divergence-free property \eref{4.2}, and substitute
-$\bnabla\!\cdot\!\muu^{n+1}$ into the pressure equation \eref{4.13}. This yields
 $$
 \begin{aligned}
-p^{n+1}&-\frac{(\dt)^2\gamma p_{\min}^n}{\ve^2\rho_{\max}^n}\,\Delta p^{n+1}=
-\,\xbar p_0+\ve\,\xbar p_1+(\dt)^2\gamma p_{\min}^n\bnabla\!\cdot\!\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}\\
-&+\ve\Big((\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}+(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}\Big)
-+\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\nabla p^{(2),n}\bigg]+{\cal O}(\ve^2),
+p^{n+1}&=\,\xbar p_0+\ve\,\xbar p_1+\ve^2 p^{(2),n}-\ve^2 \dt \bm u^{(0),n}\!\cdot\!\nabla p^{(2),n}\\
+&-\dt\gamma p_{\min}^n\bnabla\!\cdot\!\bm u^{(0),n}-\ve\dt\gamma p_{\min}^n\bnabla\!\cdot\!\bm u^{(1),n}-\ve^2\dt\gamma p_{\min}^n\bnabla\!\cdot\!\bm u^{(2),n}\\
+&+(\dt)^2\gamma p_{\min}^n\bnabla\!\cdot\!\ \Big[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n} \Big]\\
+&+\ve (\dt)^2\gamma p_{\min}^n\bnabla\!\cdot\!\ \Big[(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}+(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}-\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(3),n}\Big]\\
+&+\ve^2 (\dt)^2\gamma p_{\min}^n\bnabla\!\cdot\!\ \Big[
+(\bm u^{(2),n}\!\cdot\!\bnabla)\bm u^{(0),n}
++(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(1),n}
++(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(2),n} \\
+&\qquad
+-\frac{\rho^{(2),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}
+-\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(3),n}
+-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(4),n}
+\Big]\\
+&+\frac{(\dt)^2\gamma p_{\min}^n}{\ve^2 \rho_{\max}^n}\,\Delta p^{n+1}+{\cal O}(\ve^3),
 \end{aligned}
 $$
-so that
+which implies that $p^{n+1}$ is the solution of the following elliptic problem
+%$$
+%\begin{aligned}
+%p^{n+1}&-\frac{(\dt)^2\gamma p_{\min}^n}{\ve^2\rho_{\max}^n}\,\Delta p^{n+1}=
+%\,\xbar p_0+\ve\,\xbar p_1+(\dt)^2\gamma p_{\min}^n\bnabla\!\cdot\!\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}\\
+%&+\ve\Big((\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}+(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}\Big)
+%+\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\nabla p^{(2),n}\bigg]+{\cal O}(\ve^2),
+%\end{aligned}
+%$$
+%so that
 $$
--\Delta p^{n+1}+\frac{\ve^2\rho_{\max}^n}{(\dt)^2\gamma p_{\min}^n}\,p^{n+1}={\cal O}(\ve^2),
+-\Delta p^{n+1}+\frac{\ve^2\rho_{\max}^n}{(\dt)^2\gamma p_{\min}^n}\,p^{n+1}={\cal O}(\ve^2).
 $$
-which implies $\Delta p^{n+1}={\cal O}(\ve^2)$. This together with the boundary conditions \eref{3.2} results in
-\begin{equation}
-p^{n+1}=p^{(0),n+1}+\ve p^{(1),n+1}+\dots,\quad p^{(0),n+1}=p^{(0),n}\equiv\,\xbar p_0,~~p^{(1),n+1}=p^{(1),n}\equiv\,\xbar p_1.
-\label{4.14}
-\end{equation}
+Recalling the assumed boundary condition~\eqref{3.2}, standard theory of perturbed linear operators~\cite{kato1966perturbation} implies that 
+\begin{align}
+	&p^{n+1}= p^{(0),n+1}+\ve p^{(1),n+1}+\ve^2 p^{(2),n+1}+\dots,\\
+    &p^{(0),n+1}=p^{(0),n}\equiv\,\xbar p_0,~~p^{(1),n+1}=p^{(1),n}\equiv\,\xbar p_1.
+	\label{4.14}
+\end{align}
+%which implies $\Delta p^{n+1}={\cal O}(\ve^2)$. This together with the boundary conditions \eref{3.2} results in
 
-Next, we substitute \eref{4.14} into the the velocity equation \eref{4.12} to obtain
+At this point, we can easily show that also the updated velocity admits the desired expansion by plugging in the related update the obtained pressure expansion, yielding
 $$
 \begin{aligned}
-\bm u^{n+1}=\bm u^{(0),n}&-\dt\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+
-\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}+\frac{1}{\rho_{\max}^n}\nabla p^{(2),n+1}\bigg]\\[0.5ex]
-&+\ve\Big[\bm u^{(1),n}-\dt\left((\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}+(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}\right)\Big]+{\cal O}(\ve^2),
+\bm u^{n+1}&=\bm u^{(0),n}+\ve \bm u^{(1),n}+\ve^2 \bm u^{(2),n}-\dt \Big[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n} \Big]
+\\&-\ve\dt \Big[(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}+(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}-\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(3),n}\Big]\\
+&-\ve^2\dt \Big[
+(\bm u^{(2),n}\!\cdot\!\bnabla)\bm u^{(0),n}
++(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(1),n}
++(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(2),n} \\
+&\qquad
+-\frac{\rho^{(2),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}
+-\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(3),n}
+-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(4),n}
+\Big]\\
+&-\frac{\dt}{\rho_{\max}^n}\,\nabla p^{(2),n+1}-\ve \frac{\dt}{\rho_{\max}^n}\,\nabla p^{(3),n+1}-\ve^2 \frac{\dt}{\rho_{\max}^n}\,\nabla p^{(4),n+1}+{\cal O}(\ve^3).
 \end{aligned}
 $$
-which implies that $\bm u^{n+1}=\bm u^{(0),n+1}+\ve\bm u^{(1),n+1}+\dots$ with
-\begin{equation}
-\bm u^{(0),n+1}=\bm u^{(0),n}-\dt\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+
-\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\nabla p^{(2),n}\bigg]-\frac{\dt}{\rho_{\max}^n}\nabla p^{(2),n+1}
-\label{4.15}
-\end{equation}
-and
-\begin{equation}
-\bm u^{(1),n+1}=\bm u^{(1),n}-\dt\left((\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}+(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}\right).
-\label{3.19f}
-\end{equation}
-It should be observed that taking the divergence of \eref{4.15} and \eref{3.19f} implies the divergence-free property at time level
-$t=t^{n+1}$, namely, $\bnabla\!\cdot\!\bm u^{(0),n+1}=\bnabla\!\cdot\!\bm u^{(1),n+1}=0$.
+From this, we indeed get $\bm u^{n+1}= \bm u^{(0),n+1}+\ve \bm u^{(1),n+1}+\ve^2 \bm u^{(2),n+1}+\dots$, with expansion coefficients $\bm u^{(k),n+1}$ obtained collecting the terms in powers of $\ve$ as done for the density
+\begin{align*}
+	\bm u^{(0),n+1}&=\bm u^{(0),n}-\dt \Big[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n} \Big]-\frac{\dt}{\rho_{\max}^n}\,\nabla p^{(2),n+1},\\
+	\bm u^{(1),n+1}&=\bm u^{(1),n}-\dt \Big[(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}+(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}-\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(3),n}\Big]\\
+	&-\frac{\dt}{\rho_{\max}^n}\,\nabla p^{(3),n+1},\\
+	\bm u^{(2),n+1}&=\bm u^{(2),n}-\dt \Big[
+	(\bm u^{(2),n}\!\cdot\!\bnabla)\bm u^{(0),n}
+	+(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(1),n}
+	+(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(2),n} \\
+	&\qquad
+	-\frac{\rho^{(2),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}
+	-\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(3),n}
+	-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(4),n}
+	\Big]-\frac{\dt}{\rho_{\max}^n}\,\nabla p^{(4),n+1}.
+\end{align*}
 
-We now need to show the consistency of the scheme \eref{4.8} with \eref{3.4} and \eref{3.5} as $\ve\to0$. We have already shown that
-$p^{(0),n+1}=p^{(0),n}\equiv\,\xbar p_0$ and $\bnabla\!\cdot\!\bm u^{(0),n+1}=0$. Finally, we rewrite \eref{4.15} as
-\begin{equation}
-\bm u^{(0),n+1}=\bm u^{(0),n}-\dt\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+\frac{\nabla p^{(2),n}}{\rho^{(0),n}}\bigg]
--\frac{\dt}{\rho_{\max}^n}\left(\nabla p^{(2),n+1}-\nabla p^{(2),n}\right),
-\label{4.16}
-\end{equation}
-which is a consistent discretization of \eref{3.4}. We remark that since the zeroth mode of the pressure is constant, the evolution of the
+
+%Next, we substitute \eref{4.14} into the the velocity equation \eref{4.12} to obtain
+%$$
+%\begin{aligned}
+%\bm u^{n+1}=\bm u^{(0),n}&-\dt\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+
+%\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla p^{(2),n}+\frac{1}{\rho_{\max}^n}\nabla p^{(2),n+1}\bigg]\\[0.5ex]
+%&+\ve\Big[\bm u^{(1),n}-\dt\left((\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}+(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}\right)\Big]+{\cal O}(\ve^2),
+%\end{aligned}
+%$$
+%which implies that $\bm u^{n+1}=\bm u^{(0),n+1}+\ve\bm u^{(1),n+1}+\dots$ with
+%\begin{equation}
+%\bm u^{(0),n+1}=\bm u^{(0),n}-\dt\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+
+%\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\nabla p^{(2),n}\bigg]-\frac{\dt}{\rho_{\max}^n}\nabla p^{(2),n+1}
+%\label{4.15}
+%\end{equation}
+%and
+%\begin{equation}
+%\bm u^{(1),n+1}=\bm u^{(1),n}-\dt\left((\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(1),n}+(\bm u^{(1),n}\!\cdot\!\bnabla)\bm u^{(0),n}\right).
+%\label{3.19f}
+%\end{equation}
+%It should be observed that taking the divergence of \eref{4.15} and \eref{3.19f} implies the divergence-free property at time level
+%$t=t^{n+1}$, namely, $\bnabla\!\cdot\!\bm u^{(0),n+1}=\bnabla\!\cdot\!\bm u^{(1),n+1}=0$.
+
+We now need to show that conditions~\eqref{eq:p_const} and~\eqref{eq:u_div_free} hold for the updated solution, along with consistency with~\eqref{3.3} and~\eqref{3.4}.
+%
+We have already shown that~\eqref{eq:p_const} holds true, see~\eqref{4.14}.
+%
+Instead, the divergence--free conditions~\eqref{eq:u_div_free} can be deduced from the pressure update~\eqref{4.13}, which in view of the obtained results yields
+$$\begin{aligned}
+	\ve^2 p^{(2),n+1}=\ve^2 p^{(2),n}&-\ve^2 \dt \bm u^{(0),n}\!\cdot\!\nabla p^{(2),n} -\dt\gamma p_{\min}^n\bnabla\!\cdot\!\bm u^{(0),n+1}\\
+	&-\ve\dt\gamma p_{\min}^n\bnabla\!\cdot\!\bm u^{(1),n+1}-\ve^2\dt\gamma p_{\min}^n\bnabla\!\cdot\!\bm u^{(2),n+1}+{\cal O}(\ve^3).
+\end{aligned}$$
+Up to $\mathcal{O}(1)$ and $\mathcal{O}(\ve)$, we get $\bnabla\!\cdot\!\bm u^{(0),n+1}=0$ and $\bnabla\!\cdot\!\bm u^{(1),n+1}=0$ respectively.
+
+Consistency with~\eqref{3.3} and~\eqref{3.4} comes directly from the structure of the scheme. In fact, thanks to what has been shown so far, up to $\mathcal{O}(1)$, the density and velocity updates~\eqref{4.11} and \eqref{4.12} give
+
+
+
+%of the scheme \eref{4.8} with \eref{3.4} and \eref{3.5} as $\ve\to0$. We have already shown that
+%$p^{(0),n+1}=p^{(0),n}\equiv\,\xbar p_0$ and $\bnabla\!\cdot\!\bm u^{(0),n+1}=0$. Finally, we rewrite \eref{4.15} as
+%\begin{equation}
+%\bm u^{(0),n+1}=\bm u^{(0),n}-\dt\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+\frac{\nabla p^{(2),n}}{\rho^{(0),n}}\bigg]
+%-\frac{\dt}{\rho_{\max}^n}\left(\nabla p^{(2),n+1}-\nabla p^{(2),n}\right),
+%\label{4.16}
+%\end{equation}
+%which is a consistent discretization of \eref{3.4}. 
+\begin{align}
+	&\begin{aligned}
+		\rho^{(0),n+1}&=\rho^{(0),n}-\dt\bnabla\!\cdot\!\big(\rho^{(0),n}\bm u^{(0),n}\big),
+	\end{aligned}\\
+	&\begin{aligned}
+		\bm u^{(0),n+1}&=\bm u^{(0),n}-\dt\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+\frac{\nabla p^{(2),n}}{\rho^{(0),n}}\bigg]-\frac{\dt}{\rho_{\max}^n}\left(\nabla p^{(2),n+1}-\nabla p^{(2),n}\right)\label{4.16},
+	\end{aligned}
+\end{align}
+which are consistent with~\eqref{3.3} and~\eqref{3.4} respectively.
+
+We remark that since the zeroth mode of the pressure is constant, the evolution of the
 pressure in the low-Mach-number limit essentially consists of the evolution of the second mode. Thus,
 $\nabla p^{(2),n+1}-\nabla p^{(2),n}\approx{\cal O}(\dt)$ and the last term in \eref{4.16}, in fact, represents a temporal diffusion term,
-which is proportional to ${\cal O}((\dt)^2)$.\hfill$\blacksquare$
+which is proportional to ${\cal O}((\dt)^2)$.
+We also remark that, due to its definition in~\eqref{4.10}, the time step $\dt$ is asymptotically independent of $\ve$.
+\hfill$\blacksquare$
 \end{proof}
 
 \subsubsection{Second-Order AP SI Time Discretization}\label{sec313}
