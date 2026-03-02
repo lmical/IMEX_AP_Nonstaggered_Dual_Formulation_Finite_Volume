@@ -752,7 +752,7 @@ dynamics as follows. We first define the time-dependent variables
 \label{4.3}
 \end{equation}
 and then add and subtract $\frac{1}{\ve^2\rho_{\max}}\nabla p$ and $\gamma p_{\min}\bnabla\cdot\bm u$ from \eref{2.5b} and \eref{2.5c},
-respectively, to rewrite the system \eref{2.5a}--\eref{2.5c} as follows:
+respectively, to rewrite system \eref{2.5a}--\eref{2.5c} as follows:
 \begin{align}
 &\rho_t+\bnabla\!\cdot\!(\rho\bm u)=0,\label{2.1}\\
 &\bm u_t+(\bm u\!\cdot\!\bnabla)\bm u+\frac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\,\nabla p=-\frac{1}{\ve^2\rho_{\max}}
@@ -770,14 +770,15 @@ where $\bm V:=(\rho,u,v,p)^\top$, the nonlinear nonstiff (slow dynamics) part co
 \widetilde{\mF}(\bm V)=\Big(\rho u,\frac{u^2}{2},0,0\Big)^\top\quad\mbox{and}\quad
 \widetilde{\mG}(\bm V)=\Big(\rho v,0,\frac{v^2}{2},0\Big)^\top,
 \end{equation*}
-and the nonstiff nonconservative terms are $\widetilde B(\bm V)\bm V_x+\widetilde C(\bm V)\bm V_y$ with the matrices
+and \lore{of} the nonstiff nonconservative terms % are 
+$\widetilde B(\bm V)\bm V_x+\widetilde C(\bm V)\bm V_y$ with matrices %the
 \begin{equation*}
 \widetilde B=-\begin{pmatrix}0&0&0&0\\0&0&0&\dfrac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\\0&v&0&0\\0&\gamma(p-p_{\min})&0&u\end{pmatrix}
 \quad\mbox{and}\quad
 \widetilde C=-\begin{pmatrix}0&0&0&0\\0&0&u&0\\0&0&0&\dfrac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\\0&0&\gamma(p-p_{\min})&v\end{pmatrix},
 \end{equation*}
-while the linear stiff (fast dynamics) part consists of the stiff nonconservative terms $\widehat B(\bm V)\bm V_x+\widehat C(\bm V)\bm V_y$
-with the matrices
+while, the linear stiff (fast dynamics) part consists of the stiff nonconservative terms $\widehat B(\bm V)\bm V_x+\widehat C(\bm V)\bm V_y$
+with matrices %the
 \begin{equation*}
 \widehat B=-\begin{pmatrix}0&0&0&0\\0&0&0&\dfrac{1}{\ve^2\rho_{\max}}\\0&0&0&0\\0&\gamma p_{\min}&0&0\end{pmatrix}
 \quad\mbox{and}\quad
@@ -794,15 +795,16 @@ $\left\{v\pm\tilde c,v,v\right\}$, respectively, with
 \tilde c:=\frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(p-p_{\min})}{\rho\rho_{\max}}},
 \label{4.48f}
 \end{equation}
-which are real and of size ${\cal O}(1)$ thanks to the definitions of $\rho_{\max}$ and $p_{\min}$ in \eref{4.3} and the asymptotic
+which are real and of size ${\cal O}(1)$ thanks to the definitions of $\rho_{\max}$ and $p_{\min}$ in \eref{4.3} and \lore{to} the asymptotic
 analysis in \S\ref{sec22}, which ensure that
 \begin{equation}
 0\le\rho_{\max}-\rho={\cal O}(1)\quad\mbox{and}\quad0\le p-p_{\min}={\cal O}(\ve^2).
 \label{4.7}
 \end{equation}
 
-In the next subsection, we will utilize this splitting and design an AP time discretization by an explicit approximation of the nonstiff 
-subsystem and SI discretization of the stiff terms on the right-hand sides (RHSs) of \eref{2.2} and \eref{2.3}.
+In the next subsection, we will utilize this splitting and design an AP time discretization %by 
+\lore{based on} an explicit approximation of the nonstiff 
+subsystem and \lore{an} SI discretization of the stiff terms on the right-hand sides (RHSs) of \eref{2.2} and \eref{2.3}.
 
 \subsubsection{First-Order AP SI Time Discretization}
 The simplest first-order AP SI time discretization of the system \eref{4.47} reads as
