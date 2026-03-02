@@ -680,16 +680,21 @@ conservative one.
 \lore{A crucial difference with respect to~\cite{CFKM} is that here we perform the post-processing at each time stage of the considered time discretization, while, in the aforementioned reference, this is done upon completion of each full time step. Another difference is that here we consider a finite-volume (FV) framework, hence regarding our scheme as AP DF-FV, while, in~\cite{CFKM} a finite-difference framework has been considered. The strategy is however general and can be applied to many other numerical approaches.}
 
 \section{Novel AP Scheme for Compressible Euler Equations}\label{sec4}
-Building on the DF-FV framework described in \S\ref{sec4a}, we now present a novel AP scheme designed for the compressible Euler equations
-across a wide range of Mach number regimes, from fully compressible to nearly incompressible flows. The proposed method couples the
+Building on the \lore{DF} framework described in \S\ref{sec4a}, we now present a novel AP scheme designed for the compressible Euler equations
+across %a wide range of 
+\lore{all} Mach number regimes, from fully compressible to nearly incompressible flows. The proposed method couples the
 conservative \eref{2.1a}--\eref{2.1d} and primitive \eref{2.5a}--\eref{2.5c} formulations of the system, ensuring stability, accuracy, and
-consistency with the correct asymptotic behavior as $\ve\to0$.
+consistency with the %correct 
+\lore{analytical} asymptotic behavior as $\ve\to0$.
 
 In this section, we provide a complete description of the proposed space-time discretization, starting with the primitive system
 \eref{2.5a}–\eref{2.5c}. In \S\ref{sec411}, we outline its temporal integration, which is based on a new hyperbolic splitting and an SI
-approach. In \S\ref{sec32}, we present a fully discrete second-order AP scheme for the primitive system and in \S\ref{sec42}, we describe
-the semi-discrete CU scheme for the conservative system. \S\ref{sec422} is devoted to the clarification of important implementation details.
-Finally, in \S\ref{sec43}, we present a post-processing strategy used to reconcile primitive and conservative variables.
+approach. 
+In \S\ref{sec32}, we present a \lore{fully-discrete} second-order AP scheme for the primitive system, \lore{while}, %and 
+in \S\ref{sec42}, we describe
+the semi-discrete CU scheme \lore{employed} for the conservative system. \S\ref{sec422} is devoted to the clarification 
+of important implementation details.
+Finally, in \S\ref{sec43}, we present \lore{the Mach-number dependent} post-processing strategy used to reconcile primitive and conservative variables.
 
 \subsection{Novel AP Time Discretization of the Primitive System}\label{sec411}
 We begin by providing a precise definition of what it means for a time discretization to be asymptotic-preserving (AP) in the context of
@@ -1042,13 +1047,13 @@ sake of brevity, we restrict our consideration to the second-order time accuracy
 method.
 \end{remark}
 
-\subsection{Fully Discrete Second-Order AP Scheme for the Primitive System}\label{sec32}
-In this section, we construct a fully discrete scheme based on the second-order AP SI time discretization presented in \S\ref{sec313}. To
+\subsection{\lore{Fully-Discrete} Second-Order AP Scheme for the Primitive System}\label{sec32}
+In this section, we construct a \lore{fully-discrete} scheme based on the second-order AP SI time discretization presented in \S\ref{sec313}. To
 this end, we first introduce uniform Cartesian cells $I_{j,k}:=[x_\jmh,x_\jph]\times[y_\kmh,y_\kph]$ with $x_\jph-x_\jmh\equiv\dx$ and
 $y_\kph-y_\kmh\equiv\dy$, centered at $(x_j,y_k)$ with $x_j=\big(x_\jmh+x_\jph\big)/2$ and $y_k=\big(y_\kmh+y_\kph\big)/2$, and assume that
 the cell averages $\,\xbar{\bm V}_{j,k}^{\,n}:\approx\iint_{I_{j,k}}\bm V(x,y,t^n)\,{\rm d}x{\rm d}y\,$ are available at time $t^n$.
 
-A fully discrete FV verion of the second-order AP scheme \eref{3.19} reads as
+A \lore{fully-discrete} FV verion of the second-order AP scheme \eref{3.19} reads as
 \begin{align}
 &\xbar{\bm V}^{\,*}_{j.k}=\,\xbar{\bm V}^{\,n}_{j.k}-\dt\bm{{\cal R}}^n_{j.k}-\dt\bm{{\cal L}}^{n,*}_{j.k},\label{3.31a}\\
 &\xbar{\bm V}^{\,n+1}_{j.k}=\,\xbar{\bm V}^{\,n}_{j.k}-\frac{\dt}{2}\big[\bm{{\cal R}}^n_{j.k}+\bm{{\cal R}}^*_{j.k}\big]-
