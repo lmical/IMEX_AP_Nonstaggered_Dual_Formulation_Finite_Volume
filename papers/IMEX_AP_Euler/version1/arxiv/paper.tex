@@ -631,11 +631,13 @@ Hence, the zero-Mach-number \lore{limit} equations are
 \end{align}
 
 
-\subsection{Dual Formulation Finite-Volume (DF-FV) Framework}\label{sec4a}
-As outlined above, a new AP scheme for the compressible Euler equations will be constructed within the DF-FV framework, in which both
-conservative and primitive formulations are numerically solved simultaneously. The conservative form ensures proper handling of
-discontinuities and conservation properties, while the primitive form is used to stabilize the scheme and manage the terms that become
-dominant in the stiff case. While the DF-FV methodology is not specifically developed to handle multiscale features, it lays the groundwork
+\subsection{\lore{Dual Formulation (DF) Framework}}\label{sec4a}
+As outlined above, a new AP scheme for the compressible Euler equations will be constructed within the DF framework, in which both
+conservative and primitive formulations are numerically solved simultaneously. 
+\lore{The conservative form ensures proper handling of
+discontinuities, % and conservation properties, 
+while the primitive form is used to achieve the AP property in the zero-Mach-number limit.} %stabilize the scheme and manage the terms that become dominant in the stiff case. 
+While the DF methodology is not specifically developed to handle multiscale features, it lays the groundwork
 for the AP scheme developed in subsequent sections by enabling an efficient and accurate treatment of the studied Euler equations in both
 compressible and nearly incompressible flow regimes.
 
@@ -653,27 +655,29 @@ form
 where $\bm V$ is the vector of nonconservative variables, $\widetilde{\bm F}$ and $\widetilde{\bm G}$ are the corresponding fluxes, and
 $B(\bm V)\bm V_x$ and $C(\bm V)\bm V_y$ are the nonconservative product terms.
 
-The key idea of the DF-FV approach is to construct semi-discrete finite-volume (FV) discretizations of \eref{4.1f} and \eref{4.2f}, which
-are evolved in time simultaneously. A crucial step in the DF-FV methods is a post-processing, in which the evolved values of the
-nonconservative solution $\bm V$ is replaced with a more reliable approximation upon completion of each time step. This step is necessary
-because direct long-term evolution of $\bm V$ by solving the nonconservative system \eref{4.2f} may lead to nonphysical discontinuities in
-the solution, which typically appear when the studies Euler system is considered in the compressible (large/medium-Mach-number) regime.
+\lore{The key idea of the DF approach is to construct semi-discretizations of \eref{4.1f} and \eref{4.2f}, which are evolved in time simultaneously.} A crucial step in the DF methods is \lore{the} post-processing, in which the evolved values of the
+nonconservative solution $\bm V$ \lore{are} replaced with a more reliable approximation after the update. This step is necessary
+because long-term \lore{evolutions} of $\bm V$ by \lore{directly} solving the nonconservative system \eref{4.2f} may lead to \lore{nonphysical solutions in presence of discontinuities, }
+%discontinuities in the solution, 
+which typically appear when the studied Euler system is considered in the compressible (large/medium-Mach-number) regime.
 
-A post-processing can be described as follows. After advancing the solutions of \eref{4.1f} and \eref{4.2f} from the time level $t$ to the
-next time level $t+\dt$, the evolved values of $\bm V(t+\dt)$ are replaced with
+\lore{The} post-processing can be described as follows. After computing the solutions of \eref{4.1f} and \eref{4.2f} \lore{corresponding to a certain time level $t^*$}, % from the time level $t$ to the next time level $t+\dt$ 
+the evolved values of \lore{$\bm V(t^*)$} are replaced with
 \begin{equation}
-r\big(\bm V(\bm U(t+\dt)),\bm V(t+\dt)\big),
+\lore{r\big(\bm V(\bm U(t^*)),\bm V(t^*)\big),}
 \label{4.5f}
 \end{equation}
 where $r$ is a suitable replacement function and $\bm V(\bm U)$ is a conservative-primitive variable transformation. In the simplest
 nonstiff case, considered in \cite{CFKM}, one sets
 \begin{equation}
-r\big(\bm V(\bm U(t+\dt)),\bm V(t+\dt)\big)=\bm V(\bm U(t+\dt)).
+\lore{r\big(\bm V(\bm U(t^*)),\bm V(t^*)\big)=\bm V(\bm U(t^*)).}
 \label{4.6f}
 \end{equation}
 However, in the development of the AP scheme below, we will modify the post-processing \eref{4.6f} by taking an appropriate function $r$ in
 \eref{4.5f} to ensure that in the nearly incompressible (low-Mach-number) regime the AP $\bm V$-solution is not overwritten by the non-AP
 conservative one.
+
+\lore{A crucial difference with respect to~\cite{CFKM} is that here we perform the post-processing at each time stage of the considered time discretization, while, in the aforementioned reference, this is done upon completion of each full time step. Another difference is that here we consider a finite-volume (FV) framework, hence regarding our scheme as AP DF-FV, while, in~\cite{CFKM} a finite-difference framework has been considered. The strategy is however general and can be applied to many other numerical approaches.}
 
 \section{Novel AP Scheme for Compressible Euler Equations}\label{sec4}
 Building on the DF-FV framework described in \S\ref{sec4a}, we now present a novel AP scheme designed for the compressible Euler equations
