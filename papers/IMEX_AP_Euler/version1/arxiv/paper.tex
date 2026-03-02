@@ -612,14 +612,14 @@ into \eref{2.5a}--\eref{2.5c} and collect terms by powers of $\ve$. This yields
 \end{equation}
 
 It follows from the first two equations in \eref{3.1} that $p^{(0)}(x,y,t)=p^{(0)}(t)$ and $p^{(1)}(x,y,t)=p^{(1)}(t)$ are \lore{spatially} uniform.
-One can also show that both $p^{(0)}$ and $p^{(1)}$ are independent of time, provided \lore{that} the following Dirichlet-type boundary conditions hold:
+One can also show that both $p^{(0)}$ and $p^{(1)}$ are independent of time, provided \lore{that} the following Dirichlet-type boundary condition holds:
 \begin{equation}
 p\equiv\,\xbar p_0+\ve\,\xbar p_1 \lore{+\ve^2 p_2}+\dots ,\quad\forall(x,y)\in\partial\Omega,\quad \lore{\forall t\in [0,T_f]},
 \label{3.2}			
 \end{equation}
 where $\xbar p_0\in \mathbb{R^+}$ and $\xbar p_1\in\mathbb{R}$ are constants, \lore{$p_k:=p_k(x,y,t)$ with $k\geq 2$ are bounded functions}, $\Omega$ is the spatial domain with boundary $\partial\Omega$, \lore{and $T_f$ is the final time}. 
 %Moreover, the boundary condition \eref{3.2} 
-\lore{In fact, such boundary conditions} imply $p^{(0)}\equiv\,\xbar p_0$ and $p^{(1)}\equiv\,\xbar p_1$. Using this in the $p^{(0)}$-equation in
+\lore{In fact, such a boundary condition} implies $p^{(0)}\equiv\,\xbar p_0$ and $p^{(1)}\equiv\,\xbar p_1$. Using this in the $p^{(0)}$-equation in
 \eref{3.1}, one concludes that $\bnabla\!\cdot\!\bm u^{(0)}=0$, which further implies $\bnabla\!\cdot\!\bm u^{(1)}=0$ thanks to the $p^{(1)}$-equation.
 %
 Hence, the zero-Mach-number \lore{limit} equations are
@@ -697,29 +697,46 @@ of important implementation details.
 Finally, in \S\ref{sec43}, we present \lore{the Mach-number dependent} post-processing strategy used to reconcile primitive and conservative variables.
 
 \subsection{Novel AP Time Discretization of the Primitive System}\label{sec411}
-We begin by providing a precise definition of what it means for a time discretization to be asymptotic-preserving (AP) in the context of
-the low-Mach-number limit.
+We begin by providing a precise definition of %what it means for a time discretization to be 
+\lore{asymptotic-preserving (AP) time discretization in the context of
+the low-Mach-number limit.}
 \begin{definition}[AP time discretization]\label{def41}
-Assume that the computed solution at time $t^n$ can be expanded as
-\begin{equation}
-\rho^n=\rho^{(0),n}+\ve\rho^{(1),n}+\dots,\quad\bm u^n=\bm u^{(0),n}+\ve\bm u^{(1),n}+\dots,\quad p^n=p^{(0),n}+\ve p^{(1),n}+\dots,
-\label{4.1}
-\end{equation} 
-with $p^{(0),n}\equiv\,\xbar p_0>0$, $p^{(1),n}\equiv\,\xbar p_1>0$, and both $\bm u^{(0),n}$ and $\bm u^{(1),n}$ being divergence-free,
-that is,
-\begin{equation}
-\bnabla\!\cdot\!\bm u^{(0),n}=0,\quad\bnabla\!\cdot\!\bm u^{(1),n}=0.
-\label{4.2}
-\end{equation}
-In addition, assume that the boundary condition \eref{3.2} is satisfied, namely,
-$$
-p^n\equiv\,\xbar p_0+\ve\,\xbar p_1+{\cal O}(\ve^2),\quad\forall(x,y)\in\partial\Omega.
-$$
-
-Let us consider a one-step time discretization that allows to compute the solution at time $t^{n+1}=t^n+\dt$. We say that such time
-discretization is AP if it yields a consistent discretization of \eref{3.3}--\eref{3.5} as $\ve\to0$ and the solution
-$(\rho^{n+1},\bm u^{n+1},p^{n+1})$ at $t^{n+1}$ admits the same asymptotic expantion as in \eref{4.1} with $p^{(0),n+1}\equiv\,\xbar p_0$,
-$p^{(1),n+1}\equiv\,\xbar p_1$, and both $\bm u^{(0),n+1}$ and $\bm u^{(1),n+1}$ being divergence-free.
+	\lore{A time discretization is AP if, assuming}
+	\begin{itemize}
+		\item \lore{an expansion for the solution at time $t^n$ of the type}
+		\begin{equation}\label{eq:expansion_tn}
+			\begin{aligned}
+				\rho^n &:= \rho^{(0),n} + \varepsilon \rho^{(1),n}
+					+ \varepsilon^2 \rho^{(2),n} + \dots, \\
+				\bm u^n &:= \bm u^{(0),n} + \varepsilon \bm u^{(1),n}
+					+ \varepsilon^2 \bm u^{(2),n} + \dots, \\
+				p^n &:= p^{(0),n} + \varepsilon p^{(1),n}
+					+ \varepsilon^2 p^{(2),n} + \dots,
+			\end{aligned}
+		\end{equation}
+		\lore{compatible with the asymptotic limit, i.e., satisfying}
+	%Assume that the computed solution can be expanded as
+		\begin{align}
+			&p^{(0),n}\equiv\,\xbar p_0,\quad p^{(1),n}\equiv\,\xbar p_1,\label{eq:p_const}\\
+			&\bnabla\!\cdot\!\bm u^{(0),n}=0,\quad \bnabla\!\cdot\!\bm u^{(1),n}=0,\label{eq:u_div_free}
+		\end{align}
+		\item 	\lore{the Dirichlet-type boundary condition~\eref{3.2}},
+		\end{itemize}	
+%with $p^{(0),n}\equiv\,\xbar p_0>0$, $p^{(1),n}\equiv\,\xbar p_1>0$, and both $\bm u^{(0),n}$ and $\bm u^{(1),n}$ being divergence-free,
+%that is,
+%\begin{equation}
+%\bnabla\!\cdot\!\bm u^{(0),n}=0,\quad\bnabla\!\cdot\!\bm u^{(1),n}=0.
+%\label{4.2}
+%\end{equation}
+%In addition, assume that the boundary condition \eref{3.2} is satisfied, namely,
+%$$
+%p^n\equiv\,\xbar p_0+\ve\,\xbar p_1+{\cal O}(\ve^2),\quad\forall(x,y)\in\partial\Omega.
+%$$
+		\lore{then, it produces an approximation $(\rho^{n+1},\bm u^{n+1},p^{n+1})$ at time $t^{n+1}$ consistent with the asymptotic limit, namely, if the obtained solution admits an expansion of the type~\eqref{eq:expansion_tn} satisfying conditions~\eqref{eq:p_const} and~\eqref{eq:u_div_free}, and if such data are associated with a consistent discretization of~\eqref{3.3} and~\eqref{3.4}.}
+%Let us consider a one-step time discretization that allows to compute the solution at time $t^{n+1}=t^n+\dt$. We say that such time
+%discretization is AP if it yields a consistent discretization of \eref{3.3}--\eref{3.5} as $\ve\to0$ and the solution
+%$(\rho^{n+1},\bm u^{n+1},p^{n+1})$ at $t^{n+1}$ admits the same asymptotic expantion as in \eref{4.1} with $p^{(0),n+1}\equiv\,\xbar p_0$,
+%$p^{(1),n+1}\equiv\,\xbar p_1$, and both $\bm u^{(0),n+1}$ and $\bm u^{(1),n+1}$ being divergence-free.
 \end{definition}
 
 To construct an AP time discretization, we first perform a hyperbolic splitting of the primitive system \eref{2.5a}–\eref{2.5c}, separating
