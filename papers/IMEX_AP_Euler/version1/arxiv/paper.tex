@@ -521,7 +521,7 @@ of the Euler equations in the presence of discontinuities %will
 %lead 
 to nonphysical computed solutions, as was demonstrated in \cite{abgrall2010comment,HouLeF}. We therefore apply a dual
 formulation (DF) approach, which was recently introduced in \cite{CFKM} (for other recent works on dual formulation
-methods, we refer the reader to \cite{Abg2023,ACKM,AbgLiu}), and solve the nonconservative and conservative formulations simultaneously.
+methods, we refer the reader to \cite{Abg2023,ACKM,AbgLiu,pidatella2019semi}), and solve the nonconservative and conservative formulations simultaneously.
 The latter one is discretized \lore{in a fully-explicit manner} using the second-order semi-discrete CU discretization from \cite{KLin}. %combined with the explicit realization of the implicit trapezoidal ODE solver. 
 This way, at each \lore{stage of the considered Deferred Correction (DeC) time discretization}~\cite{offner2025analysis} %step, 
 we will evolve two copies of the computed solution: one is AP, but
@@ -1034,12 +1034,13 @@ We also remark that, due to its definition in~\eqref{4.10}, the time step $\dt$ 
 \end{proof}
 
 \subsubsection{Second-Order AP SI Time Discretization}\label{sec313}
-We now introduce a second-order AP SI time discretization, which is based on the deferred correction (DeC) approach, which was first
-proposed in \cite{fox1949some}. Our second-order AP SI-DeC time discretization is directly related to the IMEX-DeC methods presented in
-\cite{offner2025analysis} and based on the DeC formulation introduced in \cite{Decremi}.
+We now introduce a second-order AP SI time discretization, which is based on the Deferred Correction (DeC) approach, which was \lore{originally introduced} 
+%first proposed
+in \cite{fox1949some}. Our second-order AP SI-DeC time discretization is directly related to the IMEX-DeC methods presented in
+\cite{offner2025analysis} and based on the DeC formulation introduced in \cite{Decremi}, \lore{see also~\cite{micalizzi2025efficient,micalizzi2024new}}.
 
-According to the second-order AP SI-DeC time discretization, the solution of \eref{4.47} is evolved from $t=t^n$ to $t=t^{n+1}$ in the
-following two stages:
+%According to the second-order AP SI-DeC time discretization, 
+\lore{In particular, in the context of the adopted second-order AP SI-DeC time discretization,} the solution of \eref{4.47} is evolved from $t=t^n$ to $t=t^{n+1}$ \lore{through} the following two stages:
 \begin{equation}
 \begin{aligned}
 &\bm V^*=\bm V^n-\dt\bm{{\cal R}}^n-\dt\bm{{\cal L}}^{n,*},\\
@@ -1048,11 +1049,15 @@ following two stages:
 \end{aligned}
 \label{3.19}
 \end{equation}
-where the upper index $*$ denontes the data computed using the intermediate solution $\bm V^*$ and definitions of the operators
-$\bm{{\cal R}}^*$ and $\bm{{\cal L}}^{n,n}$, $\bm{{\cal L}}^{*,*}$, and $\bm{{\cal L}}^{*,n+1}$ are similar to those given in \eref{3.12f}
-and \eref{3.13f}, respectively.
+where the upper index $*$ \lore{is associated with} %denontes the data computed using 
+the intermediate solution $\bm V^*$, and \lore{the} definitions of the operators
+$\bm{{\cal R}}^*$ and $\bm{{\cal L}}^{n,n}$, $\bm{{\cal L}}^{*,*}$, and $\bm{{\cal L}}^{*,n+1}$ are \lore{analogous}
+%similar 
+to those given in \eref{3.12f} and \eref{3.13f}, respectively.
 
-The system \eref{3.19} can be equivalently written as
+%The 
+%System 
+\lore{Scheme} \eref{3.19} can be equivalently written as
 \begin{equation}
 \begin{aligned}
 \rho^*=&~\rho^n-\dt\bnabla\!\cdot\!(\rho^n\bm u^n),\\
