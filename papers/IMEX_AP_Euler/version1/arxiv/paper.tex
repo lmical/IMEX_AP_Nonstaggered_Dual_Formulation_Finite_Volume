@@ -1105,11 +1105,11 @@ according to \eref{4.10}.
 		+ \varepsilon^2 p^{(2),*} + \dots,
 	\end{aligned}
 	\end{equation}
-	with
-	\begin{align}
-		&p^{(0),*}\equiv\,\xbar p_0,\quad p^{(1),*}\equiv\,\xbar p_1,\label{eq:p_star_const}\\
-		&\bnabla\!\cdot\!\bm u^{(0),*}=0,\quad \bnabla\!\cdot\!\bm u^{(1),*}=0,\label{eq:u_star_div_free}
-	\end{align}
+	with $p^{(0),*}=p^{(0),n}\equiv\,\xbar p_0$, $p^{(1),*}=p^{(1),n}\equiv\,\xbar p_1$, $\bnabla\!\cdot\!\bm u^{(0),*}=\bnabla\!\cdot\!\bm u^{(0),n}=0$ and $\bnabla\!\cdot\!\bm u^{(0),*}=0=\bnabla\!\cdot\!\bm u^{(0),n}=0$.
+%	\begin{align}
+%		&p^{(0),*}\equiv\,\xbar p_0,\quad p^{(1),*}\equiv\,\xbar p_1,\label{eq:p_star_const}\\
+%		&\bnabla\!\cdot\!\bm u^{(0),*}=0,\quad \bnabla\!\cdot\!\bm u^{(1),*}=0,\label{eq:u_star_div_free}
+%	\end{align}
 %\begin{equation}
 %\rho^*=\rho^{(0),*}+\ve^2\rho^{(2),*}+\dots,\quad\bm u^*=\bm u^{(0),*}+\ve^2\bm u^{(2),*}+\dots,\quad p^*=p^{(0),*}+\ve^2p^{(2),*}+\dots,
 %\label{3.22}
@@ -1120,7 +1120,9 @@ according to \eref{4.10}.
 %\label{3.23}
 %\end{equation}
 %
-We then substitute the expansions \eref{eq:expansion_tn} and \eref{eq:expansion_tstar} into \eref{3.21} and use conditions \eqref{eq:p_const}--\eqref{eq:u_div_free} and  \eqref{eq:p_star_const}--\eqref{eq:u_star_div_free} to obtain
+We then substitute the expansions \eref{eq:expansion_tn} and \eref{eq:expansion_tstar} into \eref{3.21} and use conditions \eqref{eq:p_const}--\eqref{eq:u_div_free} holding both for the data $\rho^n$, $\bm u^n$, $p^n$ and $\rho^*$, $\bm u^*$, $p^*$
+%and  \eqref{eq:p_star_const}--\eqref{eq:u_star_div_free} 
+to obtain
 \begin{align}
 	&\begin{aligned}
 		\rho^{n+1}&=\rho^{(0),n}+\ve \rho^{(1),n}+\ve^2 \rho^{(2),n}-\frac{\dt}{2}\big[ \bnabla\!\cdot\!\big(\rho^{(0),n}\bm u^{(0),n}\big) + \bnabla\!\cdot\!\big(\rho^{(0),*}\bm u^{(0),*}\big) \big]\\
