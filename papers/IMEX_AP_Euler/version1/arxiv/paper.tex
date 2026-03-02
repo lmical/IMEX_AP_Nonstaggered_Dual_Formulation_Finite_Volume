@@ -827,7 +827,7 @@ where $\bm V^n:=(\rho^n,\bm u^n,p^n)^\top\approx\bm V(t^n)$, $\rho_{\max}^n:=\rh
 &\begin{aligned}
 \bm{{\cal R}}^n&:=\widetilde{\mF}(\bm V^n)_x+\widetilde{\mG}(\bm V^n)_y-\widetilde B(\bm V^n)\bm V_x^n-\widetilde C(\bm V^n)\bm V_y^n\\
 &\hspace*{0.15cm}=\begin{pmatrix}({\cal R}^\rho)^n\\(\bm{{\cal R}}^{\bm u})^n\\({\cal R}^p)^n\end{pmatrix}=
-\begin{pmatrix}\rho^n\bm u^n\\(\bm u^n\!\cdot\!\bnabla)\bm u^n+\dfrac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\\[1.5ex]
+\begin{pmatrix}\lore{\bnabla}\!\cdot\!\rho^n\bm u^n\\(\bm u^n\!\cdot\!\bnabla)\bm u^n+\dfrac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\lore{\nabla p^n}\\[1.5ex]
 \bm u^n\!\cdot\!\nabla p^n+\gamma(p^n-p_{\min}^n)\bnabla\!\cdot\!\bm u^n\end{pmatrix},
 \end{aligned}\label{3.12f}\\
 &\bm{{\cal L}}^{n,n+1}:=-\widehat B(\bm V^n)\bm V_x^{n+1}-\widehat C(\bm V^n)\bm V_y^{n+1}=
@@ -836,8 +836,10 @@ where $\bm V^n:=(\rho^n,\bm u^n,p^n)^\top\approx\bm V(t^n)$, $\rho_{\max}^n:=\rh
 \gamma p_{\min}^n\bnabla\!\cdot\!\bm u^{n+1}\end{pmatrix}.\label{3.13f}
 \end{align}
 
-Notice that in \eref{3.13f}, $\bm{{\cal L}}^{n,n+1}$ is discretized in a SI (rather than implicit) manner, where both $B^{\rm S}$ and
-$C^{\rm S}$ are evaluated at $\bm V^n$ (and not at $\bm V^{n+1}$), which helps to avoid the necessity of numerically solving complicated
+Notice that in \eref{3.13f}, $\bm{{\cal L}}^{n,n+1}$ is discretized in an SI (rather than \lore{fully-}implicit) manner, where both $\widehat B$ and
+$\widehat C$ are evaluated at $\bm V^n$ (and not at $\bm V^{n+1}$), which 
+%helps to avoid the necessity of 
+\lore{prevents from} numerically solving complicated
 systems of nonlinear algebraic equations.
 
 We shall now prove that the time discretization \eref{4.8} is indeed AP, provided that the time step is computed based on the wave speeds of
@@ -848,7 +850,7 @@ the nonstiff subsystem, that is, provided that
 \label{4.10}
 \end{equation}
 where $K_{\rm CFL}$ is a CFL number and $\dx$ and $\dy$ are mesh sizes used in the spatial discretization. Notice that selecting the time
-step $\dt$ according to \eref{4.10} makes it independent of $\ve$ as according to \eref{4.48f}--\eref{4.7}, $\tilde c={\cal O}(1)$.
+step $\dt$ according to \eref{4.10} makes it \lore{asymptotically} independent of $\ve$ as, according to \eref{4.48f}--\eref{4.7}, $\tilde c={\cal O}(1)$.
 
 \begin{theorem}\label{thm31}
 The first-order SI time discretization \eref{4.8} is AP according to Definition \ref{def41}, provided that $\dt$ is computed according to
