@@ -1105,7 +1105,7 @@ according to \eref{4.10}.
 		+ \varepsilon^2 p^{(2),*} + \dots,
 	\end{aligned}
 	\end{equation}
-	with $p^{(0),*}=p^{(0),n}\equiv\,\xbar p_0$, $p^{(1),*}=p^{(1),n}\equiv\,\xbar p_1$, $\bnabla\!\cdot\!\bm u^{(0),*}=\bnabla\!\cdot\!\bm u^{(0),n}=0$ and $\bnabla\!\cdot\!\bm u^{(0),*}=0=\bnabla\!\cdot\!\bm u^{(0),n}=0$.
+	with $p^{(0),*}=p^{(0),n}\equiv\,\xbar p_0$, $p^{(1),*}=p^{(1),n}\equiv\,\xbar p_1$, $\bnabla\!\cdot\!\bm u^{(0),*}=\bnabla\!\cdot\!\bm u^{(0),n}=0$, and $\bnabla\!\cdot\!\bm u^{(1),*}=\bnabla\!\cdot\!\bm u^{(1),n}=0$.
 %	\begin{align}
 %		&p^{(0),*}\equiv\,\xbar p_0,\quad p^{(1),*}\equiv\,\xbar p_1,\label{eq:p_star_const}\\
 %		&\bnabla\!\cdot\!\bm u^{(0),*}=0,\quad \bnabla\!\cdot\!\bm u^{(1),*}=0,\label{eq:u_star_div_free}
@@ -1188,7 +1188,7 @@ $\rho^{n+1}=\rho^{(0),n+1}+\ve\rho^{(1),n+1}+\ve^2\rho^{(2),n+1}+\dots$ with coe
 	&\qquad+\bnabla\!\cdot\!\big(\rho^{(2),*}\bm u^{(0),*}\big)+\bnabla\!\cdot\!\big(\rho^{(1),*}\bm u^{(1),*}\big)+\bnabla\!\cdot\!\big(\rho^{(0),*}\bm u^{(2),*}\big)\big].
 \end{align*}
 
-As in the first order proof, we show that $p^{n+1}$ admits the asymptotic expansion by proving that it satisfies a well--posed elliptic problem with suitable boundary conditions.
+As in the proof for the first order scheme, we show that $p^{n+1}$ admits the asymptotic expansion by proving that it satisfies a well--posed elliptic problem with suitable boundary conditions.
 %$$
 %\rho^{(0),n+1}=\rho^{(0),n}-\frac{\dt}{2}\Big[\bnabla\!\cdot\!\big(\rho^{(0),n}\bm u^{(0),n}\big)+
 %\bnabla\!\cdot\!\big(\rho^{(0),*}\bm u^{(0),*}\big)\Big],
@@ -1218,7 +1218,7 @@ This fact,
 together with the boundary conditions \eref{3.2}, results in the same expansion for
 $p^{n+1}$, which we have established in \eref{eq:expasion_p}--\eref{4.14} for the first-order SI method, characterized by $p^{(0),n+1}=p^{(0),n}\equiv\,\xbar p_0$ and $p^{(1),n+1}=p^{(1),n}\equiv\,\xbar p_1$.
 
-We obtain thus get the expansion for $\bm u^{n+1}$ by plugging the obtained $p$-expansion
+We thus get the expansion for $\bm u^{n+1}$ by plugging the obtained $p$-expansion
 %Next, we substitute \eref{4.14}
 into the the velocity equation \eref{3.25}
 $$\begin{aligned}
@@ -1249,7 +1249,7 @@ $$\begin{aligned}
 	-\ve^2\frac{\dt}{2}\Big[ \frac{\nabla p^{(4),n}}{\rho_{\max}^n} - \frac{\nabla p^{(4),*}}{\rho_{\max}^*}\Big]\\
 	&-\frac{\dt}{ \rho_{\max}^*}\,\nabla p^{(2),n+1}-\ve\frac{\dt}{ \rho_{\max}^*}\,\nabla p^{(3),n+1}-\ve^2\frac{\dt}{ \rho_{\max}^*}\,\nabla p^{(4),n+1}+{\cal O}(\ve^3).
 \end{aligned}$$
-A straightforward grouping of the terms in terms of powers of $\ve$, in the same fashion as in Theorem~\ref{thm31}, gives the coefficients of the expansion $\bm u^{n+1}=\bm u^{(0),n+1}+\ve\bm u^{(1),n+1}+\ve^2\bm u^{(2),n+1}+\dots$.
+A straightforward grouping of the terms in powers of $\ve$, in the same fashion as in Theorem~\ref{thm31}, gives the coefficients of the expansion $\bm u^{n+1}=\bm u^{(0),n+1}+\ve\bm u^{(1),n+1}+\ve^2\bm u^{(2),n+1}+\dots$.
 %$$
 %\begin{aligned}
 %\bm u^{n+1}&=\bm u^{(0),n}-\frac{\dt}{2}\bigg[(\bm u^{(0),n}\!\cdot\!\bnabla)\bm u^{(0),n}+(\bm u^{(0),*}\!\cdot\!\bnabla)\bm u^{(0),*}+
@@ -1266,6 +1266,7 @@ A straightforward grouping of the terms in terms of powers of $\ve$, in the same
 %\end{aligned}
 %\label{4.15f}
 %\end{equation}
+
 Let us now show consistency with the asymptotic limit.
 %
 The required conditions on the pressure modes have been already shown, and we have: $p^{(0),n+1}=p^{(0),n}\equiv\,\xbar p_0$ and $p^{(1),n+1}=p^{(1),n}\equiv\,\xbar p_1$.
@@ -1276,7 +1277,7 @@ $$\begin{aligned}
 	&-\dt\gamma p_{\min}^*\bnabla\!\cdot\!\bm u^{(0),n+1}-\ve \dt\gamma p_{\min}^*\bnabla\!\cdot\!\bm u^{(1),n+1}
 	-\ve^2 \dt\gamma p_{\min}^*\bnabla\!\cdot\!\bm u^{(2),n+1}+{\cal O}(\ve^3).\label{3.26}
 \end{aligned}$$
-Up to $\mathcal{O}(1)$ we get $\bnabla\!\cdot\!\bm u^{(0),n+1}=0$, while, pp to $\mathcal{O}(\ve)$ we get $\bnabla\!\cdot\!\bm u^{(1),n+1}=0$.
+Up to $\mathcal{O}(1)$ we get $\bnabla\!\cdot\!\bm u^{(0),n+1}=0$, while, up to $\mathcal{O}(\ve)$ we get $\bnabla\!\cdot\!\bm u^{(1),n+1}=0$.
 
 Finally, consistency with~\eqref{3.3} and~\eqref{3.4} is obtained by considering the scheme updates~\eqref{3.24} and~\eqref{3.25} up to $\mathcal{O}(1)$, leading to
 %We now need to show the consistency of the scheme \eref{3.20}--\eref{3.21} with \eref{3.4} and \eref{3.5} as $\ve\to0$. We have already
