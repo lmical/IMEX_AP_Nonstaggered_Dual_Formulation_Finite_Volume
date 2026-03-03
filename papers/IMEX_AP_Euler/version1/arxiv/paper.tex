@@ -655,29 +655,30 @@ form
 where $\bm V$ is the vector of nonconservative variables, $\widetilde{\bm F}$ and $\widetilde{\bm G}$ are the corresponding fluxes, and
 $B(\bm V)\bm V_x$ and $C(\bm V)\bm V_y$ are the nonconservative product terms.
 
-\lore{The key idea of the DF approach is to construct semi-discretizations of \eref{4.1f} and \eref{4.2f}, which are evolved in time simultaneously.} A crucial step in the DF methods is \lore{the} post-processing, in which the evolved values of the
+\lore{The key idea of the DF approach is to construct semi-discretizations of \eref{4.1f} and \eref{4.2f}, which are evolved in time simultaneously.} A crucial step in \lore{our DF method} is \lore{the} post-processing, in which the evolved values of the
 nonconservative solution $\bm V$ \lore{are} replaced with a more reliable approximation after the update. This step is necessary
 because long-term \lore{evolutions} of $\bm V$ by \lore{directly} solving the nonconservative system \eref{4.2f} may lead to \lore{nonphysical solutions in presence of discontinuities, }
 %discontinuities in the solution, 
 which typically appear when the studied Euler system is considered in the compressible (large/medium-Mach-number) regime.
 
-\lore{The} post-processing can be described as follows. After computing the solutions of \eref{4.1f} and \eref{4.2f} \lore{corresponding to a certain time level $t^*$}, % from the time level $t$ to the next time level $t+\dt$ 
-the evolved values of \lore{$\bm V(t^*)$} are replaced with
+\lore{The} post-processing can be described as follows. After computing the solutions of \eref{4.1f} and \eref{4.2f} \lore{corresponding to a certain time level $t$}, % from the time level $t$ to the next time level $t+\dt$ 
+the evolved values of \lore{$\bm V$} are replaced with
 \begin{equation}
-\lore{r\big(\bm V(\bm U(t^*)),\bm V(t^*)\big),}
+\lore{r\big(\bm V(\bm U),\bm V\big),}
 \label{4.5f}
 \end{equation}
 where $r$ is a suitable replacement function and $\bm V(\bm U)$ is a conservative-primitive variable transformation. In the simplest
-nonstiff case, considered in \cite{CFKM}, one sets
+nonstiff case, one can set %, considered in \cite{CFKM}
 \begin{equation}
-\lore{r\big(\bm V(\bm U(t^*)),\bm V(t^*)\big)=\bm V(\bm U(t^*)).}
+\lore{r\big(\bm V(\bm U(t)),\bm V(t)\big)=\bm V(\bm U(t)).}
 \label{4.6f}
 \end{equation}
 However, in the development of the AP scheme below, we will modify the post-processing \eref{4.6f} by taking an appropriate function $r$ in
 \eref{4.5f} to ensure that in the nearly incompressible (low-Mach-number) regime the AP $\bm V$-solution is not overwritten by the non-AP
 conservative one.
 
-\lore{A crucial difference with respect to~\cite{CFKM} is that here we perform the post-processing at each time stage of the considered time discretization, while, in the aforementioned reference, this is done upon completion of each full time step. Another difference is that here we consider a finite-volume (FV) framework, hence regarding our scheme as AP DF-FV, while, in~\cite{CFKM} a finite-difference framework has been considered. The strategy is however general and can be applied to many other numerical approaches.}
+\lore{%A crucial difference with respect to~\cite{CFKM} is that here we perform the post-processing at each time stage of the considered time discretization, while, in the aforementioned reference, this is done upon completion of each full time step. 
+	Let us remark that here, in contrast with~\cite{CFKM}, we consider a finite-volume (FV) framework, hence regarding our scheme as AP DF-FV, while,  a finite-difference framework has been considered in the aforementioned reference. The strategy is however general and can be applied to many other numerical approaches.}
 
 \section{Novel AP Scheme for Compressible Euler Equations}\label{sec4}
 Building on the \lore{DF} framework described in \S\ref{sec4a}, we now present a novel AP scheme designed for the compressible Euler equations
@@ -1592,7 +1593,7 @@ $\bullet\,$ \textbf{Step 4 (Compute $\,\xbar{\bm U}^{\,*}_{j,k}$).}
 		\label{eq:Euler}
 	\end{aligned}
 \end{equation}
-ad we perform the post-processing of the primitive solution replacing $\xbar{\bm V}^{\,*}_{j,k}$ by  $r\Big(\xbar{\bm V}\big(\,\xbar{\bm U}^{\,*}_{j,k}\big),\,\xbar{\bm V}^{\,*}_{j,k}\Big)$. Let us notice that update~\eqref{eq:Euler} corresponds to a simple forward Euler step. The post-processing is described in~\S\ref{sec43}.}
+ad we perform the post-processing of the primitive solution replacing $\xbar{\bm V}^{\,*}_{j,k}$ by  $r\Big(\bm V\big(\,\xbar{\bm U}^{\,*}_{j,k}\big),\,\xbar{\bm V}^{\,*}_{j,k}\Big)$. Let us notice that update~\eqref{eq:Euler} corresponds to a simple forward Euler step. The post-processing is described in~\S\ref{sec43}.}
 
 
 \smallskip
@@ -1647,7 +1648,7 @@ $\bullet\,$ \textbf{Step 8 (Compute $\,\xbar{\bm U}^{\,n+1}_{j,k}$).} \lore{Agai
 \end{aligned}
 \label{eq:Explicit_stage_2}
 \end{equation}
-ad we perform the post-processing of the primitive solution replacing $\xbar{\bm V}^{\,n+1}_{j,k}$ by  $r\Big(\xbar{\bm V}\big(\,\xbar{\bm U}^{\,n+1}_{j,k}\big),\,\xbar{\bm V}^{\,n+1}_{j,k}\Big)$.}
+ad we perform the post-processing of the primitive solution replacing $\xbar{\bm V}^{\,n+1}_{j,k}$ by  $r\Big(\bm V\big(\,\xbar{\bm U}^{\,n+1}_{j,k}\big),\,\xbar{\bm V}^{\,n+1}_{j,k}\Big)$.}
 
 
 
@@ -1662,23 +1663,26 @@ fact, explicit, being they performed through the explicit counterpart of the sch
 %since the computation of $\xbar{\bm V}^{\,n+1}_{j,k}$ is performed independently of the conserved system.
 
 \subsection{Post-Processing}\label{sec43}
-Upon the completion of Step 7, we obtain two sets of numerical solutions at time $t=t^{n+1}$: the $\bm V$-solution, which is AP but  
-nonconservative, and the $\bm U$-solution, which is conservative but non-AP. We therefore design a post-processing \eref{4.5f} using their
-convex combination with coefficients proportional to $\ve$, leveraging the AP SI method in the low-Mach-number regime and the sharp
+Upon 
+%the 
+completion of \lore{Steps 4 and 8}, we obtain two sets of numerical solutions: %at times $t=t^{n+1}$
+the $\bm V$-solution, which is AP but nonconservative, and the $\bm U$-solution, which is conservative but non-AP. We therefore design %a 
+\lore{the} post-processing \eref{4.5f} using their
+convex combination with coefficients %proportional to 
+\lore{dependent on} $\ve$, leveraging the AP SI method in the low-Mach-number regime and the sharp
 conservative CU scheme in the moderate- and high-Mach-number regimes---thus ensuring accuracy, stability, and physical consistency across
 all flow regimes. Specifically, we select the following function $r$ in \eref{4.5f}:
 \begin{equation}
-r\Big(\xbar{\bm V}\big(\,\xbar{\bm U}^{\,n+1}_{j,k}\big),\,\xbar{\bm V}^{\,n+1}_{j,k}\Big)=
-(1-s(\ve))\,\xbar{\bm V}\big(\,\xbar{\bm U}^{\,n+1}_{j,k}\big)+s(\ve)\,\xbar{\bm V}^{\,n+1}_{j,k},\quad\forall j,k,
+\lore{r\Big(\bm V\big(\,\xbar{\bm U}_{j,k}\big),\,\xbar{\bm V}_{j,k}\Big)=
+(1-s(\ve))\,\bm V\big(\,\xbar{\bm U}_{j,k}\big)+s(\ve)\,\xbar{\bm V}_{j,k},\quad\forall j,k,}
 \label{3.46}
 \end{equation}
-where $s$ is a suitable switching function, which is supposed to be increasing, continuous, and satisfy $s(1)=0$ and $s(0)=1$. Moreover,
-in the high-Mach-number regime, $s$ should be $\sim0$ so that the primitive variables $\bm V^{n+1}$ are almost completely overwritten by
-$\bm V(\bm U^{n+1})$, while in the low-Mach-number regime, $s$ should be $\sim1$ so that the primitive variables $\bm V^{n+1}$ stay almost
+where $s$ is a suitable switching function, which is supposed to be increasing, continuous, and satisfy $s(1)=0$ and $s(0)=1$. %Moreover,
+\lore{In fact,} in the high-Mach-number regime, $s$ should be $\sim0$ so that the primitive variables \lore{$\bm V$} are almost completely overwritten by
+\lore{$\bm V(\bm U)$}, while, in the low-Mach-number regime, $s$ should be $\sim1$ so that the primitive variables \lore{$\bm V$} stay almost
 unchanged. For intermediate values of $\ve$, a smooth transition between $1$ and $0$ is expected.
 
 
-Differeces: Mach dependent and performed at each stage
 
 
 \section{Numerical Examples}\label{sec6}
@@ -1691,7 +1695,7 @@ $\bullet$ Take the minmod parameter $\theta=1.3$;
 
 \smallskip
 \noindent
-$\bullet$ Adaptively select time steps based on the time-step restriction \eref{4.10} for the nonstiff part of the primitive system. 
+$\bullet$ Adaptively select time steps based on the time-step restriction \eref{4.10} for the nonstiff part of the primitive system;
 
 \smallskip
 \noindent
@@ -1710,15 +1714,25 @@ the stability property of the resulting AP scheme when $\ve$ is large;
 \smallskip
 \noindent
 $\bullet$ Choose the following switching function:
-\begin{equation}
-s(\ve)=\begin{cases}
-1-\ve^{14},&0<\ve\le0.15,\\
-\exp\bigg(1-\dfrac{1}{1-16\left(\ve-0.15\right)^2}\bigg)\left[0.85^{14}-0.6^{14}\right]+0.6^{14},&0.15<\ve<0.4,\\
-(1-\ve)^{14},&0.4\le\ve\le1,
-\end{cases}
-\label{3.47}
+%\begin{equation}
+%s(\ve)=\begin{cases}
+%1-\ve^{14},&0<\ve\le0.15,\\
+%\exp\bigg(1-\dfrac{1}{1-16\left(\ve-0.15\right)^2}\bigg)\left[\lore{(1-0.15^{14})}-0.6^{14}\right]+0.6^{14},&0.15<\ve<0.4,\\
+%(1-\ve)^{14},&0.4\le\ve\le1,
+%\end{cases}
+%\label{3.47}
+%\end{equation}
+\lore{\begin{equation}
+	s(\ve)=\begin{cases}
+		1-\ve^{\alpha},&0<\ve\le \varepsilon_0,\\
+		\exp\bigg( 1 - \frac{1}{1 -  \left( \frac{\ve - \ve_0}{\ve_1-\ve_0}  \right)^2 } \bigg)\left[ (1-\ve_0^{\alpha})-(1-\ve_1)^{\alpha} \right]+(1-\ve_1)^{\alpha},
+		&\ve_0<\ve<\ve_1,\\
+		(1-\ve)^{\alpha},& \ve_1 \le\ve\le1,
+	\end{cases}
+	\label{3.47}
 \end{equation}
-which is plotted in Figure \ref{fig31}.
+with $\ve_0:=0.15$, $\ve_1:=0.4$ and $\alpha:=14$}, which is plotted in Figure \ref{fig31}.
+
 \begin{figure}[ht!]
 \centerline{\includegraphics[width=0.32\textwidth]{switching_function}}
 \caption{\sf Switching function $s(\varepsilon)$ plotted with respect to $1/\ve$.\label{fig31}}
