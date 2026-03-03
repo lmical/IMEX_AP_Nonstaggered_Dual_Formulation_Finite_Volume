@@ -1535,19 +1535,18 @@ with
 \label{3.44}
 \end{equation}
 
-Note that most of the indexed quantities in the semi-discrete setting above are time-dependent, but we have omitted this dependence \lore{to ease the notation.} %for the
-sake of brevity.
+Note that most of the indexed quantities in the semi-discrete setting above are time-dependent, but we have omitted this dependence \lore{to ease the notation.} %for the sake of brevity.
 
 Finally, the system of ODEs \eref{2.15a} has to be integrated in time using an appropriate ODE solver. 
-\lore{Its update is performed simultaneously to the one of the primitive system and a post-processing is performed at each stage, as explained in the next section~\S\ref{sec422}.}
+\lore{Its solution is performed simultaneously to the one of the primitive system, with the explicit counterpart of the SI-DeC scheme, and a post-processing is performed at each stage, as explained in the next section~\S\ref{sec422}.}
 %We take advantage of the DF-FV 
 %approach, which allows to use an implicit trapezoidal method as explained in \S\ref{sec422}.
 
 \subsection{Implementation Details}\label{sec422}
-In the DF-FV approach, the solutions of the primitive and conservative systems are evolved simultaneously according to the following
+In \lore{our} DF-FV approach, the solutions of the primitive and conservative systems are evolved simultaneously according to the following
 algorithm.
 
-First, we update the solution of the SI scheme \eref{3.31a}--\eref{3.31b} in the following six steps.
+%First, we update the solution of the SI scheme \eref{3.31a}--\eref{3.31b} in the following six steps.
 
 \smallskip
 \noindent
@@ -1559,11 +1558,12 @@ $\bullet\,$ \textbf{Step 1 (Compute $\xbar\rho^{\,*}_{j,k}$).} We use the $\rho$
 \smallskip
 \noindent
 $\bullet\,$ \textbf{Step 2 (Solve the linear elliptic equation for $\,\xbar p^{\,*}_{j,k}$).} We apply the discrete divergence operator
-\eref{3.38f} to the $\bm u$-equations in \eref{3.31a} and substitute them into the $p$-equation in \eref{3.31a} to obtain the following
+\eref{3.38f} to the $\bm u$-equations 
+in \eref{3.31a} and substitute them into the $p$-equation in \eref{3.31a} to obtain the following
 linear system of algebraic equations for $\,\xbar p^{\,*}_{j,k}$, which is a discretization of the linear elliptic equation for $p^*$:
 \begin{equation*}
 \xbar p^{\,*}_{j,k}-\frac{(\dt)^2\gamma p_{\min}^n}{\ve^2\rho_{\max}^n}\,\Delta\xbar p_{j,k}^{\,*}=\,\xbar p^{\,n}_{j,k}-
-\dt({\cal R}^p)^n_{j,k}-\dt\gamma p_{\min}^n\bnabla\!\cdot\xbar{\bm u}_{j,k}^{\,n}+
+\dt({\cal R}^p)^n_{j,k}-\dt\gamma p_{\min}^n\bnabla\!\cdot\xbar{\bm u}_{j,k}^{\,n}
 +(\dt)^2\gamma p_{\min}^n\bnabla\!\cdot\!(\bm{{\cal R}}^{\bm u})^n_{j,k},
 \label{3.39f}
 \end{equation*}
@@ -1576,21 +1576,35 @@ $$
 \smallskip
 \noindent
 $\bullet\,$ \textbf{Step 3 (Compute $\,\xbar{\bm u}^{\,*}_{j,k}$).} Once $\,\xbar p^{\,*}_{j,k}$ is available, we use the $\bm u$-equations
-in \eref{3.31a} to obtain
+in \eref{3.31a} to \lore{explicitly} obtain
 \begin{equation*}
 \xbar{\bm u}^{\,*}_{j,k}=\,\xbar{\bm u}^{\,n}_{j,k}-\dt(\bm{{\cal R}}^{\bm u})^n_{j,k}-\dt(\bm{{\cal L}}^{\bm u})^{n,*}_{j,k}.
 \end{equation*}
 
 \smallskip
 \noindent
-$\bullet\,$ \textbf{Step 4 (Compute $\xbar\rho^{\,n+1}_{j,k}$).} We solve the $\rho$-equation in \eref{3.31b} to obtain
+$\bullet\,$ \textbf{Step 4 (Compute $\,\xbar{\bm U}^{\,*}_{j,k}$).} 
+\lore{We perform the conservative update with the explicit counterpart of the SI scheme to get the solution $\,\xbar{\bm U}^{\,*}_{j,k}$ in the intermediate stage
+\begin{equation}
+	\begin{aligned}
+		\xbar{\bm U}^{\,*}_{j,k}=\,\xbar{\bm U}^{\,n}_{j,k}&-\dt\left[\frac{\bm{{\cal F}}_{\jph,k}^n-\bm{{\cal F}}_{\jmh,k}^n}{\dx}+
+		\frac{\bm{{\cal G}}_{j,\kph}^n-\bm{{\cal G}}_{j,\kmh}^n}{\dy}\right],
+		\label{eq:Euler}
+	\end{aligned}
+\end{equation}
+ad we perform the post-processing of the primitive solution replacing $\xbar{\bm V}^{\,*}_{j,k}$ by  $r\Big(\xbar{\bm V}\big(\,\xbar{\bm U}^{\,*}_{j,k}\big),\,\xbar{\bm V}^{\,*}_{j,k}\Big)$. Let us notice that update~\eqref{eq:Euler} corresponds to a simple forward Euler step. The post-processing is described in~\S\ref{sec43}.}
+
+
+\smallskip
+\noindent
+$\bullet\,$ \textbf{Step 5 (Compute $\xbar\rho^{\,n+1}_{j,k}$).} We solve the $\rho$-equation in \eref{3.31b} to obtain
 \begin{equation*}
 \xbar\rho^{\,n+1}_{j,k}=\,\xbar\rho^{\,n}_{j,k}-\frac{\dt}{2}\big[({\cal R}^\rho)^n_{j,k}+({\cal R}^\rho)^*_{j,k}\big].
 \end{equation*}
 
 \smallskip
 \noindent
-$\bullet\,$ \textbf{Step 5 (Solve the linear elliptic equation for $\,\xbar p^{\,n+1}_{j,k}$).} We apply the discrete divergence operator
+$\bullet\,$ \textbf{Step 6 (Solve the linear elliptic equation for $\,\xbar p^{\,n+1}_{j,k}$).} We apply the discrete divergence operator
 \eref{3.38f} to the $\bm u$-equations in \eref{3.31b} and substitute them into the $p$-equation in \eref{3.31b} to obtain the following
 linear system of algebraic equations for $\,\xbar p^{\,n+1}_{j,k}$, which is a discretization of the linear elliptic equation for $p^{n+1}$:
 \begin{equation*}
@@ -1600,41 +1614,52 @@ linear system of algebraic equations for $\,\xbar p^{\,n+1}_{j,k}$, which is a d
 \frac{\dt}{2}\left[({\cal L}^p)^{n,n}_{j,k}-({\cal L}^p)^{*,*}_{j,k}\right]\\
 &-\dt\gamma p_{\min}^*\bnabla\!\cdot\xbar{\bm u}_{j,k}^{\,n}
 +\frac{(\dt)^2\gamma p_{\min}^*}{2}\bnabla\!\cdot\!\left[(\bm{{\cal R}}^{\bm u})^n_{j,k}+(\bm{{\cal R}}^{\bm u})^*_{j,k}\right]
--\frac{(\dt)^2\gamma p_{\min}^*}{2}\bnabla\!\cdot\!\left[(\bm{{\cal L}}^u)^{n,n}_{j,k}-(\bm{{\cal L}}^u)^{*,*}_{j,k}\right].
+-\frac{(\dt)^2\gamma p_{\min}^*}{2}\bnabla\!\cdot\!\left[(\bm{{\cal L}}^{\uvec{u}})^{n,n}_{j,k}-(\bm{{\cal L}}^{\uvec{u}})^{*,*}_{j,k}\right].
 \end{aligned}
 \label{3.40f}
 \end{equation*}
 
 \smallskip
 \noindent
-$\bullet\,$ \textbf{Step 6 (Compute $\,\xbar{\bm u}^{\,n+1}_{j,k}$).} Once $\,\xbar p^{\,n+1}_{j,k}$ is available, we compute
+$\bullet\,$ \textbf{Step 7 (Compute $\,\xbar{\bm u}^{\,n+1}_{j,k}$).} Once $\,\xbar p^{\,n+1}_{j,k}$ is available, we \lore{explicitly} compute
 \begin{equation*}
 \begin{aligned}
 \xbar{\bm u}^{\,n+1}_{j,k}=
 \,\xbar{\bm u}^{\,n}_{j,k}-\frac{\dt}{2}\left[(\bm{{\cal R}}^{\bm u})^n_{j,k}+(\bm{{\cal R}}^{\bm u})^*_{j,k}\right]
--\frac{\dt}{2}\left[(\bm{{\cal L}}^u)^{n,n}_{j,k}-(\bm{{\cal L}}^u)^{*,*}_{j,k}\right]-\dt(\bm{{\cal L}}^{\bm u})^{*,n+1}_{j,k}.
+-\frac{\dt}{2}\left[(\bm{{\cal L}}^{\uvec{u}})^{n,n}_{j,k}-(\bm{{\cal L}}^{\uvec{u}})^{*,*}_{j,k}\right]-\dt(\bm{{\cal L}}^{\bm u})^{*,n+1}_{j,k}.
 \end{aligned}
 \end{equation*}
 
-Second, equipped with both $\,\xbar{\bm V}^{\,n}_{j,k}$ and $\,\xbar{\bm V}^{\,n+1}_{j,k}$, we proceed with solving the ODE system
-\eref{2.15a} using the thapezoidal method.
+%Second, equipped with both $\,\xbar{\bm V}^{\,n}_{j,k}$ and $\,\xbar{\bm V}^{\,n+1}_{j,k}$, we proceed with solving the ODE system
+%\eref{2.15a} using the thapezoidal method.
 
 \smallskip
 \noindent
-$\bullet\,$ \textbf{Step 7 (Compute $\,\xbar{\bm U}^{\,n+1}_{j,k}$).} We evaluate the numerical fluxes \eref{3.41}--\eref{3.44} at both the
-time levels $t^n$ and $t^{n+1}$ and then obtain
+$\bullet\,$ \textbf{Step 8 (Compute $\,\xbar{\bm U}^{\,n+1}_{j,k}$).} \lore{Again making use of the explicit counter part of the DeC scheme, we evaluate  
+%the numerical fluxes \eref{3.41}--\eref{3.44} at both the
+%time levels $t^n$ and $t^{n+1}$ and then obtain
 \begin{equation}
 \begin{aligned}
 \xbar{\bm U}^{\,n+1}_{j,k}=\,\xbar{\bm U}^{\,n}_{j,k}&-\frac{\dt}{2}\left[\frac{\bm{{\cal F}}_{\jph,k}^n-\bm{{\cal F}}_{\jmh,k}^n}{\dx}+
-\frac{\bm{{\cal F}}_{\jph,k}^{n+1}-\bm{{\cal F}}_{\jmh,k}^{n+1}}{\dx}\right]\\
+\frac{\bm{{\cal F}}_{\jph,k}^{*}-\bm{{\cal F}}_{\jmh,k}^{*}}{\dx}\right]\\
 &-\frac{\dt}{2}\left[\frac{\bm{{\cal G}}_{j,\kph}^n-\bm{{\cal G}}_{j,\kmh}^n}{\dy}+
-\frac{\bm{{\cal G}}_{j,\kph}^{n+1}-\bm{{\cal G}}_{j,\kmh}^{n+1}}{\dy}\right].
+\frac{\bm{{\cal G}}_{j,\kph}^{*}-\bm{{\cal G}}_{j,\kmh}^{*}}{\dy}\right].
 \end{aligned}
-\label{3.45}
+\label{eq:Explicit_stage_2}
 \end{equation}
-Recall that the interface values of $\bm U$ needed for the computation of the numerical fluxes in \eref{3.45} are obtained from the
-reconstructed primitive variables $\bm V$ at the corresponding time levels. Note that the conservative update \eref{3.45} is, as a matter of
-fact, explicit, since the computation of $\xbar{\bm V}^{\,n+1}_{j,k}$ is performed independently of the conserved system.
+ad we perform the post-processing of the primitive solution replacing $\xbar{\bm V}^{\,n+1}_{j,k}$ by  $r\Big(\xbar{\bm V}\big(\,\xbar{\bm U}^{\,n+1}_{j,k}\big),\,\xbar{\bm V}^{\,n+1}_{j,k}\Big)$.}
+
+
+
+
+
+
+
+\lore{We recall that the interface values of $\bm U$ needed for the computation of the numerical fluxes in \eqref{eq:Euler} and \eqref{eq:Explicit_stage_2} are obtained from the
+reconstructed primitive variables $\bm V$ at the corresponding time levels. Note that the conservative updates are, as a matter of
+fact, explicit, being they performed through the explicit counterpart of the scheme. In the next section, we describe the post-processing.}
+
+%since the computation of $\xbar{\bm V}^{\,n+1}_{j,k}$ is performed independently of the conserved system.
 
 \subsection{Post-Processing}\label{sec43}
 Upon the completion of Step 7, we obtain two sets of numerical solutions at time $t=t^{n+1}$: the $\bm V$-solution, which is AP but  
@@ -1651,6 +1676,10 @@ where $s$ is a suitable switching function, which is supposed to be increasing, 
 in the high-Mach-number regime, $s$ should be $\sim0$ so that the primitive variables $\bm V^{n+1}$ are almost completely overwritten by
 $\bm V(\bm U^{n+1})$, while in the low-Mach-number regime, $s$ should be $\sim1$ so that the primitive variables $\bm V^{n+1}$ stay almost
 unchanged. For intermediate values of $\ve$, a smooth transition between $1$ and $0$ is expected.
+
+
+Differeces: Mach dependent and performed at each stage
+
 
 \section{Numerical Examples}\label{sec6}
 In this section, we verify the accuracy and robustness of the proposed AP scheme on a variety of numerical examples across different values 
