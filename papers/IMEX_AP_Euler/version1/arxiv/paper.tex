@@ -1767,7 +1767,7 @@ proposed AP DF-FV scheme.
 \end{figure}
 
 \subsubsection*{Example 2---Gresho Vortex}
-This example was introduced in \cite{gresho1990theory} and since then it has been widely used as a common benchmark to numerically validate
+This example was introduced in \cite{gresho1990theory} and, since then, it has been widely used as a common benchmark to numerically validate
 the AP property. We consider a steady vortex over the computational domain $[0,1]\times[0,1]$ subject to the periodic boundary conditions.
 At any time $t$, the shape of the vortex is given by
 \begin{equation*}
@@ -1824,7 +1824,7 @@ The initial conditions are
 \end{equation*}
 
 The numerical solution is computed with the CFL number $K_{\rm CFL}=0.475$ until the final time $t=20$ on a $800\times160$ uniform mesh. The
-density at times $t=0$, $10$, and $20$ is plotted in Figure \ref{fig44}. Since the solution develops instabilities, no convergence is
+density at times $t=0$, $10$, and $20$ is plotted in Figure \ref{fig44}. Since the solution develops instabilities, no (\lore{classical notion of}) convergence is
 expected in this example; see \cite{zeifang2020novel}. One can, however, observe that the underlying physics is correctly captured.
 \begin{figure}[ht!]
 \centerline{\includegraphics[width=0.9\textwidth]{baroclinic_WC_SOLUTION_OCT_0000000.0000000.dat_eps0.05_CFL0.475}}
@@ -1847,10 +1847,11 @@ u(x,y,0)=\left\{\begin{aligned}
 &\tanh\!\left[15\Big(\frac{3}{2}-\frac{y}{\pi}\Big)\right],&&\mbox{otherwise},
 \end{aligned}\right.\quad 
 v(x,y,0)=0.05\sin x,\\
-&p(x,y,0)\equiv\frac{1}{\gamma}.
+&p(x,y,0)\equiv\frac{1}{\gamma},
 \end{align*}
 are prescribed in the computational domain $[0,2\pi]\times[0,2\pi]$ subject to the periodic boundary conditions. The initial vorticity
-$\omega:=v_x-u_y$, where the derivatives are approximated using the second-order central differences, is plotted in Figure \ref{fig45}.
+$\omega:=v_x-u_y$, where the derivatives are approximated using %the
+second-order central differences, is plotted in Figure \ref{fig45}.
 \begin{figure}[ht!]
 \centerline{\includegraphics[width=0.33\textwidth]{double_shear_layer_initial_vorticity}}
 \caption{\sf Example 4: Initial vorticity.\label{fig45}}
@@ -1904,7 +1905,7 @@ The main objective of this test is to verify that the proposed AP DF-FV scheme r
 regime, in which strong shocks and contact discontinuities may be present. To this end, we perform simulations for several values of $\ve$.
 For $\ve=1$, $0.9$, $0.6$, and $0.3$ the final times are $t=0.25$, $0.2$, $0.15$, and $0.08$, respectively. The surface plots of the density
 $\rho$ computed on a uniform mesh with $400\times400$ cells using $K_{\rm CFL}=0.475$ are reported in Figure \ref{fig49}, where one can see
-that the obtained solutions oscillation-free and their nonsmooth features are accurately resolved for all values of $\ve$.
+that the obtained solutions \lore{are} oscillation-free and their nonsmooth features are accurately resolved for all values of $\ve$.
 \newcommand{\trimfig}[1]{\includegraphics[width=0.35\textwidth, trim=140 260 190 250, clip]{#1}}
 \begin{figure}[ht!]
 \centerline{\trimfig{new_sod2d1.0_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}\hspace*{0.5cm}
@@ -1918,7 +1919,7 @@ that the obtained solutions oscillation-free and their nonsmooth features are ac
 To further assess the correctness of the computed solutions, we plot their one-dimensional (1-D) slices along the diagonal $y=x$ in Figure
 \ref{fig410} together with the corresponding slices of the reference solution, which was obtained using the second-order semi-discrete CU
 scheme from \cite{KLin} on a much finer mesh with $2000\times2000$ cells using the CFL number $0.2$ and the three-stage third-order strong
-stability preserving (SSP) Runge-Kutta method \cite{GKS,GST}. As one can clearly see, the computed solutions shows a perfect agreement with
+stability preserving (SSP) Runge-Kutta method \cite{GKS,GST}. As one can clearly see, the computed solutions \lore{show} a perfect agreement with
 the reference ones, and the discontinuities locations are correctly captured.
 \begin{figure}[ht!]
 \centerline{\includegraphics[width=0.8\textwidth]{new_sod2d1.0_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}}
@@ -1946,7 +1947,9 @@ $0.2$ also $\ve=0.6$ and $0.05$ also $\ve=0.3$. This will lead to the computed s
 reported in Figures \ref{fig49} and \ref{fig410}.
 \end{remark}
 \begin{remark}
-Let us remark that discontinuities are unlikely to occur in low-Mach-number flows. Consequently, the above tests with $\ve=0.6$ and $0.3$
+Let us remark that discontinuities 
+%are unlikely to 
+\lore{do not} occur in low-Mach-number flows. Consequently, the above tests with $\ve=0.6$ and $0.3$
 should be regarded as rather ``academic'' and are primiry intended to demonstrate that the proposed AP DF-FV scheme is capable of handling
 discontinuities even in the low-Mach-number regime.
 \end{remark}
