@@ -1300,7 +1300,9 @@ which are consistent discretizations of  \eref{3.3} and \eref{3.4} with the last
 \hfill$\blacksquare$
 \end{proof}
 \begin{remark}
-The described AP SI-DeC time discretizations can be straightforwardly extended to arbitrarily high order within the DeC framework. For the
+The described AP SI-DeC time \lore{discretization} can be
+%straightforwardly
+extended to arbitrarily high order \lore{in a straightforward way} within the DeC framework. For the
 sake of brevity, we restrict our consideration \lore{to second-order accuracy, which matches the accuracy adopted for the spatial discretization.}
 %of the developed AP method.
 \end{remark}
@@ -1311,7 +1313,7 @@ this end, we first introduce uniform Cartesian cells $I_{j,k}:=[x_\jmh,x_\jph]\t
 $y_\kph-y_\kmh\equiv\dy$, centered at $(x_j,y_k)$ with $x_j=\big(x_\jmh+x_\jph\big)/2$ and $y_k=\big(y_\kmh+y_\kph\big)/2$, and assume that
 the cell averages $\,\xbar{\bm V}_{j,k}^{\,n}:\approx\iint_{I_{j,k}}\bm V(x,y,t^n)\,{\rm d}x{\rm d}y\,$ are available at time $t^n$.
 
-A \lore{fully-discrete} FV verion of the second-order AP scheme \eref{3.19} reads as
+\lore{The fully-discrete} FV \lore{version} of the second-order AP scheme \eref{3.19} reads as
 \begin{align}
 &\xbar{\bm V}^{\,*}_{j.k}=\,\xbar{\bm V}^{\,n}_{j.k}-\dt\bm{{\cal R}}^n_{j.k}-\dt\bm{{\cal L}}^{n,*}_{j.k},\label{3.31a}\\
 &\xbar{\bm V}^{\,n+1}_{j.k}=\,\xbar{\bm V}^{\,n}_{j.k}-\frac{\dt}{2}\big[\bm{{\cal R}}^n_{j.k}+\bm{{\cal R}}^*_{j.k}\big]-
@@ -1319,14 +1321,14 @@ A \lore{fully-discrete} FV verion of the second-order AP scheme \eref{3.19} read
 \end{align}
 where $\bm{{\cal R}}^n_{j.k}$ and $\bm{{\cal R}}^*_{j.k}$ are obtained using the PCCU discretization from \cite{ACKM,CKN22}, which is a
 low-dissipation generalization of the PCCU discretization from \cite{diaz2019path}, while $\bm{{\cal L}}^{n,*}_{j.k}$,
-$\bm{{\cal L}}^{n,n}_{j.k}$, $\bm{{\cal L}}^{*,*}_{j.k}$, and $\bm{{\cal L}}^{*,n+1}_{j.k}$ are obtained using centaral differences. In what
-follows, we provide details on $\bm{{\cal R}}^n_{j.k}$ and $\bm{{\cal L}}^{n,*}_{j.k}$ only, whereas the remaining discretizations are
+$\bm{{\cal L}}^{n,n}_{j.k}$, $\bm{{\cal L}}^{*,*}_{j.k}$, and $\bm{{\cal L}}^{*,n+1}_{j.k}$ are obtained using \lore{central} differences. In what
+follows, \lore{for the sake of compactness}, we provide details on $\bm{{\cal R}}^n_{j.k}$ and $\bm{{\cal L}}^{n,*}_{j.k}$ only, whereas the remaining discretizations are
 obtained in a similar manner.
 
 We begin with
 \begin{equation}
 \begin{aligned}
-\bm{{\cal R}}_{j,k}^n=&\,\frac{1}{\dx}\Bigg[\widetilde{\bm{{\cal F}}}_{\jph,k}^n-\widetilde{\bm{{\cal F}}}_{\jmh,k}^n-
+\bm{{\cal R}}_{j,k}^n:=&\,\frac{1}{\dx}\Bigg[\widetilde{\bm{{\cal F}}}_{\jph,k}^n-\widetilde{\bm{{\cal F}}}_{\jmh,k}^n-
 \widetilde{\bm B}_{j,k}^n-\frac{\tilde a^{+,n}_{\jmh,k}\widetilde{\bm B}_{\bm\Psi,\jmh,k}^n}
 {\tilde a^{+,n}_{\jmh,k}-\tilde a^{-,n}_{\jmh,k}}+
 \frac{\tilde a^{-,n}_{\jph,k}\widetilde{\bm B}_{\bm\Psi,\jph,k}^n}{\tilde a^{+,n}_{\jph,k}-\tilde a^{-,n}_{\jph,k}}\Bigg]\\
@@ -1336,30 +1338,33 @@ We begin with
 \end{aligned}
 \label{3.32}
 \end{equation}
-where $\widetilde{\bm{{\cal F}}}_{\jph,k}^n$ and $\widetilde{\bm{{\cal G}}}_{j,\kph}^n$ are the CU numerical fluxes
+%where 
+\lore{with} $\widetilde{\bm{{\cal F}}}_{\jph,k}^n$ and $\widetilde{\bm{{\cal G}}}_{j,\kph}^n$ \lore{being} %are 
+the CU numerical fluxes
 $$
 \begin{aligned}
-&\widetilde{\bm{{\cal F}}}_{\jph,k}^n=\frac{\tilde a^{+,n}_{\jph,k}\widetilde{\bm F}\big(\bm V^{-,n}_{\jph,k}\big)-
+&\widetilde{\bm{{\cal F}}}_{\jph,k}^n:=\frac{\tilde a^{+,n}_{\jph,k}\widetilde{\bm F}\big(\bm V^{-,n}_{\jph,k}\big)-
 \tilde a^{-,n}_{\jph,k}\widetilde{\bm F}\big(\bm V^{+,n}_{\jph,k}\big)}{\tilde a^{+,n}_{\jph,k}-\tilde a^{+,n}_{\jph,k}}+
 \frac{\tilde a^{+,n}_{\jph,k}\tilde a^{-,n}_{\jph,k}}{\tilde a^{+,n}_{\jph,k}-\tilde a^{-,n}_{\jph,k}\,}
 \Big(\bm V^{+,n}_{\jph,k}-\bm V^{-,n}_{\jph,k}-\delta\bm V_{\jph,k}^n\Big),\\
-&\widetilde{\bm{{\cal G}}}_{j,\kph}^n=\frac{\tilde b^{+,n}_{j,\kph}\widetilde{\bm G}\big(\bm V^{-,n}_{j,\kph}\big)-
+&\widetilde{\bm{{\cal G}}}_{j,\kph}^n:=\frac{\tilde b^{+,n}_{j,\kph}\widetilde{\bm G}\big(\bm V^{-,n}_{j,\kph}\big)-
 \tilde b^{-,n}_{j,\kph}\widetilde{\bm G}\big(\bm V^{+,n}_{j,\kph}\big)}{\tilde b^{+,n}_{j,\kph}-\tilde b^{-,n}_{j,\kph}}+
 \frac{\tilde b^{+,n}_{j,\kph}\tilde b^{-,n}_{j,\kph}}{\tilde b^{+,n}_{j,\kph}-\tilde b^{-,n}_{j,\kph}}\,
 \Big(\bm V^{+,n}_{j,\kph}-\bm V^{-,n}_{j,\kph}-\delta\bm V_{j,\kph}^n\Big),
 \end{aligned}
 $$
-where $\bm V^{\pm,n}_{\jph,k}$ and $\bm V^{\pm,n}_{j,\kph}$ are point values of $\bm V$ at the midpoints of the cell $I_{j,k}$,
+where $\bm V^{\pm,n}_{\jph,k}$ and $\bm V^{\pm,n}_{j,\kph}$ are \lore{reconstructed} point values of $\bm V$ at \lore{cell interfaces},
+%the midpoints of the \lore{edges of the} cell $I_{j,k}$,
 $\delta\bm V_{\jph,k}^n$ and $\delta\bm V_{j,\kph}^n$ are ``built-in'' anti-diffusion terms, and $\tilde a^{\pm,n}_{\jph,k}$ and
-$\tilde a^{\pm,n}_{j,\kph}$ denote the one-sided local propagation speeds of in the $x$- and $y$-directions, respectively.
+$\tilde a^{\pm,n}_{j,\kph}$ denote the one-sided local propagation speeds of \lore{the nonstiff subsystem} in the $x$- and $y$-direction, respectively.
 
 The point values
 \begin{equation}
 \begin{aligned}
-&\bm V^{-,n}_{\jph,k}=\,\xbar{\bm V}_{j,k}^{\,n}+\frac{\dx}{2}(\bm V_x)_{j,k}^n,&&
-\bm V^{+,n}_{\jph,k}=\,\xbar{\bm V}_{j+1,k}^{\,n}-\frac{\dx}{2}(\bm V_x)_{j+1,k}^n,\\
-&\bm V^{-,n}_{j,\kph}=\,\xbar{\bm V}_{j,k}^{\,n}+\frac{\dy}{2}(\bm V_y)_{j,k}^n,&&
-\bm V^{+,n}_{j,\kph}=\,\xbar{\bm V}_{j,k+1}^{\,n}-\frac{\dy}{2}(\bm V_y)_{j,k+1}^n,
+&\bm V^{-,n}_{\jph,k}:=\,\xbar{\bm V}_{j,k}^{\,n}+\frac{\dx}{2}(\bm V_x)_{j,k}^n,&&
+\bm V^{+,n}_{\jph,k}:=\,\xbar{\bm V}_{j+1,k}^{\,n}-\frac{\dx}{2}(\bm V_x)_{j+1,k}^n,\\
+&\bm V^{-,n}_{j,\kph}:=\,\xbar{\bm V}_{j,k}^{\,n}+\frac{\dy}{2}(\bm V_y)_{j,k}^n,&&
+\bm V^{+,n}_{j,\kph}:=\,\xbar{\bm V}_{j,k+1}^{\,n}-\frac{\dy}{2}(\bm V_y)_{j,k+1}^n,
 \end{aligned}
 \label{3.33f}
 \end{equation}
@@ -1371,10 +1376,10 @@ in which the slopes $(\bm V_x)_{j,k}^n$ and $(\bm V_y)_{j,k}^n$ are approximated
 \cite{LieNoe,nessyahu1990non,sweby1984high}):
 \begin{equation}
 \begin{aligned}
-(\bV_x)_{j,k}^n&={\rm minmod}\left(\theta\,\frac{\xbar{\bV}_{j,k}^{\,n}-\,\xbar{\bV}_{j-1,k}^{\,n}}{\dx},\,
+(\bV_x)_{j,k}^n&:={\rm minmod}\left(\theta\,\frac{\xbar{\bV}_{j,k}^{\,n}-\,\xbar{\bV}_{j-1,k}^{\,n}}{\dx},\,
 \frac{\xbar{\bV}_{j+1,k}^{\,n}-\,\xbar{\bV}_{j-1,k}^{\,n}}{2\dx},\,
 \theta\,\frac{\xbar{\bV}_{j+1,k}^{\,n}-\,\xbar{\bV}_{j,k}^{\,n}}{\dx}\right),\\
-(\bV_y)_{j,k}^n&={\rm minmod}\left(\theta\,\frac{\xbar{\bV}_{j,k}^{\,n}-\,\xbar{\bV}_{j,k-1}^{\,n}}{\dy},\,
+(\bV_y)_{j,k}^n&:={\rm minmod}\left(\theta\,\frac{\xbar{\bV}_{j,k}^{\,n}-\,\xbar{\bV}_{j,k-1}^{\,n}}{\dy},\,
 \frac{\xbar{\bV}_{j,k+1}^{\,n}-\,\xbar{\bV}_{j,k-1}^{\,n}}{2\dy},\,
 \theta\,\frac{\xbar{\bV}_{j,k+1}^{\,n}-\,\xbar{\bV}_{j,k}^{\,n}}{\dy}\right),
 \end{aligned}
@@ -1382,62 +1387,63 @@ in which the slopes $(\bm V_x)_{j,k}^n$ and $(\bm V_y)_{j,k}^n$ are approximated
 \end{equation}
 where the minmod function, defined by
 \begin{equation*}
-{\rm minmod}(z_1,z_2,\ldots)=\left\{\begin{aligned}
+{\rm minmod}(z_1,z_2,\ldots):=\left\{\begin{aligned}
 &\min(z_1,z_2,\ldots)&&\mbox{if}~z_i>0,~\forall i,\\
 &\max(z_1,z_2,\ldots)&&\mbox{if}~z_i<0,~\forall i,\\
 &\,0&&\mbox{otherwise},
 \end{aligned}\right.
 \end{equation*}
-is applied in a componentwise manner. The parameter $\theta\in[1,2]$ in \eref{3.33} is to be chosen to adjust the amount of numerical
+is applied in a componentwise manner. The parameter $\theta\in[1,2]$ in \eref{3.33} \lore{must} %is to 
+be chosen to adjust the amount of numerical
 dissipation present in the resulting scheme, with larger values of $\theta$ leading to sharper but, in general, more oscillatory solutions.
 
-The one-sided local speeds of propagation are then estimated using the smallest and largest eigenvalues of matrices
+The one-sided local speeds of propagation are estimated using the smallest and largest eigenvalues of \lore{the} matrices
 $\frac{\partial\widetilde{\mF}}{\partial\bm V}(\bm V)-\widetilde B(\bm V)$ and
 $\frac{\partial\widetilde{\mG}}{\partial\bm V}(\bm V)-\widetilde C(\bm V)$ as follows:
 \begin{equation}
 \begin{aligned}
-&\tilde a^{-,n}_{\jph,k}=\min\left\{u^{-,n}_{\jph,k}-\tilde c^{\,-,n}_{\jph,k},\,u^{+,n}_{\jph,k}-\tilde c^{\,+,n}_{\jph,k},\,-\delta
+&\tilde a^{-,n}_{\jph,k}:=\min\left\{u^{-,n}_{\jph,k}-\tilde c^{\,-,n}_{\jph,k},\,u^{+,n}_{\jph,k}-\tilde c^{\,+,n}_{\jph,k},\,-\delta
 \right\},\\
-&\tilde a^{+,n}_{\jph,k}=\max\left\{u^{-,n}_{\jph,k}+\tilde c^{\,-,n}_{\jph,k},\,u^{+,n}_{\jph,k}+\tilde c^{\,+,n}_{\jph,k},\,
+&\tilde a^{+,n}_{\jph,k}:=\max\left\{u^{-,n}_{\jph,k}+\tilde c^{\,-,n}_{\jph,k},\,u^{+,n}_{\jph,k}+\tilde c^{\,+,n}_{\jph,k},\,
 \delta\right\},\\
-&\tilde b^{-,n}_{j,\kph}=\min\left\{v^{-,n}_{j,\kph}-\tilde c^{\,-,n}_{j,\kph},\,v^{+,n}_{j,\kph}-\tilde c^{\,+,n}_{j,\kph},\,
+&\tilde b^{-,n}_{j,\kph}:=\min\left\{v^{-,n}_{j,\kph}-\tilde c^{\,-,n}_{j,\kph},\,v^{+,n}_{j,\kph}-\tilde c^{\,+,n}_{j,\kph},\,
 -\delta\right\},\\
-&\tilde b^{+,n}_{j,\kph}=\max\left\{v^{-,n}_{j,\kph}+\tilde c^{\,-,n}_{j,\kph},\,v^{+,n}_{j,\kph}+\tilde c^{\,+,n}_{j,\kph},\,
+&\tilde b^{+,n}_{j,\kph}:=\max\left\{v^{-,n}_{j,\kph}+\tilde c^{\,-,n}_{j,\kph},\,v^{+,n}_{j,\kph}+\tilde c^{\,+,n}_{j,\kph},\,
 \delta\right\},
 \end{aligned}
 \label{4.49}
 \end{equation}
 where the sound speeds
 $$
-\tilde c^{\,\pm,n}_{\jph,k}=\frac{1}{\ve}\sqrt{\gamma\frac{\big(\rho_{\max}^n-\rho^{\,\pm,n}_{\jph,k}\big)
+\tilde c^{\,\pm,n}_{\jph,k}:=\frac{1}{\ve}\sqrt{\gamma\frac{\big(\rho_{\max}^n-\rho^{\,\pm,n}_{\jph,k}\big)
 \big(p^{\,\pm,n}_{\jph,k}-p_{\min}^n)}{\rho^{\,\pm,n}_{\jph,k}\,\rho_{\max}^n}},\quad
-\tilde c^{\,\pm,n}_{j,\kph}=\frac{1}{\ve}\sqrt{\gamma\frac{\big(\rho_{\max}^n-\rho^{\,\pm,n}_{j,\kph}\big)
+\tilde c^{\,\pm,n}_{j,\kph}:=\frac{1}{\ve}\sqrt{\gamma\frac{\big(\rho_{\max}^n-\rho^{\,\pm,n}_{j,\kph}\big)
 \big(p^{\,\pm,n}_{j,\kph}-p_{\min}^n)}{\rho^{\,\pm,n}_{j,\kph}\,\rho_{\max}^n}}
 $$
-are computed using the following discrete versions of $\rho_{\max}^n$ and $p_{\min}^n$:
+are computed using the following discrete versions of $\rho_{\max}^n$ and $p_{\min}^n$
 \begin{equation}
-\rho_{\max}^n=\max\limits_{j,k}\,\xbar{\rho}_{j,k}^{\,n},\quad p_{\min}^n=\min\limits_{j,k}\,\xbar p_{j,k}^{\,n},
+\rho_{\max}^n:=\max\limits_{j,k}\,\xbar{\rho}_{j,k}^{\,n},\quad p_{\min}^n:=\min\limits_{j,k}\,\xbar p_{j,k}^{\,n},
 \label{3.35}
 \end{equation}
-and $\delta$ is a small positive parameter introduced to prevent divisions by $0$ (we have taken $\delta=10^{-15}$ in the numerical
+and $\delta$ is a small positive parameter introduced to prevent divisions by $0$ (we have taken $\delta:=10^{-15}$ in the numerical
 experiments reported in \S\ref{sec6}).
 
-The ``built-in'' anti-diffusion terms are 
+The ``built-in'' anti-diffusion terms are \lore{defined as}
 $$
 \begin{aligned}
-&\delta\bm V_{\jph,k}^n={\rm minmod}\Big(\bm V_{\jph,k}^{{\rm int},n}-\bm V^{-,n}_{\jph,k},\,
+&\delta\bm V_{\jph,k}^n:={\rm minmod}\Big(\bm V_{\jph,k}^{{\rm int},n}-\bm V^{-,n}_{\jph,k},\,
 \bm V^{+,n}_{\jph,k}-\bm V_{\jph,k}^{{\rm int},n}\Big),\\
-&\delta\bm V_{j,\kph}^n={\rm minmod}\Big(\bm V_{j,\kph}^{{\rm int},n}-\bm V^{-,n}_{j,\kph},\,
+&\delta\bm V_{j,\kph}^n:={\rm minmod}\Big(\bm V_{j,\kph}^{{\rm int},n}-\bm V^{-,n}_{j,\kph},\,
 \bm V^{+,n}_{j,\kph}-\bm V_{j,\kph}^{{\rm int},n}\Big),
 \end{aligned}
 $$
 where 
 $$
 \begin{aligned}
-&\bm V_{\jph,k}^{{\rm int},n}=\frac{\tilde a^{+,n}_{\jph,k}\bm V^{+,n}_{\jph,k}-\tilde a^{-,n}_{\jph,k}\bm V^{-,n}_{\jph,k}
+&\bm V_{\jph,k}^{{\rm int},n}:=\frac{\tilde a^{+,n}_{\jph,k}\bm V^{+,n}_{\jph,k}-\tilde a^{-,n}_{\jph,k}\bm V^{-,n}_{\jph,k}
 -\widetilde{\bm F}\big(\bm V^{+,n}_{\jph,k}\big)+\widetilde{\bm F}\big(\bm V^{-,n}_{\jph,k}\big)}
 {\tilde a^{+,n}_{\jph,k}-\tilde a^{-,n}_{\jph,k}},\\[0.3ex]
-&\bm V_{j,\kph}^{{\rm int},n}=\frac{\tilde b^{+,n}_{j,\kph}\bm V^{+,n}_{j,\kph}-\tilde b^{-,n}_{j,\kph}\bm V^{-,n}_{j,\kph}
+&\bm V_{j,\kph}^{{\rm int},n}:=\frac{\tilde b^{+,n}_{j,\kph}\bm V^{+,n}_{j,\kph}-\tilde b^{-,n}_{j,\kph}\bm V^{-,n}_{j,\kph}
 -\widetilde{\bm G}\big(\bm V^{+,n}_{j,\kph}\big)+\widetilde{\bm G}\big(\bm V^{-,n}_{j,\kph}\big)}
 {\tilde b^{+,n}_{j,\kph}-\tilde b^{-,n}_{j,\kph}}.
 \end{aligned}
@@ -1445,12 +1451,13 @@ $$
 
 Finally,
 \begin{equation}
-\bm{{\cal L}}^{n,*}_{j.k}=\Big(0,\,\frac{\,\xbar p_{j+1,k}^{\,*}-\,\xbar p_{j-1,k}^{\,*}}{2\dx\,\ve^2\rho_{\max}^n},\,
+\bm{{\cal L}}^{n,*}_{j.k}:=\Big(0,\,\frac{\,\xbar p_{j+1,k}^{\,*}-\,\xbar p_{j-1,k}^{\,*}}{2\dx\,\ve^2\rho_{\max}^n},\,
 \frac{\,\xbar p_{j,k+1}^{\,*}-\,\xbar p_{j,k-1}^{\,*}}{2\dy\,\ve^2\rho_{\max}^n},\,
 \gamma p_{\min}^n\bnabla\!\cdot\xbar{\bm u}_{j,k}^{\,*}\Big)^\top,
 \label{4.48b}
 \end{equation}
-where $\bnabla\!\cdot\xbar{\bm u}_{j,k}$ denote the discrete divergence operator computed using the second-order central differences:
+where $\bnabla\!\cdot\xbar{\bm u}_{j,k}$ \lore{denotes} the discrete divergence operator computed using %the 
+second-order central differences:
 \begin{equation}
 \bnabla\!\cdot\xbar{\bm u}_{j,k}:=\frac{\,\xbar u_{j+1,k}-\,\xbar u_{j-1,k}}{2\dx}+\frac{\,\xbar v_{j,k+1}-\,\xbar v_{j,k-1}}{2\dy}.
 \label{3.38f}
