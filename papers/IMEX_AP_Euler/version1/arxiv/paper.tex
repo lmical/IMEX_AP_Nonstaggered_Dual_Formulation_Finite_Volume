@@ -1464,7 +1464,7 @@ second-order central differences:
 \end{equation}
 
 \subsection{Semi-Discrete CU Scheme for the Conservative System}\label{sec42}
-We now consider the conservative formulation \eref{2.1a}--\eref{2.1c}, which can be into the following vector form:
+We now consider the conservative formulation \eref{2.1a}--\eref{2.1c}, which can be \lore{put} into the following vector form:
 \begin{equation}
 \begin{aligned}
 &\bm U_t+\mF(\bm U)_x+\mG(\bm U)_y=\bm0,\quad\bm U:=(\rho,\rho u,\rho v,E)^\top,\\
@@ -1484,10 +1484,10 @@ in time by numerically solving the following system of ODEs:
 where $\bm{{\cal F}}_{\jph,k}$ and $\bm{{\cal G}}_{j,\kph}$ are the CU numerical fluxes from \cite{KLin} defined as
 \begin{equation}
 \begin{aligned}
-\bm{{\cal F}}_{\jph,k}&=\frac{a^+_{\jph,k}\bm F\big(\bm U^-_{\jph,k}\big)-a^-_{\jph,k}\bm F\big(\bm U^+_{\jph,k}\big)}
+\bm{{\cal F}}_{\jph,k}&:=\frac{a^+_{\jph,k}\bm F\big(\bm U^-_{\jph,k}\big)-a^-_{\jph,k}\bm F\big(\bm U^+_{\jph,k}\big)}
 {a^+_{\jph,k}-a^-_{\jph,k}}\\
 &+\frac{a^+_{\jph,k}a^-_{\jph,k}}{a^+_{\jph,k}-a^-_{\jph,k}}\,\Big(\bm U^+_{\jph,k}-\bm U^-_{\jph,k}-\delta\bm U_{\jph,k}\Big),\\[0.8ex]
-\bm{{\cal G}}_{j,\kph}&=\frac{b^+_{j,\kph}\bm G\big(\bm U^-_{j,\kph}\big)-b^-_{j,\kph}\bm G\big(\bm U^+_{j,\kph}\big)}
+\bm{{\cal G}}_{j,\kph}&:=\frac{b^+_{j,\kph}\bm G\big(\bm U^-_{j,\kph}\big)-b^-_{j,\kph}\bm G\big(\bm U^+_{j,\kph}\big)}
 {b^+_{j,\kph}-b^-_{j,\kph}}\\
 &+\frac{b^+_{j,\kph}b^-_{j,\kph}}{b^+_{j,\kph}-b^-_{j,\kph}}\,\Big(\bm U^+_{j,\kph}-\bm U^-_{j,\kph}-\delta\bm U_{j,\kph}\Big).
 \end{aligned}
@@ -1496,48 +1496,52 @@ where $\bm{{\cal F}}_{\jph,k}$ and $\bm{{\cal G}}_{j,\kph}$ are the CU numerical
 Here, the interface values $\bm U_{\jph,k}^\pm:=\bm U\big(\bm V_{\jph,k}^\pm\big)$ and
 $\bm U_{j,\kph}^\pm:=\bm U\big(\bm V_{j,\kph}^\pm\big)$ are computed from the reconstructed primitive variables $\bm V_{\jph,k}^\pm$ and 
 $\bm V_{j,\kph}^\pm$ (see \S\ref{sec32}) at the corresponding time level via a straightforward transformation $\bU(\bV)$ from $\bm V$ to
-$\bm U$. In addition, $a_{\jph,k}^\pm$ and $b_{j,\kph}^\pm$ are the one-sided local speeds of propagation for the conservative system
-\eref{3.39g} in the $x$- and $y$-directions, respectively. They are estimated using the largest and 
+$\bm U$, \lore{in order to avoid an unnecessary extra reconstruction cost}. %In addition,
+\lore{The quantities} $a_{\jph,k}^\pm$ and $b_{j,\kph}^\pm$ \lore{represent} %are 
+the one-sided local speeds of propagation for the conservative system
+\eref{3.39g} in the $x$- and $y$-direction, respectively. They are estimated using the largest and 
 smallest eigenvalues of the corresponding flux Jacobians as follows:
 \begin{equation}
 \begin{aligned}
 \begin{aligned}
-&a^-_{\jph,k}=\min\left\{u^-_{\jph,k}-c^-_{\jph,k},\,u^+_{\jph,k}-c^+_{\jph,k},\,-\delta\right\},\\
-&a^+_{\jph,k}=\max\left\{u^-_{\jph,k}+c^-_{\jph,k},\,u^+_{\jph,k}+c^+_{\jph,k},\,\delta\right\},
-\end{aligned}\quad c^\pm_{\jph,k}=\frac{1}{\ve}\sqrt{\frac{\gamma p^\pm_{\jph,k}}{\rho^\pm_{\jph,k}}},\\[1.5ex]
+&a^-_{\jph,k}:=\min\left\{u^-_{\jph,k}-c^-_{\jph,k},\,u^+_{\jph,k}-c^+_{\jph,k},\,-\delta\right\},\\
+&a^+_{\jph,k}:=\max\left\{u^-_{\jph,k}+c^-_{\jph,k},\,u^+_{\jph,k}+c^+_{\jph,k},\,\delta\right\},
+\end{aligned}\quad c^\pm_{\jph,k}:=\frac{1}{\ve}\sqrt{\frac{\gamma p^\pm_{\jph,k}}{\rho^\pm_{\jph,k}}},\\[1.5ex]
 \begin{aligned}
-&b^-_{j,\kph}=\min\left\{v^-_{j,\kph}-c^-_{j,\kph},\,v^+_{j,\kph}-c^+_{j,\kph},\,-\delta\right\},\\
-&b^+_{j,\kph}=\max\left\{v^-_{j,\kph}+c^-_{j,\kph},\,v^+_{j,\kph}+c^+_{j,\kph},\,\delta\right\},
-\end{aligned}\quad c^\pm_{j,\kph}=\frac{1}{\ve}\sqrt{\frac{\gamma p^\pm_{j,\kph}}{\rho^\pm_{j,\kph}}},
+&b^-_{j,\kph}:=\min\left\{v^-_{j,\kph}-c^-_{j,\kph},\,v^+_{j,\kph}-c^+_{j,\kph},\,-\delta\right\},\\
+&b^+_{j,\kph}:=\max\left\{v^-_{j,\kph}+c^-_{j,\kph},\,v^+_{j,\kph}+c^+_{j,\kph},\,\delta\right\},
+\end{aligned}\quad c^\pm_{j,\kph}:=\frac{1}{\ve}\sqrt{\frac{\gamma p^\pm_{j,\kph}}{\rho^\pm_{j,\kph}}},
 \end{aligned}
 \label{3.42}
 \end{equation}
-where $\delta=10^{-15}$ is used to avoid divisions by $0$.
+where $\delta:=10^{-15}$ is used to avoid divisions by $0$.
 
-The ``built-in'' anti-diffusion terms are 
+The ``built-in'' anti-diffusion terms are \lore{defined as}
 \begin{equation}
 \begin{aligned}
-&\delta\bm U_{\jph,k}={\rm minmod}\Big(\bm U_{\jph,k}^{\rm int}-\bm U^-_{\jph,k},\bm U^+_{\jph,k}-\bm U_{\jph,k}^{\rm int}\Big),\\[0.5ex]
-&\delta\bm U_{j,\kph}={\rm minmod}\Big(\bm U_{j,\kph}^{\rm int}-\bm U^-_{j,\kph},\bm U^+_{j,\kph}-\bm U_{j,\kph}^{\rm int}\Big)
+&\delta\bm U_{\jph,k}:={\rm minmod}\Big(\bm U_{\jph,k}^{\rm int}-\bm U^-_{\jph,k},\bm U^+_{\jph,k}-\bm U_{\jph,k}^{\rm int}\Big),\\[0.5ex]
+&\delta\bm U_{j,\kph}:={\rm minmod}\Big(\bm U_{j,\kph}^{\rm int}-\bm U^-_{j,\kph},\bm U^+_{j,\kph}-\bm U_{j,\kph}^{\rm int}\Big),
 \end{aligned}
 \label{3.43}
 \end{equation}
 with 
 \begin{equation}
 \begin{aligned}
-&\bm U_{\jph,k}^{\rm int}=\frac{a^+_{\jph,k}\bm U^+_{\jph,k}-a^-_{\jph,k}\bm U^-_{\jph,k}
+&\bm U_{\jph,k}^{\rm int}:=\frac{a^+_{\jph,k}\bm U^+_{\jph,k}-a^-_{\jph,k}\bm U^-_{\jph,k}
 -\bm F(\bm U^+_{\jph,k})+\bm F(\bm U^-_{\jph,k})}{a^+_{\jph,k}-a^-_{\jph,k}},\\[0.5ex]
-&\bm U_{j,\kph}^{\rm int}=\frac{b^+_{j,\kph}\bm U^+_{j,\kph}-b^-_{j,\kph}\bm U^-_{j,\kph}
+&\bm U_{j,\kph}^{\rm int}:=\frac{b^+_{j,\kph}\bm U^+_{j,\kph}-b^-_{j,\kph}\bm U^-_{j,\kph}
 -\bm G\big(\bm U^+_{j,\kph}\big)+\bm G\big(\bm U^-_{j,\kph}\big)}{b^+_{j,\kph}-b^-_{j,\kph}}.
 \end{aligned}
 \label{3.44}
 \end{equation}
 
-Note that most of the indexed quantities in the semi-discrete setting above are time-dependent, but we have omitted this dependence for the
+Note that most of the indexed quantities in the semi-discrete setting above are time-dependent, but we have omitted this dependence \lore{to ease the notation.} %for the
 sake of brevity.
 
-Finally, the system of ODEs \eref{2.15a} has to be integrated in time using an appropriate ODE solver. We take advantage of the DF-FV 
-approach, which allows to use an implicit trapezoidal method as explained in \S\ref{sec422}.
+Finally, the system of ODEs \eref{2.15a} has to be integrated in time using an appropriate ODE solver. 
+\lore{Its update is performed simultaneously to the one of the primitive system and a post-processing is performed at each stage, as explained in the next section~\S\ref{sec422}.}
+%We take advantage of the DF-FV 
+%approach, which allows to use an implicit trapezoidal method as explained in \S\ref{sec422}.
 
 \subsection{Implementation Details}\label{sec422}
 In the DF-FV approach, the solutions of the primitive and conservative systems are evolved simultaneously according to the following
