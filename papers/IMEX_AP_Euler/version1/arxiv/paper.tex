@@ -1934,23 +1934,42 @@ $t=0.25$ (top row), $\ve=0.9$, $t=0.2$ (second row), $\ve=0.6$, $t=0.15$ (third 
 \end{figure}
 
 \begin{remark}
-We stress that in this example, both the denominators in \eref{4.48f} will vanish if $\rho_{\max}$ and $p_{\max}$ are computed using
-\eref{4.3}. The modification \eref{4.9} will prevent this from happening, but the resulting time steps might still be too big to guarantee
-the stability of the AP DF-FV method. Indeed, an adjustment to the initial time steps is needed for the small values of $\ve$=$0.6$ or
-$0.3$. We therefore set $\dt=10^{-4}$ for the first 10 time steps.
-
-In fact, a similar stability problem occurs even when explicit methods are used as a direct evaluation of the wave speeds based on the
-available data leads to an underestimate of the real wave speeds; see \cite{toro2020bounds} and \cite[Remark 6]{micalizzitoro2024}. This is
-particularly true for Riemann problems with zero initial velocities. Instead of artificially selecting very small few first time steps, one
-may compute the time steps based on the rigorous wave speed bounds. Another less efficient alternative would be to reduce $K_{\rm CFL}$ to
-$0.2$ also $\ve=0.6$ and $0.05$ also $\ve=0.3$. This will lead to the computed solutions, which are practically indistinguishable from those
-reported in Figures \ref{fig49} and \ref{fig410}.
+	\lore{We stress, for full reproducibility, that in the first 10 time iterations of the simulations involving $\ve$=$0.6$ and $0.3$, we have performed a time step relaxation setting $\dt:=10^{-4}$.
+	This is due to the fact that we assumed direct speed estimates~\cite{toro2020bounds} for the required wave speeds.
+	Such estimates are very cheap and commonly adopted but they are well--known to fail in bounding the actual wave speeds, sometimes resulting in underestimates; see~\cite{toro2020bounds,toro2026rusanov,micalizzi2025force} and \cite[Remark 6]{micalizzitoro2024}.
+	This is particularly true in the context of Riemann problems with zero initial velocities.
+	For example, one can observe that both the denominators in \eref{4.10} vanish for this test, at the initial time, if $\rho_{\max}$ and $p_{\max}$ are computed using~\eref{4.3}.
+	Indeed, modification \eref{4.9} prevents this from happening, but the resulting initial time steps might still be too big and spoil stability for the rest of the simulation.
+	%
+	There are other possible solutions besides our simple time step fix.
+	%
+	One could adopt more sophisticated rigorous bounds for the actual wave speeds as advocated in~\cite{toro2020bounds,toro2026rusanov}.
+	Another less efficient alternative would be to reduce $K_{\rm CFL}$ to
+	$0.2$ for $\ve=0.6$ and to $0.05$ for $\ve=0.3$. We have observed that this leads to results, which are practically indistinguishable from those
+	reported in Figures \ref{fig49} and \ref{fig410}.	
+}
+	
+%We stress that in this example, both the denominators in \eref{4.48f} will vanish if $\rho_{\max}$ and $p_{\max}$ are computed using
+%\eref{4.3}. The modification \eref{4.9} will prevent this from happening, but the resulting time steps might still be too big to guarantee
+%the stability of the AP DF-FV method. Indeed, an adjustment to the initial time steps is needed for the small values of $\ve$=$0.6$ or
+%$0.3$. We therefore set $\dt=10^{-4}$ for the first 10 time steps.
+%
+%In fact, a similar stability problem occurs even when explicit methods are used as a direct evaluation of the wave speeds based on the
+%available data leads to an underestimate of the real wave speeds; see \cite{toro2020bounds} and \cite[Remark 6]{micalizzitoro2024}. This is
+%particularly true for Riemann problems with zero initial velocities. Instead of artificially selecting very small few first time steps, one
+%may compute the time steps based on the rigorous wave speed bounds. Another less efficient alternative would be to reduce $K_{\rm CFL}$ to
+%$0.2$ also $\ve=0.6$ and $0.05$ also $\ve=0.3$. This will lead to the computed solutions, which are practically indistinguishable from those
+%reported in Figures \ref{fig49} and \ref{fig410}.
 \end{remark}
 \begin{remark}
 Let us remark that discontinuities 
 %are unlikely to 
 \lore{do not} occur in low-Mach-number flows. Consequently, the above tests with $\ve=0.6$ and $0.3$
-should be regarded as rather ``academic'' and are primiry intended to demonstrate that the proposed AP DF-FV scheme is capable of handling
+should be regarded as %rather 
+``academic'' and are 
+%primiry 
+\lore{primarily}
+intended to demonstrate that the proposed AP DF-FV scheme is capable of handling
 discontinuities even in the low-Mach-number regime.
 \end{remark}
 
@@ -1960,15 +1979,17 @@ Mach-number regimes, including the low-Mach-number one where standard explicit s
 splitting, inspired by the flux-splitting approach introduced in \cite{haack2012all}. The new splitting is applied to a primitive
 (nonconservative) formulation of the Euler equations, which enables one to design an efficient semi-implicit (SI) time discretizations. Our
 splitting isolates stiff linear terms, which are discretized semi-implicitly: this leads to a well-posed linear elliptic problem, which
-helps ensure the AP property of the resulting scheme.
+%helps 
+\lore{ensures} the AP property of the resulting scheme.
 	
 To overcome the well-known difficulties associated with the use of nonconservative formulations in the presence of discontinuities, we
-implement the proposed AP scheme within the recently introduced dual formulation framework. In this approach, the conservative and primitive
-systems are solved simultaneously, and their resulting solutions are post-processed to ensure the correct capturing of discontinuities whileretaining the AP property of the primitive-based SI approach.
+implement the proposed AP scheme within the recently introduced dual formulation framework~\cite{CFKM,ACKM}. In this approach, the conservative and primitive
+systems are solved simultaneously, and their resulting solutions are post-processed to ensure the correct capturing of discontinuities \lore{while retaining} the AP property of the primitive-based SI approach.
 	
 The proposed AP dual formulation finite-volume (DF-FV) method has been thoroughly validated on several benchmarks ranging from the fully
 compressible to the nearly incompressible regime, demonstrating both high accuracy and robustness of the method. Future work will focus on
-extending the AP DF-FV framework to more complex systems and on developing higher-order spatial and temporary discretizations.
+extending the AP DF-FV framework to more complex systems and on developing higher-order spatial and %temporary 
+\lore{temporal} discretizations.
 	
 \begin{acknowledgment}
 The work of L. Micalizzi was supported in part by the LeRoy B. Martin, Jr. Distinguished Professorship Foundation. The work of A. Kurganov
