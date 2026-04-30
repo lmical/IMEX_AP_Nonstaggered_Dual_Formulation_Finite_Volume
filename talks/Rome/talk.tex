@@ -903,24 +903,51 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 \end{frame}
 
 \begin{frame}
-	\frametitle{Why a new scheme?}
+	\frametitle{Price to pay: Nonconservative products}
 
 	\centering
-		
-	Be careful to \textcolor{violet}{nonconservative products}
-	
-	{\small
+			
+	{\footnotesize
+
+		\vspace{-1.cm}
+
 		\begin{align*}
 			\frac{\partial}{\partial t}&\textcolor{black}{\uvec{V}} + \frac{\partial}{\partial x}\uvec{\widetilde F}(\uvec{V}) = \textcolor{violet}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}} 
 		\end{align*}
+	
+		\vspace{-0.25cm}
+	
+		\begin{itemize}
+			\item Unclear definition (PC theory\footnote{{\tiny G. Dal Maso, P. Le Floch, F. Murat, Definition and weak stability of nonconservative products, 1995}})
+			\item Incorrect numerical solutions (PC schemes\footnote{{\tiny R. Abgrall, S. Karni, A comment on the computation of non-conservative products, 2010}})
+		\end{itemize}
+
+		\vspace{-0.5cm}
+
+		$$\frac{d}{d t}\textcolor{black}{\uvec{u}_i}(t)+\frac{1}{\Delta x}\left(\textcolor{black}{\widehat{\widetilde{\uvec{f}}}_{i+\frac{1}{2}}}-\textcolor{black}{\widehat{\widetilde{\uvec{f}}}_{i-\frac{1}{2}}}\right)=\textcolor{violet}{\frac{1}{\Delta x}\left(\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x dx+\uvec{D}_{\uvec{\Psi},\imh}^+ +\uvec{D}_{\uvec{\Psi},\iph}^-\right)}$$
+
+		\vspace{-0.5cm}
+	
+		$$\uvec{D}_{\uvec{\Psi},\iph}^++\uvec{D}_{\uvec{\Psi},\iph}^-=\textcolor{red}{\uvec{D}_{\uvec{\Psi},\iph}=\int_0^1 B(\uvec{\Psi}(s,\uvec{V}_{\iph}^-,\uvec{V}_{\iph}^+))\frac{d\uvec{\Psi}}{ds}(s,\uvec{V}_{\iph}^-,\uvec{V}_{\iph}^+) ds}$$
+
+		\vspace{-0.5cm}
+
+		\visible<2->{
+			$$\uvec{\Psi}~\text{segment}$$ 
+	
+			\vspace{-0.95cm}
+	
+			$$\Downarrow$$
+	
+			\vspace{-0.85cm}
+	
+			$$\textcolor{red}{\uvec{D}_{\uvec{\Psi},\iph}}=\frac{B(\uvec{V}_{\iph}^-)+B(\uvec{V}_{\iph}^+)}{2}(\uvec{V}_{\iph}^+-\uvec{V}_{\iph}^-), \quad \uvec{D}_{\uvec{\Psi},\iph}^+=\uvec{D}_{\uvec{\Psi},\iph}^-=\frac{1}{2}\uvec{D}_{\uvec{\Psi},\iph}$$
+		}
+		\visible<3->{
+			RMK: It does not "fully" work
+		}
 	}
 	
-	\vspace{1cm}	
-	
-	\begin{itemize}
-		\item Unclear definition (PC theory\footnote{{\tiny G. Dal Maso, P. Le Floch, F. Murat, Definition and weak stability of nonconservative products, 1995}})
-		\item Incorrect numerical solutions (PC schemes\footnote{{\tiny R. Abgrall, S. Karni, A comment on the computation of non-conservative products, 2010}})
-	\end{itemize}
 	
 \end{frame}
 
