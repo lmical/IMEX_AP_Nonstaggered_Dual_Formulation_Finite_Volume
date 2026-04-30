@@ -816,54 +816,49 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 
 
 
-		{\small
+		{\small All schemes \textbf{MUST} satisfy conservation.}\\
 
-		All schemes \textbf{MUST} satisfy conservation.\\
 
-%		\begin{block}{Lax-Wendroff Theorem\footnote{{\tiny P. Lax, B. Wendroff, Systems of conservation laws, Technical report, LANL, 1958.}}
-%			
-%		\end{block}
+		\vspace{1cm}
 	
 		\begin{block}{Lax-Wendroff Theorem}
-			{\footnotesize If a conservative numerical scheme converges, then it converges towards a weak solution.}
+			{\footnotesize If a conservative numerical scheme converges, then it converges towards a "physically relevant" solution.}
 		\end{block}
 
-		\begin{block}{Definition: Weak Solution}
-			$u\in L^{\infty}(\Omega \times \mathbb{R}^+_0)$ s.t.
-		\end{block}
-		
-			\vspace{1cm}
-		
-			\visible<2->{...not the only possibility}
-				
-		}	
-	
-	
-		%In computational mathematics, the Lax?Wendroff theorem, named after Peter Lax and Burton Wendroff, states that if a conservative numerical scheme for a hyperbolic system of conservation laws converges, then it converges towards a weak solution.
+		\vspace{1cm}
+
+		Structural violation of conservation $\Rightarrow$ Convergence to wrong solutions	
 				
 \end{frame}
 
 
 \begin{frame}
-	\frametitle{Importance of conservation at the discrete level}
-
+	\frametitle{Alternative (primitive) formulations}
 	
 	\centering
+	
+	\begin{align*}
+		\frac{\partial}{\partial t}\textcolor{blue}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U}&)=\uvec{0}\\
+		\textcolor{blue}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
+		\uvec{F}(\uvec{U}):=&\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}
+	\end{align*}
+	
+	
+	\begin{align*}
+		\frac{\partial}{\partial t}&\textcolor{red}{\uvec{V}} + \frac{\partial}{\partial x}\uvec{\widetilde F}(\uvec{V}) = \textcolor{black}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}} \\
+		\textcolor{red}{\uvec{V} :=} \textcolor{red}{\begin{pmatrix} \rho \\ v \\ p \end{pmatrix}}, \quad
+		\uvec{\widetilde F}(\uvec{V})& := \begin{pmatrix} \rho v \\ \dfrac{v^2}{2} \\ p v \end{pmatrix}, \quad \textcolor{black}{\B(\uvec{V}) :=} \textcolor{black}{\begin{pmatrix}
+				0 & 0 & 0 \\
+				0 & 0 & -\dfrac{1}{\rho} \\
+				0 & -(\gamma-1) p & 0
+		\end{pmatrix}}
+	\end{align*}
 
 		
 \begin{columns}
 	\begin{column}{0.5\textwidth}
 		{\small
-			\begin{align*}
-				\frac{\partial}{\partial t}&\textcolor{red}{\uvec{V}} + \frac{\partial}{\partial x}\uvec{\widetilde F}(\uvec{V}) = \textcolor{black}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}} \\
-				\textcolor{red}{\uvec{V} :=} &\textcolor{red}{\begin{pmatrix} \rho \\ v \\ p \end{pmatrix}}, \quad
-				\uvec{\widetilde F}(\uvec{V}) := \begin{pmatrix} \rho v \\ \dfrac{v^2}{2} \\ p v \end{pmatrix}, \\
-				\textcolor{black}{\B(\uvec{V}) :=} &\textcolor{black}{\begin{pmatrix}
-						0 & 0 & 0 \\
-						0 & 0 & -\dfrac{1}{\rho} \\
-						0 & -(\gamma-1) p & 0
-				\end{pmatrix}}
-			\end{align*}
+
 		}
 	\end{column}
 	\begin{column}{0.55\textwidth}
