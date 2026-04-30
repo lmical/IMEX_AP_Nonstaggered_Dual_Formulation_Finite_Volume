@@ -1356,7 +1356,17 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \begin{frame}
 	\frametitle{Shock detection}
 
+		We look at two variables: $\rho u$ (and $\rho v$ in 2D) and $p$
+
+		We identify: Smooth (S), Rough no contact (RNC), Rough contact (RC)
 		
+		\begin{itemize}
+			\item RNC: $\varepsilon^{\rho u}_i>A \overline{\varepsilon}^{\rho u}$ and $\varepsilon^{p}_i>B \overline{\varepsilon}^{p}$
+			\item RC: $\varepsilon^{\rho u}_i>A \overline{\varepsilon}^{\rho u}$ and $\varepsilon^{p}_i \leq B \overline{\varepsilon}^{p}$
+			\item S: otherwise
+		\end{itemize}
+		
+
 
 \end{frame}
 
