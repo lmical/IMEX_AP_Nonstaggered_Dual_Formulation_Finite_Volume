@@ -1132,6 +1132,158 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \section{Application to adaptivity}
 \frame\sectionpage
 
+\begin{frame}
+	\frametitle{Main idea}
+	
+	
+	
+	\centering
+	
+	
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			
+			\begin{tikzpicture}[scale=0.8] % Reduced scale
+				\tikzset{dot/.style={fill=black,circle}}
+				
+				% Set the width of the cell
+				\def\cellwidth{1.2} % Adjust this value to change the width of each cell
+				
+				% Horizontal line
+				\draw [black] (0,1) -- (6*\cellwidth,1);
+				
+				% Draw the first cell and point
+				\draw (0.5*\cellwidth,1) -- (0.5*\cellwidth,1.7);
+				\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,1.7);
+				\draw (0.5*\cellwidth,1.7) -- (1.5*\cellwidth,1.7);
+				\filldraw[blue] (1*\cellwidth,1.7) circle (2pt);
+				
+				% Draw the second cell and point
+				\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,2.7);
+				\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,2.7);
+				\draw (1.5*\cellwidth,2.7) -- (2.5*\cellwidth,2.7);
+				\filldraw[blue] (2*\cellwidth,2.7) circle (2pt);
+				
+				% Draw the third cell and point
+				\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,3.7);
+				\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.7);
+				\draw (2.5*\cellwidth,3.7) -- (3.5*\cellwidth,3.7);
+				\filldraw[blue] (3*\cellwidth,3.7) circle (2pt);
+				
+				% Draw the fourth cell and point
+				\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.2);
+				\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,3.2);
+				\draw (3.5*\cellwidth,3.2) -- (4.5*\cellwidth,3.2);
+				\filldraw[blue] (4*\cellwidth,3.2) circle (2pt);
+				
+				% Draw the fifth cell and point
+				\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,2.2);
+				\draw (5.5*\cellwidth,1) -- (5.5*\cellwidth,2.2);
+				\draw (4.5*\cellwidth,2.2) -- (5.5*\cellwidth,2.2);
+				\filldraw[blue] (5*\cellwidth,2.2) circle (2pt);
+				
+				% Vertical dashed lines at interfaces
+				\foreach \x in {1.5,2.5,...,4.5}
+				{
+					\draw [dashed] (\x*\cellwidth,0.5) -- (\x*\cellwidth,4.5); % vertical lines at interfaces
+				}
+				
+				% Labels with adjusted x positions
+				\node at (1.5*\cellwidth,0.25){$x_{i-\frac{3}{2}}$}; 
+				\node at (2.5*\cellwidth,0.25){$x_{i-\frac{1}{2}}$}; 
+				\node at (3.5*\cellwidth,0.25){$x_{i+\frac{1}{2}}$}; 
+				\node at (4.5*\cellwidth,0.25){$x_{i+\frac{3}{2}}$}; 
+				
+				
+				
+				% Cell labels
+				\node at (2*\cellwidth,0.7){$x_{i-1}$};
+				\node at (3*\cellwidth,0.7){$x_{i}$};
+				\node at (4*\cellwidth,0.7){$x_{i+1}$};
+				
+				% Blue U labels for cells
+				\node at (2*\cellwidth,3.2){$\textcolor{red}{\uvec{V}_{i-1}}$};
+				\node at (3*\cellwidth,4.2){$\textcolor{red}{\uvec{V}_{i}}$};
+				\node at (4*\cellwidth,3.7){$\textcolor{red}{\uvec{V}_{i+1}}$};
+				
+				% Blue U labels for cells
+				\def\yoffset{0.5}
+				
+				\node at (2*\cellwidth,3.2+\yoffset){$\textcolor{blue}{\uvec{U}_{i-1}}$};
+				\node at (3*\cellwidth,4.2+\yoffset){$\textcolor{blue}{\uvec{U}_{i}}$};
+				\node at (4*\cellwidth,3.7+\yoffset){$\textcolor{blue}{\uvec{U}_{i+1}}$};
+				
+				
+				
+				
+				
+				
+				% Cross marks in each cell
+				%				\foreach \x in {0.5,1.5,2.5,...,4.5,5.5}
+				%				{
+					%					\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.3) -- (\x*\cellwidth+0.1,1.5); % Diagonal line /
+					%					\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.5) -- (\x*\cellwidth+0.1,1.3); % Diagonal line \
+					%				}
+				
+			\end{tikzpicture}
+		\end{column}
+		\begin{column}{0.55\textwidth}
+			\footnotesize
+			$$\frac{\partial}{\partial t}\textcolor{black}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U})=\uvec{0}$$
+			$$\frac{\partial}{\partial t}\textcolor{black}{\uvec{V}}+\frac{\partial}{\partial x}\widetilde{\uvec{F}}(\uvec{V})=\textcolor{black}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}}$$
+			$$\Downarrow$$
+			\begin{align*}
+				\begin{cases}
+					\frac{d}{dt}\textcolor{blue}{\uvec{U}_i}(t)
+					=& -\frac{1}{\Delta x}\left(\widehat{\uvec{F}}_{i+\frac{1}{2}}-\textcolor{black}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)
+					\\
+					\frac{d}{dt}\textcolor{red}{\uvec{V}_{i}}(t)
+					=& -\frac{1}{\Delta x}\left(
+					\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}
+					-\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i-\frac{1}{2}}}
+					\right)
+					\\
+					&+\textcolor{violet}{\frac{1}{\Delta x}
+						\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x\, dx}
+					\\
+					&+\textcolor{violet}{\frac{1}{\Delta x}
+						\left(\uvec{D}_{\uvec{\Psi},\imh}^+
+						+\uvec{D}_{\uvec{\Psi},\iph}^-\right)}
+				\end{cases}
+			\end{align*}		
+		\end{column}
+	\end{columns}
+	
+	
+%	\vspace{-0.5cm}
+	
+	\visible<2->{	
+		\begin{align*}
+			&\left\lbrace\uvec{U}_i\right\rbrace \longrightarrow \text{Correct solution}\\
+			&\left\lbrace\uvec{V}_i\right\rbrace \longrightarrow \text{Wrong solution}
+		\end{align*}
+
+	\vspace{-0.5cm}
+
+		
+		$$\norm{\uvec{U}^*_i-\uvec{U}(\uvec{V}^*_i)}=\text{shock indicator}$$
+
+	\vspace{-0.5cm}
+
+
+		$$
+		\left(\uvec{U}_i^{n}, \uvec{V}_i^{n}\right) 
+		\xrightarrow{\text{RK}} 
+		\left(\uvec{U}_i^*, \uvec{V}_i^* \right)
+		\xrightarrow{\text{PP}} 
+		\left(\uvec{U}_i^{n+1}:=\uvec{U}_i^*, \uvec{V}_i^{n+1}:=\uvec{V}(\uvec{U}_i^*)\right)
+		$$
+		
+		
+	}
+	
+\end{frame}
+
 
 \section{Application to multifluid}
 \frame\sectionpage
