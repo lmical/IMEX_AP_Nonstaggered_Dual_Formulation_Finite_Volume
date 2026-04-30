@@ -837,49 +837,45 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 	
 	\centering
 	
+	{\footnotesize
 	\begin{align*}
-		\frac{\partial}{\partial t}\textcolor{blue}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U}&)=\uvec{0}\\
-		\textcolor{blue}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
-		\uvec{F}(\uvec{U}):=&\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}
+		\frac{\partial}{\partial t}\textcolor{black}{\uvec{U}}+&\frac{\partial}{\partial x}\uvec{F}(\uvec{U})=\uvec{0}\\
+		\textcolor{black}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
+		\uvec{F}(\uvec{U}):=&\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}, \quad E=\frac{p}{\gamma-1}+\frac{1}{2}\rho u^2
 	\end{align*}
 	
 	
 	\begin{align*}
-		\frac{\partial}{\partial t}&\textcolor{red}{\uvec{V}} + \frac{\partial}{\partial x}\uvec{\widetilde F}(\uvec{V}) = \textcolor{black}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}} \\
-		\textcolor{red}{\uvec{V} :=} \textcolor{red}{\begin{pmatrix} \rho \\ v \\ p \end{pmatrix}}, \quad
+		\frac{\partial}{\partial t}&\textcolor{black}{\uvec{V}} + \frac{\partial}{\partial x}\uvec{\widetilde F}(\uvec{V}) = \textcolor{black}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}} \\
+		\textcolor{black}{\uvec{V} :=} \textcolor{black}{\begin{pmatrix} \rho \\ v \\ p \end{pmatrix}}, \quad
 		\uvec{\widetilde F}(\uvec{V})& := \begin{pmatrix} \rho v \\ \dfrac{v^2}{2} \\ p v \end{pmatrix}, \quad \textcolor{black}{\B(\uvec{V}) :=} \textcolor{black}{\begin{pmatrix}
 				0 & 0 & 0 \\
 				0 & 0 & -\dfrac{1}{\rho} \\
 				0 & -(\gamma-1) p & 0
 		\end{pmatrix}}
 	\end{align*}
+	}
 
-		
-\begin{columns}
-	\begin{column}{0.5\textwidth}
-		{\small
-
+	\visible<3->{
+		{\footnotesize		
+			\centering
+			...offers some advantages:
+			\begin{itemize}
+				\item Low-Mach ($p$=const)
+				\item Multifluid ($p,v$=const at interface)
+				\item Positivity preservation ($p > 0$, not $E$)
+				\item One measures primitive variables
+				\item etc...
+			\end{itemize}
 		}
-	\end{column}
-	\begin{column}{0.55\textwidth}
-		\small
-		...offers some advantages:
-		\begin{itemize}
-			\item Low-Mach (see Alina's and Nan's talks)
-			\item \textbf{Multifluid} %(continuity of $v$)
-			\item Positivity preservation ($p > 0$, not $E$)
-			\item One measures primitive variables
-			\item etc...
-		\end{itemize}
-	\end{column}
-\end{columns}
+	}
 
 \end{frame}
 
 \begin{frame}
-	\frametitle{Why a new scheme?}
+	\frametitle{Proliferation of schemes with access to primitive variables}
 
-		Proliferation of schemes with direct access to primitive variables
+		
 		
 		{\tiny
 		
