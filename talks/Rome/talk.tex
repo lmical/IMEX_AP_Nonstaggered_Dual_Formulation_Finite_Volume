@@ -189,7 +189,7 @@ text centered]
 \newcommand{\res}[0]{\textbf{R}}
 \newcommand\norm[1]{\left\lVert#1\right\rVert}
 
-\newcommand{\flux}[0]{\boldsymbol{f}}
+\newcommand{\flux}[0]{\boldsymbol{F}}
 \newcommand{\source}[0]{\boldsymbol{S}}
 \newcommand{\ST}[0]{\boldsymbol{ST}_i^K}
 \newcommand{\extra}[0]{\boldsymbol{ST}_i}
@@ -546,31 +546,31 @@ text centered]
 
 		\begin{equation*}
 			\label{sys}
-			\frac{\partial}{\partial t}\uvec{u}(\uvec{x},t)+div_{\uvec{x}} \boldsymbol{f}(\uvec{u}(\uvec{x},t))=\boldsymbol{0}, \quad (\uvec{x},t) \in \Omega\times \mathbb{R}^+_0,
+			\frac{\partial}{\partial t}\uvec{U}(\uvec{x},t)+div_{\uvec{x}} \uvec{F}(\uvec{U}(\uvec{x},t))=\boldsymbol{0}, \quad (\uvec{x},t) \in \Omega\times \mathbb{R}^+_0,
 		\end{equation*}
 		\visible<2->{
 			\begin{itemize}
 				\item $\Omega\subseteq \mathbb{R}^D$ spatial domain, a connected open set}
-				\visible<3->{\item $\uvec{u}:\overline{\Omega} \times \mathbb{R}^+_0 \rightarrow \mathcal{U} \subseteq \mathbb{R}^Q$ unknown solution} %with $N \in \mathbb{N}$ number of scalar equations of the system and $\mathcal{U}$ space of adimssible states
-				\visible<4->{\item $\boldsymbol{f}:\mathcal{U} \rightarrow \mathbb{R}^{Q \times D}$ flux}
-				\visible<5->{\item $\boldsymbol{f}(\uvec{u})=(\boldsymbol{f}_1,\boldsymbol{f}_2,\dots,\boldsymbol{f}_D) \in \mathbb{R}^{Q \times D}$ with $div_{\uvec{x}} \boldsymbol{f}(\uvec{u})=\sum\limits_{d=1}^D \frac{\partial \boldsymbol{f}_{d}}{\partial x_d} (\uvec{u}) \in \mathbb{R}^{Q}$} 
-				\visible<6->{\item $\sum\limits_{d=1}^D \omega_d \frac{\partial \boldsymbol{f}_{d}}{\partial \uvec{u}} (\uvec{u})$ real diagonalizable $\forall \uvec{u}\in \mathcal{U}$, $\forall \uvec{\omega}\in \mathbb{R}^D$}
-				\visible<7->{\item with some initial $\uvec{u}_0=\uvec{u}(\uvec{x},0)$ and boundary conditions}
+				\visible<3->{\item $\uvec{U}:\overline{\Omega} \times \mathbb{R}^+_0 \rightarrow \mathcal{U} \subseteq \mathbb{R}^Q$ unknown solution} %with $N \in \mathbb{N}$ number of scalar equations of the system and $\mathcal{U}$ space of adimssible states
+				\visible<4->{\item $\uvec{F}:\mathcal{U} \rightarrow \mathbb{R}^{Q \times D}$ flux}
+				\visible<5->{\item $\uvec{F}(\uvec{U})=(\uvec{F}_1,\uvec{F}_2,\dots,\uvec{F}_D) \in \mathbb{R}^{Q \times D}$ with $div_{\uvec{x}} \uvec{F}(\uvec{U})=\sum\limits_{d=1}^D \frac{\partial \uvec{F}_{d}}{\partial x_d} (\uvec{U}) \in \mathbb{R}^{Q}$} 
+				\visible<6->{\item $\sum\limits_{d=1}^D \omega_d \frac{\partial \uvec{F}_{d}}{\partial \uvec{U}} (\uvec{U})$ real diagonalizable $\forall \uvec{U}\in \mathcal{U}$, $\forall \uvec{\omega}\in \mathbb{R}^D$}
+				\visible<7->{\item with some initial $\uvec{U}_0=\uvec{U}(\uvec{x},0)$ and boundary conditions}
 			\end{itemize}
 \end{frame}
 
 \begin{frame}[label=BalanceLawsSomeExamples]
 	\frametitle{An example: Euler equations}
-	$$\frac{\partial}{\partial t}\uvec{u}+div_{\uvec{x}} \boldsymbol{f}(\uvec{u})=\boldsymbol{0},$$
+	$$\frac{\partial}{\partial t}\uvec{U}+div_{\uvec{x}} \uvec{F}(\uvec{U})=\boldsymbol{0},$$
 	
 	$$
-	\uvec{u}=\begin{pmatrix}
+	\uvec{U}=\begin{pmatrix}
 		\rho\\
 		\rho u\\
 		\rho v\\
 		\rho w\\
 		E
-	\end{pmatrix}, \quad \uvec{f}(\uvec{u})=\begin{pmatrix}
+	\end{pmatrix}, \quad \uvec{F}(\uvec{U})=\begin{pmatrix}
 		\rho u & \rho v & \rho w \\ 
 		\rho u^2+p & \rho u v & \rho u w \\
 		\rho u v & \rho v^2+p & \rho v w \\
@@ -630,19 +630,19 @@ text centered]
 		\begin{column}{0.70\textwidth}
 			\begin{itemize}
 				\item $V\subseteq \Omega$ control volume
-				\item $\uvec{u}$ conserved quantities
+				\item $\uvec{U}$ conserved quantities
 				\item $\flux \cdot \uvec{\nu}$ exiting from the control volume
 			\end{itemize}
 		\end{column}
 	\end{columns}
 	\visible<2->{		\scalebox{0.7}{\begin{minipage}[t]{1.2\textwidth}
 				\begin{beamercolorbox}[sep=0.5em,wd=\textwidth]{blockcolor1} 
-					$$\frac{\partial}{\partial t} \int_V \uvec{u} d \uvec{x} = - \int_{\partial V} \flux \cdot \uvec{\nu} d \sigma(\uvec{x}) , \quad  \forall V\subseteq \Omega.
+					$$\frac{\partial}{\partial t} \int_V \uvec{U} d \uvec{x} = - \int_{\partial V} \flux \cdot \uvec{\nu} d \sigma(\uvec{x}) , \quad  \forall V\subseteq \Omega.
 					$$
 					$$\Downarrow$$
-					$$\int_V \frac{\partial}{\partial t}\uvec{u} d \uvec{x} = - \int_V div_{\uvec{x}}\flux d \uvec{x} , \quad  \forall V\subseteq \Omega.$$
+					$$\int_V \frac{\partial}{\partial t}\uvec{U} d \uvec{x} = - \int_V div_{\uvec{x}}\flux d \uvec{x} , \quad  \forall V\subseteq \Omega.$$
 					$$\Downarrow$$
-					$$\int_V \left(\frac{\partial}{\partial t}\uvec{u}  + div_{\uvec{x}}\flux  \right) d \uvec{x}=\uvec{0}, \quad  \forall V\subseteq \Omega.$$
+					$$\int_V \left(\frac{\partial}{\partial t}\uvec{U}  + div_{\uvec{x}}\flux  \right) d \uvec{x}=\uvec{0}, \quad  \forall V\subseteq \Omega.$$
 				\end{beamercolorbox}
 	\end{minipage}} }
 \end{frame}
@@ -651,12 +651,12 @@ text centered]
 \begin{frame}
 	\frametitle{A structural property: Conservation}
 		\begin{equation*}
-			\frac{\partial}{\partial t}\uvec{u}+ \frac{\partial}{\partial x} \boldsymbol{f}(\uvec{u})=\boldsymbol{0}, \quad (x,t) \in \Omega\times \mathbb{R}^+_0
+			\frac{\partial}{\partial t}\uvec{U}+ \frac{\partial}{\partial x} \uvec{F}(\uvec{U})=\boldsymbol{0}, \quad (x,t) \in \Omega\times \mathbb{R}^+_0
 		\end{equation*}
 		$$\Downarrow$$
-$$\int_\Omega \left( \frac{\partial}{\partial t}\uvec{u}+ \frac{\partial}{\partial x} \boldsymbol{f}(\uvec{u}) \right) d \uvec{x} =\boldsymbol{0}$$
+$$\int_\Omega \left( \frac{\partial}{\partial t}\uvec{U}+ \frac{\partial}{\partial x} \uvec{F}(\uvec{U}) \right) d \uvec{x} =\boldsymbol{0}$$
 		$$\Downarrow$$
-$$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$$
+$$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$$
 \end{frame}
 
 
@@ -726,15 +726,15 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 				\node at (4*\cellwidth,0.7){$x_{i+1}$};
 				
 				% Blue U labels for cells
-				\node at (2*\cellwidth,3){$\textcolor{blue}{\uvec{u}_{i-1}}$};
-				\node at (3*\cellwidth,4){$\textcolor{blue}{\uvec{u}_{i}}$};
-				\node at (4*\cellwidth,3.5){$\textcolor{blue}{\uvec{u}_{i+1}}$};
+				\node at (2*\cellwidth,3.2){$\textcolor{blue}{\uvec{U}_{i-1}}$};
+				\node at (3*\cellwidth,4.2){$\textcolor{blue}{\uvec{U}_{i}}$};
+				\node at (4*\cellwidth,3.7){$\textcolor{blue}{\uvec{U}_{i+1}}$};
 				
 				
-				\node at (1.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{f}}_{i-\frac{3}{2}}}$};
-				\node at (2.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{f}}_{i-\frac{1}{2}}}$};
-				\node at (3.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{f}}_{i+\frac{1}{2}}}$};
-				\node at (4.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{f}}_{i+\frac{3}{2}}}$};
+				\node at (1.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{3}{2}}}$};
+				\node at (2.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}$};
+				\node at (3.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}$};
+				\node at (4.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{3}{2}}}$};
 
 
 				% Smooth local reconstruction curves passing through the dots
@@ -786,21 +786,21 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 		\end{column}
 		\begin{column}{0.55\textwidth}
 			\small
-			$$\frac{\partial}{\partial t}\textcolor{black}{\uvec{u}}+\frac{\partial}{\partial x}\uvec{f}(\uvec{u})=\uvec{0}$$
+			$$\frac{\partial}{\partial t}\textcolor{black}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U})=\uvec{0}$$
 			$$\Downarrow$$
 			\begin{align*}
-					\frac{d}{d t}\textcolor{blue}{\uvec{u}_i}(t)&=-\frac{\textcolor{red}{\widehat{\uvec{f}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{f}}_{i-\frac{1}{2}}}}{\Delta x}\\
+					\frac{d}{d t}\textcolor{blue}{\uvec{U}_i}(t)&=-\frac{\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}}{\Delta x}\\
 					\visible<2->{
-					\textcolor{red}{\widehat{\uvec{f}}_{i+\frac{1}{2}}}&:=\widehat{\uvec{f}}(\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^+})}\\
+					\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}&:=\widehat{\uvec{F}}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})}\\
 					\visible<2->{
-						\widehat{\uvec{f}}(\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^+})&\neq\frac{1}{2}\left(\uvec{f}(\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^-})+\uvec{f}(\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^+})\right)}
+						\widehat{\uvec{F}}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})&\neq\frac{1}{2}\left(\uvec{F}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-})+\uvec{F}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})\right)}
 			\end{align*}
 		\end{column}
 	\end{columns}
 
 	\vspace{1cm}
 	\visible<3->{
-		$$\frac{d}{d t} \sum\limits_{i}\textcolor{blue}{\uvec{u}_i} =-\frac{1}{\Delta x}\sum\limits_{i}\left(\textcolor{red}{\widehat{\uvec{f}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{f}}_{i-\frac{1}{2}}}\right)=\uvec{0}$$
+		$$\frac{d}{d t} \sum\limits_{i}\textcolor{blue}{\uvec{U}_i} =-\frac{1}{\Delta x}\sum\limits_{i}\left(\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)=\uvec{0}$$
 	}
 \end{frame}
 
@@ -856,7 +856,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 	\end{align*}
 	}
 
-	\visible<3->{
+	\visible<2->{
 		{\footnotesize		
 			\centering
 			...offers some advantages:
@@ -924,7 +924,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 
 		\vspace{-0.5cm}
 
-		$$\frac{d}{d t}\textcolor{black}{\uvec{u}_i}(t)+\frac{1}{\Delta x}\left(\textcolor{black}{\widehat{\widetilde{\uvec{f}}}_{i+\frac{1}{2}}}-\textcolor{black}{\widehat{\widetilde{\uvec{f}}}_{i-\frac{1}{2}}}\right)=\textcolor{violet}{\frac{1}{\Delta x}\left(\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x dx+\uvec{D}_{\uvec{\Psi},\imh}^+ +\uvec{D}_{\uvec{\Psi},\iph}^-\right)}$$
+		$$\frac{d}{d t}\textcolor{black}{\uvec{U}_i}(t)+\frac{1}{\Delta x}\left(\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}-\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i-\frac{1}{2}}}\right)=\textcolor{violet}{\frac{1}{\Delta x}\left(\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x dx+\uvec{D}_{\uvec{\Psi},\imh}^+ +\uvec{D}_{\uvec{\Psi},\iph}^-\right)}$$
 
 		\vspace{-0.5cm}
 	
@@ -952,9 +952,12 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 \end{frame}
 
 \begin{frame}
-	\frametitle{Actual issue with nonconservative products}
-
-
+	\frametitle{Actual issue with nonconservative products: discontinuities\footnote{{\tiny R. Abgrall, S. Karni, A comment on the computation of non-conservative products, 2010}}}
+		
+		\begin{figure}
+			\includegraphics[width=0.7\textwidth]{PC_not_working.png}
+		\end{figure}
+		
 \end{frame}
 
 
@@ -965,15 +968,16 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 	
 	{\small	
 	\begin{itemize}
-		\item Introduce a new scheme based on both conservative and primitive formulations
-		\item (Easily) apply it to multifluid
-		\item (Easily) apply it to shock--detection
+		\item Introduce a new framework based on both conservative and primitive formulations
+		\item Application to adaptivity
+		\item Application to multifluid
+		\item Application to low-Mach
 	\end{itemize}
 	}
 	
 \end{frame}
 
-\section{DF-FV}
+\section{Dual Formulation Methods}
 \frame\sectionpage
 
 \begin{frame}
