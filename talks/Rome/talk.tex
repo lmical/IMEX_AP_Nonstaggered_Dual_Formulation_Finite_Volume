@@ -35,6 +35,7 @@
 \pgfplotsset{width=7.5cm,compat=1.12}
 \usepgfplotslibrary{fillbetween}
 \usepackage{media9}
+\usepackage{subcaption}
 
 \definecolor{BBB}{rgb}{0.2,0.2,0.7} % UBC Blue (primary)
 \definecolor{SSCgreen}{HTML}{a2da7b} % green as in the SSC logo (primary)
@@ -1132,12 +1133,73 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \section{Application to adaptivity}
 \frame\sectionpage
 
+
 \begin{frame}
 	\frametitle{Motivation}
-
-
-
+	
+	\begin{definition}[Method of order $P$]
+		On smooth problems, $\text{error}=\norm{\uvec{u}^{\text{num}}-\uvec{u}^{\text{ex}}}\approx O(\Delta^P)$
+	\end{definition}
+	
+	\centering
+	
+	\visible<1->{In general, HO > LO}
+	
+	\vspace{0.4cm}
+	
+	\visible<1->{ Fixed accuracy $\Rightarrow$ Coarser discretizations $\Rightarrow$ Shorter times 
+		
+		
+		\begin{figure}
+			% Equal length
+			\centering
+			\subcaptionbox*{Error vs $\Delta$}{\includegraphics[width=1.6in]{HO/ConvAn.pdf}}\hspace{1em}%
+			\subcaptionbox*{Error vs time}{\includegraphics[width=1.6in]{HO/ErrTime.pdf}}%
+		\end{figure}  
+		
+		
+	}
+	
+	
 \end{frame}
+
+
+
+
+
+\begin{frame}
+	\frametitle{Motivation}
+	
+	\centering
+	
+	Real applications  $\Rightarrow$ Discontinuities $\Rightarrow$ Problems 
+		\begin{columns}
+			\begin{column}{0.40\textwidth}
+				\begin{itemize}
+					\item First order convergence
+					\item Spurious oscillations  
+				\end{itemize} 
+			\end{column}
+			\begin{column}{0.40\textwidth}
+				\begin{figure}[hp] 
+					\centering{\includegraphics[scale=0.35]{HO/FW.png}}
+				\end{figure}
+			\end{column}
+		\end{columns}
+
+
+	\vspace{1cm}
+
+	\visible<2->{
+		Shocks do not cover the whole domain
+		$$\Downarrow$$	
+		Adaptivity, shock detectors, local switch to low order
+	}
+	
+\end{frame}
+
+
+
 
 \begin{frame}
 	\frametitle{Main idea}
