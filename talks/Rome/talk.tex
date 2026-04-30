@@ -738,42 +738,43 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 
 
 				% Smooth local reconstruction curves passing through the dots
-				
-				\draw[violet, thick]
-				(0.5*\cellwidth,1.60)
-				.. controls (0.75*\cellwidth,1.90) and (0.95*\cellwidth,1.75) ..
-				(1*\cellwidth,1.70)
-				.. controls (1.10*\cellwidth,1.60) and (1.30*\cellwidth,1.50) ..
-				(1.5*\cellwidth,1.65);
-				
-				\draw[violet, thick]
-				(1.5*\cellwidth,2.10)
-				.. controls (1.75*\cellwidth,2.95) and (1.95*\cellwidth,2.85) ..
-				(2*\cellwidth,2.70)
-				.. controls (2.10*\cellwidth,2.60) and (2.30*\cellwidth,2.55) ..
-				(2.5*\cellwidth,2.45);
-				
-				\draw[violet, thick]
-				(2.5*\cellwidth,3.8)
-				.. controls (2.75*\cellwidth,3.20) and (2.90*\cellwidth,4.20) ..
-				(3*\cellwidth,3.70)
-				.. controls (3.10*\cellwidth,3.40) and (3.30*\cellwidth,3.55) ..
-				(3.5*\cellwidth,3.65);
-				
-				\draw[violet, thick]
-				(3.5*\cellwidth,2.95)
-				.. controls (3.75*\cellwidth,3.40) and (3.90*\cellwidth,2.90) ..
-				(4*\cellwidth,3.20)
-				.. controls (4.10*\cellwidth,3.30) and (4.30*\cellwidth,3.35) ..
-				(4.5*\cellwidth,3.25);
-				
-				\draw[violet, thick]
-				(4.5*\cellwidth,2.45)
-				.. controls (4.75*\cellwidth,2.10) and (4.90*\cellwidth,2.45) ..
-				(5*\cellwidth,2.20)
-				.. controls (5.10*\cellwidth,2.10) and (5.30*\cellwidth,2.00) ..
-				(5.5*\cellwidth,1.85);				
-				
+				\visible<2->{
+					\draw[violet, thick]
+					(0.5*\cellwidth,1.60)
+					.. controls (0.75*\cellwidth,1.90) and (0.95*\cellwidth,1.75) ..
+					(1*\cellwidth,1.70)
+					.. controls (1.10*\cellwidth,1.60) and (1.30*\cellwidth,1.50) ..
+					(1.5*\cellwidth,1.65);
+					
+					\draw[violet, thick]
+					(1.5*\cellwidth,2.10)
+					.. controls (1.75*\cellwidth,2.95) and (1.95*\cellwidth,2.85) ..
+					(2*\cellwidth,2.70)
+					.. controls (2.10*\cellwidth,2.60) and (2.30*\cellwidth,2.55) ..
+					(2.5*\cellwidth,2.45);
+					
+					\draw[violet, thick]
+					(2.5*\cellwidth,3.8)
+					.. controls (2.75*\cellwidth,3.20) and (2.90*\cellwidth,4.20) ..
+					(3*\cellwidth,3.70)
+					.. controls (3.10*\cellwidth,3.40) and (3.30*\cellwidth,3.55) ..
+					(3.5*\cellwidth,3.65);
+					
+					\draw[violet, thick]
+					(3.5*\cellwidth,2.95)
+					.. controls (3.75*\cellwidth,3.40) and (3.90*\cellwidth,2.90) ..
+					(4*\cellwidth,3.20)
+					.. controls (4.10*\cellwidth,3.30) and (4.30*\cellwidth,3.35) ..
+					(4.5*\cellwidth,3.25);
+					
+					\draw[violet, thick]
+					(4.5*\cellwidth,2.45)
+					.. controls (4.75*\cellwidth,2.10) and (4.90*\cellwidth,2.45) ..
+					(5*\cellwidth,2.20)
+					.. controls (5.10*\cellwidth,2.10) and (5.30*\cellwidth,2.00) ..
+					(5.5*\cellwidth,1.85);				
+				}
+		
 				% Cross marks in each cell
 				\foreach \x in {0.5,1.5,2.5,...,4.5,5.5}
 				{
@@ -789,35 +790,47 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 			$$\Downarrow$$
 			\begin{align*}
 					\frac{d}{d t}\textcolor{blue}{\uvec{u}_i}(t)&=-\frac{\textcolor{red}{\widehat{\uvec{f}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{f}}_{i-\frac{1}{2}}}}{\Delta x}\\
-					\textcolor{red}{\widehat{\uvec{f}}_{i+\frac{1}{2}}}&:=\widehat{\uvec{f}}(\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^+})
+					\visible<2->{
+					\textcolor{red}{\widehat{\uvec{f}}_{i+\frac{1}{2}}}&:=\widehat{\uvec{f}}(\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^+})}\\
+					\visible<2->{
+						\widehat{\uvec{f}}(\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^+})&\neq\frac{1}{2}\left(\uvec{f}(\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^-})+\uvec{f}(\textcolor{violet}{\uvec{u}_{i+\frac{1}{2}}^+})\right)}
 			\end{align*}
 		\end{column}
 	\end{columns}
 
-
+	\vspace{1cm}
+	\visible<3->{
+		$$\frac{d}{d t} \sum\limits_{i}\textcolor{blue}{\uvec{u}_i} =-\frac{1}{\Delta x}\sum\limits_{i}\left(\textcolor{red}{\widehat{\uvec{f}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{f}}_{i-\frac{1}{2}}}\right)=\uvec{0}$$
+	}
 \end{frame}
 
 
 
 
 \begin{frame}
-	\frametitle{Governing equations}
+	\frametitle{Importance of conservation at the discrete level\footnote{{\tiny P. Lax, B. Wendroff, Systems of conservation laws, Technical report, LANL, 1958.}}}
 
+		
 		\centering
+
+
+
 
 		{\small
 
-		Classical FV, FD, DG FEM, CG FEM\\
+		All schemes \textbf{MUST} satisfy conservation.\\
 
-			\visible<1->{...rely on a conservative formulation\footnote{{\tiny P. Lax, B. Wendroff, Systems of conservation laws, Technical report, LANL, 1958.}}
-						\begin{align*}
-							\frac{\partial}{\partial t}\textcolor{blue}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U}&)=\uvec{0}\\
-							\textcolor{blue}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
-							\uvec{F}(\uvec{U}):=&\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}%\\
-							%\text{\textbf{EOS}:}\quad p=\left(\gamma-1\right)\left[\right.E-&\frac{1}{2}\rho v^2\left.\right]
-						\end{align*}
+%		\begin{block}{Lax-Wendroff Theorem\footnote{{\tiny P. Lax, B. Wendroff, Systems of conservation laws, Technical report, LANL, 1958.}}
+%			
+%		\end{block}
 	
-			}
+		\begin{block}{Lax-Wendroff Theorem}
+			{\footnotesize If a conservative numerical scheme converges, then it converges towards a weak solution.}
+		\end{block}
+
+		\begin{block}{Definition: Weak Solution}
+			$u\in L^{\infty}(\Omega \times \mathbb{R}^+_0)$ s.t.
+		\end{block}
 		
 			\vspace{1cm}
 		
@@ -832,7 +845,8 @@ $$\frac{d}{d t} \int_\Omega \uvec{u} d \uvec{x} = - \left[\boldsymbol{f}(\uvec{u
 
 
 \begin{frame}
-	\frametitle{Why a new scheme?}
+	\frametitle{Importance of conservation at the discrete level}
+
 	
 	\centering
 
