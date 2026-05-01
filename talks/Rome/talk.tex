@@ -556,7 +556,7 @@ text centered]
 				\visible<4->{\item $\uvec{F}:\mathcal{U} \rightarrow \mathbb{R}^{Q \times D}$ flux}
 				\visible<5->{\item $\uvec{F}(\uvec{U})=(\uvec{F}_1,\uvec{F}_2,\dots,\uvec{F}_D) \in \mathbb{R}^{Q \times D}$ with $div_{\uvec{x}} \uvec{F}(\uvec{U})=\sum\limits_{d=1}^D \frac{\partial \uvec{F}_{d}}{\partial x_d} (\uvec{U}) \in \mathbb{R}^{Q}$} 
 				\visible<6->{\item $\sum\limits_{d=1}^D \omega_d \frac{\partial \uvec{F}_{d}}{\partial \uvec{U}} (\uvec{U})$ real diagonalizable $\forall \uvec{U}\in \mathcal{U}$, $\forall \uvec{\omega}\in \mathbb{R}^D$}
-				\visible<7->{\item with some initial $\uvec{U}_0=\uvec{U}(\uvec{x},0)$ and boundary conditions}
+				\visible<7->{\item with some initial $\uvec{U}(\uvec{x},0)=\uvec{U}_0(\uvec{x})$ and boundary conditions}
 			\end{itemize}
 \end{frame}
 
@@ -1358,26 +1358,115 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 		We look at two variables: $\rho u$ (and $\rho v$ in 2D) and $p$
 
-		We identify: Smooth (S), Rough no contact (RNC), Rough contact (RC)
+		We identify
 		
 		\begin{itemize}
-			\item R
+			\item Rough (R): $\varepsilon^{\rho u}_i>A \overline{\varepsilon}^{\rho u}$
 
-			\item S
+			\visible<2->{
+				\begin{itemize}
+					\item Rough no contact (RNC): $\varepsilon^{p}_i>B \overline{\varepsilon}^{p}$
+					\item Rough contact (RC): otherwise
+				\end{itemize}
+			}
 
-
+			\item Smooth (S): otherwise
+			
 
 		\end{itemize}
 		
-		\begin{itemize}
-			\item RNC: $\varepsilon^{\rho u}_i>A \overline{\varepsilon}^{\rho u}$ and $\varepsilon^{p}_i>B \overline{\varepsilon}^{p}$
-			\item RC: $\varepsilon^{\rho u}_i>A \overline{\varepsilon}^{\rho u}$ and $\varepsilon^{p}_i \leq B \overline{\varepsilon}^{p}$
-			\item S: otherwise
-		\end{itemize}
+
 		
 
 
 \end{frame}
+
+\begin{frame}
+	\frametitle{Shock detection}
+		\begin{columns}
+			\begin{column}{0.5\textwidth}
+				\begin{tikzpicture}[scale=0.75, >=stealth]
+					
+					% axes
+					\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
+					\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
+					
+					% parameters
+					\def\xs{3.2}   % shock foot
+					\def\xt{4.8}   % shock top x
+					\def\yt{3.2}   % shock top t
+					
+					% shock
+					\draw[red, very thick] (\xs,0) -- (\xt,\yt);
+					
+					% left characteristics: parallel lines, stopped at the shock
+					% line direction chosen so that the first one goes from origin to shock top
+					\foreach \xzero in {0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
+					{
+						\pgfmathsetmacro{\yend}{\yt-\xzero}
+						\pgfmathsetmacro{\xend}{\xs + (\xt-\xs)*\yend/\yt}
+						\draw[black] (\xzero,0) -- (\xend,\yend);
+					}
+					
+					% right characteristics: tilted left, stopped at shock or max height
+					\def\tilt{0.35} % larger = more left tilt
+					\def\ymax{3.2}  % maximum height
+					
+					\foreach \xzero in {3.50,3.80,4.10,4.40,4.70,5.00,5.30,5.60,5.90}
+					{
+						% height at which the tilted characteristic hits the shock
+						\pgfmathsetmacro{\yhit}{\yt*(\xzero-\xs)/((\xt-\xs)+\tilt)}
+						
+						% stop either at the shock or at ymax
+						\pgfmathsetmacro{\yend}{min(\yhit,\ymax)}
+						
+						% corresponding x-coordinate
+						\pgfmathsetmacro{\xend}{\xzero-\tilt*\yend/\yt}
+						
+						\draw[black] (\xzero,0) -- ({\xend},{\yend});
+					}
+					
+				\end{tikzpicture}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{tikzpicture}[scale=0.75, >=stealth]
+					
+					% axes
+					\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
+					\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
+					
+					% parameters
+					\def\xs{3.2}
+					\def\xt{4.8}
+					\def\yt{3.2}
+					\def\tilt{0.35}
+					
+					% contact line
+					\draw[red, very thick] (\xs,0) -- (\xt,\yt);
+					
+					% slope dx/dt of the contact
+					\pgfmathsetmacro{\slope}{(\xt-\xs)/\yt}
+					
+					% left characteristics: parallel to the contact
+					\foreach \xzero in {0.0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
+					{
+						\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
+					}
+					
+					% right characteristics: tilted left, crossing the contact
+					\foreach \xzero in {3.60,3.95,4.30,4.65,5.00,5.35,5.70}
+					{
+						\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
+					}
+					
+				\end{tikzpicture}
+
+			\end{column}
+		\end{columns}
+
+
+\end{frame}
+
 
 \begin{frame}
 	\frametitle{Adaptivity}
