@@ -19,6 +19,7 @@
 \usepackage{bm}
 %\usepackage[absolute,overlay]{textpos}
 %\usepackage{pdfcolparallel}
+\usepackage{cancel}
 
 \usepackage{tcolorbox}
 %\tcbuselibrary{fitting}
@@ -1365,16 +1366,32 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 			\visible<2->{
 				\begin{itemize}
-					\item Rough no contact (RNC): $\varepsilon^{p}_i>B \overline{\varepsilon}^{p}$
-					\item Rough contact (RC): otherwise
+					\item Rough no contact (RNC): $\varepsilon^{p}_i>B \overline{\varepsilon}^{p}$\\
+						\visible<3->{$\textcolor{blue}{\uvec{U}}$: $5$-th order WENO $+$ CU numerical flux}
+					\item Rough contact (RC): otherwise\\
+						\visible<3->{$\textcolor{blue}{\uvec{U}}$: \textcolor<5->{green}{$2$-nd order overcompressive\only<5->{\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}} $+$ LDCU numerical flux\only<5->{\footnote{{\tiny S. Chu, A. Kurganov, R. Xin, J. Sci. Comput., 2025}}}}
+						}
 				\end{itemize}
 			}
 
-			\item Smooth (S): otherwise
-			
+			\item Smooth (S): otherwise\\
+				\visible<3->{$\textcolor{blue}{\uvec{U}}$: $5$-th order unlimited $+$ CU numerical flux}
 
 		\end{itemize}
 		
+		\vspace{0.4cm}
+
+		\visible<4->{$\textcolor{red}{\uvec{V}}$: $5$-th order unlimited $+$ CU numerical flux and no PC
+			{\footnotesize
+				$$\frac{d}{dt}\textcolor{red}{\uvec{V}_{i}}(t)= -\frac{1}{\Delta x}\left(
+				\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}
+				-\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i-\frac{1}{2}}}
+				\right)+\textcolor{violet}{\frac{1}{\Delta x}
+					\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x\, dx}+\cancel{\textcolor{violet}{\frac{1}{\Delta x}
+						\left(\uvec{D}_{\uvec{\Psi},\imh}^+
+						+\uvec{D}_{\uvec{\Psi},\iph}^-\right)}}$$
+			}
+		}
 
 		
 
