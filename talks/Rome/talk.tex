@@ -1398,6 +1398,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 \end{frame}
 
+
 \begin{frame}
 	\frametitle{Shock detection}
 		\begin{columns}
@@ -1508,6 +1509,62 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 		\centering{\includegraphics[scale=0.3]{shock_turbulence_modified_example_2_3200_plot_rome_overcompressive.pdf}}
 	\end{figure}
 	
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, Shock-Density Wave Interaction Problem}
+
+		\begin{equation*}
+			(\rho(x,0),u(x,0),p(x,0))=
+			\begin{cases}\bigg(\dfrac{27}{7},\dfrac{4\sqrt{35}}{9},\dfrac{31}{3}\bigg),&x<-4,\\(1+0.2\sin(5x),0,1),&x>-4,\end{cases}
+		\end{equation*}
+	
+		\begin{figure}[ht!]
+			\centerline{\includegraphics[trim=0.1cm 0.0cm 0.0cm 0.1cm, clip, width=0.5\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho}%\hspace*{0.8cm}
+				\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho_zoom}}
+%			\caption{\sf Example 1: Density $\rho$ computed by the adaptive and A-WENO scheme with $\dx=2/87$ and $\dx=1/30$, respectively (left) and
+%				zoom at $x\in[8.9,14]$ (right).\label{fig52}}
+		\end{figure}
+
+		%RMK: SAME COMPUTATIONAL TIME HERE
+		%RMK: SAME MESH REFINEMENT IN THE NEXT TESTS
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Adaptivity, Woodward--Colella}
+
+		\begin{equation*}
+			(\rho(x,0),u(x,0),p(x,0))= \begin{cases}(1,0,1000),&x<0.1,\\(1,0,0.01),& 0.1<x<0.9,\\(1,0,100),&x>0.9,\end{cases}
+		\end{equation*}
+	
+		\begin{figure}[ht!]
+			\centerline{\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.5\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho}%\hspace*{0.8cm}
+				\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho_zoom}}
+%			\caption{\sf Example 3: Density $\rho$ (left) and zoom at $x\in[0.56,0.62]$ (right).\label{fig54}}
+		\end{figure}
+
+		%RMK: SAME MESH REFINEMENT
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, Woodward--Colella}
+	
+	\begin{equation*}
+		(\rho(x,0),u(x,0),p(x,0))= \begin{cases}(1,0,1000),&x<0.1,\\(1,0,0.01),& 0.1<x<0.9,\\(1,0,100),&x>0.9,\end{cases}
+	\end{equation*}
+	
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.5\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho}%\hspace*{0.8cm}
+			\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho_zoom}}
+		%			\caption{\sf Example 3: Density $\rho$ (left) and zoom at $x\in[0.56,0.62]$ (right).\label{fig54}}
+	\end{figure}
+	
+	%RMK: SAME MESH REFINEMENT
 	
 \end{frame}
 
