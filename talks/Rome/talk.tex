@@ -1385,6 +1385,10 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\frametitle{Shock detection}
 		\begin{columns}
 			\begin{column}{0.5\textwidth}
+				\centering
+				
+				{\footnotesize Shock $=$ Compression}
+				
 				\begin{tikzpicture}[scale=0.75, >=stealth]
 					
 					% axes
@@ -1429,6 +1433,13 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 				\end{tikzpicture}
 			\end{column}
 			\begin{column}{0.5\textwidth}
+				\centering
+				
+
+				
+				{\footnotesize Contact $=$ No compression ($p,v=$const)}
+
+
 				\begin{tikzpicture}[scale=0.75, >=stealth]
 					
 					% axes
@@ -1454,7 +1465,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 					}
 					
 					% right characteristics: tilted left, crossing the contact
-					\foreach \xzero in {3.60,3.95,4.30,4.65,5.00,5.35,5.70}
+					\foreach \xzero in {3.60,3.95,4.30,4.65,5.00}
 					{
 						\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
 					}
@@ -1463,6 +1474,10 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 			\end{column}
 		\end{columns}
+	
+		\begin{figure}[hp] 
+			\centering{\includegraphics[scale=0.15]{sod_rome_200_cons_rus_MINMODVL_SSPRK2_CFL0.9.pdf}}
+		\end{figure}
 
 
 \end{frame}
@@ -1471,6 +1486,10 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \begin{frame}
 	\frametitle{Adaptivity}
 	
+	
+	\begin{figure}[hp] 
+		\centering{\includegraphics[scale=0.3]{shock_turbulence_modified_example_2_3200_plot_rome_overcompressive.pdf}}
+	\end{figure}
 	
 	
 \end{frame}
