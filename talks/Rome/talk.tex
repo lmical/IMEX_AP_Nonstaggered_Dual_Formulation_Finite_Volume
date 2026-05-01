@@ -1604,23 +1604,19 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \begin{frame}
 	\frametitle{Adaptivity, 2-D Riemann problem, Implosion problem}
 		
-		RMK: Parameter tuning performed on coarse meshes.
+		\centering 
+		
+		RMK: Parameter tuning performed on coarse meshes (cheap).
 
 \end{frame}
+
 
 \section{Application to multifluid}
 \frame\sectionpage
 
 
-\section{Application to aymptotic preservation}
-\frame\sectionpage
-
-\section{(Easy) Application to multifluid}
-\frame\sectionpage
-
-
 \begin{frame}
-	\frametitle{Why multifluid flows?}
+	\frametitle{Motivation}
 	
 	\centering
 	No need to convince you... It is a \textcolor{red}{relevant} \textcolor{blue}{complicated} problem
@@ -1941,8 +1937,8 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 					\begin{itemize}
 						\item Control variables
 							\begin{itemize}
-								\item[$\ast$] {\tiny $\textcolor{blue}{\overline{\uvec{U}}_i}$ on \textcolor{blue}{main mesh}}\\
-								\item[$\ast$] {\tiny $(\textcolor{red}{\overline{\uvec{V}}_{i+\frac{1}{2}}},\textcolor{red}{\overline{(\rho\phi)}_{i+\frac{1}{2}}})$ on \textcolor{red}{staggered mesh}}
+								\item[$\ast$] {\tiny $\textcolor{blue}{\uvec{U}_i}$ on \textcolor{blue}{main mesh}}\\
+								\item[$\ast$] {\tiny $(\textcolor{red}{\uvec{V}_{i}},\textcolor{red}{(\rho\phi)_{i}})$ on \textcolor{red}{staggered mesh}}
 							\end{itemize}
 						\item Scheme
 						
@@ -2178,6 +2174,12 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 {\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
 
 \end{frame}
+
+
+\section{Application to aymptotic preservation}
+\frame\sectionpage
+
+
 
 \section{Further perspectives}
 \frame\sectionpage
