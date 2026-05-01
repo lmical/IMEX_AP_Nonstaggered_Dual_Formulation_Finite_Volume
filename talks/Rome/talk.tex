@@ -1524,29 +1524,13 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 		\begin{figure}[ht!]
 			\centerline{\includegraphics[trim=0.1cm 0.0cm 0.0cm 0.1cm, clip, width=0.5\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho}%\hspace*{0.8cm}
 				\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho_zoom}}
+				\caption*{Same computational time}
 %			\caption{\sf Example 1: Density $\rho$ computed by the adaptive and A-WENO scheme with $\dx=2/87$ and $\dx=1/30$, respectively (left) and
 %				zoom at $x\in[8.9,14]$ (right).\label{fig52}}
 		\end{figure}
 
 		%RMK: SAME COMPUTATIONAL TIME HERE
 		%RMK: SAME MESH REFINEMENT IN THE NEXT TESTS
-
-\end{frame}
-
-\begin{frame}
-	\frametitle{Adaptivity, Woodward--Colella}
-
-		\begin{equation*}
-			(\rho(x,0),u(x,0),p(x,0))= \begin{cases}(1,0,1000),&x<0.1,\\(1,0,0.01),& 0.1<x<0.9,\\(1,0,100),&x>0.9,\end{cases}
-		\end{equation*}
-	
-		\begin{figure}[ht!]
-			\centerline{\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.5\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho}%\hspace*{0.8cm}
-				\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho_zoom}}
-%			\caption{\sf Example 3: Density $\rho$ (left) and zoom at $x\in[0.56,0.62]$ (right).\label{fig54}}
-		\end{figure}
-
-		%RMK: SAME MESH REFINEMENT
 
 \end{frame}
 
@@ -1559,8 +1543,9 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\end{equation*}
 	
 	\begin{figure}[ht!]
-		\centerline{\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.5\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho}%\hspace*{0.8cm}
+		\centerline{\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.49\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho}%\hspace*{0.8cm}
 			\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho_zoom}}
+				\caption*{From now on, same mesh refinement}
 		%			\caption{\sf Example 3: Density $\rho$ (left) and zoom at $x\in[0.56,0.62]$ (right).\label{fig54}}
 	\end{figure}
 	
@@ -1568,6 +1553,60 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	
 \end{frame}
 
+\begin{frame}
+	\frametitle{Adaptivity, 2-D Riemann problem, Configuration 3}
+
+\begin{figure}[ht!]
+	\centerline{\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}
+		\hspace*{0.5cm}
+		\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/uniform_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}}
+	\vskip10pt
+	\hspace*{-0.2cm}\centerline{\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDX}
+		\hspace*{1.0cm}
+		\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDY}}
+%	\caption{\sf Example 4 (Configuration 3): Same as in Figure \ref{fig55} but for the mesh with $\dx=\dy=3/2000$.\label{fig56}}
+\end{figure}
+
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, 2-D Riemann problem, Configuration 12}
+		\begin{figure}[ht!]
+			\centerline{\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}
+				\hspace*{0.5cm}
+				\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}}
+			\vskip10pt   
+			\hspace*{-0.2cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDX}
+				\hspace*{1.0cm}
+				\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDY}}
+%			\caption{\sf Example 4 (Configuration 12): Same as in Figure \ref{fig57} but for the mesh with $\dx=\dy=3/4000$.\label{fig58}}
+		\end{figure}
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, 2-D Riemann problem, Implosion problem}
+		\begin{figure}[ht!]
+			\centerline{\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}
+				\hspace*{0.5cm}
+				\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}}
+			\vskip10pt
+			\hspace*{-0.3cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDX}\hspace*{1.1cm}
+				\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDY}}
+%			\caption{\sf Example 5: Same as in Figure \ref{fig59} but with $\dx = 3/4000$.\label{fig510}}
+		\end{figure}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Adaptivity, 2-D Riemann problem, Implosion problem}
+		
+		RMK: Parameter tuning performed on coarse meshes.
+
+\end{frame}
 
 \section{Application to multifluid}
 \frame\sectionpage
@@ -2212,15 +2251,55 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \section*{Backup slides}
 
 \begin{frame}
-	\frametitle{Other option: $\uvec{V}$ at corners (right)}
+	\frametitle{Adaptivity, Configuration 3, coarse mesh}
 	
-	\begin{figure}[ht!]
-		\includegraphics[width=0.39\textwidth]{figures_HONOM/rp2d_U_contour_density.pdf}
-		\includegraphics[width=0.39\textwidth]{figures_HONOM/rp2d_U_contour_density_V_at_vertices.pdf}
-	\end{figure}
+		\begin{figure}[ht!]
+			\centerline{\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_400_N_y_400_rho}
+				\hspace*{0.5cm}
+				\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/uniform_2D_Euler_5_WENO_Flag_1_N_x_400_N_y_400_rho}}
+			\vskip10pt
+			\hspace*{-0.2cm}\centerline{\includegraphics[trim=1.3cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_400_N_y_400_IDX}
+				\hspace*{1.0cm}
+				\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_400_N_y_400_IDY}}
+	%		\caption{\sf Example 4 (Configuration 3): Density $\rho$ computed by the adaptive (top left) and A-WENO (top right) schemes on a uniform
+	%			mesh with $\dx=\dy=3/1000$, along with SIs in the $x$-direction (bottom left) and $y$-direction (bottom right).\label{fig55}}
+		\end{figure}
 	
+
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, Configuration 12, coarse mesh}
+		\begin{figure}[ht!]
+			\centerline{\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_400_N_y_400_rho}
+				\hspace*{0.5cm}
+				\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_7_WENO_Flag_1_N_x_400_N_y_400_rho}}
+			\vskip10pt   
+			\hspace*{-0.2cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_400_N_y_400_IDX}
+				\hspace*{1.0cm}
+				\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_400_N_y_400_IDY}}
+		%	\caption{\sf Example 4 (Configuration 12): Density $\rho$ computed by the adaptive (top left) and A-WENO (top right) schemes on a uniform
+		%		mesh with $\dx=\dy=3/2000$, along with SIs in the $x$-direction (bottom left) and $y$-direction (bottom right).\label{fig57}}
+		\end{figure}
 	
 \end{frame}
+
+\begin{frame}
+	\frametitle{Adaptivity, Implosion problem, coarse mesh}
+		\begin{figure}[ht!]
+			\centerline{\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_250_N_y_250_rho}
+				\hspace*{0.5cm}
+				\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_4_WENO_Flag_1_N_x_250_N_y_250_rho}}
+			\vskip10pt
+			\hspace*{-0.3cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_250_N_y_250_IDX}\hspace*{1.1cm}
+				\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_250_N_y_250_IDY}}
+			%	\caption{\sf Example 5: Density $\rho$ computed by the adaptive (top left) and A-WENO schemes (top right), along with SIs in the 
+				%		$x$-direction (bottom left) and the $y$-direction (bottom right). All with $\dx = 3/2500$.\label{fig59}}
+		\end{figure}		
+	
+\end{frame}
+
 
 \backupend
 
