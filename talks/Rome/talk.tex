@@ -1390,6 +1390,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 					\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x\, dx}+\cancel{\textcolor{violet}{\frac{1}{\Delta x}
 						\left(\uvec{D}_{\uvec{\Psi},\imh}^+
 						+\uvec{D}_{\uvec{\Psi},\iph}^-\right)}}$$
+				$$\textcolor{violet}{\uvec{D}_{\uvec{\Psi},\iph}^{\pm}=\uvec{0}}$$
 			}
 		}
 
@@ -1916,12 +1917,12 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 				\node at (3*\cellwidth,4.2+\yoffset){$\textcolor{red}{(\rho \phi)_{i}>0}$};
 				\node at (4*\cellwidth,3.7+\yoffset){$\textcolor{red}{(\rho \phi)_{i+1}<0}$};
 				
-
+				\def\yoffset{1.2}
 
 				% Cell labels
-				\node at (2*\cellwidth,5.5){$\textcolor{teal}{\gamma_1}, \textcolor{teal}{p_{\infty,1}}$};
-				\node at (3*\cellwidth,5.5){$\textcolor{teal}{\gamma_1}, \textcolor{teal}{p_{\infty,1}}$};
-				\node at (4*\cellwidth,5.5){$\textcolor{teal}{\gamma_2}, \textcolor{teal}{p_{\infty,2}}$};
+				\node at (2*\cellwidth,3.2+\yoffset){$\textcolor{teal}{\gamma_1}, \textcolor{teal}{p_{\infty,1}}$};
+				\node at (3*\cellwidth,4.2+\yoffset){$\textcolor{teal}{\gamma_1}, \textcolor{teal}{p_{\infty,1}}$};
+				\node at (4*\cellwidth,3.7+\yoffset){$\textcolor{teal}{\gamma_2}, \textcolor{teal}{p_{\infty,2}}$};
 
 
 				
@@ -1943,19 +1944,26 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 				
 					
 					\begin{itemize}
-						\item Control variables
-							\begin{itemize}
-								\item[$\ast$] {\tiny $\textcolor{blue}{\uvec{U}_i}$ on \textcolor{blue}{main mesh}}\\
-								\item[$\ast$] {\tiny $(\textcolor{red}{\uvec{V}_{i}},\textcolor{red}{(\rho\phi)_{i}})$ on \textcolor{red}{staggered mesh}}
-							\end{itemize}
+						\item Control variables: {\tiny $\textcolor{blue}{\uvec{U}_i}$ and  $(\textcolor{red}{\uvec{V}_{i}},\textcolor{red}{(\rho\phi)_{i}})$}
 						\item Scheme
 						
 							\begin{align*}
 								\begin{cases}
-									\frac{d}{d t}\textcolor{blue}{\overline{\uvec{U}}_i}(t)=&-\frac{\uvec{F}(\uvec{U}(\textcolor{red}{\overline{\uvec{V}}_{i+\frac{1}{2}}}))-\uvec{F}(\uvec{U}(\textcolor{red}{\overline{\uvec{V}}_{i-\frac{1}{2}}}))}{\Delta x}\\
-									\frac{d}{d t}\textcolor{red}{\overline{\uvec{V}}_{i+\frac{1}{2}}}(t)= &-\frac{1}{\Delta x}\bigg[\textcolor{orange}{\widetilde{{{\cal F}}}_{i+1}}-\textcolor{orange}{\widetilde{{{\cal F}}}_i}- \textcolor{violet}{B_\iph}\\
-									&-\textcolor{violet}{\frac{a^+_i}{a^+_i-a^-_i} B_{\Psi,i}}+\textcolor{violet}{\frac{a^-_{i+1}}{a^+_{i+1}-a^-_{i+1}} B_{\Psi,i+1}}\bigg]\\
-									\frac{d}{d t}\textcolor{red}{\overline{(\rho \phi)}_{i+\frac{1}{2}}}(t)&=-\frac{1}{\Delta x}\left[ \textcolor{orange}{\widetilde{(\rho \phi v)}_{i+1}}-\textcolor{orange}{\widetilde{(\rho \phi v)}_i} \right]
+									&\frac{d}{dt}\textcolor{blue}{\uvec{U}_i}(t)
+									= -\frac{1}{\Delta x}\left(\widehat{\uvec{F}}_{i+\frac{1}{2}}-\textcolor{black}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)
+									\\
+									&\frac{d}{dt}\textcolor{red}{\uvec{V}_{i}}(t)
+									= -\frac{1}{\Delta x}\left(
+									\textcolor{orange}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}
+									-\textcolor{orange}{\widehat{\widetilde{\uvec{F}}}_{i-\frac{1}{2}}}
+									\right)
+									\\
+									&+\textcolor{violet}{\frac{1}{\Delta x}
+										\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x\, dx}
+									+\textcolor{violet}{\frac{1}{\Delta x}
+										\left(\uvec{D}_{\uvec{\Psi},\imh}^+
+										+\uvec{D}_{\uvec{\Psi},\iph}^-\right)}\\
+									&\frac{d}{d t}\textcolor{red}{(\rho \phi)_{i}}(t)=-\frac{1}{\Delta x}\left[ \textcolor{orange}{\widehat{\widetilde{(\rho \phi v)}}_{i+\frac{1}{2}}}-\textcolor{orange}{\widehat{\widetilde{(\rho \phi v)}}_{i-\frac{1}{2}}} \right]
 								\end{cases}
 							\end{align*}
 						
@@ -1970,6 +1978,23 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 		\end{column}
 		
 	\end{columns}
+	
+	
+
+	$$
+	\left(\uvec{U}_i^{n}, \uvec{V}_i^{n}, (\rho \phi)_i^{n}\right) 
+	\xrightarrow{\text{RK}} 
+	\left(\uvec{U}_i^*, \uvec{V}_i^*, (\rho \phi)_i^{n+1} \right)
+	\xrightarrow{\text{PP}} 
+	\begin{cases}
+		\left(\uvec{U}_i^{n+1}:=\uvec{U}_i^*, \uvec{V}_i^{n+1}:=\uvec{V}(\uvec{U}_i^*,(\rho \phi)_i^{n+1})\right), \quad \text{away from the interface ($\uvec{U}$)},	\\
+		\left(\uvec{U}_i^{n+1}:=\uvec{U}(\uvec{V}_i^*,(\rho \phi)_i^{n+1}), \uvec{V}_i^{n+1}:=\uvec{V}_i^*\right), \quad \text{around the interface ($\uvec{V}$)}
+	\end{cases}
+	$$
+	
+	
+	
+	
 	
 %						\item \textcolor{orange}{CU numerical fluxes}							
 %\item \textcolor{orange}{PWL space}
