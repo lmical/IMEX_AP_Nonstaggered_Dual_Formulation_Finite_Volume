@@ -2119,49 +2119,6 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 \end{frame}
 
-\begin{frame}{Shock--Bubble Interaction (Helium top, R22 bottom)}
-	\centering
-	\begin{minipage}[t]{0.9\textwidth}
-		\centering
-		%		\textbf{Helium} % Display the caption as bold text
-		% First set of images
-		\foreach \index in {1, ..., 30} {
-			\only<\index>{ % Display only the current index
-				\includegraphics[width=0.9\textwidth,
-				trim=0.cm 0.cm 0.cm 0.675cm,
-				clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\
-				\includegraphics[width=0.48\textwidth,
-				trim=0.cm 0.cm 0.cm 0.675cm,
-				clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}
-				\includegraphics[width=0.48\textwidth,
-				trim=0.cm 0.cm 0.cm 0.675cm,
-				clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}\\
-				%						\vspace{0.5em} % Add vertical space between images
-			}
-		}
-	\end{minipage}    
-	\\ % Add horizontal space between minipages
-	\begin{minipage}[t]{0.9\textwidth}
-		\centering
-		%		\textbf{R-22} % Display the caption as bold text
-		% Second set of images
-		\foreach \index in {1, ..., 30} {
-			\only<\index>{ % Display only the current index
-				\includegraphics[width=0.9\textwidth,
-				trim=0.cm 0.cm 0.cm 0.675cm,
-				clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\
-				\includegraphics[width=0.48\textwidth,
-				trim=0.cm 0.cm 0.cm 0.675cm,
-				clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}
-				\includegraphics[width=0.48\textwidth,
-				trim=0.cm 0.cm 0.cm 0.675cm,
-				clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}
-				%				\vspace{0.5em} % Add vertical space between images
-			}
-		}
-		
-	\end{minipage}    
-\end{frame}
 
 
 \begin{frame}{Shock--Bubble Interaction (Helium top, R22 bottom)}
@@ -2198,12 +2155,12 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\begin{subfigure}{0.45\linewidth}
 		\centering
 		\caption*{\textbf{Helium}}
-		\includegraphics[width=\linewidth]{final_results_multifluid_CFL0.475/helium_cropped.pdf} % Adjust the path and size
+		\includegraphics[width=\linewidth]{Figures_multifluid/numerical_vs_experimental/helium_cropped.pdf} % Adjust the path and size
 	\end{subfigure}\hspace{1em} % Horizontal spacing
 	\begin{subfigure}{0.45\linewidth}
 		\centering
 		\caption*{\textbf{R-22}}
-		\includegraphics[width=\linewidth]{final_results_multifluid_CFL0.475/r22_cropped.pdf} % Adjust the path and size
+		\includegraphics[width=\linewidth]{Figures_multifluid/numerical_vs_experimental/r22_cropped.pdf} % Adjust the path and size
 	\end{subfigure}
 \end{figure}
 
