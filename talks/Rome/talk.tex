@@ -2120,53 +2120,51 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \end{frame}
 
 
-%\begin{comment}
+
 
 \begin{frame}{Shock--Bubble Interaction (Helium top, R22 bottom)}
 	\centering
-	\begin{minipage}[t]{0.72\textwidth}
+	\begin{minipage}[t]{0.9\textwidth}
 		\centering
-%		\textbf{Helium} % Display the caption as bold text
+		%		\textbf{Helium} % Display the caption as bold text
 		% First set of images
-		\foreach \index in {0, ..., 30} {
+		\foreach \index in {1, ..., 30} {
 			\only<\index>{ % Display only the current index
-				\includegraphics[width=1.05\textwidth,
-				trim=0.cm 0.cm 0.cm 0.675cm,
-				clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}
-				\vspace{0.5em} % Add vertical space between images
-				}
+				\includegraphics[width=0.9\textwidth,
+						trim=0.cm 0.cm 0.cm 0.675cm,
+						clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\
+						\includegraphics[width=0.48\textwidth,
+						trim=0.cm 0.cm 0.cm 0.675cm,
+						clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}
+						\includegraphics[width=0.48\textwidth,
+						trim=0.cm 0.cm 0.cm 0.675cm,
+						clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}
+%						\vspace{0.5em} % Add vertical space between images
 			}
-			%Trick
-			\only<31>{ % Display only the current index
-				\includegraphics[width=1.05\textwidth,
-				trim=0.cm 0.cm 0.cm 0.675cm,
-				clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_30.png}
-				\vspace{0.5em} % Add vertical space between images
-			}
+		}
 	\end{minipage}    
 	\\ % Add horizontal space between minipages
-	\begin{minipage}[t]{0.72\textwidth}
+	\begin{minipage}[t]{0.9\textwidth}
 		\centering
-%		\textbf{R-22} % Display the caption as bold text
+		%		\textbf{R-22} % Display the caption as bold text
 		% Second set of images
-		\foreach \index in {0, ..., 30} {
+		\foreach \index in {1, ..., 30} {
 			\only<\index>{ % Display only the current index
-				\includegraphics[width=1.05\textwidth,
+				\includegraphics[width=0.9\textwidth,
 				trim=0.cm 0.cm 0.cm 0.675cm,
-				clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}
-				\vspace{0.5em} % Add vertical space between images
-				}
-			}
-			\only<31>{ % Display only the current index
-				\includegraphics[width=1.05\textwidth,
+				clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\
+				\includegraphics[width=0.48\textwidth,
 				trim=0.cm 0.cm 0.cm 0.675cm,
-				clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_30.png}
-				\vspace{0.5em} % Add vertical space between images
+				clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}
+				\includegraphics[width=0.48\textwidth,
+				trim=0.cm 0.cm 0.cm 0.675cm,
+				clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}
+%				\vspace{0.5em} % Add vertical space between images
 			}
+		}
 	\end{minipage}    
 \end{frame}
 
-%\end{comment}
 
 
 
