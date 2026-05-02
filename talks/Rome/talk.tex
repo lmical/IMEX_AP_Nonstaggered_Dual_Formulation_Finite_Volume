@@ -1993,21 +1993,12 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\left(\uvec{U}_i^*, \uvec{V}_i^*, (\rho \phi)_i^{n+1} \right)
 	\xrightarrow{\text{PP}} 
 	\begin{cases}
-		\left(\uvec{U}_i^{n+1}:=\uvec{U}_i^*, \uvec{V}_i^{n+1}:=\uvec{V}(\uvec{U}_i^*,(\rho \phi)_i^{n+1})\right), \quad \text{away from the interface ($\uvec{U}$)},	\\
-		\left(\uvec{U}_i^{n+1}:=\uvec{U}(\uvec{V}_i^*,(\rho \phi)_i^{n+1}), \uvec{V}_i^{n+1}:=\uvec{V}_i^*\right), \quad \text{around the interface ($\uvec{V}$)}
+		\left(\textcolor{blue}{\uvec{U}_i^{n+1}:=\uvec{U}_i^*}, \uvec{V}_i^{n+1}:=\uvec{V}(\uvec{U}_i^*,(\rho \phi)_i^{n+1})\right), \quad \text{away from the interface ($\uvec{U}$)},	\\
+		\left(\uvec{U}_i^{n+1}:=\uvec{U}(\uvec{V}_i^*,(\rho \phi)_i^{n+1}), \textcolor{red}{\uvec{V}_i^{n+1}:=\uvec{V}_i^*}\right), \quad \text{around the interface ($\uvec{V}$)}
 	\end{cases}
 	$$
 	
-	
-	
-	
-	
-%						\item \textcolor{orange}{CU numerical fluxes}							
-%\item \textcolor{orange}{PWL space}
-%\item \textcolor{violet}{PC terms}
-%\item SSPRK3 time						
-%\item \textbf{...modulo some caveat:}\\ 
-%PP not performed at material interface and $\uvec{U}$ interpolated from $\uvec{V}$ there (not fully--conservative)	
+
 
 \end{frame}
 
@@ -2029,7 +2020,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 		
 
 		\begin{figure}[ht!]
-			\includegraphics[width=1.\textwidth]{final_results_multifluid_CFL0.475/multifluid_sod_W_X_SSPRK3_CFL0.475.pdf}
+			\includegraphics[width=1.\textwidth]{Figures_multifluid/multifluid_sod.pdf}
 		\end{figure}
 	
 	$$N=200$$
@@ -2051,7 +2042,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	
 	
 	\begin{figure}[ht!]
-		\includegraphics[width=1.\textwidth]{final_results_multifluid_CFL0.475/multifluid_stiff_sod_W_X_SSPRK3_CFL0.475}
+			\includegraphics[width=1.\textwidth]{Figures_multifluid/multifluid_stiff_sod.pdf}
 	\end{figure}
 	
 	$$N=400$$
@@ -2073,7 +2064,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	
 	
 	\begin{figure}[ht!]
-		\includegraphics[width=1.\textwidth]{final_results_multifluid_CFL0.475/multifluid_water_air_W_X_SSPRK3_CFL0.475}
+			\includegraphics[width=1.\textwidth]{Figures_multifluid/multifluid_water_air.pdf}
 	\end{figure}
 	
 	
@@ -2192,6 +2183,18 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 \end{frame}
 
+
+\section{Application to aymptotic preservation}
+\frame\sectionpage
+
+\begin{frame}{Motivation}
+	\centering
+
+		Low Mach
+
+\end{frame}
+
+
 \section{(Easy) Application to shock-detection}
 \frame\sectionpage
 
@@ -2215,8 +2218,6 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \end{frame}
 
 
-\section{Application to aymptotic preservation}
-\frame\sectionpage
 
 
 
