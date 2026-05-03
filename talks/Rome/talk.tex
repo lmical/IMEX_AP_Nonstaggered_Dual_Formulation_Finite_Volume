@@ -2017,7 +2017,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \end{cases}
 \end{align*}
 
-		
+		mm
 
 		\begin{figure}[ht!]
 			\includegraphics[width=1.\textwidth]{Figures_multifluid/multifluid_sod.pdf}
@@ -2120,30 +2120,91 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \end{frame}
 
 
+\begin{comment}
+	\begin{frame}{Shock--Bubble Interaction (Helium top, R22 bottom)}
+		\centering
+		\begin{minipage}[t]{0.9\textwidth}
+			\centering
+			\foreach \index in {1, ..., 30} {%
+				\only<\index>{%
+					\includegraphics[width=0.9\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\%
+					\includegraphics[width=0.48\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}%
+					\includegraphics[width=0.48\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}%
+				}%
+			}%
+		\end{minipage}
+		
+		\begin{minipage}[t]{0.9\textwidth}
+			\centering
+			\foreach \index in {1, ..., 30} {%
+				\only<\index>{%
+					\includegraphics[width=0.9\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\%
+					\includegraphics[width=0.48\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}%
+					\includegraphics[width=0.48\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}%
+				}%
+			}%
+		\end{minipage}
+	\end{frame}
+\end{comment}
+
 
 \begin{frame}{Shock--Bubble Interaction (Helium top, R22 bottom)}
 	\centering
+	
+	% =========================
+	% R22 (top)
+	% =========================
 	\begin{minipage}[t]{0.9\textwidth}
 		\centering
-		\foreach \index in {1, ..., 30} {%
-			\only<\index>{%
-				\includegraphics[width=0.9\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\%
-				\includegraphics[width=0.48\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}%
-				\includegraphics[width=0.48\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}%
+		\foreach[count=\k from 1] \index in {1,10,20,30} {%
+			\only<\k>{%
+				\includegraphics[
+				width=0.9\textwidth,
+				trim=0cm 0cm 0cm 0.675cm,
+				clip
+				]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\
+				\includegraphics[
+				width=0.48\textwidth,
+				trim=0cm 0cm 0cm 0.675cm,
+				clip
+				]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}%
+				\includegraphics[
+				width=0.48\textwidth,
+				trim=0cm 0cm 0cm 0.675cm,
+				clip
+				]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}%
 			}%
-		}%
+		}
 	\end{minipage}
 	
+	\vspace{0.5em}
+	
+	% =========================
+	% Helium (bottom)
+	% =========================
 	\begin{minipage}[t]{0.9\textwidth}
 		\centering
-		\foreach \index in {1, ..., 30} {%
-			\only<\index>{%
-				\includegraphics[width=0.9\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\%
-				\includegraphics[width=0.48\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}%
-				\includegraphics[width=0.48\textwidth, trim=0.cm 0.cm 0.cm 0.675cm, clip]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}%
+		\foreach[count=\k from 1] \index in {1,10,20,30} {%
+			\only<\k>{%
+				\includegraphics[
+				width=0.9\textwidth,
+				trim=0cm 0cm 0cm 0.675cm,
+				clip
+				]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\
+				\includegraphics[
+				width=0.48\textwidth,
+				trim=0cm 0cm 0cm 0.675cm,
+				clip
+				]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}%
+				\includegraphics[
+				width=0.48\textwidth,
+				trim=0cm 0cm 0cm 0.675cm,
+				clip
+				]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}%
 			}%
-		}%
+		}
 	\end{minipage}
+	
 \end{frame}
 
 
@@ -2175,17 +2236,140 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \begin{frame}{Motivation, low Mach flows}
 	\centering
 
+	{\footnotesize
 		\begin{align*}
 			\begin{cases}
-				&\rho_t+div_{\uvec{x}}(\rho\bm v)=0,\\
-				&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\frac{1}{\varepsilon^2}\nabla p=\bm0,\\
-				&E_t+div_{\uvec{x}}((E+p)\bm v)=0.
+				&\rho_t+div_{\uvec{x}}(\rho\bm v)=0\\
+				&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\nabla_{\uvec{x}} p=\bm 0\\
+				&E_t+div_{\uvec{x}}((E+p)\bm v)=0\\
+				&E=\frac{p}{\gamma-1}+\frac{1}{2}\rho \norm{\uvec{v}}^2\\
+				&\lambda=\norm{v},\norm{v}\pm \sqrt{\gamma\frac{p}{\rho}} 
 			\end{cases}
+			 \visible<2->{\Rightarrow  
+				\begin{cases}
+					&\rho_t+div_{\uvec{x}}(\rho\bm v)=0\\
+					&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\frac{1}{\textcolor{violet}{\varepsilon}^2}\nabla_{\uvec{x}} p=\bm 0\\
+					&E_t+div_{\uvec{x}}((E+p)\bm v)=0\\
+					&E=\frac{p}{\gamma-1}+\frac{1}{2}\textcolor{violet}{\varepsilon}\rho \norm{\uvec{v}}^2\\ %, \quad \textcolor{violet}{\varepsilon:=\frac{v_0}{\sqrt{\gamma \frac{p_0}{\rho_0}}}}\\
+					&\lambda=\textcolor<3->{red}{\norm{v}},\textcolor<3->{blue}{\norm{v}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
+				\end{cases}}
 		\end{align*}
 
-		Low Mach
+		
+			\vspace{0.1cm}
+		
+			\visible<3->{$\textcolor{violet}{\varepsilon}$: \textcolor{red}{flow speed (entropy/vorticity)} vs \textcolor{blue}{acoustic speed (pressure/density perturbations)}}
+			
+			\vspace{0.1cm}
+	
+			\visible<4->{
+				Low Mach $\Longleftrightarrow$ \textcolor{violet}{$\varepsilon$} $\longrightarrow$ 0 $\Longleftrightarrow$ \textcolor{red}{slow flow speed} $<<$ \textcolor{blue}{fast acoustic speed}
+			}
+
+			\vspace{0.3cm}
+
+	}
+					
+
+	{\tiny
+
+			\begin{columns}
+				\begin{column}{0.30\textwidth}
+					\centering
+						\visible<4->{
+							\textbf{Applications}
+								\begin{itemize}
+									\item Atmospheric flows
+									\item Oceanography
+									\item Astrophysical flows
+									\item Industrial flows
+									\item Combustion 
+									\item Reacting flows
+									\item Some astrophysical flows
+									\item etc...
+								\end{itemize}
+						}
+				\end{column}
+				\begin{column}{0.60\textwidth}
+					\centering
+						\visible<4->{
+							\textbf{Issues}	
+								\begin{itemize}
+									\item Stiffness
+										\begin{itemize}
+											\item {\tiny$\max{\vert \lambda \vert}=O(\varepsilon^{-1}) \Rightarrow \Delta t^{\text{Explicit}} = \frac{\Delta x}{\max{\vert \lambda \vert}}=O(\varepsilon)$ }
+											\item {\tiny Implicit $=$ Nonlinear systems \& Diffusion}
+											%\item \textcolor{blue}{IM}\textcolor{red}{EX} (acoustics less resolved but OK)
+										\end{itemize}
+									\item Asymptotic limit consistency...
+								\end{itemize}
+						}
+				\end{column}
+			\end{columns}					
+	}
+					
+					
+
 
 \end{frame}
+
+\begin{frame}{Motivation, low Mach limit}
+	\centering
+
+		\begin{tikzpicture}[scale=1.2, >=stealth]
+			
+			% Nodes
+			\node (A) at (0,2) {$\mathcal{P}^{\Delta x}_{\varepsilon}$};
+			\node (B) at (3,2) {$\mathcal{P}_{\varepsilon}$};
+			\node (C) at (0,0) {$\mathcal{P}^{\Delta x}$};
+			\node (D) at (3,0) {$\mathcal{P}$};
+			
+			% Arrows
+			\draw[->] (A) -- node[above] {\textcolor<2->{green}{$\Delta x \to 0$}} (B);
+			\draw[->] (C) -- node[above] {\textcolor<2->{red}{$\Delta x \to 0$}} (D);
+			\draw[->] (A) -- node[left]  {\textcolor<2->{red}{$\varepsilon \to 0$}} (C);
+			\draw[->] (B) -- node[right] {\textcolor<2->{green}{$\varepsilon \to 0$}} (D);			
+		\end{tikzpicture}
+
+
+	Equation (primitive, low Mach)
+
+	
+\end{frame}
+
+\begin{frame}{Splitting for the primitive system}
+	\centering
+	
+	Equation
+	
+	IMEX-Euler
+	
+	
+\end{frame}
+
+
+\begin{frame}{Splitting for the primitive system}
+	\centering
+	
+	AP
+	
+	Extension to HO (2 but higher)
+	
+\end{frame}
+
+
+\begin{frame}{Numerical results}
+	\centering
+	
+	AP
+	
+	Extension to HO (2 but higher)
+	
+\end{frame}
+
+
+%low Mach limit
+%AP scheme
 
 
 \section{(Easy) Application to shock-detection}
@@ -2221,23 +2405,16 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\frametitle{Further perspectives}
 	
 		\centering
-		The moral is: sometimes we want to use $\uvec{V}$ in place of $\uvec{U}$
+		Other systems (SW)
+
+		AP $+$ Multifluid
+
 		
 		\vspace{1.0cm}
 		
-		Staggered setting $\Rightarrow$ Nonstaggered setting (easier PP)
+		Staggered setting
 		
-		\vspace{1.0cm}
-		
-		{\small
-		\begin{itemize}
-%			\item smoothness indicator for Euler (with A.Chertock, A.Kurganov)\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}}
-			\item adaptive scheme for Euler (with A.Chertock, Q. Fu, A.Kurganov)
-			\item AP scheme for Euler (with \textcolor{red}{A.Chertock}, A.Kurganov, S.Karni)
-			\item AP scheme for TRSW (with A.Chertock, A.Kurganov, \textcolor{red}{N.Zhang})
-			\item adaptive scheme for multifluid Euler (with A.Chertock, A.Kurganov)
-		\end{itemize}
-		}	
+
 		
 \end{frame}
 	
