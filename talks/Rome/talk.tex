@@ -2343,7 +2343,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 			\visible<3->{
 				\begin{align*}
 					\begin{cases}
-						&\rho_t+div_{\uvec{x}}(\rho\bm u)=0\\
+						&\rho_t+div_{\uvec{x}}(\rho\uvec{v})=0\\
 						&\uvec{v}_t+(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p=\bm 0\\
 						&p_t+\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma pdiv_{\uvec{x}} \uvec{v}=0
 					\end{cases}
@@ -2414,7 +2414,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	
 	\begin{align*}
 		\begin{cases}
-			&\rho_t+\textcolor{blue}{div_{\uvec{x}}(\rho\bm u)}=0\\
+			&\rho_t+\textcolor{blue}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
 			&\uvec{v}_t+\textcolor{blue}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}}+\textcolor{red}{\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p}=\bm 0\\
 			&p_t+\textcolor{blue}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma pdiv_{\uvec{x}} \uvec{v}}=0
 		\end{cases}
@@ -2423,11 +2423,25 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\visible<2->{
 			\begin{itemize}
 				\item \textcolor{red}{less resolution for acoustic waves} (actually OK)
-				\item \textcolor{red}{nonlinear system} (not OK)
+				\item \textcolor{red}{nonlinear system} (not OK) \visible<3->{$\Rightarrow$ different splitting}
 			\end{itemize}
 			}
 
+	\visible<3->{			
+			\begin{align*}
+					&\pm \frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p~\text{in $\uvec{v}$-equation}
+					&\pm \gamma p_{\min}div_{\uvec{x}}\uvec{v}~\text{in $p$-equation}
+			\end{align*}	
+		
 
+			\begin{align*}
+				\begin{cases}
+					&\rho_t+div_{\uvec{x}}(\rho\uvec{v})=0\\
+					&\uvec{v}_t+(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\,\nabla_{\uvec{x}} p=-\frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p\\
+					&p_t+\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma(p-p_{\min})div_{\uvec{x}}\uvec{v}=-\gamma p_{\min}div_{\uvec{x}}\uvec{v}
+				\end{cases}
+			\end{align*}
+	}
 
 		
 \end{frame}
