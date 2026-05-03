@@ -2244,7 +2244,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 				&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\nabla_{\uvec{x}} p=\bm 0\\
 				&E_t+div_{\uvec{x}}((E+p)\bm v)=0\\
 				&E=\frac{p}{\gamma-1}+\frac{1}{2}\rho \norm{\uvec{v}}^2\\
-				&\lambda=\norm{v},\norm{v}\pm \sqrt{\gamma\frac{p}{\rho}} 
+				&\lambda=\norm{\uvec{v}},\norm{\uvec{v}}\pm \sqrt{\gamma\frac{p}{\rho}} 
 			\end{cases}
 			 \visible<2->{\Rightarrow  
 				\begin{cases}
@@ -2252,7 +2252,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 					&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\frac{1}{\textcolor{violet}{\varepsilon}^2}\nabla_{\uvec{x}} p=\bm 0\\
 					&E_t+div_{\uvec{x}}((E+p)\bm v)=0\\
 					&E=\frac{p}{\gamma-1}+\frac{1}{2}\textcolor{violet}{\varepsilon}^2\rho \norm{\uvec{v}}^2\\ %, \quad \textcolor{violet}{\varepsilon:=\frac{v_0}{\sqrt{\gamma \frac{p_0}{\rho_0}}}}\\
-					&\lambda=\textcolor<3->{blue}{\norm{v}},\textcolor<3->{red}{\norm{v}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
+					&\lambda=\textcolor<3->{blue}{\norm{\uvec{v}}},\textcolor<3->{red}{\norm{\uvec{v}}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
 				\end{cases}}
 		\end{align*}
 
@@ -2427,18 +2427,17 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 			\end{itemize}
 			}
 
-	\visible<3->{			
-			\begin{align*}
-					&\pm \frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p~\text{in $\uvec{v}$-equation}
-					&\pm \gamma p_{\min}div_{\uvec{x}}\uvec{v}~\text{in $p$-equation}
-			\end{align*}	
-		
+	\visible<4->{			
+			$\pm \frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p$ in $\uvec{v}$-equation,
+			$\pm \gamma p_{\min}div_{\uvec{x}}\uvec{v}$ in $p$-equation\\
+			$\rho_{\max}(t):=\max\limits_{(x,y)\in\Omega}\rho(x,y,t),\quad p_{\min}(t):=\min\limits_{(x,y)\in\Omega}p(x,y,t),$
 
 			\begin{align*}
 				\begin{cases}
-					&\rho_t+div_{\uvec{x}}(\rho\uvec{v})=0\\
-					&\uvec{v}_t+(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\,\nabla_{\uvec{x}} p=-\frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p\\
-					&p_t+\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma(p-p_{\min})div_{\uvec{x}}\uvec{v}=-\gamma p_{\min}div_{\uvec{x}}\uvec{v}
+					&\rho_t+\textcolor{blue}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
+					&\uvec{v}_t+\textcolor{blue}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\,\nabla_{\uvec{x}} p}=\textcolor{red}{-\frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p}\\
+					&p_t+\textcolor{blue}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma(p-p_{\min})div_{\uvec{x}}\uvec{v}}=\textcolor{red}{-\gamma p_{\min}div_{\uvec{x}}\uvec{v}}\\
+					&\lambda=\norm{\uvec{v}},\norm{\uvec{v}}\pm \frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(p-p_{\min})}{\rho\rho_{\max}}}
 				\end{cases}
 			\end{align*}
 	}
