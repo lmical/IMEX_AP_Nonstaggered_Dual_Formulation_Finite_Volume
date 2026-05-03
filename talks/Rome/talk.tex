@@ -115,6 +115,7 @@ text centered]
 \def\bphi{\underline{\phi}}
 \def\M{\underline{\underline{\mathrm{M}}}}
 \newcommand{\mass}{\mathbb M}
+\newcommand{\ve}{\varepsilon}
 
 \newcommand{\Prod}{p}
 \newcommand{\dest}{d}
@@ -2250,7 +2251,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 					&\rho_t+div_{\uvec{x}}(\rho\bm v)=0\\
 					&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\frac{1}{\textcolor{violet}{\varepsilon}^2}\nabla_{\uvec{x}} p=\bm 0\\
 					&E_t+div_{\uvec{x}}((E+p)\bm v)=0\\
-					&E=\frac{p}{\gamma-1}+\frac{1}{2}\textcolor{violet}{\varepsilon}\rho \norm{\uvec{v}}^2\\ %, \quad \textcolor{violet}{\varepsilon:=\frac{v_0}{\sqrt{\gamma \frac{p_0}{\rho_0}}}}\\
+					&E=\frac{p}{\gamma-1}+\frac{1}{2}\textcolor{violet}{\varepsilon}^2\rho \norm{\uvec{v}}^2\\ %, \quad \textcolor{violet}{\varepsilon:=\frac{v_0}{\sqrt{\gamma \frac{p_0}{\rho_0}}}}\\
 					&\lambda=\textcolor<3->{red}{\norm{v}},\textcolor<3->{blue}{\norm{v}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
 				\end{cases}}
 		\end{align*}
@@ -2303,7 +2304,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 											\item {\tiny Implicit $=$ Nonlinear systems \& Diffusion}
 											%\item \textcolor{blue}{IM}\textcolor{red}{EX} (acoustics less resolved but OK)
 										\end{itemize}
-									\visible<6->{\item Asymptotic limit consistency...}
+									\visible<5->{\item Asymptotic limit consistency...}
 								\end{itemize}
 						}
 				\end{column}
@@ -2333,9 +2334,73 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 			\draw[->] (B) -- node[right] {\textcolor<2->{green}{$\varepsilon \to 0$}} (D);			
 		\end{tikzpicture}
 
+		\vspace{-0.3cm}
 
-	Equation (primitive, low Mach)
 
+{\tiny
+	\begin{columns}
+		\begin{column}{0.25\textwidth}
+			\visible<3->{
+				\begin{align*}
+					\begin{cases}
+						&\rho_t+div_{\uvec{x}}(\rho\bm u)=0\\
+						&\uvec{v}_t+(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p=\bm 0\\
+						&p_t+\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma pdiv_{\uvec{x}} \uvec{v}=0
+					\end{cases}
+				\end{align*}
+			}
+		\end{column}
+		\begin{column}{0.30\textwidth}
+			\visible<4->{
+				\begin{align*}
+					\begin{cases}
+						&\rho(\uvec{x},t)=\rho^{(0)}(\uvec{x},t)+\ve\rho^{(1)}(\uvec{x},t)+\ve^2\rho^{(2)}(\uvec{x},t)+\dots\\
+						&\uvec{v}(\uvec{x},t)=\uvec{v}^{(0)}(\uvec{x},t)+\ve\uvec{v}^{(1)}(\uvec{x},t)+\ve^2\uvec{v}^{(2)}(\uvec{x},t)+\dots,\\
+						&p(\uvec{x},t)=p^{(0)}(\uvec{x},t)+\ve p^{(1)}(\uvec{x},t)+\ve^2p^{(2)}(\uvec{x},t)+\dots
+					\end{cases}
+				\end{align*}
+			}
+		\end{column}
+	\end{columns}					
+
+	\vspace{-0.3cm}
+
+	\begin{columns}
+		\begin{column}{0.30\textwidth}
+			\visible<5->{
+				\begin{align*}
+					\begin{cases}
+						{\cal O}(\ve^{-2}): &\nabla_{\uvec{x}} p^{(0)}=\uvec{0}\\
+						{\cal O}(\ve^{-1}): &\nabla_{\uvec{x}} p^{(1)}=\uvec{0}\\
+						{\cal O}(1): &\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0,\\
+						&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)} \cdot \nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0\\
+						&p^{(0)}_t+\gamma p^{(0)}div_{\uvec{x}}\uvec{v}^{(0)}=0\\
+						{\cal O}(\ve): &p^{(1)}_t+\gamma\big(p^{(1)}div_{\uvec{x}}\uvec{v}^{(0)}+p^{(0)}div_{\uvec{x}}\uvec{v}^{(1)}\big)=0
+					\end{cases}
+				\end{align*}
+			}
+		\end{column}
+		\begin{column}{0.30\textwidth}
+			\centering
+			\visible<6->{
+				\vspace{0.5cm}
+				BC: $p\equiv$ const $\partial \Omega$
+				\vspace{-0.7cm}
+				\begin{align*}
+					\begin{cases}
+						&p^{(0)}\equiv\,\xbar p_0,\quad p^{(1)}\equiv\,\xbar p_1\\
+						&div_{\uvec{x}}\uvec{v}^{(0)}=0,\quad div_{\uvec{x}}\uvec{v}^{(1)}=0\\
+						&\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
+						&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0\\
+					\end{cases}
+				\end{align*}
+			}
+		\end{column}
+	\end{columns}					
+
+	\visible<7->{Low Mach $\Rightarrow$ No shocks}
+
+}
 	
 \end{frame}
 
