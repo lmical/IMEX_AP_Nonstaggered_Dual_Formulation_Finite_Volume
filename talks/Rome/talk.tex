@@ -2252,19 +2252,19 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 					&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\frac{1}{\textcolor{violet}{\varepsilon}^2}\nabla_{\uvec{x}} p=\bm 0\\
 					&E_t+div_{\uvec{x}}((E+p)\bm v)=0\\
 					&E=\frac{p}{\gamma-1}+\frac{1}{2}\textcolor{violet}{\varepsilon}^2\rho \norm{\uvec{v}}^2\\ %, \quad \textcolor{violet}{\varepsilon:=\frac{v_0}{\sqrt{\gamma \frac{p_0}{\rho_0}}}}\\
-					&\lambda=\textcolor<3->{red}{\norm{v}},\textcolor<3->{blue}{\norm{v}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
+					&\lambda=\textcolor<3->{blue}{\norm{v}},\textcolor<3->{red}{\norm{v}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
 				\end{cases}}
 		\end{align*}
 
 		
 			\vspace{0.1cm}
 		
-			\visible<3->{$\textcolor{violet}{\varepsilon}$: \textcolor{red}{flow speed (entropy/vorticity)} vs \textcolor{blue}{acoustic speed (pressure/density perturbations)}}
+			\visible<3->{$\textcolor{violet}{\varepsilon}$: \textcolor{blue}{flow speed (entropy/vorticity)} vs \textcolor{red}{acoustic speed (pressure/density perturbations)}}
 			
 			\vspace{0.1cm}
 	
 			\visible<4->{
-				Low Mach $\Longleftrightarrow$ \textcolor{violet}{$\varepsilon$} $\longrightarrow$ 0 $\Longleftrightarrow$ \textcolor{red}{slow flow speed} $<<$ \textcolor{blue}{fast acoustic speed}
+				Low Mach $\Longleftrightarrow$ \textcolor{violet}{$\varepsilon$} $\longrightarrow$ 0 $\Longleftrightarrow$ \textcolor{blue}{slow flow speed} $<<$ \textcolor{red}{fast acoustic speed}
 			}
 
 			\vspace{0.3cm}
@@ -2398,20 +2398,38 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 		\end{column}
 	\end{columns}					
 
-	\visible<7->{Low Mach $\Rightarrow$ No shocks}
+	\visible<7->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
 
 }
 	
 \end{frame}
 
-\begin{frame}{Splitting for the primitive system}
+\begin{frame}{IMEX (for the primitive system)}
 	\centering
 	
-	Equation
+	%Let us work with the primitive system
+	%But we'll need to keep conservation into account later
 	
-	IMEX-Euler
+	Explicit and implicit do not work $\Rightarrow$ \textcolor{red}{IM}\textcolor{blue}{EX}
 	
-	
+	\begin{align*}
+		\begin{cases}
+			&\rho_t+\textcolor{blue}{div_{\uvec{x}}(\rho\bm u)}=0\\
+			&\uvec{v}_t+\textcolor{blue}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}}+\textcolor{red}{\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p}=\bm 0\\
+			&p_t+\textcolor{blue}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma pdiv_{\uvec{x}} \uvec{v}}=0
+		\end{cases}
+	\end{align*}
+
+	\visible<2->{
+			\begin{itemize}
+				\item \textcolor{red}{less resolution for acoustic waves} (actually OK)
+				\item \textcolor{red}{nonlinear system} (not OK)
+			\end{itemize}
+			}
+
+
+
+		
 \end{frame}
 
 
