@@ -2372,7 +2372,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 					\begin{cases}
 						{\cal O}(\ve^{-2}): &\nabla_{\uvec{x}} p^{(0)}=\uvec{0}\\
 						{\cal O}(\ve^{-1}): &\nabla_{\uvec{x}} p^{(1)}=\uvec{0}\\
-						{\cal O}(1): &\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0,\\
+						{\cal O}(1): &\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
 						&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)} \cdot \nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0\\
 						&p^{(0)}_t+\gamma p^{(0)}div_{\uvec{x}}\uvec{v}^{(0)}=0\\
 						{\cal O}(\ve): &p^{(1)}_t+\gamma\big(p^{(1)}div_{\uvec{x}}\uvec{v}^{(0)}+p^{(0)}div_{\uvec{x}}\uvec{v}^{(1)}\big)=0
@@ -2437,10 +2437,10 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\visible<5->{
 		{\footnotesize 	
 			$$\lambda=\norm{\uvec{v}},\norm{\uvec{v}}\pm \frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(p-p_{\min})}{\rho\rho_{\max}}}$$
-			$\frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(\textcolor{teal}{p-p_{\min}})}{\rho\rho_{\max}}}\in \mathbb{R}$ and $=O(1)$ because $\textcolor{teal}{p=p_0+\ve p_1+O(\ve^2)}$
+			$\frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(\textcolor{teal}{p-p_{\min}})}{\rho\rho_{\max}}}\in \mathbb{R}$ and $=O(1)$ because $\textcolor{teal}{p=p_0+\ve p_1+O(\ve^2)}$\\
 		}
 	}
-
+	\visible<6->{$\dt=\frac{\Delta x}{\max \vert \lambda \vert}$ independent of $\ve$}
 		
 \end{frame}
 
@@ -2449,30 +2449,96 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\centering
 	
 	\begin{align*}
-		\begin{cases}	&\frac{\rho^{n+1}-\rho^n}{\dt}+\textcolor{blue}{div_{\uvec{x}}(\rho^n\uvec{v}^n)}=0,\\
-			&\frac{\uvec{v}^{n+1}-\uvec{v}^n}{\dt}+\textcolor{blue}{(\uvec{v}^n\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^n+\frac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\,\nabla p^n}+\textcolor{red}{\frac{1}{\ve^2\rho_{\max}^n}\nabla_{\uvec{x}} p^{n+1}}=\bm 0\\
-			&\frac{p^{n+1}-p^n}{\dt}+\textcolor{blue}{\uvec{v}^n\!\cdot\!\nabla p^n+\gamma(p^n-p_{\min}^n)div_{\uvec{x}}\uvec{v}^n}+\textcolor{red}{\gamma p_{\min}^n div_{\uvec{x}}\uvec{v}^{n+1}}=0
+		\begin{cases}	
+			&\rho^{n+1}=\rho^n-\dt \textcolor{blue}{div_{\uvec{x}}(\rho^n\uvec{v}^n)},\\
+			&\textcolor<2->{violet}{\uvec{v}^{n+1}}=\uvec{v}^n-\dt\left[\textcolor{blue}{(\uvec{v}^n\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^n+\frac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\,\nabla p^n}\right]-\dt\textcolor{red}{\frac{1}{\ve^2\rho_{\max}^n}\nabla_{\uvec{x}} p^{n+1}}\\
+			&p^{n+1}=p^n-\dt\left[\textcolor{blue}{\uvec{v}^n\!\cdot\!\nabla p^n+\gamma(p^n-p_{\min}^n)div_{\uvec{x}}\uvec{v}^n}\right]-\dt\textcolor{red}{\gamma p_{\min}^n div_{\uvec{x}}\textcolor<2->{violet}{\uvec{v}^{n+1}}}
 		\end{cases}
 	\end{align*}
-%	\textcolor{blue}{EX UW}, \textcolor{red}{IM CENTRAL}
+	
+	
+%	\begin{align*}
+%		\begin{cases}	&\frac{\rho^{n+1}-\rho^n}{\dt}+\textcolor{blue}{div_{\uvec{x}}(\rho^n\uvec{v}^n)}=0,\\
+%			&\frac{\uvec{v}^{n+1}-\uvec{v}^n}{\dt}+\textcolor{blue}{(\uvec{v}^n\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^n+\frac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\,\nabla p^n}+\textcolor{red}{\frac{1}{\ve^2\rho_{\max}^n}\nabla_{\uvec{x}} p^{n+1}}=\bm 0\\
+%			&\frac{p^{n+1}-p^n}{\dt}+\textcolor{blue}{\uvec{v}^n\!\cdot\!\nabla p^n+\gamma(p^n-p_{\min}^n)div_{\uvec{x}}\uvec{v}^n}+\textcolor{red}{\gamma p_{\min}^n div_{\uvec{x}}\uvec{v}^{n+1}}=0
+%		\end{cases}
+%	\end{align*}
 
-	Advantage: Linear system in $p^{n+1}$ and $\uvec{v}^{n+1}$\\
-	We can do better... Take divergence of $\uvec{v}^{n+1}$ and plug it in $p^{n+1}$
-	
-	
-	AP
-	
-	Extension to HO (2 but higher)
+	Advantage: \textbf{Linear} system in $p^{n+1}$ and $\uvec{v}^{n+1}$\\
+	\visible<2->{We can do better... Take divergence of $\textcolor{violet}{\uvec{v}^{n+1}}$ and plug it in $p^{n+1}$}
+	\visible<3->{
+		{%\tiny 
+			\begin{align*}
+				p^{n+1}=p^n-\dt\left[\textcolor{blue}{\uvec{v}^n\!\cdot\!\nabla p^n+\gamma(p^n-p_{\min}^n)div_{\uvec{x}}\uvec{v}^n}\right]-\dt\gamma p_{\min}^n div_{\uvec{x}}\textcolor{black}{\uvec{v}^{n}}\\
+				+\dt^2\gamma p_{\min}^n div_{\uvec{x}}\left[\textcolor{violet}{\textcolor{blue}{(\uvec{v}^n\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^n+\frac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\,\nabla p^n}}\right]+\frac{\dt^2\gamma p_{\min}^n}{\ve^2\rho_{\max}^n}\textcolor{red}{\Delta_{\uvec{x}} p^{n+1}}
+			\end{align*}
+		}
+	}
+	\visible<4->{
+			$$\Updownarrow$$
+			$$-\textcolor{red}{\Delta_{\uvec{x}} p^{n+1}}+\frac{\ve^2\rho_{\max}^n}{\dt^2\gamma p_{\min}^n}p^{n+1}=\text{rhs}^n$$
+			Well--posed elliptic problem and then explicit update for $\uvec{v}^{n+1}$
+	}
+		
+
+
+
 	
 \end{frame}
 
+\begin{frame}{IMEX-Euler is AP}
+%	\centering
+
+		Starting from $(\rho^{n},\uvec{v}^{n},p^{n})$ compatible with the asymptotic limit, i.e.,
+		\begin{equation}
+			\begin{aligned}
+				\begin{cases}
+					&\rho^n=\rho^{(0),n}+\ve\rho^{(1),n}+\ve^2\rho^{(2),n}+\dots\\
+					&\uvec{v}^n=\uvec{v}^{(0),n}+\ve\uvec{v}^{(1),n}+\ve^2\uvec{v}^{(2),n}+\dots\\
+					&p^n=p^{(0),n}+\ve p^{(1),n}+\ve^2p^{(2),n}+\dots
+				\end{cases}
+				\label{eq:expansion}
+			\end{aligned}
+		\end{equation}
+		with
+		\begin{equation}
+			\begin{aligned}
+				\begin{cases}
+					&p^{(0),n}\equiv\,\xbar p_0,\quad p^{(1),n}\equiv\,\xbar p_1,\\
+					&div_{\uvec{x}}\uvec{v}^{(0),n}=0,\quad div_{\uvec{x}}\uvec{v}^{(1),n}=0,
+				\end{cases}
+			\label{eq:p_v}
+			\end{aligned}
+		\end{equation}
+
+		and assuming BCs compatible with the asymptotic limit
+		\begin{equation*}
+			p\equiv\,\text{const},\quad \partial\Omega,
+		\end{equation*}
+		then, $(\rho^{n+1},\uvec{v}^{n+1},p^{n+1})$ admits an expansion of the type~\eqref{eq:expansion}, satisfying~\eqref{eq:p_v},
+		and the data are associated with a consistent discretization of 
+		$$
+		\begin{cases}
+		&\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
+		&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)} \cdot \nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0
+		\end{cases}
+		$$		
+
+
+\end{frame}
 
 \begin{frame}{Numerical results}
 	\centering
 	
-	AP
 	
-	Extension to HO (2 but higher)
+	
+	Second order extension (but also arbitrary HO) with DeC
+
+	What about conservation? What about high Mach? $\Rightarrow$ Postprocessing
+	
+	We evolve $\uvec{V}$ with the IMEX scheme
+	Simultaneously, we evolve $\uvec{U}$ with the fully-explicit counterpart
+	At each stage we replace $\uvec{V}$ through a suitable replacement function
 	
 \end{frame}
 
