@@ -1828,7 +1828,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \end{frame}
 
 
-\begin{frame}{DF-FV for multifluid}
+\begin{frame}{DF for multifluid}
 
 	\vspace{-1.4em}	
 	
@@ -2009,7 +2009,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 %\setbeamercolor{block title}{bg=red!75!black, fg=white}  % Block title background and text color
 
 \begin{frame}
-	\frametitle{DF-FV, multifluid shock--tube}
+	\frametitle{DF, multifluid shock--tube}
 
 \begin{align*}
 (\rho, v, p; \gamma, p_\infty) =
@@ -2031,7 +2031,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \end{frame}
 
 \begin{frame}
-	\frametitle{DF-FV, stiff multifluid shock--tube}
+	\frametitle{DF, stiff multifluid shock--tube}
 	
 	\begin{align*}
 		(\rho, v, p; \gamma, p_\infty) =
@@ -2053,7 +2053,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \end{frame}
 
 \begin{frame}
-	\frametitle{DF-FV, water--air}
+	\frametitle{DF, water--air}
 	
 	\begin{align*}
 		(\rho, v, p; \gamma, p_\infty) =
@@ -2780,7 +2780,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\frametitle{Conclusions \& Further Perspectives}
 	
 	\begin{itemize}
-		\item Novel DF-FV scheme with $\textcolor{blue}{\uvec{U}}$- and $\textcolor{red}{\uvec{V}}$-variables
+		\item Novel DF scheme with $\textcolor{blue}{\uvec{U}}$- and $\textcolor{red}{\uvec{V}}$-variables
 		\begin{itemize}
 			\item $\textcolor{blue}{\uvec{U}}$ updated in a conservative way
 			\item $\textcolor{red}{\uvec{V}}$  updated in a nonconservative way
@@ -2789,11 +2789,17 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 		\item Application to shock--detection: check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$ before PP
 		\item Application to multifluid with level set approach: $\textcolor{red}{(\rho \phi)}$ added to $\textcolor{red}{\uvec{V}}$
 		\item Application to AP (IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system)
+		\item Just to mention: Staggered and AP for TRSW
+	\end{itemize}
+
+	Future perspectives:
+	\begin{itemize}
+	\item Other systems,e.g., SW ($\uvec{v}$ in dry areas)
+	\item Multifluid $+$ AP (incompressible modeled as low Mach)
 	\end{itemize}
 
 
 
-%		\item Further perspectives (nonstaggered + applications)
 	
 	
 \end{frame}
