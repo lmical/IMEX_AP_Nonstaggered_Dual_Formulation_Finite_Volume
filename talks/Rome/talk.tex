@@ -2782,17 +2782,18 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \begin{frame}
 	\frametitle{Conclusions \& Further Perspectives}
 	
+	{\tiny
 	\begin{itemize}
 		\item Novel DF scheme with $\textcolor{blue}{\uvec{U}}$- and $\textcolor{red}{\uvec{V}}$-variables
 		\begin{itemize}
-			\item $\textcolor{blue}{\uvec{U}}$ updated in a conservative way
-			\item $\textcolor{red}{\uvec{V}}$  updated in a nonconservative way
-			\item Post--processing
+			\item 	{\tiny $\textcolor{blue}{\uvec{U}}$ updated in a conservative way}
+			\item 	{\tiny $\textcolor{red}{\uvec{V}}$  updated in a nonconservative way}
+			\item 	{\tiny Post--processing}
 		\end{itemize}
-		\item Application to shock--detection: check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$ before PP
-		\item Application to multifluid with level set approach: $\textcolor{red}{(\rho \phi)}$ added to $\textcolor{red}{\uvec{V}}$
-		\item Application to AP: IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system
-		\item Just to mention... Staggered and AP for TRSW
+		\item Application to shock--detection: check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$ before PP\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}
+		\item Application to multifluid with level set approach: $\textcolor{red}{(\rho \phi)}$ added to $\textcolor{red}{\uvec{V}}$-variables\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
+		\item Application to AP: IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system\footnote{{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}}
+		\item Just to mention... Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}} and AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Nan, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}
 	\end{itemize}
 
 	Future perspectives:
@@ -2800,7 +2801,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\item Other systems,e.g., SW ($\uvec{v}$ in dry areas)
 	\item Multifluid $+$ AP (incompressible modeled as low Mach)
 	\end{itemize}
-
+	}
 
 
 	
@@ -2811,7 +2812,9 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \begin{frame}[label=THEEND]
 \frametitle{The End}
 
-\centering Thank you
+Thank you
+
+\centering 
 
 
 {\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}
@@ -2819,13 +2822,13 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 {\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
 
-{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, Adaptive, 2026}
+{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}
 
-{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, AP, 2026}
+{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}
 
-{\tiny A. Chertock, A. Kurganov, L. Micalizzi, , in preparation}
+{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}
 
-{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Nan, 2026}
+{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Nan, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}
 
 
 
