@@ -2410,44 +2410,55 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	%Let us work with the primitive system
 	%But we'll need to keep conservation into account later
 	
-	Explicit and implicit do not work $\Rightarrow$ \textcolor{red}{IM}\textcolor{blue}{EX}
-	
-	\begin{align*}
-		\begin{cases}
-			&\rho_t+\textcolor{blue}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
-			&\uvec{v}_t+\textcolor{blue}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}}+\textcolor{red}{\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p}=\bm 0\\
-			&p_t+\textcolor{blue}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma pdiv_{\uvec{x}} \uvec{v}}=0
-		\end{cases}
-	\end{align*}
+	{\footnotesize Explicit and implicit do not work $\Rightarrow$ \textcolor{red}{IM}\textcolor{blue}{EX}}
 
-	\visible<2->{
-			\begin{itemize}
-				\item \textcolor{red}{less resolution for acoustic waves} (actually OK)
-				\item \textcolor{red}{nonlinear system} (not OK) \visible<3->{$\Rightarrow$ different splitting}
-			\end{itemize}
-			}
+	\vspace{0.5cm}
 
-	\visible<4->{			
+	\visible<3->{
+		{\tiny
 			$\pm \frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p$ in $\uvec{v}$-equation,
 			$\pm \gamma p_{\min}div_{\uvec{x}}\uvec{v}$ in $p$-equation\\
-			$\rho_{\max}(t):=\max\limits_{(x,y)\in\Omega}\rho(x,y,t),\quad p_{\min}(t):=\min\limits_{(x,y)\in\Omega}p(x,y,t),$
-
-			\begin{align*}
-				\begin{cases}
-					&\rho_t+\textcolor{blue}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
-					&\uvec{v}_t+\textcolor{blue}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\,\nabla_{\uvec{x}} p}=\textcolor{red}{-\frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p}\\
-					&p_t+\textcolor{blue}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma(p-p_{\min})div_{\uvec{x}}\uvec{v}}=\textcolor{red}{-\gamma p_{\min}div_{\uvec{x}}\uvec{v}}\\
-					&\lambda=\norm{\uvec{v}},\norm{\uvec{v}}\pm \frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(p-p_{\min})}{\rho\rho_{\max}}}
-				\end{cases}
-			\end{align*}
+			$\rho_{\max}:=\max\limits_{\uvec{x}\in\Omega}\rho(\uvec{x},t),\quad p_{\min}(t):=\min\limits_{\uvec{x}\in\Omega}p(\uvec{x},t),$
+		}	
+	}
+	
+	
+	{\footnotesize 	
+			$$\visible<2->{\begin{cases}
+				&\rho_t+\textcolor{black}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
+				&\uvec{v}_t+\textcolor{black}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}}+\textcolor{black}{\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p}=\bm 0\\
+				&p_t+\textcolor{black}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma p div_{\uvec{x}} \uvec{v}}=0
+				\end{cases}}~\visible<3->{\Rightarrow~\begin{cases}
+				&\rho_t+\textcolor<4->{blue}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
+				&\uvec{v}_t+\textcolor<4->{blue}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\,\nabla_{\uvec{x}} p}=\textcolor<4->{red}{-\frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p}\\
+				&p_t+\textcolor<4->{blue}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma(p-p_{\min})div_{\uvec{x}}\uvec{v}}=\textcolor<4->{red}{-\gamma p_{\min}div_{\uvec{x}}\uvec{v}}
+			\end{cases}}$$
+	}
+	\visible<5->{
+		{\footnotesize 	
+			$$\lambda=\norm{\uvec{v}},\norm{\uvec{v}}\pm \frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(p-p_{\min})}{\rho\rho_{\max}}}$$
+			$\frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(\textcolor{teal}{p-p_{\min}})}{\rho\rho_{\max}}}\in \mathbb{R}$ and $=O(1)$ because $\textcolor{teal}{p=p_0+\ve p_1+O(\ve^2)}$
+		}
 	}
 
 		
 \end{frame}
 
 
-\begin{frame}{Splitting for the primitive system}
+\begin{frame}{IMEX-Euler}
 	\centering
+	
+	\begin{align*}
+		\begin{cases}	&\frac{\rho^{n+1}-\rho^n}{\dt}+\textcolor{blue}{div_{\uvec{x}}(\rho^n\uvec{v}^n)}=0,\\
+			&\frac{\uvec{v}^{n+1}-\uvec{v}^n}{\dt}+\textcolor{blue}{(\uvec{v}^n\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^n+\frac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\,\nabla p^n}+\textcolor{red}{\frac{1}{\ve^2\rho_{\max}^n}\nabla_{\uvec{x}} p^{n+1}}=\bm 0\\
+			&\frac{p^{n+1}-p^n}{\dt}+\textcolor{blue}{\uvec{v}^n\!\cdot\!\nabla p^n+\gamma(p^n-p_{\min}^n)div_{\uvec{x}}\uvec{v}^n}+\textcolor{red}{\gamma p_{\min}^n div_{\uvec{x}}\uvec{v}^{n+1}}=0
+		\end{cases}
+	\end{align*}
+%	\textcolor{blue}{EX UW}, \textcolor{red}{IM CENTRAL}
+
+	Advantage: Linear system in $p^{n+1}$ and $\uvec{v}^{n+1}$\\
+	We can do better... Take divergence of $\uvec{v}^{n+1}$ and plug it in $p^{n+1}$
+	
 	
 	AP
 	
