@@ -291,6 +291,7 @@ text centered]
 %%%%%%%
 
 
+
 \newcommand{\mysetminusD}{\hbox{\tikz{\draw[line width=0.6pt,line cap=round] (3pt,0) -- (0,6pt);}}}
 \newcommand{\mysetminusT}{\mysetminusD}
 \newcommand{\mysetminusS}{\hbox{\tikz{\draw[line width=0.45pt,line cap=round] (2pt,0) -- (0,4pt);}}}
@@ -2489,85 +2490,336 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \begin{frame}{IMEX-Euler is AP}
 %	\centering
 
-		Starting from $(\rho^{n},\uvec{v}^{n},p^{n})$ compatible with the asymptotic limit, i.e.,
-		\begin{equation}
-			\begin{aligned}
-				\begin{cases}
-					&\rho^n=\rho^{(0),n}+\ve\rho^{(1),n}+\ve^2\rho^{(2),n}+\dots\\
-					&\uvec{v}^n=\uvec{v}^{(0),n}+\ve\uvec{v}^{(1),n}+\ve^2\uvec{v}^{(2),n}+\dots\\
-					&p^n=p^{(0),n}+\ve p^{(1),n}+\ve^2p^{(2),n}+\dots
-				\end{cases}
-				\label{eq:expansion}
-			\end{aligned}
-		\end{equation}
-		with
-		\begin{equation}
-			\begin{aligned}
-				\begin{cases}
-					&p^{(0),n}\equiv\,\xbar p_0,\quad p^{(1),n}\equiv\,\xbar p_1,\\
-					&div_{\uvec{x}}\uvec{v}^{(0),n}=0,\quad div_{\uvec{x}}\uvec{v}^{(1),n}=0,
-				\end{cases}
-			\label{eq:p_v}
-			\end{aligned}
-		\end{equation}
+		{\footnotesize
+			Starting from $(\rho^{n},\uvec{v}^{n},p^{n})$ compatible with the asymptotic limit, i.e.,
+			\begin{equation}
+				\begin{aligned}
+					\begin{cases}
+						&\rho^n=\rho^{(0),n}+\ve\rho^{(1),n}+\ve^2\rho^{(2),n}+\dots\\
+						&\uvec{v}^n=\uvec{v}^{(0),n}+\ve\uvec{v}^{(1),n}+\ve^2\uvec{v}^{(2),n}+\dots\\
+						&p^n=p^{(0),n}+\ve p^{(1),n}+\ve^2p^{(2),n}+\dots
+					\end{cases}
+					\label{eq:expansion}
+				\end{aligned}
+			\end{equation}
+			with
+			\begin{equation}
+				\begin{aligned}
+					\begin{cases}
+						&p^{(0),n}\equiv\,\xbar p_0,\quad p^{(1),n}\equiv\,\xbar p_1,\\
+						&div_{\uvec{x}}\uvec{v}^{(0),n}=0,\quad div_{\uvec{x}}\uvec{v}^{(1),n}=0,
+					\end{cases}
+				\label{eq:p_v}
+				\end{aligned}
+			\end{equation}
+	
+			and assuming BCs compatible with the asymptotic limit
+			\begin{equation*}
+				p\equiv\,\text{const},\quad \partial\Omega,
+			\end{equation*}
+			then, $(\rho^{n+1},\uvec{v}^{n+1},p^{n+1})$ admits an expansion of the type~\eqref{eq:expansion}, satisfying~\eqref{eq:p_v},
+			and the data are associated with a consistent discretization of 
+			$$
+			\begin{cases}
+			&\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
+			&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)} \cdot \nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0
+			\end{cases}
+			$$		
+		}
 
-		and assuming BCs compatible with the asymptotic limit
-		\begin{equation*}
-			p\equiv\,\text{const},\quad \partial\Omega,
-		\end{equation*}
-		then, $(\rho^{n+1},\uvec{v}^{n+1},p^{n+1})$ admits an expansion of the type~\eqref{eq:expansion}, satisfying~\eqref{eq:p_v},
-		and the data are associated with a consistent discretization of 
-		$$
-		\begin{cases}
-		&\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
-		&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)} \cdot \nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0
-		\end{cases}
-		$$		
 
+		\visible<2->{
+		
+			{\tiny 	Second order extension (but also arbitrary HO) with DeC}	
+	
+		}
 
 \end{frame}
 
-\begin{frame}{Numerical results}
+\begin{frame}{What about shocks?}
 	\centering
 	
 	
 	
-	Second order extension (but also arbitrary HO) with DeC
 
 	What about conservation? What about high Mach? $\Rightarrow$ Postprocessing
 	
-	We evolve $\uvec{V}$ with the IMEX scheme
-	Simultaneously, we evolve $\uvec{U}$ with the fully-explicit counterpart
-	At each stage we replace $\uvec{V}$ through a suitable replacement function
+	\visible<2->{	
+		\begin{itemize}
+			\item Evolve $\uvec{V}$ with the IMEX scheme
+			\item Evolve $\uvec{U}$ with the EX counterpart of the scheme (conservation)
+			\item Postprocessing at each stage $k$
+			$$\uvec{V}^k\longleftarrow r(\uvec{V}^{k,*},\uvec{V}(\uvec{U}^{k,*}))=s(\varepsilon)\textcolor{red}{\uvec{V}^{k,*}}+(1-s(\varepsilon))\textcolor{blue}{\uvec{V}(\uvec{U}^{k,*})}$$
+			$$\textcolor{blue}{s(1)=0},\quad \textcolor{red}{s(0)=1}$$
+			
+		\end{itemize}
+	
+		\begin{figure}[ht!]
+			\centerline{\includegraphics[width=0.5\textwidth]{Figures_AP/switching_function}}
+	%		\caption{\sf Switching function $s(\varepsilon)$ plotted with respect to $1/\ve$.\label{fig31}}
+		\end{figure}
+	}
+	
+	%Solutions are essentially decoupled at low Mach
 	
 \end{frame}
 
 
-%low Mach limit
-%AP scheme
+\begin{frame}{Numerical results, smooth unsteady vortex}
+	\centering
+
+	{\tiny
+		\begin{equation*}
+			\begin{aligned}
+				\rho(\bm x_r)&=1-\frac{\ve^2}{16\pi^2}\,{\rm e}^{1-\|\bm x_r\|_2^2},\quad
+				u(\bm x_r)=1-\frac{\ve y_r}{2\pi}\,{\rm e}^{\frac{1-\|\bm x_r\|_2^2}{2}},\quad
+				v(\bm x_r)=1+\frac{\ve x_r}{2\pi}\,{\rm e}^{\frac{1-\|\bm x_r\|_2^2}{2}},\\
+				E(\bm x_r)&=1+\ve^2\Big[\rho^2(\bm x_r)+\frac{\rho(\bm x_r)}{2}\big(u^2(\bm x_r)+v^2(\bm x_r)\big)\Big],
+			\end{aligned}
+		\end{equation*}
+		where $\bm x_r(x,y,t)=(x_r,y_r)^\top:=(x-t,y-t)^\top$.
+	}
+
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_rho.pdf}~%\hspace*{0.8cm}
+		\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_u.pdf}~%\hspace*{0.8cm}
+		\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_v.pdf}~
+		\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_p.pdf}}
+%		\caption{\sf Example 1: Convergence analysis.\label{fig42}}
+	\end{figure}
+
+\end{frame}
+
+\begin{frame}{Numerical results, Gresho vortex}
+	\centering
+
+	\vspace{-0.5cm}
+
+	{\tiny
+	\begin{columns}
+		\begin{column}{0.30\textwidth}
+			\begin{align*}
+				\begin{cases}
+					\rho(r)\equiv1,\\ 
+					u(r)=-\frac{y_r}{r}\psi(r),\\ 
+					v(r)=\frac{x_r}{r}\psi(r),
+				\end{cases}\quad 
+				p(r)&=\begin{cases}
+					1+12.5\ve^2r^2,&r<0.2,\\
+					1+\ve^2\left(4\ln(5r)+4-20r+12.5r^2\right),&0.2\le r<0.4,\\
+					1+\ve^2(4\ln2-2),&r\ge0.4,
+				\end{cases}
+			\end{align*}
+		\end{column}
+		\begin{column}{0.30\textwidth}
+			\begin{align*}
+				\psi(r):=\begin{cases}
+					5r,&r<0.2,\\
+					2-5r,&0.2\le r<0.4,\\
+					0,&r\ge0.4.
+				\end{cases},\quad T_f=1
+				\end{align*}
+		\end{column}
+	\end{columns}
+	}
+
+	\vspace{-0.2cm}
+
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_initial}}
+%		\vskip8pt
+		\centerline{\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps0.1_CFL0.475}\hspace*{0.1cm}
+			\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps0.01_CFL0.475}\hspace*{0.1cm}
+			\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps0.001_CFL0.475}}
+%		\vskip8pt
+		\centerline{\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps0.0001_CFL0.475}\hspace*{0.1cm}
+			\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps1e-05_CFL0.475}\hspace*{0.1cm}
+			\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps1e-06_CFL0.475}}
+%		\caption{\sf Example 2: Initial local Mach number independently of $\ve$ (top) and local Mach number at $t=1$ for different values of $\ve$.
+%			\label{fig43}}
+	\end{figure}
+
+\end{frame}
 
 
-\section{(Easy) Application to shock-detection}
-\frame\sectionpage
+\begin{frame}{Numerical results, Double shear layer, $T_f=6$}
+	\centering
+
+	\vspace{-0.5cm}
+
+	{\tiny
+		\begin{align*}
+			&\rho(x,y,0)\equiv\frac{\pi}{15},\quad
+			u(x,y,0)=\left\{\begin{aligned}
+				&\tanh\!\left[15\Big(\frac{y}{\pi}-\frac{1}{2}\Big)\right],&&y\le\pi,\\[0.5ex]
+				&\tanh\!\left[15\Big(\frac{3}{2}-\frac{y}{\pi}\Big)\right],&&\mbox{otherwise},
+			\end{aligned}\right.\quad 
+			v(x,y,0)=0.05\sin (x),\quad p(x,y,0)\equiv\frac{1}{\gamma},
+		\end{align*}
+	}
+
+	\vspace{-0.2cm}
+
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[width=0.22\textwidth]{Figures_AP/double_shear_layer_initial_vorticity}}
+		%		\vskip8pt
+		\centerline{\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000006.0000000.dat_eps0.1_CFL0.1}\hspace*{0.1cm}
+			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000006.0000000.dat_eps0.01_CFL0.1}\hspace*{0.1cm}
+			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000006.0000000.dat_eps0.001_CFL0.1}}
+		%		\vskip8pt
+		\centerline{\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000006.0000000.dat_eps0.0001_CFL0.1}\hspace*{0.1cm}
+			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000006.0000000.dat_eps1e-05_CFL0.1}\hspace*{0.1cm}
+			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000006.0000000.dat_eps1e-06_CFL0.1}}
+	\end{figure}
+
+
+\end{frame}
+
+\begin{frame}{Numerical results, Double shear layer, $T_f=10$}
+	\centering
+
+	\vspace{-0.5cm}
+
+	{\tiny
+		\begin{align*}
+			&\rho(x,y,0)\equiv\frac{\pi}{15},\quad
+			u(x,y,0)=\left\{\begin{aligned}
+				&\tanh\!\left[15\Big(\frac{y}{\pi}-\frac{1}{2}\Big)\right],&&y\le\pi,\\[0.5ex]
+				&\tanh\!\left[15\Big(\frac{3}{2}-\frac{y}{\pi}\Big)\right],&&\mbox{otherwise},
+			\end{aligned}\right.\quad 
+			v(x,y,0)=0.05\sin (x),\quad p(x,y,0)\equiv\frac{1}{\gamma},
+		\end{align*}
+	}
+	
+	\vspace{-0.2cm}
+	
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[width=0.22\textwidth]{Figures_AP/double_shear_layer_initial_vorticity}}
+		%		\vskip8pt
+		\centerline{\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.1_CFL0.1}\hspace*{0.1cm}
+			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.01_CFL0.1}\hspace*{0.1cm}
+			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.001_CFL0.1}}
+		%		\vskip8pt
+		\centerline{\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.0001_CFL0.1}\hspace*{0.1cm}
+			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps1e-05_CFL0.1}\hspace*{0.1cm}
+			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps1e-06_CFL0.1}}
+	\end{figure}
+
+
+\end{frame}
+
+
+\begin{frame}{Numerical results, Explosion problem}
+	\centering
+	
+	{\tiny
+	$$
+	(\rho,u,v,p)(x,y,0)=\begin{cases}(1,0,0,1),&\sqrt{x^2+y^2}<0.4,\\(0.125,0,0,0.1),&\mbox{otherwise},\end{cases}
+	$$
+	}
+
+
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d1.0_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.9_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.6_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.3_with_timestep_relaxation_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}}
+%		\caption{\sf Example 5: Surface plot of density for different values of $\ve$ and corresponding times.\label{fig49}}
+	\end{figure}
+
+
+\end{frame}
+
+
+\begin{frame}{Numerical results, Explosion problem}
+	\centering
+	
+	{\tiny
+		$$
+		(\rho,u,v,p)(x,y,0)=\begin{cases}(1,0,0,1),&\sqrt{x^2+y^2}<0.4,\\(0.125,0,0,0.1),&\mbox{otherwise},\end{cases}
+		$$
+	}
+	
+	\begin{figure}[ht!]
+	
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{Figures_AP/new_sod2d1.0_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
+		\caption*{$\varepsilon=1.0$}
+	\end{subfigure}\quad
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{Figures_AP/new_sod2d0.9_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
+		\caption*{$\varepsilon=0.9$}
+	\end{subfigure}
+	
+	\vskip3pt
+	
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{Figures_AP/new_sod2d0.6_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
+		\caption*{$\varepsilon=0.6$}
+	\end{subfigure}\quad
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{Figures_AP/new_sod2d0.3_with_timestep_relaxation_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
+		\caption*{$\varepsilon=0.3$}
+	\end{subfigure}
+	
+	\caption{Diagonal slices $y=x$}
+	\end{figure}	
+	
+%	\begin{figure}[ht!]
+%		\includegraphics[width=0.45\textwidth]{Figures_AP/new_sod2d1.0_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}\quad
+%%		\vskip3pt
+%		\includegraphics[width=0.45\textwidth]{Figures_AP/new_sod2d0.9_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}\\
+%		\vskip3pt
+%		\includegraphics[width=0.45\textwidth]{Figures_AP/new_sod2d0.6_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}\quad
+%%		\vskip3pt
+%		\includegraphics[width=0.45\textwidth]{Figures_AP/new_sod2d0.3_with_timestep_relaxation_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
+%	\end{figure}
+	
+	
+\end{frame}
 
 
 \begin{frame}
-	\frametitle{Long story short: Check $\norm{\uvec{U}-\uvec{U}(\uvec{V})}$ before PP}
-	{\small In particular... $\vert\rho u\left(\uvec{U}\right)-\rho u\left(\uvec{V}\right)\vert$ }
-	\vspace{-0.3cm}
-	\begin{figure}[ht!]
-		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_1_free_BC_800_density_U_CFL0.25}
-		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_1_free_BC_12800_rhou_Error_Cell_CFL0.25.pdf}\\
-		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_2_free_BC_800_density_U_CFL0.25.pdf}	
-		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_2_free_BC_12800_rhou_Error_Cell_CFL0.25.pdf}\\
-		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/woodward_colella_400_density_U_CFL0.25.pdf}	
-		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/woodward_colella_12800_rhou_Error_Cell_CFL0.25.pdf}
-	\end{figure}
-		
-	\vspace{-0.5cm}
-{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
+	\frametitle{Conclusions \& Further Perspectives}
+	
+	\begin{itemize}
+		\item Novel DF-FV scheme with $\textcolor{blue}{\uvec{U}}$- and $\textcolor{red}{\uvec{V}}$-variables
+		\begin{itemize}
+			\item $\textcolor{blue}{\uvec{U}}$ updated in a conservative way
+			\item $\textcolor{red}{\uvec{V}}$  updated in a nonconservative way
+			\item Post--processing
+		\end{itemize}
+		\item Application to shock--detection: check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$ before PP
+		\item Application to multifluid with level set approach: $\textcolor{red}{(\rho \phi)}$ added to $\textcolor{red}{\uvec{V}}$
+		\item Application to AP (IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system)
+	\end{itemize}
 
+
+
+%		\item Further perspectives (nonstaggered + applications)
+	
+	
 \end{frame}
+
+
+%\section{(Easy) Application to shock-detection}
+%\frame\sectionpage
+%
+%
+%\begin{frame}
+%	\frametitle{Long story short: Check $\norm{\uvec{U}-\uvec{U}(\uvec{V})}$ before PP}
+%	{\small In particular... $\vert\rho u\left(\uvec{U}\right)-\rho u\left(\uvec{V}\right)\vert$ }
+%	\vspace{-0.3cm}
+%	\begin{figure}[ht!]
+%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_1_free_BC_800_density_U_CFL0.25}
+%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_1_free_BC_12800_rhou_Error_Cell_CFL0.25.pdf}\\
+%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_2_free_BC_800_density_U_CFL0.25.pdf}	
+%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_2_free_BC_12800_rhou_Error_Cell_CFL0.25.pdf}\\
+%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/woodward_colella_400_density_U_CFL0.25.pdf}	
+%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/woodward_colella_12800_rhou_Error_Cell_CFL0.25.pdf}
+%	\end{figure}
+%		
+%	\vspace{-0.5cm}
+%{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
+%
+%\end{frame}
 
 
 
@@ -2598,25 +2850,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \frame\sectionpage
 
 
-\begin{frame}
-	\frametitle{Conclusions}
-	
-\begin{itemize}
-	\item Novel DF-FV scheme with $\textcolor{blue}{\uvec{U}},\textcolor{red}{\uvec{V}}$ cell averages on staggered meshes 
-	\begin{itemize}
-		\item $\textcolor{blue}{\uvec{U}}$ updated with reconstructed values from $\textcolor{red}{\uvec{V}}$
-		\item $\textcolor{red}{\uvec{V}}$ updated independently with \textcolor{violet}{PC} 
-		\item Conservative post--processing
-	\end{itemize}
-	\item Application to multifluid with level set approach: $\textcolor{red}{(\rho \phi)}$ added to $\textcolor{red}{\uvec{V}}$
-	\item Application to shock--detection: check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$ before PP
-	\item Further perspectives (nonstaggered + applications)
-	
-	
-\end{itemize}
-	
-	
-\end{frame}
+
 
 \begin{frame}[label=THEEND]
 \frametitle{The End}
