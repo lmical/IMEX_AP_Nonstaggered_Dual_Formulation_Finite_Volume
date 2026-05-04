@@ -2542,13 +2542,13 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	
 	
 
-	What about conservation? What about high Mach? $\Rightarrow$ Postprocessing
+	What about conservation? What about high Mach? $\Rightarrow$ Post--processing
 	
 	\visible<2->{	
 		\begin{itemize}
 			\item Evolve $\uvec{V}$ with the IMEX scheme
 			\item Evolve $\uvec{U}$ with the EX counterpart of the scheme (conservation)
-			\item Postprocessing at each stage $k$
+			\item Post--processing at each stage $k$
 			$$\uvec{V}^k\longleftarrow r(\uvec{V}^{k,*},\uvec{V}(\uvec{U}^{k,*}))=s(\varepsilon)\textcolor{red}{\uvec{V}^{k,*}}+(1-s(\varepsilon))\textcolor{blue}{\uvec{V}(\uvec{U}^{k,*})}$$
 			$$\textcolor{blue}{s(1)=0},\quad \textcolor{red}{s(0)=1}$$
 			
@@ -2780,16 +2780,12 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 
 \begin{frame}
-	\frametitle{Conclusions \& Further Perspectives}
+	\frametitle{Conclusions \& Future Perspectives}
 	
 	{\tiny
+	Summary:
 	\begin{itemize}
-		\item Novel DF scheme with $\textcolor{blue}{\uvec{U}}$- and $\textcolor{red}{\uvec{V}}$-variables
-		\begin{itemize}
-			\item 	{\tiny $\textcolor{blue}{\uvec{U}}$ updated in a conservative way}
-			\item 	{\tiny $\textcolor{red}{\uvec{V}}$  updated in a nonconservative way}
-			\item 	{\tiny Post--processing}
-		\end{itemize}
+		\item Novel DF scheme with $\textcolor{blue}{\uvec{U}}$ (conservative) and $\textcolor{red}{\uvec{V}}$ (nonconservative) and Post--processing
 		\item Application to shock--detection: check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$ before PP\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}
 		\item Application to multifluid with level set approach: $\textcolor{red}{(\rho \phi)}$ added to $\textcolor{red}{\uvec{V}}$-variables\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
 		\item Application to AP: IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system\footnote{{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}}
@@ -2812,23 +2808,32 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \begin{frame}[label=THEEND]
 \frametitle{The End}
 
-Thank you
-
-\centering 
-
-
-{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}
+\begin{center}
+	Thank you
+\end{center}
 
 
-{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
+\begin{itemize}
+	\item {\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}
+	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
+	\item {\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}
+	\item {\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}
+	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, Nan, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}
+	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}
+\end{itemize}
 
-{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}
 
-{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}
 
-{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}
 
-{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Nan, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}
+
+
+
+
+
+
+
+
+
 
 
 
