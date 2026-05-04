@@ -2775,6 +2775,9 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	
 \end{frame}
 
+\section{Conclusions}
+\frame\sectionpage
+
 
 \begin{frame}
 	\frametitle{Conclusions \& Further Perspectives}
@@ -2788,8 +2791,8 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 		\end{itemize}
 		\item Application to shock--detection: check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$ before PP
 		\item Application to multifluid with level set approach: $\textcolor{red}{(\rho \phi)}$ added to $\textcolor{red}{\uvec{V}}$
-		\item Application to AP (IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system)
-		\item Just to mention: Staggered and AP for TRSW
+		\item Application to AP: IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system
+		\item Just to mention... Staggered and AP for TRSW
 	\end{itemize}
 
 	Future perspectives:
@@ -2805,59 +2808,6 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \end{frame}
 
 
-%\section{(Easy) Application to shock-detection}
-%\frame\sectionpage
-%
-%
-%\begin{frame}
-%	\frametitle{Long story short: Check $\norm{\uvec{U}-\uvec{U}(\uvec{V})}$ before PP}
-%	{\small In particular... $\vert\rho u\left(\uvec{U}\right)-\rho u\left(\uvec{V}\right)\vert$ }
-%	\vspace{-0.3cm}
-%	\begin{figure}[ht!]
-%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_1_free_BC_800_density_U_CFL0.25}
-%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_1_free_BC_12800_rhou_Error_Cell_CFL0.25.pdf}\\
-%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_2_free_BC_800_density_U_CFL0.25.pdf}	
-%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/shock_turbulence_modified_example_2_free_BC_12800_rhou_Error_Cell_CFL0.25.pdf}\\
-%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/woodward_colella_400_density_U_CFL0.25.pdf}	
-%		\includegraphics[width=0.36\textwidth]{figures_HYPProceedings/woodward_colella_12800_rhou_Error_Cell_CFL0.25.pdf}
-%	\end{figure}
-%		
-%	\vspace{-0.5cm}
-%{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
-%
-%\end{frame}
-
-
-
-
-
-\section{Further perspectives}
-\frame\sectionpage
-
-\begin{frame}
-	\frametitle{Further perspectives}
-	
-		\centering
-		Other systems (SW)
-
-		AP $+$ Multifluid
-
-		
-		\vspace{1.0cm}
-		
-		Staggered setting
-		
-
-		
-\end{frame}
-	
-
-\section{Conclusions}
-\frame\sectionpage
-
-
-
-
 \begin{frame}[label=THEEND]
 \frametitle{The End}
 
@@ -2868,6 +2818,16 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 
 {\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
+
+{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, Adaptive, 2026}
+
+{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, AP, 2026}
+
+{\tiny A. Chertock, A. Kurganov, L. Micalizzi, , in preparation}
+
+{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Nan, 2026}
+
+
 
 \end{frame}
 
