@@ -552,14 +552,14 @@ text centered]
 			\label{sys}
 			\frac{\partial}{\partial t}\uvec{U}(\uvec{x},t)+div_{\uvec{x}} \uvec{F}(\uvec{U}(\uvec{x},t))=\boldsymbol{0}, \quad (\uvec{x},t) \in \Omega\times \mathbb{R}^+_0,
 		\end{equation*}
-		\visible<2->{
+		\visible<1->{
 			\begin{itemize}
 				\item $\Omega\subseteq \mathbb{R}^D$ spatial domain, a connected open set}
-				\visible<3->{\item $\uvec{U}:\overline{\Omega} \times \mathbb{R}^+_0 \rightarrow \mathcal{U} \subseteq \mathbb{R}^Q$ unknown solution} %with $N \in \mathbb{N}$ number of scalar equations of the system and $\mathcal{U}$ space of adimssible states
-				\visible<4->{\item $\uvec{F}:\mathcal{U} \rightarrow \mathbb{R}^{Q \times D}$ flux}
-				\visible<5->{\item $\uvec{F}(\uvec{U})=(\uvec{F}_1,\uvec{F}_2,\dots,\uvec{F}_D) \in \mathbb{R}^{Q \times D}$ with $div_{\uvec{x}} \uvec{F}(\uvec{U})=\sum\limits_{d=1}^D \frac{\partial \uvec{F}_{d}}{\partial x_d} (\uvec{U}) \in \mathbb{R}^{Q}$} 
-				\visible<6->{\item $\sum\limits_{d=1}^D \omega_d \frac{\partial \uvec{F}_{d}}{\partial \uvec{U}} (\uvec{U})$ real diagonalizable $\forall \uvec{U}\in \mathcal{U}$, $\forall \uvec{\omega}\in \mathbb{R}^D$}
-				\visible<7->{\item with some initial $\uvec{U}(\uvec{x},0)=\uvec{U}_0(\uvec{x})$ and boundary conditions}
+				\visible<1->{\item $\uvec{U}:\overline{\Omega} \times \mathbb{R}^+_0 \rightarrow  \mathbb{R}^Q$ unknown solution} %with $N \in \mathbb{N}$ number of scalar equations of the system and $\mathcal{U}$ space of adimssible states
+				\visible<1->{\item $\uvec{F}:\mathbb{R}^Q \rightarrow \mathbb{R}^{Q \times D}$ flux}
+				\visible<1->{\item $\uvec{F}(\uvec{U})=(\uvec{F}_1,\uvec{F}_2,\dots,\uvec{F}_D) \in \mathbb{R}^{Q \times D}$ with $div_{\uvec{x}} \uvec{F}(\uvec{U})=\sum\limits_{d=1}^D \frac{\partial \uvec{F}_{d}}{\partial x_d} (\uvec{U}) \in \mathbb{R}^{Q}$} 
+%				\visible<1->{\item $\sum\limits_{d=1}^D \omega_d \frac{\partial \uvec{F}_{d}}{\partial \uvec{U}} (\uvec{U})$ real diagonalizable $\forall \uvec{U}\in \mathcal{U}$, $\forall \uvec{\omega}\in \mathbb{R}^D$}
+				\visible<1->{\item with some initial $\uvec{U}(\uvec{x},0)=\uvec{U}_0(\uvec{x})$ and boundary conditions}
 			\end{itemize}
 \end{frame}
 
@@ -639,7 +639,7 @@ text centered]
 			\end{itemize}
 		\end{column}
 	\end{columns}
-	\visible<2->{		\scalebox{0.7}{\begin{minipage}[t]{1.2\textwidth}
+	\visible<1->{		\scalebox{0.7}{\begin{minipage}[t]{1.2\textwidth}
 				\begin{beamercolorbox}[sep=0.5em,wd=\textwidth]{blockcolor1} 
 					$$\frac{\partial}{\partial t} \int_V \uvec{U} d \uvec{x} = - \int_{\partial V} \flux \cdot \uvec{\nu} d \sigma(\uvec{x}) , \quad  \forall V\subseteq \Omega.
 					$$
@@ -655,12 +655,12 @@ text centered]
 \begin{frame}
 	\frametitle{A structural property: Conservation}
 		\begin{equation*}
-			\frac{\partial}{\partial t}\uvec{U}+ \frac{\partial}{\partial x} \uvec{F}(\uvec{U})=\boldsymbol{0}, \quad (x,t) \in \Omega\times \mathbb{R}^+_0
+			\frac{\partial}{\partial t}\uvec{U}+ \frac{\partial}{\partial x} \uvec{F}(\uvec{U})=\boldsymbol{0}, \quad (x,t) \in (x_L,x_R)\times \mathbb{R}^+_0
 		\end{equation*}
 		$$\Downarrow$$
-$$\int_\Omega \left( \frac{\partial}{\partial t}\uvec{U}+ \frac{\partial}{\partial x} \uvec{F}(\uvec{U}) \right) d \uvec{x} =\boldsymbol{0}$$
+$$\int_{x_L}^{x_R} \left( \frac{\partial}{\partial t}\uvec{U}+ \frac{\partial}{\partial x} \uvec{F}(\uvec{U}) \right) d \uvec{x} =\boldsymbol{0}$$
 		$$\Downarrow$$
-$$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$$
+$$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$$
 \end{frame}
 
 
@@ -742,7 +742,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 
 				% Smooth local reconstruction curves passing through the dots
-				\visible<2->{
+				\visible<1->{
 					\draw[violet, thick]
 					(0.5*\cellwidth,1.60)
 					.. controls (0.75*\cellwidth,1.90) and (0.95*\cellwidth,1.75) ..
@@ -794,16 +794,16 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 			$$\Downarrow$$
 			\begin{align*}
 					\frac{d}{d t}\textcolor{blue}{\uvec{U}_i}(t)&=-\frac{\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}}{\Delta x}\\
-					\visible<2->{
+					\visible<1->{
 					\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}&:=\widehat{\uvec{F}}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})}\\
-					\visible<2->{
+					\visible<1->{
 						\widehat{\uvec{F}}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})&\neq\frac{1}{2}\left(\uvec{F}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-})+\uvec{F}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})\right)}
 			\end{align*}
 		\end{column}
 	\end{columns}
 
 	\vspace{1cm}
-	\visible<3->{
+	\visible<1->{
 		$$\frac{d}{d t} \sum\limits_{i}\textcolor{blue}{\uvec{U}_i} =-\frac{1}{\Delta x}\sum\limits_{i}\left(\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)=\uvec{0}$$
 	}
 \end{frame}
@@ -932,7 +932,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 
 		\vspace{-0.5cm}
 	
-		$$\uvec{D}_{\uvec{\Psi},\iph}^++\uvec{D}_{\uvec{\Psi},\iph}^-=\textcolor{red}{\uvec{D}_{\uvec{\Psi},\iph}=\int_0^1 B(\uvec{\Psi}(s,\uvec{V}_{\iph}^-,\uvec{V}_{\iph}^+))\frac{d\uvec{\Psi}}{ds}(s,\uvec{V}_{\iph}^-,\uvec{V}_{\iph}^+) ds}$$
+		$$\uvec{D}_{\uvec{\Psi},\iph}^++\uvec{D}_{\uvec{\Psi},\iph}^-=\textcolor{red}{\uvec{D}_{\uvec{\Psi},\iph}=\int_0^1 B(\textcolor{violet}{\uvec{\Psi}}(s,\uvec{V}_{\iph}^-,\uvec{V}_{\iph}^+))\frac{d\textcolor{violet}{\uvec{\Psi}}}{ds}(s,\uvec{V}_{\iph}^-,\uvec{V}_{\iph}^+) ds}$$
 
 		\vspace{-0.5cm}
 
@@ -1111,7 +1111,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	
 	\vspace{0.5cm}
 	
-	\visible<2->{	
+	\visible<1->{	
 		$$
 		\left(\uvec{U}_i^{n}, \uvec{V}_i^{n}\right) 
 		\xrightarrow{\text{RK}} 
@@ -1329,7 +1329,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	
 %	\vspace{-0.5cm}
 	
-	\visible<2->{	
+	\visible<1->{	
 		\begin{align*}
 			&\left\lbrace\uvec{U}_i\right\rbrace \longrightarrow \text{Correct solution}\\
 			&\left\lbrace\uvec{V}_i\right\rbrace \longrightarrow \text{Wrong solution}
@@ -2122,7 +2122,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 \end{frame}
 
 
-\begin{comment}
+%\begin{comment}
 	\begin{frame}{Shock--Bubble Interaction (Helium top, R22 bottom)}
 		\centering
 		\begin{minipage}[t]{0.9\textwidth}
@@ -2147,9 +2147,10 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 			}%
 		\end{minipage}
 	\end{frame}
-\end{comment}
+%\end{comment}
 
 
+\begin{comment}
 \begin{frame}{Shock--Bubble Interaction (Helium top, R22 bottom)}
 	\centering
 	
@@ -2208,7 +2209,7 @@ $$\frac{d}{d t} \int_\Omega \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\rig
 	\end{minipage}
 	
 \end{frame}
-
+\end{comment}
 
 \begin{frame}{Shock--Bubble Interaction\footnote{{\tiny J.-F. Haas, B. Sturtevant, 1987, Interaction of weak shock waves with cylindrical and spherical gas inhomogeneities.}}}
 \centering
