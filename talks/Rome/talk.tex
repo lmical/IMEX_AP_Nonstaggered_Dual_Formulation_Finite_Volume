@@ -1194,7 +1194,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 	\vspace{1cm}
 
 	\visible<2->{
-		Shocks do not cover the whole domain
+		Discontinuities do not cover the whole domain
 		$$\Downarrow$$	
 		Adaptivity, shock detectors, local switch to low order
 	}
@@ -1505,13 +1505,23 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 
 
 \begin{frame}
-	\frametitle{Adaptivity}
+	\frametitle{Adaptivity, overcompressive limiter\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}}
 	
 	
 	\begin{figure}[hp] 
-		\centering{\includegraphics[scale=0.3]{shock_turbulence_modified_example_2_3200_plot_rome_overcompressive.pdf}}
+		\centering{\includegraphics[scale=0.2]{shock_turbulence_modified_example_2_3200_plot_rome_overcompressive.pdf}}
 	\end{figure}
-	
+	{\tiny	
+	$$U\approx U_j+(U_x)_j(x-x_j)$$
+	\begin{equation*}
+		\begin{aligned}
+			&(U_x)_j=\phi^{\rm SBM}_{\theta,\tau}\left(\frac{U_{j+1}-U_j}{U_j-U_{j-1}}\right)
+			\frac{U_j-U_{j-1}}{\dx}, \quad \phi^{\rm SBM}_{\theta,\tau}(r):=\begin{cases}0&\mbox{if $r<0$},\\\min\{r\theta,1+\tau(r-1)\}&\mbox{if}~0<r\le1,\\
+				r\phi^{\rm SBM}_{\theta,\tau}(1/r)&\text{otherwise,}\end{cases}
+		\end{aligned}
+		\label{3.6f}
+	\end{equation*}
+	$\theta=2$ and $\tau=-0.25$}
 	
 \end{frame}
 
@@ -1605,7 +1615,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Adaptivity, 2-D Riemann problem, Implosion problem}
+	\frametitle{Adaptivity, Parameter tuning}
 		
 		\centering 
 		
@@ -2019,7 +2029,6 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 \end{cases}
 \end{align*}
 
-		mm
 
 		\begin{figure}[ht!]
 			\includegraphics[width=1.\textwidth]{Figures_multifluid/multifluid_sod.pdf}
@@ -2254,18 +2263,18 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 					&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\frac{1}{\textcolor{violet}{\varepsilon}^2}\nabla_{\uvec{x}} p=\bm 0\\
 					&E_t+div_{\uvec{x}}((E+p)\bm v)=0\\
 					&E=\frac{p}{\gamma-1}+\frac{1}{2}\textcolor{violet}{\varepsilon}^2\rho \norm{\uvec{v}}^2\\ %, \quad \textcolor{violet}{\varepsilon:=\frac{v_0}{\sqrt{\gamma \frac{p_0}{\rho_0}}}}\\
-					&\lambda=\textcolor<3->{blue}{\norm{\uvec{v}}},\textcolor<3->{red}{\norm{\uvec{v}}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
+					&\lambda=\textcolor<2->{blue}{\norm{\uvec{v}}},\textcolor<2->{red}{\norm{\uvec{v}}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
 				\end{cases}}
 		\end{align*}
 
 		
 			\vspace{0.1cm}
 		
-			\visible<3->{$\textcolor{violet}{\varepsilon}$: \textcolor{blue}{flow speed (entropy/vorticity)} vs \textcolor{red}{acoustic speed (pressure/density perturbations)}}
+			\visible<2->{$\textcolor{violet}{\varepsilon}$: \textcolor{blue}{flow speed (entropy/vorticity)} vs \textcolor{red}{acoustic speed (pressure/density perturbations)}}
 			
 			\vspace{0.1cm}
 	
-			\visible<4->{
+			\visible<3->{
 				Low Mach $\Longleftrightarrow$ \textcolor{violet}{$\varepsilon$} $\longrightarrow$ 0 $\Longleftrightarrow$ \textcolor{blue}{slow flow speed} $<<$ \textcolor{red}{fast acoustic speed}
 			}
 
@@ -2281,7 +2290,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 
 				\begin{column}{0.30\textwidth}
 					\centering
-						\visible<4->{
+						\visible<3->{
 							\textbf{Applications}
 								\begin{itemize}
 									\item Atmospheric flows
@@ -2297,7 +2306,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 				\end{column}
 				\begin{column}{0.60\textwidth}
 					\centering
-						\visible<5->{
+						\visible<4->{
 							\textbf{Issues}	
 								\begin{itemize}
 									\item Stiffness
@@ -2306,7 +2315,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 											\item {\tiny Implicit $=$ Nonlinear systems \& Diffusion}
 											%\item \textcolor{blue}{IM}\textcolor{red}{EX} (acoustics less resolved but OK)
 										\end{itemize}
-									\visible<5->{\item Asymptotic limit consistency...}
+									\visible<4->{\item Asymptotic limit consistency...}
 								\end{itemize}
 						}
 				\end{column}
@@ -2330,10 +2339,10 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			\node (D) at (3,0) {$\mathcal{P}$};
 			
 			% Arrows
-			\draw[->] (A) -- node[above] {\textcolor<2->{green}{$\Delta x \to 0$}} (B);
-			\draw[->] (C) -- node[above] {\textcolor<2->{red}{$\Delta x \to 0$}} (D);
-			\draw[->] (A) -- node[left]  {\textcolor<2->{red}{$\varepsilon \to 0$}} (C);
-			\draw[->] (B) -- node[right] {\textcolor<2->{green}{$\varepsilon \to 0$}} (D);			
+			\draw[->] (A) -- node[above] {\textcolor<1->{green}{$\Delta x \to 0$}} (B);
+			\draw[->] (C) -- node[above] {\textcolor<1->{red}{$\Delta x \to 0$}} (D);
+			\draw[->] (A) -- node[left]  {\textcolor<1->{red}{$\varepsilon \to 0$}} (C);
+			\draw[->] (B) -- node[right] {\textcolor<1->{green}{$\varepsilon \to 0$}} (D);			
 		\end{tikzpicture}
 
 		\vspace{-0.3cm}
@@ -2342,7 +2351,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 {\tiny
 	\begin{columns}
 		\begin{column}{0.25\textwidth}
-			\visible<3->{
+			\visible<2->{
 				\begin{align*}
 					\begin{cases}
 						&\rho_t+div_{\uvec{x}}(\rho\uvec{v})=0\\
@@ -2353,7 +2362,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			}
 		\end{column}
 		\begin{column}{0.30\textwidth}
-			\visible<4->{
+			\visible<3->{
 				\begin{align*}
 					\begin{cases}
 						&\rho(\uvec{x},t)=\rho^{(0)}(\uvec{x},t)+\ve\rho^{(1)}(\uvec{x},t)+\ve^2\rho^{(2)}(\uvec{x},t)+\dots\\
@@ -2369,7 +2378,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 
 	\begin{columns}
 		\begin{column}{0.30\textwidth}
-			\visible<5->{
+			\visible<4->{
 				\begin{align*}
 					\begin{cases}
 						{\cal O}(\ve^{-2}): &\nabla_{\uvec{x}} p^{(0)}=\uvec{0}\\
@@ -2384,7 +2393,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 		\end{column}
 		\begin{column}{0.30\textwidth}
 			\centering
-			\visible<6->{
+			\visible<5->{
 				\vspace{0.5cm}
 				BC: $p\equiv$ const $\partial \Omega$
 				\vspace{-0.7cm}
@@ -2400,7 +2409,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 		\end{column}
 	\end{columns}					
 
-	\visible<7->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
+	\visible<6->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
 
 }
 	
