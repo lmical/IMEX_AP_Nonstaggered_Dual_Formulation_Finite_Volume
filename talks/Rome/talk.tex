@@ -445,7 +445,7 @@ text centered]
   
   {\small
   
-  Sapienza University, Rome, Italy, May 2026}
+  MDN Seminar, Rome, Italy, May 2026}
   
   
   
@@ -488,7 +488,7 @@ text centered]
 	
 	{\small
 		
-		Sapienza University, Rome, Italy, May 2026}
+		MDN Seminar, Rome, Italy, May 2026}
 	
 	
 	
@@ -1369,21 +1369,21 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			\visible<2->{
 				\begin{itemize}
 					\item Rough no contact (RNC): $\varepsilon^{p}_i>B \overline{\varepsilon}^{p}$\\
-						\visible<3->{$\textcolor{blue}{\uvec{U}}$: $5$-th order WENO $+$ CU numerical flux}
+						\visible<3->{$\textcolor{blue}{\uvec{U}}$: $5$-th order WENO}
 					\item Rough contact (RC): otherwise\\
-						\visible<3->{$\textcolor{blue}{\uvec{U}}$: \textcolor<5->{green}{$2$-nd order overcompressive\only<5->{\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}} $+$ LDCU numerical flux\only<5->{\footnote{{\tiny S. Chu, A. Kurganov, R. Xin, J. Sci. Comput., 2025}}}}
+						\visible<3->{$\textcolor{blue}{\uvec{U}}$: \textcolor<5->{green}{$2$-nd order overcompressive\only<5->{\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}}}
 						}
 				\end{itemize}
 			}
 
 			\item Smooth (S): otherwise\\
-				\visible<3->{$\textcolor{blue}{\uvec{U}}$: $5$-th order unlimited $+$ CU numerical flux}
+				\visible<3->{$\textcolor{blue}{\uvec{U}}$: $5$-th order unlimited}
 
 		\end{itemize}
 		
 		\vspace{0.4cm}
 
-		\visible<4->{$\textcolor{red}{\uvec{V}}$: $5$-th order unlimited $+$ CU numerical flux and no PC
+		\visible<4->{$\textcolor{red}{\uvec{V}}$: $5$-th order unlimited $+$ no PC
 			{\footnotesize
 				$$\frac{d}{dt}\textcolor{red}{\uvec{V}_{i}}(t)= -\frac{1}{\Delta x}\left(
 				\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}
@@ -1995,7 +1995,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 	\vspace{0.5cm}
 	
 	Far from interface $\Rightarrow$ Same as before for shock--detection\\
-	Around the interface $\Rightarrow$ Evolve $\uvec{V}$ meaningfully to use it ($\uvec{D}_{\uvec{\Psi},\iph}^{\pm}\neq \uvec{0}$)
+	Around the interface $\Rightarrow$ Evolve $\uvec{V}$ meaningfully to use it ($\uvec{D}_{\uvec{\Psi},\iph}^{\pm}\neq \uvec{0}$, 2-nd order reconstruction)
 
 	\vspace{0.2cm}
 	
@@ -2242,7 +2242,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 \end{frame}
 
 
-\section{Application to aymptotic preservation}
+\section{Application to low Mach}
 \frame\sectionpage
 
 \begin{frame}{Motivation, low Mach flows}
@@ -2451,7 +2451,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			$\frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(\textcolor{teal}{p-p_{\min}})}{\rho\rho_{\max}}}\in \mathbb{R}$ and $=O(1)$ because $\textcolor{teal}{p=p_0+\ve p_1+O(\ve^2)}$\\
 		}
 	}
-	\visible<6->{$\dt=\frac{\Delta x}{\max \vert \lambda \vert}$ independent of $\ve$}
+	\visible<5->{$\dt=\frac{\Delta x}{\max \vert \lambda \vert}$ independent of $\ve$}
 		
 \end{frame}
 
@@ -2485,7 +2485,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			\end{align*}
 		}
 	}
-	\visible<3->{
+	\visible<2->{
 			$$\Updownarrow$$
 			$$-\textcolor{red}{\Delta_{\uvec{x}} p^{n+1}}+\frac{\ve^2\rho_{\max}^n}{\dt^2\gamma p_{\min}^n}p^{n+1}=\text{rhs}^n$$
 			Well--posed elliptic problem and then explicit update for $\uvec{v}^{n+1}$
@@ -2556,9 +2556,9 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 	
 	\visible<1->{	
 		\begin{itemize}
-			\item Evolve $\uvec{V}$ with the IMEX scheme
-			\item Evolve $\uvec{U}$ with the EX counterpart of the scheme (conservation)
-			\item Post--processing at each stage $k$
+			\item Evolve $\uvec{V}$ with the IMEX scheme ($\uvec{V}$ AP, not conservative)
+			\item Evolve $\uvec{U}$ with the EX counterpart ($\uvec{U}$ conservative, not AP)
+			\item Post--processing $\uvec{V}$ at each stage $k$
 			$$\uvec{V}^k\longleftarrow r(\uvec{V}^{k,*},\uvec{V}(\uvec{U}^{k,*}))=s(\varepsilon)\textcolor{red}{\uvec{V}^{k,*}}+(1-s(\varepsilon))\textcolor{blue}{\uvec{V}(\uvec{U}^{k,*})}$$
 			$$\textcolor{blue}{s(1)=0},\quad \textcolor{red}{s(0)=1}$$
 			
