@@ -387,10 +387,11 @@
 
 \newcommand{\pnpm}[2]{\mathbb P_{#1}\mathbb P_{#2}}  %PNPM schemes
 
-\newcommand{\lore}[1]{{\leavevmode\color{red} #1}}
-\newcommand{\RIIcolor}[1]{{\leavevmode\color{black} #1}}
+\newcommand{\RIcolor}[1]{{\leavevmode\color{red} #1}}
+\newcommand{\RIIcolor}[1]{{\leavevmode\color{blue} #1}}
 
 \newcommand{\hilight}[1]{\colorbox{red}{#1}}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1443,6 +1444,12 @@ where $s$ is a suitable switching function, which is supposed to be increasing, 
 in the high-Mach-number regime, $s$ should be $\sim0$ so that the primitive variables $\bm V$ are almost completely overwritten by
 $\bm V(\bm U)$, while, in the low-Mach-number regime, $s$ should be $\sim1$ so that the primitive variables $\bm V$ stay almost unchanged.
 For intermediate values of $\ve$, a smooth transition between $1$ and $0$ is expected.
+
+\RIcolor{
+\begin{remark}
+We remark that the post-processing procedure is performed after every stage of the SI-DeC time discretization, i.e., at the end of Steps 4 and 8. In particular, once both the conservative and primitive solutions have been updated to the current stage value, the blending parameter $s(\varepsilon)$ is applied to obtain the post-processed primitive solution used as input for the subsequent stage. Therefore, the post-processing is carried out after each stage rather than only at the end of a time step.
+\end{remark}
+}
 
 \section{Numerical Examples}\label{sec6}
 In this section, we verify the accuracy and robustness of the proposed AP scheme on a variety of numerical examples across different values 
