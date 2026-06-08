@@ -1548,18 +1548,33 @@ for $\ve=10^{-\alpha}$ with $\alpha=1,\dots,6$, and report the obtained local Ma
 Figure \ref{fig43} along with its initial distribution. According to what is expected due to the AP feature of the scheme, the shape of the 
 vortex is preserved and no evident dependency on $\ve$ can be observed.
 \begin{figure}[ht!]
-\centerline{\includegraphics[width=0.33\textwidth]{gresho_initial}}
+\centerline{\includegraphics[width=0.33\textwidth]{V_gresho_initial}}
 \vskip8pt
-\centerline{\includegraphics[width=0.33\textwidth]{gresho_T1_eps0.1_CFL0.475}\hspace*{0.1cm}
-\includegraphics[width=0.33\textwidth]{gresho_T1_eps0.01_CFL0.475}\hspace*{0.1cm}
-\includegraphics[width=0.33\textwidth]{gresho_T1_eps0.001_CFL0.475}}
+\centerline{\includegraphics[width=0.33\textwidth]{V_gresho_T1_eps0.1_CFL0.475}\hspace*{0.1cm}
+\includegraphics[width=0.33\textwidth]{V_gresho_T1_eps0.01_CFL0.475}\hspace*{0.1cm}
+\includegraphics[width=0.33\textwidth]{V_gresho_T1_eps0.001_CFL0.475}}
 \vskip8pt
-\centerline{\includegraphics[width=0.33\textwidth]{gresho_T1_eps0.0001_CFL0.475}\hspace*{0.1cm}
-            \includegraphics[width=0.33\textwidth]{gresho_T1_eps1e-05_CFL0.475}\hspace*{0.1cm}
-	    \includegraphics[width=0.33\textwidth]{gresho_T1_eps1e-06_CFL0.475}}
+\centerline{\includegraphics[width=0.33\textwidth]{V_gresho_T1_eps0.0001_CFL0.475}\hspace*{0.1cm}
+            \includegraphics[width=0.33\textwidth]{V_gresho_T1_eps1e-05_CFL0.475}\hspace*{0.1cm}
+	    \includegraphics[width=0.33\textwidth]{V_gresho_T1_eps1e-06_CFL0.475}}
 \caption{\sf Example 2: Initial local Mach number independently of $\ve$ (top) and local Mach number at $t=1$ for different values of $\ve$.
 \label{fig43}}
 \end{figure}
+
+\RIcolor{
+We stress that, while for large (intermediate)-Mach-number regimes the conservative $\uvec{U}$-solution is reliable and effectively used to enforce physical consistency in the  $\uvec{V}$-solution, in the low-Mach limit the $\uvec{U}$-solution is in general unreliable as it is evolved through a fully-explicit discretization.
+%
+The considered post-processing provides the necessary coupling between the two solutions for large (intermediate)-Mach-number regimes and the necessary decoupling for low-Mach regimes.
+%
+In Figure~\ref{fig:U_Mach}, we report the local Mach number associated to the $\uvec{U}$-solution for $\varepsilon=0.01$.
+%
+Indeed, as expected, the results are completely unreliable.
+
+\begin{figure}[ht!]
+	\centerline{\includegraphics[width=0.33\textwidth]{U_gresho_T1_eps0.01_CFL0.475}}
+	\caption{\sf Example 2: Local Mach number at $t=1$ for $\varepsilon=0.01$ associated to the (unreliable) $\uvec{U}$-solution.\label{fig:U_Mach}}
+\end{figure}
+}
 
 \subsubsection*{Example 3---Baroclinic Vorticity Generation}
 In this example taken from \cite{noelle2014weakly}, we consider a low-Mach-number flow with $\ve=0.05$ involving an acoustic wave, which
@@ -1671,7 +1686,13 @@ can see that the obtained solutions are oscillation-free and their nonsmooth fea
 To further assess the correctness of the computed solutions, we plot their one-dimensional (1-D) slices along the diagonal $y=x$ in Figure
 \ref{fig410} together with the corresponding slices of the reference solution, which was obtained using the second-order semi-discrete CU
 scheme from \cite{KLin} on a much finer mesh with $2000\times2000$ cells using the CFL number $0.2$ and the three-stage third-order strong
-stability preserving (SSP) Runge-Kutta method \cite{GKS,GST}. As one can clearly see, the computed solutions show a perfect agreement with
+stability preserving (SSP) Runge-Kutta method \cite{GKS,GST}. 
+%
+\RIcolor{In the large (intermediate)-Mach-number regimes considered in this test, the $\uvec{U}$-solution is reliable and plays a crucial role in ensuring a correct handling of the discontinuities through the post-processing. In order to emphasize this aspect we also plot the slices associated with the $\uvec{U}$-solution.}
+
+
+
+As one can clearly see, the computed solutions show a perfect agreement with
 the reference ones, and the discontinuities locations are correctly captured.
 \begin{figure}[ht!]
 \centerline{\includegraphics[width=0.8\textwidth]{new_sod2d1.0_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}}

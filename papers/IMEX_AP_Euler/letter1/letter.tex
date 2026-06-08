@@ -1,0 +1,303 @@
+\documentclass[letter,11pt]{letter}
+
+\usepackage[margin=0.89in]{geometry}
+%\usepackage{moreverb,latexsym}
+%\usepackage{graphics,graphicx,curves,epic,eepic,ulem,bbm,mathbbol,enumerate,latexsym,multicol}
+\usepackage{lipsum}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{caption}
+%\usepackage{epstopdf}
+%\usepackage{theorem}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+%\usepackage{empheq}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{color}
+\usepackage{setspace}
+\usepackage{exscale}
+\usepackage{relsize}
+%\usepackage{float}
+\usepackage{picinpar}
+\usepackage{extarrows}
+\usepackage{multirow}
+%\usepackage{cite}
+\usepackage[backend=bibtex,style=numeric]{biblatex}
+\addbibresource{sn-bibliography.bib}
+\defbibheading{bibliography}[\refname]{\par\bigskip\noindent\textbf{#1}\par}
+
+\usepackage{nicefrac}
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist}
+\usepackage[normalem]{ulem}
+\newcommand{\vla}[1]{\textcolor{magenta}{#1}}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{xcolor}
+\usepackage{enumitem,kantlipsum}
+
+%\usepackage{subcaption}
+%\usepackage{epsfig}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\newcommand{\RIcolor}[1]{{\leavevmode\color{red} #1}}
+\newcommand{\RIIcolor}[1]{{\leavevmode\color{blue} #1}}
+\newcommand{\RIIIcolor}[1]{{\leavevmode\color{magenta} #1}}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}  % optional, for clickable references
+
+% Define a custom figure counter for letters
+\newcounter{myfigure}
+\newcommand{\myfigure}[3][0.8\textwidth]{%
+	\refstepcounter{myfigure}%
+	\begin{center}
+		\includegraphics[width=#1, height=0.75\textheight, keepaspectratio]{#2}%
+		\\[0.5em]
+		\textbf{Figure~\themyfigure:} #3
+	\end{center}%
+}
+
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\uvec}[2][3]{\bm{#2\mkern-#1mu}\mkern#1mu}
+
+
+
+
+\newcommand*\xbar[1]{%
+  \hbox{%
+    \vbox{%
+      \hrule height 0.5pt % The actual bar
+      \kern0.4ex%         % Distance between bar and symbol
+      \hbox{%
+        \kern-0.05em%      % Shortening on the left side
+        \ensuremath{#1}%
+        \kern-0.05em%      % Shortening on the right side
+      }%
+    }%
+  }%
+}
+
+% Some of the article customisations are relevant for this class
+
+\name{Lorenzo Micalizzi} % To be used for the return address on the envelope
+\signature{Lorenzo Micalizzi} % Goes after the closing (ie at the end of the letter, with space for a signature)
+\address{Lorenzo Micalizzi\\
+Department of Mathematics\\
+North Carolina State University\\
+North Carolina, USA}
+% Alternatively, these may be set on an individual basis within each letter environment.
+
+%\makelabels % this command prints envelope labels on the final page of the document
+
+\begin{document}
+\begin{letter}{Computer Methods in Applied Mechanics and Engineering\\
+CMAME-D-26-02015}
+
+\opening{Dear Editor:} % eg Hello.
+We would like to thank the reviewers for carefully reading our paper and for their valuable suggestions. We have revised the paper following
+the reviewers' comments.
+
+Below, we outline our responses to the Reviewers' comments and questions. In the revised manuscript, the changes marked in {\color{red}red}
+correspond to remarks made by Reviewer \#2, and those marked in {\color{blue}blue} correspond to comments made by Reviewer \#4.
+
+\bigskip
+\underline{Response to the Comments of Reviewer \#2}
+
+
+{\bf A new asymptotic-preserving method for compressible flow is proposed. Conservative and non-conservative formulations are solved and blended. The past studies are properly reviewed and the new point of the present study using the dual formulations is clarified. The proposed method is explained in detail and the calculation examples are presented to show the accuracy and stability of the proposed method. Thus, the reviewer recommends publication. The following comments should be considered for revisions before publication.}
+
+\smallskip
+{\sc\underline{Reply}}: We thank the referee for appreciating our work.
+
+\medskip
+
+
+
+\begin{itemize}[wide, labelwidth=!, labelindent=0pt]
+	\item
+	{\bf Major comments:}
+
+\begin{itemize}[wide, labelwidth=!, labelindent=0pt]
+	\item {\bf
+ In 3.5, the conservative and nonconservative solutions are blended using parameter s(epsilon). Is blending done after all calculations are completed or at each time step?
+
+
+}
+
+\smallskip
+{\sc\underline{Reply}}: The blending is performed at each stage of the SI-DeC time discretization. To prevent the same confusion for future readers, we have added a remark at the end of Section 3.5 clarifying this point.
+
+
+
+\medskip
+	\item {\bf  To see the effect of the present proposal of the dual formulation, two solutions using the conservative and nonconservative solutions (V-solution and U-solution) can be shown in some of the calculation examples. If so, we will directly see that the interpolation using s makes a better solution.}
+
+\smallskip
+{\sc\underline{Reply}}: We remark that, while for large (intermediate)-Mach-number regimes the conservative $\uvec{U}$-solution is reliable and effectively used to enforce physical consistency in the  $\uvec{V}$-solution, in the low-Mach limit the $\uvec{U}$-solution is in general unreliable as it is evolved through a fully-explicit discretization.
+%
+The considered post-processing provides the necessary coupling between the two solutions for large (intermediate)-Mach-number regimes and the necessary decoupling for low-Mach regimes.
+
+
+As suggested by the referee, we have added some plots of the $\uvec{U}$-solution.
+%
+More in detail, we have added a plot of the local Mach number for the Gresho vortex for $\varepsilon=0.01$ to show that the $\uvec{U}$-solution is unreliable in the low-Mach limit, and we have complemented the plots of the Explosion Problem introducing the lines corresponding to the $\uvec{U}$-solution to show that for large (intermediate)-Mach-number regimes the two solutions agree.
+%
+See Figures~4.4 and 4.11.
+
+
+\end{itemize}
+
+\item
+{\bf Minor comments:}
+
+
+\medskip
+\begin{itemize}[wide, labelwidth=!, labelindent=0pt]
+	\item {\bf 
+
+ In p.14, "PCCU" needs full spelling at the first time.
+
+}
+
+\smallskip
+{\sc\underline{Reply}}: Easy
+
+\medskip
+	\item {\bf  In 3.4, can Step 1 and 2 be exchanged because the calculation result $\rho_{j,k}^*$ in Step 1 is not used in Step 2.}
+
+\smallskip
+{\sc\underline{Reply}}:  Easy. Yes, they can be parallelized... We have added.
+
+\medskip
+	\item
+{\bf  Figure 4.1 shows the relation between s and epsilon used in the present study. Is it used for all calculation examples?}
+
+\smallskip
+{\sc\underline{Reply}}: Yes, add remark.
+
+\medskip
+	\item
+{\bf  In Fig.4.2, the caption of the vertical axis and its definition should be written.}
+
+\smallskip
+{\sc\underline{Reply}}: Easy.
+
+\medskip
+	\item
+{\bf  Example 4 is not understood well. We can see a large jump of density on y=4 at t=0. Usually, a large density jump makes wave propagation in later times but we cannot see such waves at t=10 and 20.}
+
+\smallskip
+{\sc\underline{Reply}}: 
+
+
+\medskip
+\item
+{\bf  In [2] in the reference list, authors' names are not written.}
+no dash
+
+\end{itemize}
+
+\end{itemize}
+
+
+\bigskip
+\underline{Response to the Comments of Reviewer \#4}
+
+
+{\bf The manuscript tackles a longstanding challenge in computational fluid dynamics: the severe stiffness of the compressible Euler equations in low-Mach-number regimes due to fast acoustic waves. The authors argue that constructing a purely conservative hyperbolic flux splitting for the full Euler system is highly challenging. To address this, they propose a Dual Formulation approach. Rather than relying on conservative splitting, the method isolates the stiff acoustic component using primitive (non-conservative) variables. To preserve shock-capturing properties, a standard conservative scheme is evolved in parallel, and the two solutions are blended at the end of each time step according to the local Mach number.
+	
+The theoretical strengths of the paper are noteworthy. The scheme achieves a physically consistent incompressible limit: in the zero-Mach regime, the velocity field becomes divergence-free, and the method correctly derives and solves the corresponding Poisson equation for pressure. Furthermore, the authors provide rigorous asymptotic-preserving proofs for both the first-order and second-order (DeC) semi-implicit time discretizations, which hold under suitable idealized boundary conditions.
+	
+}
+
+\smallskip
+{\sc\underline{Reply}}: 
+
+\medskip
+
+\begin{itemize}[wide, labelwidth=!, labelindent=0pt]
+	\item	
+	{\bf
+		However, these advantages come with computational and practical trade-offs.
+		
+		 Evolving two complete sets of variables leads to roughly double the memory requirements and substantially higher computational cost per time step (two Poisson problems per step).
+
+	}
+	
+	\smallskip
+	{\sc\underline{Reply}}: $U$ is actually evolved in a cheap way. Some are shared.
+	
+	\item		
+	\medskip
+	{\bf  Additionally, the computation of characteristic wave speeds relies on global quantities $\rho_{\max}$ and $p_{\min}$ (the maximum density and minimum pressure over the entire domain). In large-scale parallel 3D simulations, this introduces frequent global reductions, creating a notable communication bottleneck.}
+	
+	\smallskip
+	{\sc\underline{Reply}}: Let us add a remark.
+	
+	
+	
+	
+	\medskip
+	\item	
+	{\bf 
+		
+		 To prevent wave-speed collapse in higher-Mach regions, the authors introduce an ad-hoc $\epsilon^4$ regularization. While this modification vanishes in the low-Mach limit, it remains an artificial fix.
+		The method also employs a heuristic switching function $s(\epsilon)$ with empirically tuned parameters ($\epsilon_0 = 0.15$, $\epsilon_1 = 0.4$, $\alpha = 14$) to blend the primitive and conservative solution, across all the numerical illustrations. Room for deeper mathematical understanding or Machine Learing is ok here ?
+		
+	}
+	
+	\smallskip
+	{\sc\underline{Reply}}: Let us add a remark.
+	
+	\medskip
+	\item	
+	{\bf  Another important issue is that the primitive pressure equation (Eq.~2.7) depends on the term $\gamma p \nabla \cdot \mathbf{u}$, making the entire framework specific to ideal gases. Extending the method to real gases or complex thermodynamics would require a complete re-derivation of the splitting and the Poisson solver.}
+	
+	\smallskip
+	{\sc\underline{Reply}}: Indeed, it will require.
+	
+	\medskip
+	\item	
+	{\bf  The authors describe purely conservative flux splitting as presenting ``significant challenges.'' While this is understandable, the claim should be nuanced in light of my previous remarks. The CFD community has already developed several viable and strictly conservative asymptotic-preserving schemes for the Euler equations.}
+	
+	\smallskip
+	{\sc\underline{Reply}}: We can think about it. 
+	
+	\medskip
+	\item	
+	{\bf  Overall, the manuscript by Chertock et al.\ is a creative and mathematically rigorous contribution. It successfully demonstrates that dynamically coupling a non-conservative low-Mach solver with a conservative shock-capturing solver can yield a theoretically sound and asymptotic-preserving method. Nevertheless, the Dual Formulation approach does not completely overcome the practical difficulties of low-Mach CFD. For large-scale industrial applications, particularly those involving complex thermodynamics or massive parallelism, existing unified conservative AP methods may offer better efficiency and scalability.}
+	
+	\smallskip
+	{\sc\underline{Reply}}: 
+	
+	\medskip
+	\item	
+	{\bf  The authors may want to consider these remarks in their revised manuscript.}
+	
+	\smallskip
+	{\sc\underline{Reply}}: 
+	
+	
+	\medskip
+	\item	
+	{\bf   \textbf{Minor Suggestion.} In Definition 3.1, the phrase ``computed solution'' could be misinterpreted as the final discrete solution. For greater clarity, the authors should explicitly describe $\rho^n$ and $p^n$ as semi-discrete (in time) solutions.}
+	
+	
+
+\end{itemize}
+\vspace*{2cm}
+\closing{Sincerely} % eg Regards,
+\end{letter}
+
+\end{document}
+
