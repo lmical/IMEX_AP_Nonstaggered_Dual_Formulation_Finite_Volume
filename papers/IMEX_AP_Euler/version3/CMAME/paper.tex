@@ -422,10 +422,10 @@ numbers.
 
 Instead of the conservative hyperbolic flux splitting approach, which is widely used to design AP schemes, we consider a primitive
 (nonconservative) formulation and introduce a nonconservative hyperbolic splitting. The resulting system is discretized using a
-semi-implicit approach: the stiff part is handled semi-implicitly using second-order central differences, while the nonstiff part is treated
-explicitly using a second-order path-conservative central-upwind (CU) discretization. A key feature of our method is that the pressure at
+semi-implicit (SI) approach: the stiff part is handled semi-implicitly using second-order central differences, while the nonstiff part is treated
+explicitly using a second-order \RIcolor{path-conservative central-upwind (PCCU)} discretization. A key feature of our method is that the pressure at
 each time level is computed by solving a well-posed Poisson-type elliptic equation, thereby enforcing the AP property. Simultaneously, we
-evolve the conservative form of the system using a semi-discrete CU scheme. At the end of each stage of the time discretization, we perform
+evolve the conservative form of the system using a semi-discrete \RIcolor{central-upwind (CU)} scheme. At the end of each stage of the time discretization, we perform
 a special post-processing that selects the appropriate numerical solution depending on the Mach number. This guarantees that in
 low-Mach-number regimes, the solution is obtained by the AP nonconservative scheme, while in higher-Mach-number regimes, a sharp and
 physically relevant solution is computed by the conservative CU scheme.
@@ -480,7 +480,7 @@ In this paper, we propose an alternative way of accurately identifying and separ
 rewrite the studied system in a nonconservative form and then introduce a nonconservative hyperbolic splitting, which may be naturally
 viewed as an extension of the flux splitting from \cite{haack2012all}. We integrate the nonconservative system using a SI method 
 implemented as follows. The stiff part is approximated semi-implicitly using a simple second-order accurate central-differencing, and the 
-nonstiff part is handled explicitly using a second-order path-conservative (PC) central-upwind (CU) discretization. The resulting SI 
+nonstiff part is handled explicitly using a second-order \RIcolor{path-conservative central-upwind (PCCU)} discretization. The resulting SI 
 approach is then realized in such a way that the pressure update consists of solving a Poisson-type elliptic equation: this is used to 
 enforce the AP property.
 
@@ -489,7 +489,7 @@ For large Mach numbers, solving nonconservative formulations of the Euler equati
 nonphysical computed solutions, as was demonstrated in \cite{abgrall2010comment,HouLeF}. We therefore apply a dual formulation (DF)
 approach, which has been recently introduced in \cite{CFKM} (for other recent works on DF methods, we refer the reader to
 \cite{Abg2023,ACKM,AbgLiu,pidatella2019semi}), and solve the nonconservative and conservative formulations simultaneously. The latter one is
-discretized in a fully-explicit manner using the second-order semi-discrete CU discretization from \cite{KLin}. This way, at each stage of a
+discretized in a fully-explicit manner using the second-order semi-discrete \RIcolor{central-upwind (CU)} discretization from \cite{KLin}. This way, at each stage of a
 multi-stage SI time discretization (we have used the deferred correction (DeC) time discretization from \cite{offner2025analysis}), two
 copies of the computed solution are evolved: one is AP, but nonconservative, while the second one is conservative, but non-AP. Hence, 
 upon the completion of each stage of the time evolution, we post-process the obtained solutions to automatically ensure that in
@@ -1430,6 +1430,26 @@ We recall that the interface values of $\bm U$ needed for the computation of the
 obtained from the reconstructed primitive variables $\bm V$ at the corresponding time levels. Note that the conservative updates are, as a
 matter of fact, explicit, since they are performed using the explicit part of the SI-DeC scheme.
 
+\RIcolor{
+\begin{remark}
+	Our reported algorithm is related to a plain serial implementation. Indeed, some parts can be parallelized, for example Steps 1 and 2 or Steps 5 and 6. Furthermore, Steps 1--3 can be performed in parallel with Step 4 before applying the post-processing, as well as Steps 5--7 with Step 8.
+\end{remark}
+}
+
+
+\RIIcolor{
+\begin{remark}
+	Indeed, working with two sets of variables induces an overhead with respect to approaches based on a single formulation.
+	%
+	However, we would like to point out that this does not necessarily translate into a doubling of the computational cost. For example, the reconstructed interface values are shared by both the $\uvec{V}$- and $\uvec{U}$-solutions, and therefore no additional reconstruction procedure is required.
+	%
+	Moreover, the evolution of the $\uvec{U}$-solution is performed explicitly and is therefore computationally less demanding than the SI evolution of the $\uvec{V}$-solution.
+	%
+	Concerning the computation of the global quantities $\rho_{\max}$ and $p_{\min}$, we note that this only requires the communication of two scalar quantities. Such an operation represents a relatively small overhead compared with the overall cost of the algorithm, which is dominated by the solution of the linear systems arising from the pressure equation.
+\end{remark}
+}
+
+
 \subsection{Post-Processing}\label{sec43}
 Upon completion of Steps 4 and 8, we obtain two sets of numerical solutions: the $\bm V$-solution, which is AP but nonconservative, and the
 $\bm U$-solution, which is conservative but non-AP. We therefore design the post-processing \eref{4.5f} using their convex combination with
@@ -1491,6 +1511,28 @@ examples below. This switching function is plotted in Figure \ref{fig31}.
 \caption{\sf Switching function $s(\varepsilon)$ plotted with respect to $1/\ve$.\label{fig31}}
 \end{figure}
 
+
+\RIIcolor{
+
+\begin{remark}
+	Modification~\eqref{4.9} of the wave speeds is used to improve the handling of discontinuous solutions for large (intermediate)-Mach number regimes. 
+	However, we would like to emphasize that it vanishes asymptotically as $\varepsilon\to0$ and therefore does not affect either the consistency of the method or the asymptotic-preserving analysis presented in the paper.
+\end{remark}
+
+}
+
+\RIcolor{
+
+	\begin{remark}
+		We remark that the same switching function, $s(\varepsilon)$, together with the same values of the associated parameters, has been used in all numerical examples reported in this work. The numerical results indicate that this choice is sufficiently robust across the considered Mach-number regimes.
+		\RIIcolor{
+			Further studies on the optimal design of the switching function and on the selection of its parameters may constitute interesting directions for future research.
+		}
+	\end{remark}
+
+}
+
+
 \subsubsection*{Example 1---Accuracy Test for Low-Mach-Number Smooth Vortex}
 In this example taken from \cite{zeifang2020novel}, we consider a smooth, unsteady Mach dependent vortex over the computational domain
 $[-10,10]\times[-10,10]$ subject to the periodic boundary conditions. The analytical solution is given, modulo the periodicity, by
@@ -1505,9 +1547,11 @@ E(\bm x_r)&=1+\ve^2\Big[\rho^2(\bm x_r)+\frac{\rho(\bm x_r)}{2}\big(u^2(\bm x_r)
 where $\bm x_r(x,y,t)=(x_r,y_r)^\top:=(x-t,y-t)^\top$.
 
 We take the CFL number $K_{\rm CFL}=0.475$ and compute the numerical solution until the final time $t=0.1$ on a series of uniform
-$N\times N$ meshes with $N=64$, $128$, $256$, and $512$ for $\ve=1$, $0.1$, $0.01$, and $0.001$. We study the convergence and present the
-obtained results in Figure \ref{fig42}, where one can see that the expected second-order convergence rate has been achieved in all variables
-for all considered $\ve$. One can also observe that, for fixed mesh refinement, the error decreases for decreasing $\ve$ as a result of the
+$N\times N$ meshes with $N=64$, $128$, $256$, and $512$ for $\ve=1$, $0.1$, $0.01$, and $0.001$. \RIcolor{We study the convergence in terms of $L^1$-errors, defined for each scalar component $V$ of the $\uvec{V}$-solution at the final time as
+$$\dx\dy\sum_{j,k}\abs{V_{j,k}(t=0.1)-V(x_j,y_k,t=0.1)},$$ 
+where $V(x,y,t)$ denotes the corresponding component of the exact solution. The obtained errors are reported in Figure \ref{fig42}.
+One can see that the expected second-order convergence rate has been achieved in all variables
+for all considered $\ve$.} One can also observe that, for fixed mesh refinement, the error decreases for decreasing $\ve$ as a result of the
 convergence of the analytical solution to the incompressible limit $(\rho,u,v,p)^\top=(1,1,1,1)^\top$ and of the AP character of the
 proposed AP DF-FV scheme.
 \begin{figure}[ht!]
@@ -1601,6 +1645,8 @@ captured.
 \centerline{\includegraphics[width=0.9\textwidth]{baroclinic_WC_SOLUTION_OCT_0000020.0000000.dat_eps0.05_CFL0.475}}
 \caption{\sf Example 3: Density at different times.\label{fig44}}
 \end{figure}
+
+\RIcolor{We emphasize that the initial density discontinuity is not accompanied by a corresponding pressure discontinuity. Therefore, the initial data do not correspond to a shock-tube-type configuration and one should not expect the generation of strong propagating compressible waves.}
 
 \subsubsection*{Example 4---Double Shear Layer Problem}
 In the following test case, originally introduced in \cite{bell1989second} for the incompressible Navier–Stokes equations and subsequently 
@@ -1740,5 +1786,5 @@ W2431004. The work of L. Micalizzi was supported in part by the LeRoy B. Martin,
 \end{acknowledgment}
 
 \bibliography{ref}
-\bibliographystyle{siam}
+\bibliographystyle{siamnodash}
 \end{document}
