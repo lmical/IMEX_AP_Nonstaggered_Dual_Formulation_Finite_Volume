@@ -26,7 +26,7 @@
 \usepackage{multirow}
 %\usepackage{cite}
 \usepackage[backend=bibtex,style=numeric]{biblatex}
-\addbibresource{sn-bibliography.bib}
+\addbibresource{ref.bib}
 \defbibheading{bibliography}[\refname]{\par\bigskip\noindent\textbf{#1}\par}
 
 \usepackage{nicefrac}
@@ -297,35 +297,30 @@ The theoretical strengths of the paper are noteworthy. The scheme achieves a phy
 	{\bf  Another important issue is that the primitive pressure equation (Eq.~2.7) depends on the term $\gamma p \nabla \cdot \mathbf{u}$, making the entire framework specific to ideal gases. Extending the method to real gases or complex thermodynamics would require a complete re-derivation of the splitting and the Poisson solver.}
 	
 	\smallskip
-	{\sc\underline{Reply}}: We agree that the present derivation is performed for the ideal-gas Euler equations and that extending the framework to more general equations of state would require a re-examination of both the primitive-variable formulation and of the resulting pressure equation. Extensions to more complex thermodynamic models are certainly of interest, but lie beyond the scope of the current paper. We have added a remark in the revised manuscript to clarify this point.
+	{\sc\underline{Reply}}: We agree that the present derivation is performed for the ideal-gas Euler equations and that extending the framework to more general equations of state would require a re-examination of both the primitive-variable formulation and of the resulting pressure equation. Extensions to more complex thermodynamic models are certainly of interest, but lie beyond the scope of the current paper. We have added a remark at the end of Section 3.1.1 in the revised manuscript to clarify this point.
 	
 	\medskip
 	\item	
 	{\bf  The authors describe purely conservative flux splitting as presenting ``significant challenges.'' While this is understandable, the claim should be nuanced in light of my previous remarks. The CFD community has already developed several viable and strictly conservative asymptotic-preserving schemes for the Euler equations.}
 	
 	\smallskip
-	{\sc\underline{Reply}}: We can think about it. 
+	{\sc\underline{Reply}}: We thank the reviewer for this observation. We agree that several viable and fully conservative asymptotic-preserving schemes for the Euler equations have been successfully developed in recent years. Our intention was not to suggest that conservative asymptotic-preserving approaches are unavailable, but rather to emphasize that extending the particular splitting strategy of \cite{haack2012all} to the full Euler equations is not straightforward. To avoid possible misunderstandings, we have revised the corresponding statement in the Introduction.
+	
 	
 	\medskip
 	\item	
-	{\bf  Overall, the manuscript by Chertock et al.\ is a creative and mathematically rigorous contribution. It successfully demonstrates that dynamically coupling a non-conservative low-Mach solver with a conservative shock-capturing solver can yield a theoretically sound and asymptotic-preserving method. Nevertheless, the Dual Formulation approach does not completely overcome the practical difficulties of low-Mach CFD. For large-scale industrial applications, particularly those involving complex thermodynamics or massive parallelism, existing unified conservative AP methods may offer better efficiency and scalability.}
+	{\bf  Overall, the manuscript by Chertock et al.\ is a creative and mathematically rigorous contribution. It successfully demonstrates that dynamically coupling a non-conservative low-Mach solver with a conservative shock-capturing solver can yield a theoretically sound and asymptotic-preserving method. Nevertheless, the Dual Formulation approach does not completely overcome the practical difficulties of low-Mach CFD. For large-scale industrial applications, particularly those involving complex thermodynamics or massive parallelism, existing unified conservative AP methods may offer better efficiency and scalability. The authors may want to consider these remarks in their revised manuscript.}
 	
 	\smallskip
-	{\sc\underline{Reply}}: 
-	
-	\medskip
-	\item	
-	{\bf  The authors may want to consider these remarks in their revised manuscript.}
-	
-	\smallskip
-	{\sc\underline{Reply}}: 
+	{\sc\underline{Reply}}: We have added the remarks on all points raised by the reviewer.
 	
 	
 	\medskip
 	\item	
 	{\bf   \textbf{Minor Suggestion.} In Definition 3.1, the phrase ``computed solution'' could be misinterpreted as the final discrete solution. For greater clarity, the authors should explicitly describe $\rho^n$ and $p^n$ as semi-discrete (in time) solutions.}
 	
-	
+	\smallskip
+	{\sc\underline{Reply}}: We have remarked this after Definition 3.1 to clarify on this point.
 
 \end{itemize}
 \vspace*{2cm}

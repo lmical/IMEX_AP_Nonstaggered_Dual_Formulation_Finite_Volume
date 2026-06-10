@@ -473,8 +473,8 @@ for a non-exhaustive list of references.
 All of the aforementioned AP schemes, which were designed for either the isentropic or full compressible Euler system, are based on 
 different flux splitting strategies.  A very simple and robust flux splitting, which was proposed in \cite{haack2012all} for the isentropic 
 Euler equations and later extended to the rotating shallow water equations in \cite{LCK}, seems to be rather optimal in the sense that
-it very accurately identifies and separates a linear stiff pressure term, which is then discretized implicitly. However, extending this 
-flux splitting to the full Euler equations presents significant challenges. 
+it very accurately identifies and separates a linear stiff pressure term, which is then discretized implicitly. %However, extending this  flux splitting to the full Euler equations presents significant challenges. 
+\RIIcolor{However, extending this particular flux splitting to the full Euler equations is not straightforward.}
 
 In this paper, we propose an alternative way of accurately identifying and separating a stiff part of the full Euler system: we first
 rewrite the studied system in a nonconservative form and then introduce a nonconservative hyperbolic splitting, which may be naturally
@@ -549,6 +549,7 @@ in terms of the primitive variables $\rho$, $\bm u$, and $p$:
 We emphasize that this formulation is equivalent to the conservative system \eref{2.1a}--\eref{2.1d} only for smooth solutions, and
 numerical approximations of \eref{2.5a}--\eref{2.5c} typically converge to nonphysical solutions when discontinuities are present; see 
 \cite{abgrall2010comment,HouLeF} for a detailed discussion.
+
 
 \subsection{Zero-Mach-Number Limit}\label{sec22}
 It is well-known (see, e.g., a formal analysis in \cite{Ala,MetSch}) that in the zero-Mach-number limit the compressible Euler equations
@@ -674,6 +675,13 @@ We say that such time discretization is AP if it admits an asymptotic expansion 
 discretization of \eref{3.3}--\eref{3.6} as $\ve\to0$.
 \end{definition}
 
+\RIIcolor{
+\begin{remark}
+	Indeed, in the previous definition, the computed solution $(\rho^{n},\bm u^{n},p^{n})$ has to be meant as semi-discrete in time.
+\end{remark}
+}
+
+
 To construct an AP time discretization, we first perform a hyperbolic splitting of the primitive system \eref{2.5a}–\eref{2.5c}, separating
 the stiff pressure-driven terms from the nonstiff convective terms. This splitting enables the use of an SI integration strategy in which
 the stiff and nonstiff terms are treated semi-implicitly and explicitly, respectively, ensuring uniform stability and asymptotic consistency
@@ -739,6 +747,15 @@ analysis in \S\ref{sec22}, which ensure that
 
 In the next subsection, we will utilize this splitting and design an AP time discretization based on an explicit approximation of the
 nonstiff subsystem and an SI discretization of the stiff terms on the right-hand sides (RHSs) of \eref{2.2} and \eref{2.3}.
+
+\RIIcolor{
+	
+	\begin{remark}
+		Let us remark that extensions of the proposed splitting to more general equations of state would require a re-examination of both the primitive-variable formulation and of the resulting pressure equation.
+	\end{remark}
+	
+}
+
 
 \subsubsection{First-Order AP SI Time Discretization}
 The simplest first-order AP SI time discretization of the system \eref{4.47} reads as
