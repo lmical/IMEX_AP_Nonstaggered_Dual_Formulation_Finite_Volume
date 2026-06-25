@@ -1057,9 +1057,9 @@ text centered]
 		\vspace{0.2cm}
 		
 		Main goal: blend the two variables\\
-		
-		Ex: Multifluid ($\uvec{V}$ at interface, $\uvec{U}$ far from it)\\
-		Ex: Low-Mach ($\uvec{V}$ for low Mach, $\uvec{U}$ for high Mach)	
+		Ex: Low-Mach ($\uvec{V}$ for low Mach, $\uvec{U}$ for high Mach)\\
+		Ex: Multifluid ($\uvec{V}$ at interface, $\uvec{U}$ far from it)
+
 
 	}
 
@@ -1762,272 +1762,53 @@ text centered]
 	
 \end{frame}
 
-\begin{frame}
-	\frametitle{Shock detection}
 
-		We look at two variables: $\rho u$ (and $\rho v$ in 2D) and $p$
-
-		We identify
-		
-		\begin{itemize}
-			\item Rough (R): $\varepsilon^{\rho u}_i>A \overline{\varepsilon}^{\rho u}$
-
-			\visible<2->{
-				\begin{itemize}
-					\item Rough no contact (RNC): $\varepsilon^{p}_i>B \overline{\varepsilon}^{p}$\\
-						\visible<3->{$\textcolor{blue}{\uvec{U}}$: $5$-th order WENO}
-					\item Rough contact (RC): otherwise\\
-						\visible<3->{$\textcolor{blue}{\uvec{U}}$: \textcolor<5->{green}{$2$-nd order overcompressive\only<5->{\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}}}
-						}
-				\end{itemize}
-			}
-
-			\item Smooth (S): otherwise\\
-				\visible<3->{$\textcolor{blue}{\uvec{U}}$: $5$-th order unlimited}
-
-		\end{itemize}
-		
-		\vspace{0.4cm}
-
-		\visible<4->{$\textcolor{red}{\uvec{V}}$: $5$-th order unlimited $+$ no PC
-			{\footnotesize
-				$$\frac{d}{dt}\textcolor{red}{\uvec{V}_{i}}(t)= -\frac{1}{\Delta x}\left(
-				\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}
-				-\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i-\frac{1}{2}}}
-				\right)+\textcolor{violet}{\frac{1}{\Delta x}
-					\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x\, dx}+\cancel{\textcolor{violet}{\frac{1}{\Delta x}
-						\left(\uvec{D}_{\uvec{\Psi},\imh}^+
-						+\uvec{D}_{\uvec{\Psi},\iph}^-\right)}}$$
-				$$\textcolor{violet}{\uvec{D}_{\uvec{\Psi},\iph}^{\pm}=\uvec{0}}$$
-			}
-		}
-
-		
-
-
-\end{frame}
 
 
 \begin{frame}
-	\frametitle{Shock detection}
-		\begin{columns}
-			\begin{column}{0.5\textwidth}
-				\centering
-				
-				{\footnotesize Shock $=$ Compression}
-				
-				\begin{tikzpicture}[scale=0.75, >=stealth]
-					
-					% axes
-					\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
-					\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
-					
-					% parameters
-					\def\xs{3.2}   % shock foot
-					\def\xt{4.8}   % shock top x
-					\def\yt{3.2}   % shock top t
-					
-					% shock
-					\draw[red, very thick] (\xs,0) -- (\xt,\yt);
-					
-					% left characteristics: parallel lines, stopped at the shock
-					% line direction chosen so that the first one goes from origin to shock top
-					\foreach \xzero in {0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
-					{
-						\pgfmathsetmacro{\yend}{\yt-\xzero}
-						\pgfmathsetmacro{\xend}{\xs + (\xt-\xs)*\yend/\yt}
-						\draw[black] (\xzero,0) -- (\xend,\yend);
-					}
-					
-					% right characteristics: tilted left, stopped at shock or max height
-					\def\tilt{0.35} % larger = more left tilt
-					\def\ymax{3.2}  % maximum height
-					
-					\foreach \xzero in {3.50,3.80,4.10,4.40,4.70,5.00,5.30,5.60,5.90}
-					{
-						% height at which the tilted characteristic hits the shock
-						\pgfmathsetmacro{\yhit}{\yt*(\xzero-\xs)/((\xt-\xs)+\tilt)}
-						
-						% stop either at the shock or at ymax
-						\pgfmathsetmacro{\yend}{min(\yhit,\ymax)}
-						
-						% corresponding x-coordinate
-						\pgfmathsetmacro{\xend}{\xzero-\tilt*\yend/\yt}
-						
-						\draw[black] (\xzero,0) -- ({\xend},{\yend});
-					}
-					
-				\end{tikzpicture}
-			\end{column}
-			\begin{column}{0.5\textwidth}
-				\centering
-				
+	\frametitle{Shock detection (momentum and pressure)}
 
-				
-				{\footnotesize Contact $=$ No compression ($p,v=$const)}
-
-
-				\begin{tikzpicture}[scale=0.75, >=stealth]
-					
-					% axes
-					\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
-					\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
-					
-					% parameters
-					\def\xs{3.2}
-					\def\xt{4.8}
-					\def\yt{3.2}
-					\def\tilt{0.35}
-					
-					% contact line
-					\draw[red, very thick] (\xs,0) -- (\xt,\yt);
-					
-					% slope dx/dt of the contact
-					\pgfmathsetmacro{\slope}{(\xt-\xs)/\yt}
-					
-					% left characteristics: parallel to the contact
-					\foreach \xzero in {0.0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
-					{
-						\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
-					}
-					
-					% right characteristics: tilted left, crossing the contact
-					\foreach \xzero in {3.60,3.95,4.30,4.65,5.00}
-					{
-						\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
-					}
-					
-				\end{tikzpicture}
-
-			\end{column}
-		\end{columns}
-	
-		\begin{figure}[hp] 
-			\centering{\includegraphics[scale=0.15]{sod_rome_200_cons_rus_MINMODVL_SSPRK2_CFL0.9.pdf}}
-		\end{figure}
-
-
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Adaptivity, overcompressive limiter\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}}
-	
-	
-	\begin{figure}[hp] 
-		\centering{\includegraphics[scale=0.2]{shock_turbulence_modified_example_2_3200_plot_rome_overcompressive.pdf}}
-	\end{figure}
-	{\tiny	
-	$$U\approx U_j+(U_x)_j(x-x_j)$$
-	\begin{equation*}
-		\begin{aligned}
-			&(U_x)_j=\phi^{\rm SBM}_{\theta,\tau}\left(\frac{U_{j+1}-U_j}{U_j-U_{j-1}}\right)
-			\frac{U_j-U_{j-1}}{\dx}, \quad \phi^{\rm SBM}_{\theta,\tau}(r):=\begin{cases}0&\mbox{if $r<0$},\\\min\{r\theta,1+\tau(r-1)\}&\mbox{if}~0<r\le1,\\
-				r\phi^{\rm SBM}_{\theta,\tau}(1/r)&\text{otherwise,}\end{cases}
-		\end{aligned}
-		\label{3.6f}
-	\end{equation*}
-	$\theta=2$ and $\tau=-0.25$}
-	
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Adaptivity, Shock-Density Wave Interaction Problem}
-
-		\begin{equation*}
-			(\rho(x,0),u(x,0),p(x,0))=
-			\begin{cases}\bigg(\dfrac{27}{7},\dfrac{4\sqrt{35}}{9},\dfrac{31}{3}\bigg),&x<-4,\\(1+0.2\sin(5x),0,1),&x>-4,\end{cases}
-		\end{equation*}
-	
-		\begin{figure}[ht!]
-			\centerline{\includegraphics[trim=0.1cm 0.0cm 0.0cm 0.1cm, clip, width=0.5\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho}%\hspace*{0.8cm}
-				\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho_zoom}}
-%				\caption*{Same computational time}
-%			\caption{\sf Example 1: Density $\rho$ computed by the adaptive and A-WENO scheme with $\dx=2/87$ and $\dx=1/30$, respectively (left) and
-%				zoom at $x\in[8.9,14]$ (right).\label{fig52}}
-		\end{figure}
-
-		%RMK: SAME COMPUTATIONAL TIME HERE
-		%RMK: SAME MESH REFINEMENT IN THE NEXT TESTS
-
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Adaptivity, Woodward--Colella}
-	
-	\begin{equation*}
-		(\rho(x,0),u(x,0),p(x,0))= \begin{cases}(1,0,1000),&x<0.1,\\(1,0,0.01),& 0.1<x<0.9,\\(1,0,100),&x>0.9,\end{cases}
-	\end{equation*}
-	
-	\begin{figure}[ht!]
-		\centerline{\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.49\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho}%\hspace*{0.8cm}
-			\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho_zoom}}
-%				\caption*{From now on, same mesh refinement}
-		%			\caption{\sf Example 3: Density $\rho$ (left) and zoom at $x\in[0.56,0.62]$ (right).\label{fig54}}
-	\end{figure}
-	
-	%RMK: SAME MESH REFINEMENT
-	
-\end{frame}
-
-%\begin{frame}
-%	\frametitle{Adaptivity, 2-D Riemann problem, Configuration 3}
+%	{\tiny
+%		We look at two variables: $\rho u$ (and $\rho v$ in 2D) and $p$
 %
-%\begin{figure}[ht!]
-%	\centerline{\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}
-%		\hspace*{0.5cm}
-%		\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/uniform_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}}
-%	\vskip10pt
-%	\hspace*{-0.2cm}\centerline{\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDX}
-%		\hspace*{1.0cm}
-%		\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDY}}
-%%	\caption{\sf Example 4 (Configuration 3): Same as in Figure \ref{fig55} but for the mesh with $\dx=\dy=3/2000$.\label{fig56}}
-%\end{figure}
+%%		We identify
+%		
+%		\begin{itemize}
+%			\item Rough (R): $\varepsilon^{\rho u}_i>A \overline{\varepsilon}^{\rho u}$
 %
+%			\visible<1->{
+%				\begin{itemize}
+%					{\tiny  \item Rough no contact (RNC): $\varepsilon^{p}_i>B \overline{\varepsilon}^{p}$ $\Rightarrow$ WENO order 5}
+%					{\tiny	\item Rough contact (RC): otherwise $\Rightarrow$ minmod overcompressive order 2}
+%				\end{itemize}
+%			}
 %
-%\end{frame}
+%			\item Smooth (S): otherwise $\Rightarrow$ unlimited order 5
+%		\end{itemize}
+%		
+%		
+%	}
+
+\vspace{-0.1cm}
 
 
-\begin{frame}
-	\frametitle{Adaptivity, 2-D Riemann problem, Configuration 12}
-		\begin{figure}[ht!]
-			\centerline{\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}
-				\hspace*{0.5cm}
-				\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}}
-			\vskip10pt   
-			\hspace*{-0.2cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDX}
-				\hspace*{1.0cm}
-				\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDY}}
-%			\caption{\sf Example 4 (Configuration 12): Same as in Figure \ref{fig57} but for the mesh with $\dx=\dy=3/4000$.\label{fig58}}
-		\end{figure}
-
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Adaptivity, 2-D Riemann problem, Implosion problem}
-		\begin{figure}[ht!]
-			\centerline{\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}
-				\hspace*{0.5cm}
-				\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}}
-			\vskip10pt
-			\hspace*{-0.3cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDX}\hspace*{1.1cm}
-				\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDY}}
-%			\caption{\sf Example 5: Same as in Figure \ref{fig59} but with $\dx = 3/4000$.\label{fig510}}
-		\end{figure}
-	
-\end{frame}
-
-\begin{frame}
-	\frametitle{Adaptivity, Parameter tuning}
+\begin{figure}[ht!]
+	\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}%\hspace*{0.1cm}
+	\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDX}%\hspace*{0.1cm}
+	\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDY}
+	\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}%\hspace*{0.1cm}
+		\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDX}%\hspace*{0.1cm}
+		\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDY}
+	\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}%\hspace*{0.1cm}
+		\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDX}%\hspace*{0.1cm}
+		\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDY}
+\end{figure}
 		
-		\centering 
-		
-		RMK: Parameter tuning performed on coarse meshes (cheap).
+
 
 \end{frame}
+
+
 
 
 \section{Application to multifluid}
@@ -2719,6 +2500,230 @@ text centered]
 \backupbegin
 
 \section*{Backup slides}
+
+\begin{frame}
+	\frametitle{Shock detection}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\centering
+			
+			{\footnotesize Shock $=$ Compression}
+			
+			\begin{tikzpicture}[scale=0.75, >=stealth]
+				
+				% axes
+				\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
+				\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
+				
+				% parameters
+				\def\xs{3.2}   % shock foot
+				\def\xt{4.8}   % shock top x
+				\def\yt{3.2}   % shock top t
+				
+				% shock
+				\draw[red, very thick] (\xs,0) -- (\xt,\yt);
+				
+				% left characteristics: parallel lines, stopped at the shock
+				% line direction chosen so that the first one goes from origin to shock top
+				\foreach \xzero in {0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
+				{
+					\pgfmathsetmacro{\yend}{\yt-\xzero}
+					\pgfmathsetmacro{\xend}{\xs + (\xt-\xs)*\yend/\yt}
+					\draw[black] (\xzero,0) -- (\xend,\yend);
+				}
+				
+				% right characteristics: tilted left, stopped at shock or max height
+				\def\tilt{0.35} % larger = more left tilt
+				\def\ymax{3.2}  % maximum height
+				
+				\foreach \xzero in {3.50,3.80,4.10,4.40,4.70,5.00,5.30,5.60,5.90}
+				{
+					% height at which the tilted characteristic hits the shock
+					\pgfmathsetmacro{\yhit}{\yt*(\xzero-\xs)/((\xt-\xs)+\tilt)}
+					
+					% stop either at the shock or at ymax
+					\pgfmathsetmacro{\yend}{min(\yhit,\ymax)}
+					
+					% corresponding x-coordinate
+					\pgfmathsetmacro{\xend}{\xzero-\tilt*\yend/\yt}
+					
+					\draw[black] (\xzero,0) -- ({\xend},{\yend});
+				}
+				
+			\end{tikzpicture}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\centering
+			
+			
+			
+			{\footnotesize Contact $=$ No compression ($p,v=$const)}
+			
+			
+			\begin{tikzpicture}[scale=0.75, >=stealth]
+				
+				% axes
+				\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
+				\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
+				
+				% parameters
+				\def\xs{3.2}
+				\def\xt{4.8}
+				\def\yt{3.2}
+				\def\tilt{0.35}
+				
+				% contact line
+				\draw[red, very thick] (\xs,0) -- (\xt,\yt);
+				
+				% slope dx/dt of the contact
+				\pgfmathsetmacro{\slope}{(\xt-\xs)/\yt}
+				
+				% left characteristics: parallel to the contact
+				\foreach \xzero in {0.0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
+				{
+					\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
+				}
+				
+				% right characteristics: tilted left, crossing the contact
+				\foreach \xzero in {3.60,3.95,4.30,4.65,5.00}
+				{
+					\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
+				}
+				
+			\end{tikzpicture}
+			
+		\end{column}
+	\end{columns}
+	
+	\begin{figure}[hp] 
+		\centering{\includegraphics[scale=0.15]{sod_rome_200_cons_rus_MINMODVL_SSPRK2_CFL0.9.pdf}}
+	\end{figure}
+	
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, overcompressive limiter\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}}
+	
+	
+	\begin{figure}[hp] 
+		\centering{\includegraphics[scale=0.2]{shock_turbulence_modified_example_2_3200_plot_rome_overcompressive.pdf}}
+	\end{figure}
+	{\tiny	
+		$$U\approx U_j+(U_x)_j(x-x_j)$$
+		\begin{equation*}
+			\begin{aligned}
+				&(U_x)_j=\phi^{\rm SBM}_{\theta,\tau}\left(\frac{U_{j+1}-U_j}{U_j-U_{j-1}}\right)
+				\frac{U_j-U_{j-1}}{\dx}, \quad \phi^{\rm SBM}_{\theta,\tau}(r):=\begin{cases}0&\mbox{if $r<0$},\\\min\{r\theta,1+\tau(r-1)\}&\mbox{if}~0<r\le1,\\
+					r\phi^{\rm SBM}_{\theta,\tau}(1/r)&\text{otherwise,}\end{cases}
+			\end{aligned}
+			\label{3.6f}
+		\end{equation*}
+		$\theta=2$ and $\tau=-0.25$}
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, Shock-Density Wave Interaction Problem}
+	
+	\begin{equation*}
+		(\rho(x,0),u(x,0),p(x,0))=
+		\begin{cases}\bigg(\dfrac{27}{7},\dfrac{4\sqrt{35}}{9},\dfrac{31}{3}\bigg),&x<-4,\\(1+0.2\sin(5x),0,1),&x>-4,\end{cases}
+	\end{equation*}
+	
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[trim=0.1cm 0.0cm 0.0cm 0.1cm, clip, width=0.5\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho}%\hspace*{0.8cm}
+			\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho_zoom}}
+		%				\caption*{Same computational time}
+		%			\caption{\sf Example 1: Density $\rho$ computed by the adaptive and A-WENO scheme with $\dx=2/87$ and $\dx=1/30$, respectively (left) and
+			%				zoom at $x\in[8.9,14]$ (right).\label{fig52}}
+	\end{figure}
+	
+	%RMK: SAME COMPUTATIONAL TIME HERE
+	%RMK: SAME MESH REFINEMENT IN THE NEXT TESTS
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, Woodward--Colella}
+	
+	\begin{equation*}
+		(\rho(x,0),u(x,0),p(x,0))= \begin{cases}(1,0,1000),&x<0.1,\\(1,0,0.01),& 0.1<x<0.9,\\(1,0,100),&x>0.9,\end{cases}
+	\end{equation*}
+	
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.49\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho}%\hspace*{0.8cm}
+			\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho_zoom}}
+		%				\caption*{From now on, same mesh refinement}
+		%			\caption{\sf Example 3: Density $\rho$ (left) and zoom at $x\in[0.56,0.62]$ (right).\label{fig54}}
+	\end{figure}
+	
+	%RMK: SAME MESH REFINEMENT
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Adaptivity, 2-D Riemann problem, Configuration 3}
+	
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}
+			\hspace*{0.5cm}
+			\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/uniform_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}}
+		\vskip10pt
+		\hspace*{-0.2cm}\centerline{\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDX}
+			\hspace*{1.0cm}
+			\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDY}}
+		%	\caption{\sf Example 4 (Configuration 3): Same as in Figure \ref{fig55} but for the mesh with $\dx=\dy=3/2000$.\label{fig56}}
+	\end{figure}
+	
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, 2-D Riemann problem, Configuration 12}
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}
+			\hspace*{0.5cm}
+			\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}}
+		\vskip10pt   
+		\hspace*{-0.2cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDX}
+			\hspace*{1.0cm}
+			\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDY}}
+		%			\caption{\sf Example 4 (Configuration 12): Same as in Figure \ref{fig57} but for the mesh with $\dx=\dy=3/4000$.\label{fig58}}
+	\end{figure}
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, 2-D Riemann problem, Implosion problem}
+	\begin{figure}[ht!]
+		\centerline{\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}
+			\hspace*{0.5cm}
+			\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}}
+		\vskip10pt
+		\hspace*{-0.3cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDX}\hspace*{1.1cm}
+			\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDY}}
+		%			\caption{\sf Example 5: Same as in Figure \ref{fig59} but with $\dx = 3/4000$.\label{fig510}}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Adaptivity, Parameter tuning}
+	
+	\centering 
+	
+	RMK: Parameter tuning performed on coarse meshes (cheap).
+	
+\end{frame}
+
+
+
 
 \begin{frame}
 	\frametitle{Adaptivity, Configuration 3, coarse mesh}
