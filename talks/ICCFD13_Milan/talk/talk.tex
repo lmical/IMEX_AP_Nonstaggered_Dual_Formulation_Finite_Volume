@@ -2113,15 +2113,13 @@ text centered]
 
 \end{frame}
 
-\begin{frame}{Shock--Bubble Interaction}
-%	\vspace{0.5em} % Adds some vertical space after the title
-	
+\begin{frame}{Shock--Bubble Interaction\footnote{{\tiny J.-F. Haas, B. Sturtevant, 1987, Interaction of weak shock waves with cylindrical and spherical gas inhomogeneities.}}}
 	
 	\centering
 	
-	\begin{tikzpicture}[scale=0.4] % Adjust the scale factor to make the picture larger or smaller
+	\begin{tikzpicture}[scale=0.36]
 		% Define the length of the walls
-		\def\length{8} % Adjust this value for the wall length
+		\def\length{8}
 		
 		% Wall patterns
 		\fill[pattern=north east lines, pattern color=black!30] 
@@ -2132,126 +2130,121 @@ text centered]
 		% Draw rectangle, centered according to \length
 		\draw[thick] (-\length/2, 0) rectangle (\length/2, 4);
 		
-		% Draw the bubble (circle) at the center
-		\draw[thick, fill=blue!30] (0, 2) circle (0.5); % Circle representing the bubble
+		% Draw the bubble
+		\draw[thick, fill=blue!30] (0, 2) circle (0.5);
 		
-		% Draw the wave (vertical line) displaced to the right
-		\draw[thick] (\length/2 - 2.75, 0) -- (\length/2 - 2.75, 4); % Vertical line representing the wave
+		% Draw the shock wave
+		\draw[thick] (\length/2 - 2.75, 0) -- (\length/2 - 2.75, 4);
 		
 		% Draw the arrow indicating wave movement towards the left
-		\draw[->, thick] (\length/2 - 2.75, 3) -- (\length/2 - 3.75, 3) node[midway, above] {\tiny Air};
+		\draw[->, thick] (\length/2 - 2.75, 3) -- (\length/2 - 3.75, 3) 
+		node[midway, above] {\tiny Air};
 		
-		% Labels for the bubble and wave
+		% Labels
 		\node at (0, 1.2) {\tiny Bubble};
-		
-		%	\node[above] at (0, 4.3) {Wall (no penetration)};
-		%	\node[below] at (0, -0.5) {Wall (no penetration)};
 	\end{tikzpicture}
 	
-	% =========================
-	% R22 (top)
-	% =========================
-	\begin{minipage}[t]{0.7\textwidth}
-		\centering
-		\foreach[count=\k from 1] \index in {30} {%
-			\only<\k>{%
-				\includegraphics[
-				width=0.9\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\
-				\includegraphics[
-				width=0.48\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}%
-				\includegraphics[
-				width=0.48\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}%
-			}%
-		}
-	\end{minipage}
+	\vspace{-0.3em}
 	
-%	\vspace{0.5em}
-	
-	% =========================
-	% Helium (bottom)
-	% =========================
-	\begin{minipage}[t]{0.7\textwidth}
-		\centering
-		\foreach[count=\k from 1] \index in {30} {%
-			\only<\k>{%
-				\includegraphics[
-				width=0.9\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\
-				\includegraphics[
-				width=0.48\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}%
-				\includegraphics[
-				width=0.48\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}%
-			}%
-		}
-	\end{minipage}	
-
-	
-	
-	
-\end{frame}
-
-
-
-
-\begin{frame}{Shock--Bubble Interaction}
-	\vspace{0.5em} % Adds some vertical space after the title
-
-	
-		\centering
+	\begin{columns}[T,onlytextwidth]
 		
-\begin{tikzpicture}[scale=1.0] % Adjust the scale factor to make the picture larger or smaller
-	% Define the length of the walls
-	\def\length{8} % Adjust this value for the wall length
-	
-	% Wall patterns
-	\fill[pattern=north east lines, pattern color=black!30] 
-	(-\length/2, 4) -- (\length/2, 4) -- (\length/2, 4.3) -- (-\length/2, 4.3) -- cycle;
-	\fill[pattern=north east lines, pattern color=black!30] 
-	(-\length/2, 0) -- (\length/2, 0) -- (\length/2, -0.3) -- (-\length/2, -0.3) -- cycle;
-	
-	% Draw rectangle, centered according to \length
-	\draw[thick] (-\length/2, 0) rectangle (\length/2, 4);
-	
-	% Draw the bubble (circle) at the center
-	\draw[thick, fill=blue!30] (0, 2) circle (0.5); % Circle representing the bubble
-	
-	% Draw the wave (vertical line) displaced to the right
-	\draw[thick] (\length/2 - 2.75, 0) -- (\length/2 - 2.75, 4); % Vertical line representing the wave
-	
-	% Draw the arrow indicating wave movement towards the left
-	\draw[->, thick] (\length/2 - 2.75, 3) -- (\length/2 - 3.75, 3) node[midway, above] {Air};
-	
-	% Labels for the bubble and wave
-	\node at (0, 1.2) {Bubble};
-	
-%	\node[above] at (0, 4.3) {Wall (no penetration)};
-%	\node[below] at (0, -0.5) {Wall (no penetration)};
-\end{tikzpicture}
+		% =====================================================
+		% Left column: numerical results
+		% =====================================================
+		\begin{column}{0.6\textwidth}
+			
+			% =========================
+			% R22 numerical
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\foreach[count=\k from 1] \index in {30} {%
+					\only<\k>{%
+						\includegraphics[
+						width=0.90\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\[-0.25em]
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}%
+						\hfill
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}%
+					}%
+				}
+			\end{minipage}
+			
+			\vspace{0.35em}
+			
+			% =========================
+			% Helium numerical
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\foreach[count=\k from 1] \index in {30} {%
+					\only<\k>{%
+						\includegraphics[
+						width=0.90\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\[-0.25em]
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}%
+						\hfill
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}%
+					}%
+				}
+			\end{minipage}
+			
+		\end{column}
 		
+		% =====================================================
+		% Right column: experimental comparison
+		% =====================================================
+		\begin{column}{0.40\textwidth}
+			\centering
+			
+			% =========================
+			% R22 experimental
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\includegraphics[
+				width=0.6\linewidth
+				]{Figures_multifluid/numerical_vs_experimental/r22_cropped.pdf}
+			\end{minipage}
+			
+			\vspace{-3.0em}
+			
+			% =========================
+			% Helium experimental
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\includegraphics[
+				width=0.6\linewidth
+				]{Figures_multifluid/numerical_vs_experimental/helium_cropped.pdf}
+			\end{minipage}
+			
+		\end{column}
+		
+	\end{columns}
 	
-	% Include images
-%	\vspace{1em} % Adds some vertical space between the box and the images
-%	\includegraphics[width=0.3\linewidth]{results/helium_cropped.pdf} % Adjust the path and size
-%	\includegraphics[width=0.3\linewidth]{results/r22_cropped.pdf} % Adjust the path and size
 
-
+	\vspace{-2.0em}
 
 \end{frame}
 
@@ -2259,87 +2252,6 @@ text centered]
 
 
 
-%\begin{comment}
-\begin{frame}{Shock--Bubble Interaction (Helium top, R22 bottom)}
-	\centering
-	
-	% =========================
-	% R22 (top)
-	% =========================
-	\begin{minipage}[t]{0.9\textwidth}
-		\centering
-		\foreach[count=\k from 1] \index in {30} {%
-			\only<\k>{%
-				\includegraphics[
-				width=0.9\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\
-				\includegraphics[
-				width=0.48\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}%
-				\includegraphics[
-				width=0.48\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}%
-			}%
-		}
-	\end{minipage}
-	
-	\vspace{0.5em}
-	
-	% =========================
-	% Helium (bottom)
-	% =========================
-	\begin{minipage}[t]{0.9\textwidth}
-		\centering
-		\foreach[count=\k from 1] \index in {30} {%
-			\only<\k>{%
-				\includegraphics[
-				width=0.9\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\
-				\includegraphics[
-				width=0.48\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}%
-				\includegraphics[
-				width=0.48\textwidth,
-				trim=0cm 0cm 0cm 0.675cm,
-				clip
-				]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}%
-			}%
-		}
-	\end{minipage}
-	
-\end{frame}
-%\end{comment}
-
-\begin{frame}{Shock--Bubble Interaction\footnote{{\tiny J.-F. Haas, B. Sturtevant, 1987, Interaction of weak shock waves with cylindrical and spherical gas inhomogeneities.}}}
-\centering
-
-\begin{figure}[h]
-	\centering
-	\begin{subfigure}{0.45\linewidth}
-		\centering
-		\caption*{\textbf{Helium}}
-		\includegraphics[width=\linewidth]{Figures_multifluid/numerical_vs_experimental/helium_cropped.pdf} % Adjust the path and size
-	\end{subfigure}\hspace{1em} % Horizontal spacing
-	\begin{subfigure}{0.45\linewidth}
-		\centering
-		\caption*{\textbf{R-22}}
-		\includegraphics[width=\linewidth]{Figures_multifluid/numerical_vs_experimental/r22_cropped.pdf} % Adjust the path and size
-	\end{subfigure}
-\end{figure}
-
-\vspace{-7em}
-
-\end{frame}
 
 
 
