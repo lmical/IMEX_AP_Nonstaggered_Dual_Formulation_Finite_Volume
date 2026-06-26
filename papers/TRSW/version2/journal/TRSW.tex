@@ -167,11 +167,19 @@ converge to physically relevant weak solutions.
 In order to achieve an AP property of the primitive system discretization, we introduce a special hyperbolic splitting to separate nonstiff
 and stiff parts of the TRSW system. The nonstiff terms are then discretized explicitly using the path-conservative central-upwind approach,
 while the stiff terms are approximated in a semi-implicit manner using central differences in space: this way, no restrictive time-step
-constraints are to be imposed. The conservative system, on the other hand, is discretized explicitly using the central-upwind scheme, which
-is stable in low-Rossby-number regimes only. The AP property and stability of the resulting DF-FV method are enforced by applying a
+constraints are to be imposed. The conservative system, on the other hand, is discretized explicitly using the central-upwind \RIIIcolor{(CU)} scheme, which
+is stable in \RIIIcolor{high- and intermediate}-Rossby-number regimes only. 
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%L: There was a typo here
+%%%%%%%%%%%%%%%%%%%%%%%%%
+The AP property and stability of the resulting DF-FV method are enforced by applying a
 post-processing coupling that recovers the correct TQG dynamics in the zero-Rossby-number limit while preserving shock speeds and preventing
 spurious oscillations in high-Rossby-number regimes. Importantly, the semi-implicit discretization requires only the solution of linear
-well-posed elliptic problems, avoiding nonlinear solvers and reducing computational cost. Numerical experiments demonstrate that the
+well-posed elliptic problems, avoiding nonlinear solvers and reducing computational cost. 
+%
+\RIIIcolor{The proposed DF-FV method is therefore designed to combine, through the post-processing, the AP primitive discretization and the conservative one in a regime-dependent way, exploiting the AP consistency of the primitive formulation in the low-Rossby limit and the shock-capturing reliability of the conservative formulation away from that limit.}
+
+Numerical experiments demonstrate that the
 resulting AP DF-FV method is uniformly accurate across a broad range of flow regimes, efficient to implement, and robust in capturing both
 asymptotic limits and nonlinear wave phenomena.
 \end{abstract}
@@ -240,10 +248,16 @@ the TRSW equations, leveraging the advantages of both formulations to design a s
 numbers. To achieve the AP property of the primitive system discretization, we introduce a special hyperbolic splitting to separate nonstiff
 and stiff parts of the TRSW system, and employ a path-conservative central-upwind (PCCU) discretization in space
 \cite{CKKM,Chu_2022,Castro_2019}, which handles nonconservative terms and captures shocks robustly, together with an SI Runge-Kutta time
-integration that stabilizes the fast oscillatory dynamics with a time-step restriction independent of the Rossby number. The AP property is
-enforced by solving both the conservative and primitive forms of the TRSW equations simultaneously and by applying a post-processing
-coupling at each time step to recover the correct TQG dynamics in the low-Rossby limit while preserving shock speeds in high-Rossby-number
-regimes. It is important to emphasize that the incorporated SI time discretization does not require solving nonlinear systems: only linear
+integration that stabilizes the fast oscillatory dynamics with a time-step restriction independent of the Rossby number. 
+\RIIIcolor{
+	To ensure accurate and sharp shock capturing, instead, we rely on an explicit central-upwind (CU) discretization of the conservative formulation.
+	%
+	The overall scheme is obtained by solving both the conservative and primitive forms of the TRSW equations simultaneously and applying a post-processing procedure at each time step to recover the correct TQG dynamics in the low-Rossby limit while preserving shock speeds in high-Rossby-number regimes.
+	%
+	This coupling is therefore not intended as an arbitrary combination of two independent schemes, but rather as a regime-dependent mechanism that exploits the AP consistency of the primitive formulation in the low-Rossby limit and the shock-capturing reliability of the conservative formulation away from that limit.
+}
+%
+It is important to emphasize that the incorporated SI time discretization does not require solving nonlinear systems: only linear
 elliptic equations are solved at each time step, which significantly reduces computational cost, while maintaining stability and accuracy.
 As a result, the proposed numerical framework offers a numerical method that is uniformly accurate across different-Rossby-number regimes,
 efficient to implement, and robust in capturing both asymptotic limits and nonlinear wave phenomena.

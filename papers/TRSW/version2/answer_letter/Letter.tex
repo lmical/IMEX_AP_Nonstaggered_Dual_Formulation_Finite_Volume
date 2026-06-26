@@ -274,6 +274,8 @@ In the following, we list our responses to the reviewers' comments/questions. In
 
 We have therefore added explicit references in Section~3.1, where the hyperbolic splitting is presented. The key novelty of the present paper is the construction of a splitting specifically adapted to the TRSW equations and to the TQG limit. To provide a clearer context, we now refer to~\cite{CKKM}, which develops a related dual-formulation AP strategy and is currently in an advanced stage of review, and to~\cite{Haack_2012}, which provides relevant background on all-speed/asymptotic-preserving splittings.
 
+
+
 \bigskip 
 \item
 {\bf A rigorous justification for choosing and combining these specific numerical
@@ -282,7 +284,14 @@ We have therefore added explicit references in Section~3.1, where the hyperbolic
 	rationale.}
 
 \medskip
-{\sc\underline{Reply}}:
+{\sc\underline{Reply}}: We thank the reviewer for this comment. The rationale behind the proposed coupling is that the two formulations have complementary properties in different Rossby-number regimes. In the low-Rossby-number regime targeted by the AP limit, the solution is expected to remain smooth and close to the TQG dynamics; in this setting, the primitive formulation, together with the AP splitting introduced in Section~3.1, is the appropriate one for recovering the correct asymptotic behavior. On the other hand, in high- and intermediate-Rossby-number regimes, shocks or sharp waves may appear, and it is therefore essential to rely on a conservative formulation in order to obtain the correct weak solution and shock speeds.
+
+We have revised the manuscript to make this operational rationale clearer. In particular, we now emphasize that the coupling is not intended as an arbitrary combination of two independent schemes, but rather as a way to exploit the AP consistency of the primitive formulation in the low-Rossby limit while retaining the robustness and correct shock-capturing properties of the conservative formulation away from that limit.
+
+More specifically, we have remarked it in the abstract and in the introduction.
+
+
+
 
 \medskip
 \item
