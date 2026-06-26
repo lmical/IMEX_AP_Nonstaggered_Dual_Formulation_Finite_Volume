@@ -1,0 +1,454 @@
+\documentclass[letter,11pt]{letter}
+\usepackage[margin=1.0in]{geometry}
+%\usepackage{moreverb,latexsym}
+%\usepackage{graphics,graphicx,curves,epic,eepic,ulem,bbm,mathbbol,enumerate,latexsym,multicol}
+\usepackage{graphics,graphicx}
+%\usepackage{float}
+%\usepackage{subfigure}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{empheq}
+\usepackage{bm}
+\usepackage{color}
+\usepackage{float}
+\usepackage{setspace}
+
+%% NewCommand
+\newcommand{\hf}{\frac{1}{2}}
+\newcommand{\xL}{x_{j-\frac{1}{2}}}
+\newcommand{\xR}{x_{j+\frac{1}{2}}}
+\newcommand{\yL}{y_{k-\frac{1}{2}}}
+\newcommand{\yR}{y_{k+\frac{1}{2}}}
+\newcommand{\jL}{j-\frac{1}{2}}
+\newcommand{\jR}{j+\frac{1}{2}}
+\newcommand{\kL}{k-\frac{1}{2}}
+\newcommand{\kR}{k+\frac{1}{2}}
+
+\newcommand\RE[1]{\textcolor{red}{#1}}
+\newcommand\BL[1]{\textcolor{blue}{#1}}
+
+\newcommand{\bnabla}{\bm{\nabla}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dt}{\Delta t}
+\newcommand{\dx}{\Delta x}
+\newcommand{\dy}{\Delta y}
+\newcommand{\bx}{\bm{x}}
+\newcommand{\bn}{\bm{n}}
+\newcommand{\bv}{\bm{v}}
+\newcommand{\bU}{\bm{U}}
+\newcommand{\bV}{\bm{V}}
+\newcommand{\bF}{\bm{F}}
+\newcommand{\bG}{\bm{G}}
+\newcommand{\bS}{\bm{S}}
+\newcommand{\bQ}{\bm{Q}}
+
+\newcommand{\g}{\textsl{g}}
+\newcommand{\Ro}{\mathrm{Ro}}
+\newcommand{\Bu}{\mathrm{Bu}}
+\renewcommand{\d}{\mathrm{d}}
+
+\newcommand\eref[1]{(\ref{#1})}
+
+\newcommand*\xbar[1]{%
+  \hbox{%
+    \vbox{%
+      \hrule height 0.5pt % The actual bar
+      \kern0.3ex%         % Distance between bar and symbol
+      \hbox{%
+        \kern-0.05em%      % Shortening on the left side
+        \ensuremath{#1}%
+        \kern-0.02em%      % Shortening on the right side
+      }%
+    }%
+  }%
+}
+
+% Do NOT use natbib
+
+\makeatletter
+\providecommand{\refname}{References}
+\providecommand{\newblock}{}
+
+\newenvironment{thebibliography}[1]
+{\par\bigskip
+	\noindent{\bfseries \refname}\par\smallskip
+	\list{\@biblabel{\@arabic\c@enumiv}}%
+	{\settowidth\labelwidth{\@biblabel{#1}}%
+		\leftmargin\labelwidth
+		\advance\leftmargin\labelsep
+		\usecounter{enumiv}%
+		\let\p@enumiv\@empty
+		\renewcommand\theenumiv{\@arabic\c@enumiv}}%
+	\sloppy}
+{\endlist}
+\makeatother
+
+
+\name{Nan Zhang} % To be used for the return address on the envelope
+\signature{Nan Zhang} % Goes after the closing (ie at the end of the letter, with space for a signature)
+\address{Nan Zhang\\
+Department of Mathematics\\
+Southern University of Science and Technology\\
+Shenzhen, 518055, China}
+% Alternatively, these may be set on an individual basis within each letter environment.
+
+%\makelabels % this command prints envelope labels on the final page of the document
+
+\begin{document}
+\begin{letter}{Journal of Computatiopnal Physics\\\#JCOMP-D-26-00536}
+
+\opening{Dear Editor:} % eg Hello.
+We would like to thank the reviewers for carefully reading our paper and for their valuable suggestions. We have revised the paper following the reviewers' comments and we hope that the modifications we have made will clear the way for publication of our paper.
+
+In the following, we list our responses to the reviewers' comments/questions. In the revised manuscript, the changes marked in {\color{red}red} correspond to the remarks made by Reviewer \#1, those marked in {\color{blue}blue} correspond to the remarks made by Reviewer \#2, and those marked in {\color{magenta}magenta} correspond to remarks made by Reviewer \#3. The page numbers and the section/equation/reference numbers in our answers refer to those in the revised version.
+
+\bigskip
+\underline{Response to the Comments of the Reviewer \#1}
+\begin{enumerate}
+	\item
+	{\bf The overall algorithm is somewhat difficult to follow, particularly because the conservative and primitive formulations are evolved simultaneously. The authors are encouraged to include a flowchart illustration of the implementation procedure to improve readability.}
+	
+	\medskip
+	{\sc\underline{Reply}}: Thank you for your suggestion. We now add a flowchart ......
+	
+	\item
+	{\bf The rationale for evolving the variable $q$ in the primitive formulation should be explained in greater detail, particularly its role in ensuring or improving the asymptotic-preserving property of the proposed scheme.}
+	
+	\medskip
+	{\sc\underline{Reply}}: Thank you for your comment. We now included a Remark on page 9 (before Theorem 3.1) to provide a more detailed explanation. 
+	
+	\medskip
+	\item
+	{\bf Two different time-step restrictions are introduced in the manuscript. It would be helpful if the authors could clarify which time step is actually used in the implementation. Are the conservative and primitive formulations advanced using the same time step, or are different time steps employed?}
+	
+	\medskip
+	{\sc\underline{Reply}}: Thank you for your suggestion. The conservative and primitive formulations advanced using the same time step. We note that ......
+	
+	\medskip
+	\item
+	{\bf For the explicit scheme used in the numerical experiments, is the implementation based on both the conservative solution $\bm{U}$ and the primitive solution $\bm{V}$, or only on the conservative solution $\bm{U}$ (i.e., the standard finite-volume scheme)? In Figure 5.1, would the reference solutions differ if these two variants of the explicit scheme were employed?}
+	
+	\medskip
+	{\sc\underline{Reply}}: 
+	
+	\medskip
+	\item
+	{\bf In the shock-dominated test cases, the Rossby number is chosen as $Ro = 1$, for which the switch function is essentially zero and the final solution is almost entirely determined by the conservative formulation. It would be interesting to consider similar shock-containing test cases with intermediate Rossby numbers, such as $Ro = 0.2$ and $Ro = 0.3$, where both formulations contribute to the final solution. For such cases, the authors should also examine the conservation properties of the resulting numerical solutions.}
+	
+	\medskip
+	{\sc\underline{Reply}}:
+	
+	\medskip
+	\item
+	{\bf The low-Rossby-number regime is described as corresponding to $\varepsilon < 0.1$, while the smallest Rossby number considered in the numerical experiments is approximately $0.016$. To further assess the AP property of the method, the authors may consider additional tests with more extreme Rossby numbers, for example $10^{-3}$ and $10^{-4}$.}
+	
+	\medskip
+	{\sc\underline{Reply}}:
+	
+	\medskip
+	\item
+	{\bf The numerical examples demonstrate that the proposed method performs well in the low-Rossby-number regime. However, to more directly validate the AP property, it would be valuable to compare the computed solutions with direct numerical simulations of the limiting TQG system.}
+	
+	\medskip
+	{\sc\underline{Reply}}:
+\end{enumerate}
+
+\bigskip
+\underline{Response to the Comments of the Reviewer \#2}
+\begin{enumerate}
+\item
+{\bf At several instances the paper makes reference to the work [23] which is reported as ``in preparation''. That paper should be publicly accessible by the reader.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\medskip
+\item
+{\bf I assume that equation (2.1) should be complemented with $\bnabla\cdot\bv = 0$.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\medskip
+\item
+{\bf In view of (3.9), what happens when there are void regions? Since in those situations $a(t)=0$, authors should discuss how this affect theoretically and numerically. Moreover, assuming $h-a(t) = \mathcal{O}(\varepsilon)$ means that one cannot consider large variations of $h$ in the domain, is that so? how does this affect the numerical approach? In view of (3.37) it seems to me that the selection is made locally, but some comments should be included about this fact and how vacuum is treated.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\medskip
+\item
+{\bf Some explanations should be given on the term $\delta\bV$ appearing at the beginning of page 12. What is this term? Does it come from the original CU scheme or from the PCCU scheme?}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf Final paragraph in page 14 says ``computed using the linear paths''. I think that here authors are using a trapezoidal quadrature formula, so this should be stated as well.}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf Why is CU scheme applied in Section 4.1? Why not using PCCU as well? Moreover, since (2.20) is supposed to be relevant when shocks appear, one would think that PCCU would make more sense. Recall that authors claim that ``If a simplified version of the PCCU discretization of (3.34), in which the terms that accounting for solution jumps across cell interfaces are omitted, then the resulting simplified DF-FV method fails to accurately capture the solution.''}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf Section 4.3, which is called Post-Processing, corresponds actually to a convex combination of the schemes based in the primitive and conservative variables. This is the part that less convinces me since it basically tells that the AP property is obtained by doing a combination of two formulations. To illustrate this fact, for me it would be similar to saying that a numerical scheme is positive by doing a linear combination with a positive scheme depending on a parameter. For me that would be a numerical technique in order to treat void situations, but I would not call that a positive scheme.}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf In any case, in this paper the linear combination is done by using $\varphi(\varepsilon)=\exp(-2000\varepsilon^6)$. It should be investigated how this choice affects the results obtained. More explicitly, one could define a slow moving shock with speed depending on $\varepsilon$ from (20). Then, when $\varepsilon$ is small, the combination tends to use the primitive formulation, which is not right for shocks. Authors should include such a test and compare the technique proposed here with the correct shock solution.}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf I would advise to make the paper more readable. For instance some of the technical calculations could be put an appendix. A small compact summary of the main computations needed for the scheme would be welcome.}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf Some words about the equilibria of the system would be appreciated and how the numerical scheme behaves in such situations.}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf In the numerical test section the CFL number is fixed to 0.25. Why this choice? Is it not possible to use larger values?}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf In the accuracy test 5.1, why is the time $t=0.01$ selected? are there shocks afterwards? If not, a larger time should be considered.}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf Although 2D snapshots are nice and let us have the idea of how the scheme behaves, authors should add more information on how the different schemes behave quantitatively. For instance, in Fig. 5.5, 5.6 and others one could plot in a same figure a 1D cut for all the schemes. Errors or difference between the schemes could be shown as well (taking the fifth-order WENO as reference for example).}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf When measuring the efficiency of the schemes, Table 5.4 shows the wall-clock time needed for the schemes, which is not enough. One should compare the precision as well. For instance, given a reference solution computed on a fine mesh, what is the computational effort needed to reach a prescribed error.}
+
+\medskip
+{\sc\underline{Reply}}:
+\end{enumerate}
+
+\bigskip
+\underline{Response to the Comments of the Reviewer \#3}
+
+\medskip
+{\bf{Recommendation: Major Revision}}
+\begin{enumerate}
+\item
+{\bf The origins of the technical derivations, proofs, and numerical constructions
+	are not clearly indicated in the body of the manuscript. Literature is
+	almost exclusively cited in the introduction, leaving key methodological
+	developments without proper attribution.}
+
+\medskip
+{\sc\underline{Reply}}: We thank the reviewer for this comment. We agree that, although the relevant references were mentioned in the Introduction, some methodological ingredients were not sufficiently attributed at the point where they are introduced in the body of the manuscript.
+
+We have therefore added explicit references in Section~3.1, where the hyperbolic splitting is presented. The key novelty of the present paper is the construction of a splitting specifically adapted to the TRSW equations and to the TQG limit. To provide a clearer context, we now refer to~\cite{CKKM}, which develops a related dual-formulation AP strategy and is currently in an advanced stage of review, and to~\cite{Haack_2012}, which provides relevant background on all-speed/asymptotic-preserving splittings.
+
+\bigskip 
+\item
+{\bf A rigorous justification for choosing and combining these specific numerical
+	methods is currently missing. The hybrid coupling of the two schemes
+	appears somewhat ad-hoc and requires a deeper theoretical or operational
+	rationale.}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf The manuscript lacks contextualization within existing literature on semi-implicit schemes in numerical weather prediction and geophysical fluid dynamics.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\medskip
+\item
+{\bf The exact innovation step and overall novelty of the manuscript are impossible to evaluate because of the prior issue and the reference claimed as baseline by the authors (Reference [23]) is cited as ``in preparation''.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\medskip
+\item
+{\bf The transition between the two numerical regimes is not sufficiently analyzed or validated through the provided numerical experiments.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\end{enumerate}
+
+{\bf General Comments for the authors}
+\begin{enumerate}
+\item 
+{\bf Conservation Properties}\medskip
+
+{\bf In atmospheric and oceanic sciences, conservation laws are paramount. The manuscript does not explicitly address how the proposed scheme handles these properties.
+
+Because the source terms are discretized implicitly to achieve the AP property, please quantify the impact of this choice on the conservation of potential vorticity (PV). Given the sharp, crisp PV fields in the figures, is it correct to assume that any conservation loss originates primarily from the implicit time discretization?
+
+How does the dynamic switching between the two numerical schemes affect global conservation properties?}
+
+\medskip
+{\sc\underline{Reply}}:
+
+\medskip
+\item
+{\bf Contextualization}\medskip
+
+{\bf The reference list suggests a gap in awareness regarding established approaches to the Rotating Shallow Water equations. Semi-implicit schemes for RSW models have a rich history dating back to the 1970s. The manuscript should acknowledge and contextualize its placement relative to the NWP community--specifically
+classical and modern developments by authors such as Machenhauer, Temperton, Ritchie, Staniforth, Klein, Smolarkiewicz, Thuburn, Cotter, and Weller. For instance, regarding semi-implicit formulations in finite volume frameworks, the authors might look at the operational strategies utilized in the ECMWF’s Finite Volume Module (e.g., Smolarkiewicz et al., 2016, JCP). Additionally, since a projection-type method is employed, classical foundations such as Chorin or Harlow and Welch should be properly acknowledged?}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\medskip
+\item
+{\bf Physical Rationale}\medskip
+
+{\bf Please clarify the exact physical regime this solver is intended to address. For low Rossby numbers ($\mathrm{Ro}\ll1$), the scheme effectively approximates the TQG equations and bypasses the severe time-step restrictions imposed by low Rossby numbers. However, for larger Rossby numbers, the time step remains constrained
+by gravity waves. Given this, what is the rationale against using a fully semi-implicit scheme across all regimes? A clearer justification for this non-standard, hybrid approach in geophysical fluid dynamics is necessary.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\medskip
+\item
+{\bf Switch}\medskip
+
+{\bf The switching mechanism between the two schemes is presented without a thorough explanation of its impact on the resulting discretization or flux variations. To the reader, this currently resembles a discrete switch between two independent methods rather than a unified framework. Providing a clear schematic or graph of the switching function behavior over its parameter domain would significantly improve clarity.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\medskip
+\item
+{\bf Test Case Coverage}\medskip
+
+{\bf The authors introduce a dual-scheme approach to span a wide range of Rossby numbers, but do not provide a sufficiently illustrative test case for the large Rossby regime (the initial convergence test is insufficient for this purpose). Furthermore, the detailed numerical experiments do not capture or evaluate the transitional regime of the switch (as highlighted in the attached plot). Please provide additional analytical insight or dedicated numerical experiments demonstrating behavior within this transition zone.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\medskip
+\item
+{\bf Structure}\medskip
+
+{\bf To improve readability, the authors might consider moving some of standard, routine update rules to an Appendix.}
+
+\medskip
+{\sc\underline{Reply}}: 
+\end{enumerate}
+
+{\bf Some Specific Remarks}
+
+{\bf Section 1}
+\begin{enumerate}
+\medskip
+\item
+{\bf The text states: ``However, the classical RSW equations neglect horizontal variations in temperature/density, which can play a crucial role in stratified flows.'' Could the authors clarify the precise physical scenarios envisioned for this model? In geophysical contexts, this 2D thermal model typically serves as a conceptual benchmark for methods later extended to full 3D stratifications. Because your scheme’s formulations (e.g., potential vorticity tracking) appear inherently bound to 2D, a brief discussion justifying this specific focus would be highly valuable.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\item 
+{\bf Reference [23] is cited as ``in preparation''. Expecting a reviewer to evaluate a manuscript based on foundational claims or innovation steps contained in a non-existent, unarchived reference is entirely inappropriate. The novelty of the presented work must be fully assessable within this manuscript on its own merits, without relying on unavailable text. Furthermore, referencing unreviewed preprints (such as [22]) is already questionable. Please remove all references to unpublished/non-existing work and ensure that the manuscript is entirely self-contained.}
+
+\medskip
+{\sc\underline{Reply}}: 
+
+\item 
+{\bf Page 2, Paragraph 2: Regarding the statement starting with ``On the other hand...'': If non-conservative schemes risk failing to converge to physically relevant solutions in standard settings, why is convergence expected here? Is the underlying assumption that the TQG equations guarantee a sufficiently smooth, unique solution, ensuring that asymptotic expansions around this singular limit remain well-behaved? Please provide
+the underlying reasoning, specific initial/boundary data constraints, or literature references to clarify this point.}
+
+\medskip
+{\sc\underline{Reply}}: 
+\end{enumerate}
+
+{\bf Section 2}
+\begin{enumerate}
+	\medskip
+	\item
+	{\bf Page 3 (before Eq. 2.6): The relationship between the text’s reasoning and the scaling in Equation 2.6 is somewhat ambiguous. Scaling the parameter ratios to 1 is appropriate for the subsequent asymptotic analysis, but the text implies (maybe I read this wrong) this action actively enforces geostrophic balance. Please clarify.}
+	
+	\medskip
+	{\sc\underline{Reply}}: 
+	
+	\item 
+	{\bf Page 3 (Eq. 2.8): For reader clarity, it would be helpful to explicitly state the parameter relationship alongside the order of epsilon notation, i.e., $\mathrm{Ro} / \mathrm{Bu} = \varepsilon / \nu$.}
+	
+	\medskip
+	{\sc\underline{Reply}}: 
+	
+	\item 
+	{\bf Page 5 (before Eq. 2.18): Please provide explicit references for the asymptotic analysis of this specific thermal RSW model. If this is an original contribution of this paper, please explain why this is the case.}
+    
+    \medskip
+    {\sc\underline{Reply}}: 
+    
+\end{enumerate}
+
+{\bf Section 3}
+\begin{enumerate}
+	\medskip
+	\item
+	{\bf Theorem 3.1: For clarity in the inductive proof, please explicitly state the base/initialization step.}
+	
+	\medskip
+	{\sc\underline{Reply}}: 
+	
+	\item 
+	{\bf Theorem 3.1 and Section 3.3.2: Is the proposed implicit step inf-sup stable, and is a unique solution guaranteed to exist independent of epsilon? These structural questions are vital to the validity of the AP property and the overall algorithm. Potential issues such as checkerboard modes or grid-staggering effects should be explicitly discussed, and the coupling strategy (e.g., the specific choice of gradients) should be detailed or referenced more thoroughly.}
+	
+	\medskip
+	{\sc\underline{Reply}}: 	
+\end{enumerate}
+
+{\bf Section 4}
+\begin{enumerate}
+	\medskip
+	\item
+	{\bf Section 4.3: The post-processing steps and the empirical selection of the switching threshold appear highly ad-hoc. This section is particularly difficult to evaluate objectively because [23] is not available. The choice of the switching function should ideally be mathematically aligned with the system’s asymptotics. In its current form, this treatment is highly unsatisfactory.}
+	
+	\medskip
+	{\sc\underline{Reply}}: 
+\end{enumerate}
+
+\vspace*{2cm}
+\closing{Sincerely} % eg Regards,
+
+\bibliographystyle{unsrt}
+\bibliography{TRSW}
+
+\end{letter}
+\end{document}
+
