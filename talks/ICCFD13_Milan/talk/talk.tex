@@ -549,212 +549,175 @@ text centered]
 	
 	\centering
 	
-	{\small
+	\vspace{-0.7cm}
+	
+	{\footnotesize
 		
-		Classical FV, FD, DG FEM, CG FEM\\
-		
-		\visible<1->{...rely on a conservative formulation
 			\begin{align*}
-				\frac{\partial}{\partial t}\textcolor{blue}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U}&)=\uvec{0}\\
-				\textcolor{blue}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
-				\uvec{F}(\uvec{U}):=&\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}%\\
-				%\text{\textbf{EOS}:}\quad p=\left(\gamma-1\right)\left[\right.E-&\frac{1}{2}\rho v^2\left.\right]
+				\frac{\partial}{\partial t}\textcolor{blue}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U})=\uvec{0},\quad  \textcolor{blue}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
+				\uvec{F}(\uvec{U}):=\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}
 			\end{align*}
-			
-		}
+
+		\vspace{-0.3cm}
+
 		
+		\begin{itemize}
+			\item Structural property at the analytical level: $\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$
+			\item Essential also at the discrete level:
+		\end{itemize}		
+
+		\vspace{-0.1cm}
+
+		
+			\begin{columns}
+			\begin{column}{0.5\textwidth}
+				
+				\begin{tikzpicture}[scale=0.7] % Reduced scale
+					\tikzset{dot/.style={fill=black,circle}}
+					
+					% Set the width of the cell
+					\def\cellwidth{1.2} % Adjust this value to change the width of each cell
+					
+					% Horizontal line
+					\draw [black] (0,1) -- (6*\cellwidth,1);
+					
+					% Draw the first cell and point
+					\draw (0.5*\cellwidth,1) -- (0.5*\cellwidth,1.7);
+					\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,1.7);
+					\draw (0.5*\cellwidth,1.7) -- (1.5*\cellwidth,1.7);
+					\filldraw[blue] (1*\cellwidth,1.7) circle (2pt);
+					
+					% Draw the second cell and point
+					\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,2.7);
+					\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,2.7);
+					\draw (1.5*\cellwidth,2.7) -- (2.5*\cellwidth,2.7);
+					\filldraw[blue] (2*\cellwidth,2.7) circle (2pt);
+					
+					% Draw the third cell and point
+					\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,3.7);
+					\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.7);
+					\draw (2.5*\cellwidth,3.7) -- (3.5*\cellwidth,3.7);
+					\filldraw[blue] (3*\cellwidth,3.7) circle (2pt);
+					
+					% Draw the fourth cell and point
+					\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.2);
+					\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,3.2);
+					\draw (3.5*\cellwidth,3.2) -- (4.5*\cellwidth,3.2);
+					\filldraw[blue] (4*\cellwidth,3.2) circle (2pt);
+					
+					% Draw the fifth cell and point
+					\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,2.2);
+					\draw (5.5*\cellwidth,1) -- (5.5*\cellwidth,2.2);
+					\draw (4.5*\cellwidth,2.2) -- (5.5*\cellwidth,2.2);
+					\filldraw[blue] (5*\cellwidth,2.2) circle (2pt);
+					
+					% Vertical dashed lines at interfaces
+					\foreach \x in {1.5,2.5,...,4.5}
+					{
+						\draw [dashed] (\x*\cellwidth,0.5) -- (\x*\cellwidth,4.5); % vertical lines at interfaces
+					}
+					
+					% Labels with adjusted x positions
+					\node at (1.5*\cellwidth,0.25){$x_{i-\frac{3}{2}}$}; 
+					\node at (2.5*\cellwidth,0.25){$x_{i-\frac{1}{2}}$}; 
+					\node at (3.5*\cellwidth,0.25){$x_{i+\frac{1}{2}}$}; 
+					\node at (4.5*\cellwidth,0.25){$x_{i+\frac{3}{2}}$}; 
+					
+					
+					
+					% Cell labels
+					\node at (2*\cellwidth,0.7){$x_{i-1}$};
+					\node at (3*\cellwidth,0.7){$x_{i}$};
+					\node at (4*\cellwidth,0.7){$x_{i+1}$};
+					
+					% Blue U labels for cells
+					\node at (2*\cellwidth,3.2){$\textcolor{blue}{\uvec{U}_{i-1}}$};
+					\node at (3*\cellwidth,4.2){$\textcolor{blue}{\uvec{U}_{i}}$};
+					\node at (4*\cellwidth,3.7){$\textcolor{blue}{\uvec{U}_{i+1}}$};
+					
+					
+					\node at (1.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{3}{2}}}$};
+					\node at (2.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}$};
+					\node at (3.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}$};
+					\node at (4.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{3}{2}}}$};
+					
+					
+					% Smooth local reconstruction curves passing through the dots
+					\visible<1->{
+						\draw[violet, thick]
+						(0.5*\cellwidth,1.60)
+						.. controls (0.75*\cellwidth,1.90) and (0.95*\cellwidth,1.75) ..
+						(1*\cellwidth,1.70)
+						.. controls (1.10*\cellwidth,1.60) and (1.30*\cellwidth,1.50) ..
+						(1.5*\cellwidth,1.65);
+						
+						\draw[violet, thick]
+						(1.5*\cellwidth,2.10)
+						.. controls (1.75*\cellwidth,2.95) and (1.95*\cellwidth,2.85) ..
+						(2*\cellwidth,2.70)
+						.. controls (2.10*\cellwidth,2.60) and (2.30*\cellwidth,2.55) ..
+						(2.5*\cellwidth,2.45);
+						
+						\draw[violet, thick]
+						(2.5*\cellwidth,3.8)
+						.. controls (2.75*\cellwidth,3.20) and (2.90*\cellwidth,4.20) ..
+						(3*\cellwidth,3.70)
+						.. controls (3.10*\cellwidth,3.40) and (3.30*\cellwidth,3.55) ..
+						(3.5*\cellwidth,3.65);
+						
+						\draw[violet, thick]
+						(3.5*\cellwidth,2.95)
+						.. controls (3.75*\cellwidth,3.40) and (3.90*\cellwidth,2.90) ..
+						(4*\cellwidth,3.20)
+						.. controls (4.10*\cellwidth,3.30) and (4.30*\cellwidth,3.35) ..
+						(4.5*\cellwidth,3.25);
+						
+						\draw[violet, thick]
+						(4.5*\cellwidth,2.45)
+						.. controls (4.75*\cellwidth,2.10) and (4.90*\cellwidth,2.45) ..
+						(5*\cellwidth,2.20)
+						.. controls (5.10*\cellwidth,2.10) and (5.30*\cellwidth,2.00) ..
+						(5.5*\cellwidth,1.85);				
+					}
+					
+					% Cross marks in each cell
+					\foreach \x in {0.5,1.5,2.5,...,4.5,5.5}
+					{
+						\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.3) -- (\x*\cellwidth+0.1,1.5); % Diagonal line /
+						\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.5) -- (\x*\cellwidth+0.1,1.3); % Diagonal line \
+					}
+					
+				\end{tikzpicture}
+			\end{column}
+			\begin{column}{0.55\textwidth}
+				\small
+
+				\begin{align*}
+					\frac{d}{d t}\textcolor{blue}{\uvec{U}_i}(t)&=-\frac{\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}}{\Delta x}\\
+					\frac{d}{d t} \sum\limits_{i}\textcolor{blue}{\uvec{U}_i} &=-\frac{1}{\Delta x}\sum\limits_{i}\left(\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)=\uvec{0}
+				\end{align*}
+			\end{column}
+		\end{columns}
+
+		\vspace{-0.2cm}
+				
+		\begin{block}{Lax-Wendroff Theorem}
+			{\tiny If a conservative numerical scheme converges, then it converges towards a "physically relevant" solution.}
+		\end{block}
+		
+		Structural violation of conservation $\Rightarrow$ Convergence to wrong solutions	
 		
 	}	
 	
 	
-	%In computational mathematics, the Lax?Wendroff theorem, named after Peter Lax and Burton Wendroff, states that if a conservative numerical scheme for a hyperbolic system of conservation laws converges, then it converges towards a weak solution.
+	
+	
+	
+	%In computational mathematics, the Lax-Wendroff theorem, named after Peter Lax and Burton Wendroff, states that if a conservative numerical scheme for a hyperbolic system of conservation laws converges, then it converges towards a weak solution.
 	
 \end{frame}
 
 
-
-\begin{frame}
-	\frametitle{Conservation at the analytical level}
-	\begin{equation*}
-		\frac{\partial}{\partial t}\uvec{U}+ \frac{\partial}{\partial x} \uvec{F}(\uvec{U})=\boldsymbol{0}, \quad (x,t) \in (x_L,x_R)\times \mathbb{R}^+_0
-	\end{equation*}
-	$$\Downarrow$$
-	$$\int_{x_L}^{x_R} \left( \frac{\partial}{\partial t}\uvec{U}+ \frac{\partial}{\partial x} \uvec{F}(\uvec{U}) \right) d \uvec{x} =\boldsymbol{0}$$
-	$$\Downarrow$$
-	$$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$$
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Conservation at the discrete level}
-	
-	
-	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			
-			\begin{tikzpicture}[scale=0.8] % Reduced scale
-				\tikzset{dot/.style={fill=black,circle}}
-				
-				% Set the width of the cell
-				\def\cellwidth{1.2} % Adjust this value to change the width of each cell
-				
-				% Horizontal line
-				\draw [black] (0,1) -- (6*\cellwidth,1);
-				
-				% Draw the first cell and point
-				\draw (0.5*\cellwidth,1) -- (0.5*\cellwidth,1.7);
-				\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,1.7);
-				\draw (0.5*\cellwidth,1.7) -- (1.5*\cellwidth,1.7);
-				\filldraw[blue] (1*\cellwidth,1.7) circle (2pt);
-				
-				% Draw the second cell and point
-				\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,2.7);
-				\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,2.7);
-				\draw (1.5*\cellwidth,2.7) -- (2.5*\cellwidth,2.7);
-				\filldraw[blue] (2*\cellwidth,2.7) circle (2pt);
-				
-				% Draw the third cell and point
-				\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,3.7);
-				\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.7);
-				\draw (2.5*\cellwidth,3.7) -- (3.5*\cellwidth,3.7);
-				\filldraw[blue] (3*\cellwidth,3.7) circle (2pt);
-				
-				% Draw the fourth cell and point
-				\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.2);
-				\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,3.2);
-				\draw (3.5*\cellwidth,3.2) -- (4.5*\cellwidth,3.2);
-				\filldraw[blue] (4*\cellwidth,3.2) circle (2pt);
-				
-				% Draw the fifth cell and point
-				\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,2.2);
-				\draw (5.5*\cellwidth,1) -- (5.5*\cellwidth,2.2);
-				\draw (4.5*\cellwidth,2.2) -- (5.5*\cellwidth,2.2);
-				\filldraw[blue] (5*\cellwidth,2.2) circle (2pt);
-				
-				% Vertical dashed lines at interfaces
-				\foreach \x in {1.5,2.5,...,4.5}
-				{
-					\draw [dashed] (\x*\cellwidth,0.5) -- (\x*\cellwidth,4.5); % vertical lines at interfaces
-				}
-				
-				% Labels with adjusted x positions
-				\node at (1.5*\cellwidth,0.25){$x_{i-\frac{3}{2}}$}; 
-				\node at (2.5*\cellwidth,0.25){$x_{i-\frac{1}{2}}$}; 
-				\node at (3.5*\cellwidth,0.25){$x_{i+\frac{1}{2}}$}; 
-				\node at (4.5*\cellwidth,0.25){$x_{i+\frac{3}{2}}$}; 
-				
-				
-				
-				% Cell labels
-				\node at (2*\cellwidth,0.7){$x_{i-1}$};
-				\node at (3*\cellwidth,0.7){$x_{i}$};
-				\node at (4*\cellwidth,0.7){$x_{i+1}$};
-				
-				% Blue U labels for cells
-				\node at (2*\cellwidth,3.2){$\textcolor{blue}{\uvec{U}_{i-1}}$};
-				\node at (3*\cellwidth,4.2){$\textcolor{blue}{\uvec{U}_{i}}$};
-				\node at (4*\cellwidth,3.7){$\textcolor{blue}{\uvec{U}_{i+1}}$};
-				
-				
-				\node at (1.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{3}{2}}}$};
-				\node at (2.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}$};
-				\node at (3.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}$};
-				\node at (4.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{3}{2}}}$};
-				
-				
-				% Smooth local reconstruction curves passing through the dots
-				\visible<1->{
-					\draw[violet, thick]
-					(0.5*\cellwidth,1.60)
-					.. controls (0.75*\cellwidth,1.90) and (0.95*\cellwidth,1.75) ..
-					(1*\cellwidth,1.70)
-					.. controls (1.10*\cellwidth,1.60) and (1.30*\cellwidth,1.50) ..
-					(1.5*\cellwidth,1.65);
-					
-					\draw[violet, thick]
-					(1.5*\cellwidth,2.10)
-					.. controls (1.75*\cellwidth,2.95) and (1.95*\cellwidth,2.85) ..
-					(2*\cellwidth,2.70)
-					.. controls (2.10*\cellwidth,2.60) and (2.30*\cellwidth,2.55) ..
-					(2.5*\cellwidth,2.45);
-					
-					\draw[violet, thick]
-					(2.5*\cellwidth,3.8)
-					.. controls (2.75*\cellwidth,3.20) and (2.90*\cellwidth,4.20) ..
-					(3*\cellwidth,3.70)
-					.. controls (3.10*\cellwidth,3.40) and (3.30*\cellwidth,3.55) ..
-					(3.5*\cellwidth,3.65);
-					
-					\draw[violet, thick]
-					(3.5*\cellwidth,2.95)
-					.. controls (3.75*\cellwidth,3.40) and (3.90*\cellwidth,2.90) ..
-					(4*\cellwidth,3.20)
-					.. controls (4.10*\cellwidth,3.30) and (4.30*\cellwidth,3.35) ..
-					(4.5*\cellwidth,3.25);
-					
-					\draw[violet, thick]
-					(4.5*\cellwidth,2.45)
-					.. controls (4.75*\cellwidth,2.10) and (4.90*\cellwidth,2.45) ..
-					(5*\cellwidth,2.20)
-					.. controls (5.10*\cellwidth,2.10) and (5.30*\cellwidth,2.00) ..
-					(5.5*\cellwidth,1.85);				
-				}
-				
-				% Cross marks in each cell
-				\foreach \x in {0.5,1.5,2.5,...,4.5,5.5}
-				{
-					\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.3) -- (\x*\cellwidth+0.1,1.5); % Diagonal line /
-					\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.5) -- (\x*\cellwidth+0.1,1.3); % Diagonal line \
-				}
-				
-			\end{tikzpicture}
-		\end{column}
-		\begin{column}{0.55\textwidth}
-			\small
-			$$\frac{\partial}{\partial t}\textcolor{black}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U})=\uvec{0}$$
-			$$\Downarrow$$
-			\begin{align*}
-				\frac{d}{d t}\textcolor{blue}{\uvec{U}_i}(t)&=-\frac{\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}}{\Delta x}\\
-				\visible<1->{
-					\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}&:=\widehat{\uvec{F}}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})}\\
-%				\visible<1->{
-%					\widehat{\uvec{F}}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})&\neq\frac{1}{2}\left(\uvec{F}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-})+\uvec{F}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})\right)}
-			\end{align*}
-		\end{column}
-	\end{columns}
-	
-	\vspace{1cm}
-	\visible<1->{
-		$$\frac{d}{d t} \sum\limits_{i}\textcolor{blue}{\uvec{U}_i} =-\frac{1}{\Delta x}\sum\limits_{i}\left(\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)=\uvec{0}$$
-	}
-\end{frame}
-
-
-
-
-\begin{frame}
-	\frametitle{Conservation at the discrete level\footnote{{\tiny P. Lax, B. Wendroff, Systems of conservation laws, Technical report, LANL, 1958.}}}
-	
-	
-	\centering
-	
-	
-	
-	
-	{\small All schemes \textbf{MUST} satisfy conservation.}\\
-	
-	
-	\vspace{1cm}
-	
-	\begin{block}{Lax-Wendroff Theorem}
-		{\tiny If a conservative numerical scheme converges, then it converges towards a "physically relevant" solution.}
-	\end{block}
-	
-	\vspace{1cm}
-	
-	Structural violation of conservation $\Rightarrow$ Convergence to wrong solutions	
-	
-\end{frame}
 
 
 
