@@ -1,15 +1,6 @@
 =========================================================
-Bibliography references for Reviewer 3 contextualization
+Semi-implicit
 =========================================================
-
-Purpose
--------
-This file collects one representative reference for each name explicitly mentioned by Reviewer 3
-(Machenhauer, Temperton, Ritchie, Staniforth, Klein, Smolarkiewicz, Thuburn, Cotter, Weller),
-plus the projection/MAC foundations explicitly requested (Chorin, Harlow--Welch).
-
-I also include a short description of why each reference is useful for the rebuttal/manuscript.
-Please verify the BibTeX style/key names against your bibliography file before inserting.
 
 --------------------------------------------------------------------
 1. Machenhauer
@@ -80,13 +71,13 @@ Semi-implicit (IMEX actually) (semi-Lagrangian) time integration for shallow wat
 
 
 --------------------------------------------------------------------
-5. Klein
+5. Klein <-already cited
 --------------------------------------------------------------------
 
 Working with conservative formulation of Euler equations, AP. Semi-implicit for the pressure with an elliptic equation weakly nonlinear.
 Scheme based on Strang-type operator splitting. Explicit step for advection and then implicit one for acoustic.
 
-@article{klein1995semi,
+@article{Klein_1995,
   title={Semi-implicit extension of a Godunov-type scheme based on low Mach number asymptotics I: One-dimensional flow},
   author={Klein, Rupert},
   journal={Journal of Computational Physics},
@@ -139,7 +130,6 @@ Works with primitive formulation. Not suitable for shocks. No AP.
 
 Semi-implicit, primitive, no AP, staggered.
 
-
 @article{weller2014non,
   title={Non-orthogonal version of the arbitrary polygonal C-grid and a new diamond grid},
   author={Weller, Hilary},
@@ -152,19 +142,73 @@ Semi-implicit, primitive, no AP, staggered.
 }
 
 
+====================================================================
+Projection methods consist of two stages. In the first stage, an intermediate velocity that does not satisfy the incompressibility constraint is computed at each time step. In the second, the pressure is used to project the intermediate velocity onto a space of divergence-free velocity field to get the next update of velocity and pressure.
+====================================================================
+
 --------------------------------------------------------------------
-Possible paragraph to insert in the Introduction
+9. Chorin
 --------------------------------------------------------------------
 
-\RIIIcolor{
-Semi-implicit and semi-Lagrangian ideas have a long history in numerical weather prediction and geophysical fluid dynamics, especially for shallow-water, primitive-equation, and all-scale atmospheric models. Classical contributions include the analysis of gravity-wave dynamics and nonlinear normal-mode initialization in shallow-water models~\cite{Machenhauer_1977}, two-time-level semi-Lagrangian semi-implicit schemes~\cite{Temperton_Staniforth_1987}, semi-Lagrangian spectral shallow-water models~\cite{Ritchie_1988}, and the review of semi-Lagrangian methods for atmospheric models~\cite{Staniforth_Cote_1991}. Related all-speed and low-Mach-number semi-implicit ideas were also developed in the context of Godunov-type schemes~\cite{Klein_1995}. More recent developments include finite-volume all-scale atmospheric models, such as the ECMWF finite-volume module~\cite{Smolarkiewicz_2016}, mimetic semi-implicit finite-volume shallow-water discretizations~\cite{Thuburn_Cotter_Dubos_2014}, compatible finite-element methods for geophysical fluid dynamics~\cite{Cotter_2023}, and C-grid/mimetic discretizations on polygonal or non-orthogonal spherical grids~\cite{Weller_2014}. Since the semi-implicit update in the present method leads to elliptic problems, we also mention the classical projection and MAC approaches~\cite{Harlow_Welch_1965,Chorin_1968}. The present work differs from these approaches in that it focuses on an AP finite-volume dual-formulation method for the TRSW equations, combining a primitive-variable discretization tailored to the TQG low-Rossby-number limit with a conservative shock-capturing discretization for high- and intermediate-Rossby-number regimes.
+@article{chorin1968numerical,
+  title={Numerical solution of the Navier-Stokes equations},
+  author={Chorin, Alexandre Joel},
+  journal={Mathematics of computation},
+  volume={22},
+  number={104},
+  pages={745--762},
+  year={1968}
 }
 
 --------------------------------------------------------------------
-Possible unified rebuttal
+10. Harlow and Welch
 --------------------------------------------------------------------
 
-{\sc\underline{Reply}}:
-We thank the reviewer for this important comment. We agree that the original manuscript did not sufficiently place the proposed method within the broader literature on semi-implicit schemes for numerical weather prediction and geophysical fluid dynamics. We have therefore expanded the Introduction by adding references to classical semi-implicit and semi-Lagrangian approaches for atmospheric and shallow-water models, including the works of Machenhauer~\cite{Machenhauer_1977}, Temperton and Staniforth~\cite{Temperton_Staniforth_1987}, Ritchie~\cite{Ritchie_1988}, and Staniforth and C{\^o}t{\'e}~\cite{Staniforth_Cote_1991}. We have also added references to related all-speed and low-Mach-number semi-implicit ideas~\cite{Klein_1995}, to finite-volume all-scale atmospheric models such as the ECMWF finite-volume module~\cite{Smolarkiewicz_2016}, to mimetic semi-implicit finite-volume shallow-water discretizations~\cite{Thuburn_Cotter_Dubos_2014}, to compatible finite-element methods for geophysical fluid dynamics~\cite{Cotter_2023}, and to C-grid/mimetic discretizations on polygonal or non-orthogonal spherical grids~\cite{Weller_2014}. Since our semi-implicit update involves the solution of elliptic problems, we have also added references to classical projection and MAC-type methods~\cite{Harlow_Welch_1965,Chorin_1968}.
+@article{harlow1965numerical,
+  title={Numerical calculation of time-dependent viscous incompressible flow of fluid with free surface},
+  author={Harlow, Francis H and Welch, J Eddie},
+  journal={Physics of fluids},
+  volume={8},
+  number={12},
+  pages={2182},
+  year={1965}
+}
 
-We have also clarified the positioning of the present work with respect to this literature. Our goal is not to propose an operational NWP solver, but rather to develop an AP finite-volume dual-formulation method for the TRSW equations. The method combines a primitive-variable discretization designed to recover the TQG low-Rossby-number limit with a conservative shock-capturing discretization needed away from that limit. This additional discussion is intended to make the methodological rationale and the relation to existing semi-implicit approaches clearer.
+====================================================================
+Rebuttal
+====================================================================
+
+We thank the reviewer for this important comment. We agree that the original manuscript did not sufficiently place the proposed method within the broader literature on semi-implicit schemes for numerical weather prediction and geophysical fluid dynamics. We have therefore expanded the Introduction by adding references to classical semi-implicit approaches for atmospheric and shallow-water models~\cite{machenhauer1977dynamics,temperton1987efficient,ritchie1988application,staniforth1991semi,smolarkiewicz2016finite,thuburn2014mimetic,weller2014non}. Klein~\cite{Klein_1995} was already mentioned in the context of AP schemes.
+We have also pointed out that the need for a separate handling of advective and gravity-wave dynamics was first advocated in~\cite{machenhauer1977dynamics}.
+
+We would like to stress, however, that the semi-implicit schemes mentioned above are conceptually different from the method proposed in the present work. In those works, the SI strategy is primarily adopted to alleviate the severe time-step restrictions induced by fast gravity waves. In contrast with the present setting, they are not formulated around an explicit singular parameter tending to zero, nor is an AP consistency result established with respect to a prescribed asymptotic limit such as the TQG low-Rossby limit. This is the main distinction with the present paper, where the stiffness is tied to the low-Rossby-number regime and AP consistency towards the TQG limit is proved at the discrete level.
+Moreover, in~\cite{temperton1987efficient,ritchie1988application,staniforth1991semi,thuburn2014mimetic,weller2014non}, a primitive formulation is solved in terms of the fluid velocity; hence, the resulting approaches are meant to be used for smooth flows and are not provably able to capture correct shock speeds.
+
+Concerning~\cite{chorin1968numerical,harlow1965numerical}, although the proposed method involves an elliptic problem, it is not a projection method in the classical incompressible-flow sense. In projection methods, one first computes a provisional velocity field which does not necessarily satisfy the incompressibility constraint, and then solves an elliptic pressure problem to project this intermediate velocity onto a space of divergence-free velocity fields, thereby obtaining the updated velocity and pressure. In our scheme, no such projection step is performed. The elliptic problem instead arises from the semi-implicit AP treatment of the stiff low-Rossby terms. Nevertheless, we have added a brief mention of classical projection methods, together with references to~\cite{chorin1968numerical,harlow1965numerical}, to clarify this distinction and avoid possible misunderstandings.
+
+
+\RIIIcolor{
+We remark that the application of SI/IMEX schemes in the context of shallow water models for atmospheric and geophysical flows has a long history, and it is useful to contextualize our work within existing literature.
+%
+Several works have proposed SI schemes for such equations.
+%
+Key references include~\cite{temperton1987efficient,ritchie1988application,staniforth1991semi}, where semi-Lagrangian schemes have been proposed, and also~\cite{smolarkiewicz2016finite,thuburn2014mimetic,weller2014non}, where standard and staggered finite-volume schemes have been proposed.
+%
+We also stress that the call for a separate handling of advection and gravity-wave dynamics is even older and was first pointed out in~\cite{machenhauer1977dynamics}.
+%
+Notably, in all the aforementioned SI schemes, the main purpose of the SI approach is to handle stiff terms without explicitly addressing any asymptotic limit.
+%
+This constitutes a fundamental difference between such settings and the one considered in this paper. In fact, in our case, the stiffness is associated with the low-Rossby limit. Furthermore, we do not use an SI strategy to simply prevent impractical time step restrictions, but we also prove AP consistency towards the asymptotic limit, which is a nontrivial and desirable feature.
+%
+Moreover, in~\cite{temperton1987efficient,ritchie1988application,staniforth1991semi,thuburn2014mimetic,weller2014non}, a primitive formulation is solved in terms of the fluid velocity; hence, the resulting approaches are meant to be used for smooth flows and do not provide, in general, a conservative framework ensuring correct Rankine--Hugoniot shock speeds.
+
+Indeed other approaches have been proposed in the context of incompressible flows, such as projection methods, which are based on computing an intermediate velocity that does not fulfil the incompressibility constraint. A second step follows, involving an elliptic problem for the pressure to enforce such a constraint and compute the actual pressure and velocity fields.
+%
+We remark that, although our scheme involves an elliptic problem, it is not a projection method.
+}
+
+
+
+
+
+
