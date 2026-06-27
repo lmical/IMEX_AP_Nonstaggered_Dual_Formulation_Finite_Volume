@@ -364,7 +364,7 @@ Concerning the potential vorticity, we emphasize that this is not a conserved qu
 classical and modern developments by authors such as Machenhauer, Temperton, Ritchie, Staniforth, Klein, Smolarkiewicz, Thuburn, Cotter, and Weller. For instance, regarding semi-implicit formulations in finite volume frameworks, the authors might look at the operational strategies utilized in the ECMWF’s Finite Volume Module (e.g., Smolarkiewicz et al., 2016, JCP). Additionally, since a projection-type method is employed, classical foundations such as Chorin or Harlow and Welch should be properly acknowledged?}
 
 \medskip
-{\sc\underline{Reply}}: 
+{\sc\underline{Reply}}: We thank the referee for this remark. We have addressed this point in a previous reply. In summary, we have expanded the Introduction by including the suggested references on classical and modern SI approaches for shallow-water models. We have also clarified the distinction between these methods and the present AP dual-formulation strategy. In addition, we have added references to classical projection methods~\cite{chorin1968numerical,harlow1965numerical} and explicitly pointed out that, although our scheme involves an elliptic problem, it is not a projection method.
 
 \medskip
 \item
@@ -374,7 +374,17 @@ classical and modern developments by authors such as Machenhauer, Temperton, Rit
 by gravity waves. Given this, what is the rationale against using a fully semi-implicit scheme across all regimes? A clearer justification for this non-standard, hybrid approach in geophysical fluid dynamics is necessary.}
 
 \medskip
-{\sc\underline{Reply}}: 
+{\sc\underline{Reply}}: We thank the referee for this remark. The scheme is meant to be used for all Rossby numbers.
+%
+In fact, we do use the AP/SI primitive discretization across all regimes.
+%
+Indeed, for high and intermediate Rossby numbers, the time step is constrained by gravity waves, but this is not an issue as gravity-wave restrictions become prohibitive in the low-Rossby regime only, see comparison in Table 5.4.
+%
+Instead, the reason for working with both primitive and conservative formulations is the possibility to handle shocks in a proper way.
+%
+This aspect has been thoroughly emphasized in several passages, including additions to answer some remarks of the referee.
+
+We have added a remark on the time step restriction in Section 3.1.
 
 \medskip
 \item
