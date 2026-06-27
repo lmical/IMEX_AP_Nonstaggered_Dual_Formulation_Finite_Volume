@@ -202,7 +202,7 @@ This constitutes a fundamental difference between such settings and the one cons
 %
 Moreover, in~\cite{temperton1987efficient,ritchie1988application,staniforth1991semi,thuburn2014mimetic,weller2014non}, a primitive formulation is solved in terms of the fluid velocity; hence, the resulting approaches are meant to be used for smooth flows and are not able, in general, to ensure correct Rankine--Hugoniot shock speeds.
 
-Other approaches have been proposed in the context of incompressible flows, such as projection methods, which are based on computing an intermediate velocity that does not fulfil the incompressibility constraint. A second step follows, involving an elliptic problem for the pressure to enforce such a constraint and compute the actual pressure and velocity fields.
+Other approaches have been proposed in the context of incompressible flows, such as projection methods~\cite{chorin1968numerical,harlow1965numerical}, which are based on computing an intermediate velocity that does not fulfil the incompressibility constraint. A second step follows, involving an elliptic problem for the pressure to enforce such a constraint and compute the actual pressure and velocity fields.
 %
 We remark that, although our scheme involves an elliptic problem, it is not a projection method.
 }

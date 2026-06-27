@@ -262,6 +262,27 @@ elliptic equations are solved at each time step, which significantly reduces com
 As a result, the proposed numerical framework offers a numerical method that is uniformly accurate across different-Rossby-number regimes,
 efficient to implement, and robust in capturing both asymptotic limits and nonlinear wave phenomena.
 
+\RIIIcolor{
+	We remark that the application of SI/IMEX schemes in the context of shallow water models for atmospheric and geophysical flows has a long history, and it is useful to contextualize our work within existing literature.
+	%
+	Several works have proposed SI schemes for such equations.
+	%
+	Key references include~\cite{temperton1987efficient,ritchie1988application,staniforth1991semi}, where semi-Lagrangian schemes have been proposed, and also~\cite{smolarkiewicz2016finite,thuburn2014mimetic,weller2014non}, where finite-volume schemes, including staggered discretizations, have been proposed.
+	%
+	We also stress that the call for a separate handling of advection and gravity-wave dynamics is even older and was first pointed out in~\cite{machenhauer1977dynamics}.
+	%
+	Notably, in all the aforementioned SI schemes, the main purpose of the SI approach is to handle stiff terms without explicitly addressing any asymptotic limit.
+	%
+	This constitutes a fundamental difference between such settings and the one considered in this paper. In fact, in our case, the stiffness is associated with the low-Rossby limit. Furthermore, we do not use an SI strategy to simply prevent impractical time step restrictions, but we also prove AP consistency towards the asymptotic limit, which is a nontrivial and desirable feature.
+	%
+	Moreover, in~\cite{temperton1987efficient,ritchie1988application,staniforth1991semi,thuburn2014mimetic,weller2014non}, a primitive formulation is solved in terms of the fluid velocity; hence, the resulting approaches are meant to be used for smooth flows and are not able, in general, to ensure correct Rankine--Hugoniot shock speeds.
+	
+	Other approaches have been proposed in the context of incompressible flows, such as projection methods~\cite{chorin1968numerical,harlow1965numerical}, which are based on computing an intermediate velocity that does not fulfil the incompressibility constraint. A second step follows, involving an elliptic problem for the pressure to enforce such a constraint and compute the actual pressure and velocity fields.
+	%
+	We remark that, although our scheme involves an elliptic problem, it is not a projection method.
+}
+
+
 The remainder of the paper is organized as follows. In \S\ref{sec2}, we introduce the TRSW equations and revisit the TQG limit of the 
 nondimensional TRSW equations. In \S\ref{sec3}, we present a hyperbolic splitting, which is used in conjunction with the SI time
 discretization to design an efficient AP scheme for the augmented primitive system of the TRSW equations; this method is expected to be 
