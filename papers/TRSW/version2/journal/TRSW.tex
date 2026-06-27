@@ -228,7 +228,7 @@ variety of nonlinear hyperbolic partial differential equations including kinetic
 \cite{Allegrini_2025,Boscarino_2019,Boscarino_2022,Boscheri_2020,CKKM, Degond_2007,Dimarco_2017,Haack_2012,Huang_2025,Klein_1995,Zeifang_2020},
 shallow water equations \cite{Bispen_2014,Busto_2022,Huang_2022,Huang_2024,Liu_2020,Vater_2018,Xie_2024}, multi-layer shallow water
 equations \cite{Couderc_2017,Duran_2017}, RSW equations \cite{Kurganov_2022,Liu_2019,Xie_2025,Zakerzadeh_2017,Zhang_2026}, AP methods
-ensure that, as parameters, such as the Rossby (Mach, Froude) number, tend to zero, the numerical solution automatically converges to the
+ensure that, as parameters such as the Rossby (Mach, Froude) number, tend to zero, the numerical solution automatically converges to the
 reduced asymptotic model without the need to either refine the mesh or reduce the size of time steps. At the same time, AP schemes remain
 accurate and non-oscillatory in the opposite limit, where compressibility and shocks dominate.
 
@@ -243,7 +243,7 @@ relevant limit.
 
 The proposed second-order AP method for the TRSW equations, like the AP method from \cite{CKKM}, is constructed using the nonstaggered dual 
 formulation finite-volume (DF-FV) method recently developed in \cite{CFKM} (for other recent works on the dual formulation methods, we refer
-the reader to \cite{Abgrall_2023,Abgrall_2024,Abgrall_2025}. We consider the conservative and nonconservative (primitive) formulations of 
+the reader to \cite{Abgrall_2023,Abgrall_2024,Abgrall_2025}). We consider the conservative and nonconservative (primitive) formulations of 
 the TRSW equations, leveraging the advantages of both formulations to design a scheme that remains valid across the full spectrum of Rossby 
 numbers. To achieve the AP property of the primitive system discretization, we introduce a special hyperbolic splitting to separate nonstiff
 and stiff parts of the TRSW system, and employ a path-conservative central-upwind (PCCU) discretization in space
@@ -259,7 +259,7 @@ integration that stabilizes the fast oscillatory dynamics with a time-step restr
 %
 It is important to emphasize that the incorporated SI time discretization does not require solving nonlinear systems: only linear
 elliptic equations are solved at each time step, which significantly reduces computational cost, while maintaining stability and accuracy.
-As a result, the proposed numerical framework offers a numerical method that is uniformly accurate across different-Rossby-number regimes,
+As a result, the proposed numerical framework offers a numerical method that is uniformly accurate across different Rossby-number regimes,
 efficient to implement, and robust in capturing both asymptotic limits and nonlinear wave phenomena.
 
 \RIIIcolor{
