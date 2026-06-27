@@ -1236,6 +1236,16 @@ post-processing procedure that blends them to produce a DF-FV method valid for a
 in a high-Rossby-number regime, the solution is effectively governed by the CU scheme applied to the conservative system, while in a
 low-Rossby-number regime, it is primarily dictated by the AP solution of the primitive system.
 
+\RIIIcolor{
+\begin{remark}
+	We remark that the AP discretization of the primitive formulation is nonconservative due to the presence of nonconservative products in the primitive system, rather than because of the semi-implicit treatment of the stiff terms.
+	%
+	Even though it retains the AP property, as rigorously proven, it would not be able to ensure correct shock speeds without the post-processing taking into account the conservative discretization.
+	%
+	The post-processing, described in \S\ref{sec43}, is a continuous Rossby-dependent blending: in the low-Rossby regime, the method relies predominantly on the primitive AP formulation, which is appropriate because the solutions are smooth and the relevant requirement is the correct recovery of the TQG limit. In high- and intermediate-Rossby regimes, the blending takes into account the conservative formulation, which is essential to retain correct Rankine--Hugoniot shock speeds and robust shock-capturing properties.
+\end{remark}
+}
+
 %==================================================
 \subsection{Semi-Discrete CU Scheme}\label{sec41}
 %==================================================

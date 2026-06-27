@@ -311,14 +311,20 @@ Concerning~\cite{chorin1968numerical,harlow1965numerical}, although the proposed
 {\bf The exact innovation step and overall novelty of the manuscript are impossible to evaluate because of the prior issue and the reference claimed as baseline by the authors (Reference [23]) is cited as ``in preparation''.}
 
 \medskip
-{\sc\underline{Reply}}: 
+{\sc\underline{Reply}}: We thank the reviewer for this comment. We have added the required references and revised the Introduction to better identify the novelty of the proposed manuscript. In particular, we now clarify that the present work extends the AP dual-formulation strategy of~\cite{CKKM} to the TRSW equations and to the corresponding TQG low-Rossby limit, by designing a suitable hyperbolic splitting, an SI/AP discretization of the primitive formulation, and a coupling with the conservative formulation to retain correct shock speeds away from the asymptotic regime. Moreover,~\cite{CKKM} is no longer cited as ``in preparation'', since it is now publicly available and close to publication.
 
 \medskip
 \item
 {\bf The transition between the two numerical regimes is not sufficiently analyzed or validated through the provided numerical experiments.}
 
 \medskip
-{\sc\underline{Reply}}: 
+{\sc\underline{Reply}}: We thank the reviewer for this comment. Indeed, this is a crucial point to address in order to demonstrate the validity of the scheme across all Rossby-number regimes. We have added new simulations in Section~... specifically designed to test the transition between the low-Rossby AP regime and the high-Rossby shock-capturing regime. The results show that the scheme is able to...
+
+We remark that shocks are not expected to occur in the low-Rossby regime in the same way as in high-Rossby regimes, and solutions are essentially smooth in this regime. Therefore, the relevant requirement at low Rossby numbers is the correct recovery of the smooth TQG dynamics, whereas shock-capturing properties become essential away from the asymptotic regime.
+
+
+{\large \textcolor{magenta}{Nan, add a little comment on the simulations when they are ready...}}
+
 
 \end{enumerate}
 
@@ -334,7 +340,21 @@ Because the source terms are discretized implicitly to achieve the AP property, 
 How does the dynamic switching between the two numerical schemes affect global conservation properties?}
 
 \medskip
-{\sc\underline{Reply}}:
+{\sc\underline{Reply}}: We thank the reviewer for this comment. 
+%
+This also represents a crucial aspect of the proposed method.
+
+As already specified, our approach relies on two formulations of the same governing equations: a conservative formulation, discretized by means of a shock-capturing conservative scheme, and a primitive formulation, discretized through an AP nonconservative scheme. These two discretizations retain their respective features for any value of the Rossby number. In particular, the discretization of the conservative formulation guarantees conservation up to boundary fluxes and machine precision tolerances; 
+while the discretization of the nonconservative system is never conservative, due to the presence of nonconservative products in the governing equations. Therefore, any loss of conservation in the primitive AP solver should not be attributed to the implicit treatment of some source terms, but rather to the use of the primitive/nonconservative formulation itself.
+
+We emphasize that the coupling between the two formulations is not a discontinuous switch, but a continuous Rossby-dependent blending. In the low-Rossby regime, the method relies predominantly on the primitive AP formulation, which is appropriate because the solutions are smooth and the relevant requirement is the correct recovery of the TQG limit. In high- and intermediate-Rossby regimes, the blending takes into account the conservative formulation, which is essential to retain correct Rankine--Hugoniot shock speeds and robust shock-capturing properties. The additional tests, including those discussed in the previous reply, confirm that the resulting method remains robust across the full range of Rossby numbers considered.
+
+We have added a remark on this at the beginning of Section 4.
+
+Concerning the potential vorticity, we emphasize that this is not a conserved quantity and no conservation is expected for it. Nonetheless, we have quantified the conservation errors of the conserved variables in some tests involving shocks.
+
+{\large \textcolor{magenta}{Nan, for the previous tests (very likely explosion problems at different Rossby), can you measure the loss in conservation of the primitive system (possibly in the mesh refinement)? It should be small if the test is correctly resolved. We can also add a little Table about this.}}
+
 
 \medskip
 \item
