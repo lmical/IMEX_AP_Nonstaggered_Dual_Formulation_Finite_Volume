@@ -717,8 +717,12 @@ scheme, given by \eref{3.10c}, \eref{3.10d}, and \eref{3.13}--\eref{3.15}, is AP
 \eref{3.17} at all time levels and the scheme provides a consistent discretization of the TQG equations \eref{2.17} as $\eps\to0$.
 \end{theorem}
 \begin{proof}
-We proceed by mathematical induction. Given \eref{2.17a} and \eref{3.17} for the time level $t=t^0=0$, let us assume that at the time level
-$t=t^n$, the numerical solution admits the same expansions 
+We proceed by mathematical induction. 
+%
+\RIIIcolor{The base case, for the time level $t=t^0=0$, holds due to the assumption of well-prepared initial data. We continue now with the induction step on the generic interval $[t^n,t^{n+1}]$.}
+%Given \eref{2.17a} and \eref{3.17} for the time level $t=t^0=0$. 
+Let us assume that at the time level
+$t=t^n$, the numerical solution admits the expansions 
 \begin{equation}
 \bv^n=\bv^{(0),n}+{\cal O}(\eps),\quad\omega^n=\omega^{(0),n}+{\cal O}(\eps),\quad\psi^n=\psi^{(0),n}+{\cal O}(\eps),\quad 
 \theta^n=\theta^{(0),n}+{\cal O}(\eps),
