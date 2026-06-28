@@ -869,10 +869,10 @@ text centered]
 	\begin{itemize}
 		\item Introduce a new framework based on both conservative and primitive formulations
 		\item Application to low-Mach
-		\visible<2->{
-			\item ...Application to adaptivity
-			\item ...Application to multifluid
-		}
+%		\visible<2->{
+%			\item ...Application to adaptivity
+%			\item ...Application to multifluid
+%		}
 	\end{itemize}
 	}
 	
@@ -1045,7 +1045,7 @@ text centered]
 				&E=\frac{p}{\gamma-1}+\frac{1}{2}\rho \norm{\uvec{v}}^2\\
 				&\lambda=\norm{\uvec{v}},\norm{\uvec{v}}\pm \sqrt{\gamma\frac{p}{\rho}} 
 			\end{cases}
-			\visible<2->{\Rightarrow  
+			\visible<1->{\Rightarrow  
 				\begin{cases}
 					&\rho_t+div_{\uvec{x}}(\rho\bm v)=0\\
 					&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\frac{1}{\textcolor{violet}{\varepsilon}^2}\nabla_{\uvec{x}} p=\bm 0\\
@@ -1058,11 +1058,11 @@ text centered]
 		
 		\vspace{0.1cm}
 		
-		\visible<2->{$\textcolor{violet}{\varepsilon}$: \textcolor{blue}{flow speed (entropy/vorticity)} vs \textcolor{red}{acoustic speed (pressure/density perturbations)}}
+		\visible<1->{$\textcolor{violet}{\varepsilon}$: \textcolor{blue}{flow speed (entropy/vorticity)} vs \textcolor{red}{acoustic speed (pressure/density perturbations)}}
 		
 		\vspace{0.1cm}
 		
-		\visible<3->{
+		\visible<2->{
 			Low Mach $\Longleftrightarrow$ \textcolor{violet}{$\varepsilon$} $\longrightarrow$ 0 $\Longleftrightarrow$ \textcolor{blue}{slow flow speed} $<<$ \textcolor{red}{fast acoustic speed}
 		}
 		
@@ -1078,7 +1078,7 @@ text centered]
 			
 			\begin{column}{0.30\textwidth}
 				\centering
-				\visible<3->{
+				\visible<2->{
 					\textbf{Applications}
 					\begin{itemize}
 						\item Atmospheric flows
@@ -1094,7 +1094,7 @@ text centered]
 			\end{column}
 			\begin{column}{0.60\textwidth}
 				\centering
-				\visible<4->{
+				\visible<2->{
 					\textbf{Issues}	
 					\begin{itemize}
 						\item Stiffness
@@ -1103,7 +1103,7 @@ text centered]
 							\item {\tiny Implicit $=$ Nonlinear systems \& Diffusion}
 							%\item \textcolor{blue}{IM}\textcolor{red}{EX} (acoustics less resolved but OK)
 						\end{itemize}
-						\visible<4->{\item Asymptotic limit consistency...}
+						\visible<2->{\item Asymptotic limit consistency...}
 					\end{itemize}
 				}
 			\end{column}
