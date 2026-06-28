@@ -1064,7 +1064,7 @@ of size ${\cal O}(\eps^{-1})$ are introduced.
 \RIIIcolor{
 Notice that this choice of the discrete differential operators guarantees the well-posedness of the method at the discrete level, as shown in the following theorem.
 
-\begin{theorem}[Well-posedness of the discrete elliptic problems]
+\begin{theorem}[Well-posedness of the discrete elliptic problems]\label{th:well_posedness}
 	Let $a$, $b$, $\alpha$, $\nu$ and $\eps$ be positive parameters and consider the following elliptic PDE
 	\begin{align}
 		\big(\eps^2+a b (\alpha \dt)^2\big)\psi-\nu a b (\alpha \dt)^2\Delta\psi=r,
@@ -1299,6 +1299,10 @@ For brevity, we omit the intermediate algebraic manipulations and present only t
 It is worth noting that, when $\gamma=1$ in \eref{3.45}, Steps 1--3 in the second-order update reduce exactly to the update procedure of 
 the first-order SI, fully discrete AP scheme \eref{3.44}.
 \end{rmk}
+
+\begin{remark}
+	We remark that the linear systems involved in Steps 2 and 5 are well-posed due to Theorem~\ref{th:well_posedness}.
+\end{remark}
 
 %==============================================================================
 \section{All-Rossby-Number Dual Formulation Finite-Volume Method}\label{sec4}
