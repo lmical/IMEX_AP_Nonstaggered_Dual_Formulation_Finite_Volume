@@ -562,13 +562,13 @@ text centered]
 
 		
 		\begin{itemize}
-			\item Structural property at the analytical level: $\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$
+			\item Structural property at the analytical level: \visible<1->{$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$}
 			\item Essential also at the discrete level:
 		\end{itemize}		
 
 		\vspace{-0.1cm}
 
-		
+		\visible<1->{		
 			\begin{columns}
 			\begin{column}{0.5\textwidth}
 				
@@ -710,7 +710,7 @@ text centered]
 	}	
 	
 	
-	
+	}
 	
 	
 	%In computational mathematics, the Lax-Wendroff theorem, named after Peter Lax and Burton Wendroff, states that if a conservative numerical scheme for a hyperbolic system of conservation laws converges, then it converges towards a weak solution.
@@ -1150,7 +1150,7 @@ text centered]
 				}
 			\end{column}
 			\begin{column}{0.30\textwidth}
-				\visible<3->{
+				\visible<2->{
 					\begin{align*}
 						\begin{cases}
 							&\rho(\uvec{x},t)=\rho^{(0)}(\uvec{x},t)+\ve\rho^{(1)}(\uvec{x},t)+\ve^2\rho^{(2)}(\uvec{x},t)+\dots\\
@@ -1166,7 +1166,7 @@ text centered]
 		
 		\begin{columns}
 			\begin{column}{0.30\textwidth}
-				\visible<4->{
+				\visible<3->{
 					\begin{align*}
 						\begin{cases}
 							{\cal O}(\ve^{-2}): &\nabla_{\uvec{x}} p^{(0)}=\uvec{0}\\
@@ -1181,14 +1181,14 @@ text centered]
 			\end{column}
 			\begin{column}{0.30\textwidth}
 				\centering
-				\visible<5->{
+				\visible<3->{
 					\vspace{0.5cm}
 					BC: $p\equiv$ const $\partial \Omega$
 					\vspace{-0.7cm}
 					\begin{align*}
 						\begin{cases}
-							&p^{(0)}\equiv\,\xbar p_0,\quad p^{(1)}\equiv\,\xbar p_1\\
-							&div_{\uvec{x}}\uvec{v}^{(0)}=0,\quad div_{\uvec{x}}\uvec{v}^{(1)}=0\\
+							&\textcolor{violet}{p^{(0)}\equiv\,\xbar p_0,\quad p^{(1)}\equiv\,\xbar p_1}\\
+							&\textcolor{violet}{div_{\uvec{x}}\uvec{v}^{(0)}=0,\quad div_{\uvec{x}}\uvec{v}^{(1)}=0}\\
 							&\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
 							&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0\\
 						\end{cases}
@@ -1197,8 +1197,8 @@ text centered]
 			\end{column}
 		\end{columns}					
 		
-		\visible<6->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
-		
+%		\visible<6->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
+%		
 	}
 	
 \end{frame}
@@ -1564,9 +1564,10 @@ text centered]
 	
 \end{frame}
 
+\section{...Other applications}
+\frame\sectionpage
 
-
-\section{Application to adaptivity}
+\section*{Application to adaptivity}
 \frame\sectionpage
 
 
@@ -1774,7 +1775,7 @@ text centered]
 
 
 
-\section{Application to multifluid}
+\section*{Application to multifluid}
 \frame\sectionpage
 
 
@@ -2056,8 +2057,8 @@ text centered]
 	
 	\vspace{0.5cm}
 	
-	Far from interface $\Rightarrow$ Same as before for shock--detection\\
-	Around the interface $\Rightarrow$ Evolve $\uvec{V}$ meaningfully to use it ($\uvec{D}_{\uvec{\Psi},\iph}^{\pm}\neq \uvec{0}$, 2-nd order reconstruction)
+	Far from interface $\Rightarrow$ Same as before, shock--detection%\\
+%	Around the interface $\Rightarrow$ Evolve $\uvec{V}$ meaningfully to use it ($\uvec{D}_{\uvec{\Psi},\iph}^{\pm}\neq \uvec{0}$, 2-nd order reconstruction)
 
 	\vspace{0.2cm}
 	
