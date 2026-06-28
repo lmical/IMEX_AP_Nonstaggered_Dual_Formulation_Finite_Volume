@@ -444,20 +444,34 @@ We also emphasize that in the low-Rossby regime, the limit TQG dynamics is essen
 {\bf The text states: ``However, the classical RSW equations neglect horizontal variations in temperature/density, which can play a crucial role in stratified flows.'' Could the authors clarify the precise physical scenarios envisioned for this model? In geophysical contexts, this 2D thermal model typically serves as a conceptual benchmark for methods later extended to full 3D stratifications. Because your scheme’s formulations (e.g., potential vorticity tracking) appear inherently bound to 2D, a brief discussion justifying this specific focus would be highly valuable.}
 
 \medskip
-{\sc\underline{Reply}}: 
+{\sc\underline{Reply}}: We thank the referee for this comment. We agree that the physical regime addressed by the TRSW model should be better clarified. 
+%
+Two-dimensional rotating shallow-water-type models have a long and well-established history in geophysical fluid dynamics and numerical weather prediction. Several of the references suggested by the referee~\cite{machenhauer1977dynamics,temperton1987efficient,ritchie1988application,staniforth1991semi,smolarkiewicz2016finite,thuburn2014mimetic,weller2014non} are precisely formulated in such two-dimensional shallow-water settings.
+
+
+{\large \textcolor{magenta}{Alex, you told me you have a paper with Zeitlin with a review. Do you want to add a remark on this?}}
 
 \item 
 {\bf Reference [23] is cited as ``in preparation''. Expecting a reviewer to evaluate a manuscript based on foundational claims or innovation steps contained in a non-existent, unarchived reference is entirely inappropriate. The novelty of the presented work must be fully assessable within this manuscript on its own merits, without relying on unavailable text. Furthermore, referencing unreviewed preprints (such as [22]) is already questionable. Please remove all references to unpublished/non-existing work and ensure that the manuscript is entirely self-contained.}
 
 \medskip
-{\sc\underline{Reply}}: 
+{\sc\underline{Reply}}: Reference~\cite{CKKM} is no longer cited as ``in preparation'', since it is now publicly available and close to publication.
+
+
+{\large \textcolor{magenta}{Should we remove the reference to the work with Qincheng? It is not essential. The reference to the Euler paper should be sufficient.}}
 
 \item 
 {\bf Page 2, Paragraph 2: Regarding the statement starting with ``On the other hand...'': If non-conservative schemes risk failing to converge to physically relevant solutions in standard settings, why is convergence expected here? Is the underlying assumption that the TQG equations guarantee a sufficiently smooth, unique solution, ensuring that asymptotic expansions around this singular limit remain well-behaved? Please provide
 the underlying reasoning, specific initial/boundary data constraints, or literature references to clarify this point.}
 
 \medskip
-{\sc\underline{Reply}}: 
+{\sc\underline{Reply}}: The referee is right. The employment of nonconservative formulations in the low-Rossby regime is justified by the fact that the relevant asymptotic dynamics are driven by the smooth TQG limit derived in~\cite{Warneford_2013}. 
+
+In this regime, the main goal is to recover the correct asymptotic limit, rather than to approximate discontinuous weak solutions with correct Rankine--Hugoniot speeds. Away from this regime, where discontinuities may occur, the conservative formulation (and so also the post-processing) is essential.
+
+We have added a clarification after the aforementioned passage.
+
+
 \end{enumerate}
 
 {\bf Section 2}

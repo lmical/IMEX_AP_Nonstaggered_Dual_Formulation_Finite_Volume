@@ -236,10 +236,14 @@ In this work, we extend the AP method from \cite{CKKM} to the TRSW equations. Th
 system: both the conservative and nonconservative (primitive) forms are used to evolve the numerical solution. The motivation for
 considering both formulations arises from their complementary properties. In high-Rossby-number regimes, effective shock capturing requires
 the conservative form of the equations, since discretizations of nonconservative forms may fail to converge to the physically relevant weak
-solutions; see, e.g., \cite{Abgrall_2010,Hou_1994}. On the other hand, in low-Rossby-number regimes, numerical methods are typically based
+solutions; see, e.g., \cite{Abgrall_2010,Hou_1994}. 
+%
+On the other hand, in low-Rossby-number regimes, numerical methods are typically based
 on the nonconservative form, which is better suited for enforcing the divergence-free constraint and preserving the correct asymptotic
 behavior as the Rossby (Mach, Froude) number tends to zero, where both formulations are expected to converge to the same physically
 relevant limit.
+%
+\RIIIcolor{This is justified by the fact that, in such a regime, the relevant asymptotic dynamics are driven by the smooth TQG limit~\cite{Warneford_2013}.}
 
 The proposed second-order AP method for the TRSW equations, like the AP method from \cite{CKKM}, is constructed using the nonstaggered dual 
 formulation finite-volume (DF-FV) method recently developed in \cite{CFKM} (for other recent works on the dual formulation methods, we refer
