@@ -1106,6 +1106,11 @@ Notice that this choice of the discrete differential operators guarantees the we
 
 For the sake of generality, we have introduced the parameter $\alpha$, in order to include the linear systems arising from the second-order discretization presented in the following.
 
+	\begin{remark}[On checkerboard modes]
+		Checkerboard modes may be problematic in collocated discretizations when the discrete gradient and divergence operators do not provide a sufficient coupling~\cite{rhie1983numerical,kawaguchi2002checkerboard}. In the present scheme, however, the SI update is formulated through a well-posed fully (locally) coupled linear system, which prevents this issue.
+		Checkerboard modes have not been observed for this approach, nor in~\cite{CKKM}.
+	\end{remark}
+
 }
 	
 %============================================================================

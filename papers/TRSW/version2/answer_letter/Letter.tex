@@ -522,7 +522,26 @@ We have added a clarification after the aforementioned passage.
 	
 	Concerning the choice of the gradients and of the other differential operators, we have used central differences and this choice is explicitly detailed in Section 3.3.2, where we have added also our definition of discrete divergence.
 	
-	Concerning checkerboard modes or grid-staggering effects, these have not been observed in the numerical tests considered in the manuscript.
+	% Classical collocated-grid issue.
+	% With centered differences, the checkerboard pressure mode p_i=(-1)^i gives
+	% D_x p_i = (p_{i+1}-p_{i-1})/(2 dx)=0, even though p_i is not constant.
+	% Thus this pressure mode does not enter the discrete velocity equation
+	%
+	%     u_t + D_x p = ...
+	%
+	% since D_x p = 0. Analogously, checkerboard velocity modes may satisfy
+	%
+	%     D_x u = 0
+	%
+	% at the discrete level. Therefore, the discrete gradient-divergence coupling
+	% may fail to control grid-scale oscillations, leading to pressure-velocity
+	% decoupling. In our scheme, the semi-implicit update
+	% is formulated as a fully coupled linear system, whose well-posedness is
+	% proved in Theorem 3.2; no such effects were observed in the tests.
+	
+	Concerning checkerboard modes, these have not been observed in the numerical tests considered in the manuscript, nor in~\cite{CKKM}. We agree that such modes may be problematic in collocated discretizations when the discrete gradient and divergence operators do not provide a sufficiently coupled discretization. In the present scheme, however, the SI update is formulated through a fully (locally) coupled linear system, whose well-posedness is established in Theorem 3.2.
+	%
+	We have added a Remark on this after the newly introduced Theorem 3.2.
 
 \end{enumerate}
 
