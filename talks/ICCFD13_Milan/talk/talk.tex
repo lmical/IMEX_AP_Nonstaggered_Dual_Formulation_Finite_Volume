@@ -1564,6 +1564,80 @@ text centered]
 	
 \end{frame}
 
+
+
+\section{Conclusions}
+\frame\sectionpage
+
+
+\begin{frame}
+	\frametitle{Conclusions \& Future Perspectives}
+	
+	{\tiny
+	Summary:
+	\begin{itemize}
+		\item Novel DF scheme with $\textcolor{blue}{\uvec{U}}$ (conservative) and $\textcolor{red}{\uvec{V}}$ (nonconservative) and Post--processing
+		\item Application to AP: IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system\footnote{{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}}
+		\item Just to mention... Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}}; AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}; shock--detection (check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$)\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}; multifluid with level set approach ($\textcolor{red}{\uvec{V}}$ at material interface)\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
+	\end{itemize}
+
+	Future perspectives:
+	\begin{itemize}
+	\item Other systems,e.g., SW ($\uvec{v}$ in dry areas)
+	\item Multifluid $+$ AP (incompressible modeled as low Mach)
+	\end{itemize}
+	}
+
+
+	
+	
+\end{frame}
+
+
+\begin{frame}[label=THEEND]
+\frametitle{The End}
+
+\begin{center}
+	Thank you
+\end{center}
+
+
+\begin{itemize}
+	\item {\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}
+	\item {\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}
+	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
+	\item {\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}
+	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}
+	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{frame}
+
+
+\appendix
+\backupbegin
+
+
+
+\section{Backup slides}
+\frame\sectionpage
+
+
 \section{...Other applications}
 \frame\sectionpage
 
@@ -1644,7 +1718,7 @@ text centered]
 				\node at (4*\cellwidth,0.7){$x_{i+1}$};
 				
 				\def\yoffset{0.5}
-
+				
 				% Blue U labels for cells
 				\node at (2*\cellwidth,3.2+\yoffset){$\textcolor{red}{\uvec{V}_{i-1}}$};
 				\node at (3*\cellwidth,4.2+\yoffset){$\textcolor{red}{\uvec{V}_{i}}$};
@@ -1697,22 +1771,22 @@ text centered]
 	\end{columns}
 	
 	
-%	\vspace{-0.5cm}
+	%	\vspace{-0.5cm}
 	
 	\visible<1->{	
 		\begin{align*}
 			&\left\lbrace\uvec{U}_i\right\rbrace \longrightarrow \text{Correct solution}\\
 			&\left\lbrace\uvec{V}_i\right\rbrace \longrightarrow \text{Wrong solution}
 		\end{align*}
-
-	\vspace{-0.5cm}
-
+		
+		\vspace{-0.5cm}
+		
 		
 		$$\norm{\uvec{U}^*_i-\uvec{U}(\uvec{V}^*_i)}=\text{shock indicator}$$
-
-	\vspace{-0.5cm}
-
-
+		
+		\vspace{-0.5cm}
+		
+		
 		$$
 		\left(\uvec{U}_i^{n}, \uvec{V}_i^{n}\right) 
 		\xrightarrow{\text{RK}} 
@@ -1726,576 +1800,6 @@ text centered]
 	
 \end{frame}
 
-
-
-
-\begin{frame}
-	\frametitle{Shock detection (momentum and pressure)}
-
-%	{\tiny
-%		We look at two variables: $\rho u$ (and $\rho v$ in 2D) and $p$
-%
-%%		We identify
-%		
-%		\begin{itemize}
-%			\item Rough (R): $\varepsilon^{\rho u}_i>A \overline{\varepsilon}^{\rho u}$
-%
-%			\visible<1->{
-%				\begin{itemize}
-%					{\tiny  \item Rough no contact (RNC): $\varepsilon^{p}_i>B \overline{\varepsilon}^{p}$ $\Rightarrow$ WENO order 5}
-%					{\tiny	\item Rough contact (RC): otherwise $\Rightarrow$ minmod overcompressive order 2}
-%				\end{itemize}
-%			}
-%
-%			\item Smooth (S): otherwise $\Rightarrow$ unlimited order 5
-%		\end{itemize}
-%		
-%		
-%	}
-
-\vspace{-0.1cm}
-
-
-\begin{figure}[ht!]
-	\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}%\hspace*{0.1cm}
-	\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDX}%\hspace*{0.1cm}
-	\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDY}
-	\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}%\hspace*{0.1cm}
-		\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDX}%\hspace*{0.1cm}
-		\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDY}
-	\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}%\hspace*{0.1cm}
-		\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDX}%\hspace*{0.1cm}
-		\includegraphics[width=0.22\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDY}
-\end{figure}
-		
-
-
-\end{frame}
-
-
-
-
-\section*{Application to multifluid}
-\frame\sectionpage
-
-
-
-
-\begin{frame}{Multifluid with level set approach\footnote{{\tiny A. Chertock, S. Chu, A. Kurganov, Hybrid Multifluid Algorithms Based on the Path-Conservative Central-Upwind Scheme, 2021}}}
-
-	
-	\begin{columns}
-		\begin{column}{0.50\textwidth}
-
-			\begin{minipage}[t]{1.0\linewidth}
-				\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=\textcolor{white}{\textbf{Conservative formulation}}, fonttitle=\scriptsize]
-				\centering
-				\tiny % Reduced font size
-
-				\vspace{-0.7cm}
-
-				\begin{align*}
-					\frac{\partial}{\partial t}\textcolor{blue}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U}&)=\uvec{0}\\
-					\textcolor{blue}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
-					\uvec{F}(\uvec{U}):=&\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}\\
-					\text{\textbf{EOS}:}\quad p=\left(\textcolor{teal}{\gamma}-1\right)\left[\right.E-&\frac{1}{2}\rho v^2\left.\right]-\textcolor{teal}{\gamma} \textcolor{teal}{p_{\infty}}
-				\end{align*}
-				\vspace{-0.2cm}
-				$\textcolor{teal}{\gamma}:=\frac{c_p}{c_v}$ adiabatic coefficient
-				
-				\vspace{0.2cm}
-				
-				$\textcolor{teal}{p_{\infty}}$ stiffness parameter
-				\end{tcolorbox}
-			\end{minipage}
-
-
-		\end{column}
-		
-		\begin{column}{0.50\textwidth}
-			
-				
-				\begin{minipage}[t]{1.0\linewidth}
-					\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=\textcolor{white}{\textbf{Primitive formulation}}, fonttitle=\scriptsize]
-						\centering
-						\tiny % Reduced font size
-						
-						
-						\vspace{-0.5cm}
-						
-						\begin{align*}
-							\frac{\partial}{\partial t}\textcolor{red}{\uvec{V}}+\frac{\partial}{\partial x}&\uvec{\widetilde F}(\uvec{V})=\textcolor{black}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}}\\
-							\textcolor{red}{\uvec{V}:=\begin{pmatrix}\rho\\v\\p\end{pmatrix}},&\quad
-							\uvec{\widetilde F}(\uvec{V}):=\begin{pmatrix}\rho v\\\dfrac{v^2}{2}\\ pv\end{pmatrix},\\
-							\textcolor{black}{\B(\uvec{V}):=}&\begin{pmatrix}0&0&0\\0&0&-\dfrac{1}{\rho}\\0&-\left[(\textcolor{teal}{\gamma}-1) p +\textcolor{teal}{\gamma} \textcolor{teal}{p_{\infty}}\right]&0\end{pmatrix}
-						\end{align*}
-
-					\vspace{-0.4cm}
-					
-		
-					\end{tcolorbox}
-				\end{minipage}				
-			
-		\end{column}			
-		
-	\end{columns}	
-
-	\vspace{-0.1cm}
-
-\begin{columns}
-	\begin{column}{0.50\textwidth}
-		% Fourth Box (Multifluid Setting)
-		\begin{minipage}[t]{1.\linewidth}
-			\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=\textcolor{white}{\textbf{Level set approach}}, fonttitle=\scriptsize]
-				\centering
-				\tiny
-				\begin{align*}
-					\textcolor{teal}{(\gamma,p_{\infty})}:=\begin{cases}
-						\gamma_1,p_{\infty,1}~\text{if}~\phi>0\\
-						\gamma_2,p_{\infty,2}~\text{if}~\phi\leq 0
-					\end{cases} ~ \textcolor{red}{\frac{\partial}{\partial t}(\rho\phi)+\frac{\partial}{\partial x}(\rho \phi v)=0}
-				\end{align*}
-				
-			\end{tcolorbox}
-		\end{minipage}
-		
-		
-	\end{column}			
-	
-	\begin{column}{0.50\textwidth}
-		
-		
-% The image
-\begin{center}
-	\begin{adjustbox}{scale=0.5}
-		\begin{tikzpicture}[scale=2.5]
-			\def\innerScale{1.2}
-			\fill[blue!50] (0, 0.5) rectangle (4, 3.);
-			\draw[thick] (0, 0.5) rectangle (4, 3.);
-			\begin{scope}
-				\draw[thick, smooth, fill=yellow!50] 
-				plot [smooth cycle, tension=1] coordinates {
-					(2, 1.5) % 1.2 + 0.3
-					(2 + 0.5*\innerScale, 1.2 + 0.8*\innerScale + 0.3)
-					(3 * \innerScale, 1.6 * \innerScale + 0.3)
-					(2.8 * \innerScale, 0.8 * \innerScale + 0.3)
-					(2, 0.4 * \innerScale + 0.3)
-					(1.2 * \innerScale, 0.8 * \innerScale + 0.3)
-					(1 * \innerScale, 1.6 * \innerScale + 0.3)
-					(1.7 * \innerScale, 2 * \innerScale + 0.3)
-				};
-			\end{scope}
-			\node at (3, 2.0) {$\phi\geq 0$};
-			\node at (1, 0.7) {$\phi < 0$};
-		\end{tikzpicture}
-	\end{adjustbox}
-\end{center}
-
-		
-	\end{column}			
-	
-\end{columns}	
-
-
-
-\end{frame}
-
-
-\begin{frame}{DF for multifluid}
-
-	\vspace{-1.4em}	
-	
-	\tiny % Scale down the entire frame
-	\begin{columns}
-		
-		% Left Column: TikZ Figure
-		\begin{column}{0.5\textwidth}
-			
-			
-						
-			
-			\begin{tikzpicture}[scale=0.8] % Reduced scale
-				\tikzset{dot/.style={fill=black,circle}}
-				
-				% Set the width of the cell
-				\def\cellwidth{1.4} % Adjust this value to change the width of each cell
-				
-				% Horizontal line
-				\draw [black] (0,1) -- (6*\cellwidth,1);
-				
-				% Draw the first cell and point
-				\draw (0.5*\cellwidth,1) -- (0.5*\cellwidth,1.7);
-				\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,1.7);
-				\draw (0.5*\cellwidth,1.7) -- (1.5*\cellwidth,1.7);
-				\filldraw[blue] (1*\cellwidth,1.7) circle (2pt);
-				
-				% Draw the second cell and point
-				\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,2.7);
-				\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,2.7);
-				\draw (1.5*\cellwidth,2.7) -- (2.5*\cellwidth,2.7);
-				\filldraw[blue] (2*\cellwidth,2.7) circle (2pt);
-				
-				% Draw the third cell and point
-				\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,3.7);
-				\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.7);
-				\draw (2.5*\cellwidth,3.7) -- (3.5*\cellwidth,3.7);
-				\filldraw[blue] (3*\cellwidth,3.7) circle (2pt);
-				
-				% Draw the fourth cell and point
-				\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.2);
-				\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,3.2);
-				\draw (3.5*\cellwidth,3.2) -- (4.5*\cellwidth,3.2);
-				\filldraw[blue] (4*\cellwidth,3.2) circle (2pt);
-				
-				% Draw the fifth cell and point
-				\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,2.2);
-				\draw (5.5*\cellwidth,1) -- (5.5*\cellwidth,2.2);
-				\draw (4.5*\cellwidth,2.2) -- (5.5*\cellwidth,2.2);
-				\filldraw[blue] (5*\cellwidth,2.2) circle (2pt);
-				
-				% Vertical dashed lines at interfaces
-				\foreach \x in {1.5,2.5,...,4.5}
-				{
-					\draw [dashed] (\x*\cellwidth,0.5) -- (\x*\cellwidth,4.5); % vertical lines at interfaces
-				}
-				
-				% Labels with adjusted x positions
-				\node at (1.5*\cellwidth,0.25){$x_{i-\frac{3}{2}}$}; 
-				\node at (2.5*\cellwidth,0.25){$x_{i-\frac{1}{2}}$}; 
-				\node at (3.5*\cellwidth,0.25){$x_{i+\frac{1}{2}}$}; 
-				\node at (4.5*\cellwidth,0.25){$x_{i+\frac{3}{2}}$}; 
-				
-				
-				
-				% Cell labels
-				\node at (2*\cellwidth,0.7){$x_{i-1}$};
-				\node at (3*\cellwidth,0.7){$x_{i}$};
-				\node at (4*\cellwidth,0.7){$x_{i+1}$};
-				
-				
-				% Blue U labels for cells				
-				\node at (2*\cellwidth,3.2){$\textcolor{blue}{\uvec{U}_{i-1}}$};
-				\node at (3*\cellwidth,4.2){$\textcolor{blue}{\uvec{U}_{i}}$};
-				\node at (4*\cellwidth,3.7){$\textcolor{blue}{\uvec{U}_{i+1}}$};
-				
-				
-				\def\yoffset{0.4}
-
-				\node at (2*\cellwidth,3.2+\yoffset){$\textcolor{red}{\uvec{V}_{i-1}}$};
-				\node at (3*\cellwidth,4.2+\yoffset){$\textcolor{red}{\uvec{V}_{i}}$};
-				\node at (4*\cellwidth,3.7+\yoffset){$\textcolor{red}{\uvec{V}_{i+1}}$};
-				
-				
-				\def\yoffset{0.8}
-
-				\node at (2*\cellwidth,3.2+\yoffset){$\textcolor{red}{(\rho \phi)_{i-1}>0}$};
-				\node at (3*\cellwidth,4.2+\yoffset){$\textcolor{red}{(\rho \phi)_{i}>0}$};
-				\node at (4*\cellwidth,3.7+\yoffset){$\textcolor{red}{(\rho \phi)_{i+1}<0}$};
-				
-				\def\yoffset{1.2}
-
-				% Cell labels
-				\node at (2*\cellwidth,3.2+\yoffset){$\textcolor{teal}{\gamma_1}, \textcolor{teal}{p_{\infty,1}}$};
-				\node at (3*\cellwidth,4.2+\yoffset){$\textcolor{teal}{\gamma_1}, \textcolor{teal}{p_{\infty,1}}$};
-				\node at (4*\cellwidth,3.7+\yoffset){$\textcolor{teal}{\gamma_2}, \textcolor{teal}{p_{\infty,2}}$};
-
-
-				
-				% Cross marks in each cell
-				%				\foreach \x in {0.5,1.5,2.5,...,4.5,5.5}
-				%				{
-					%					\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.3) -- (\x*\cellwidth+0.1,1.5); % Diagonal line /
-					%					\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.5) -- (\x*\cellwidth+0.1,1.3); % Diagonal line \
-					%				}
-				
-			\end{tikzpicture}
-			
-		\end{column}
-		
-		% Right Column: Text and Equations
-		\begin{column}{0.5\textwidth}
-			
-			\begin{minipage}[t]{1.\linewidth}
-				
-					
-					\begin{itemize}
-						\item Control variables: {\tiny $\textcolor{blue}{\uvec{U}_i}$ and  $(\textcolor{red}{\uvec{V}_{i}},\textcolor{red}{(\rho\phi)_{i}})$}
-						\item Scheme
-						
-							\begin{align*}
-								\begin{cases}
-									&\frac{d}{dt}\textcolor{blue}{\uvec{U}_i}(t)
-									= -\frac{1}{\Delta x}\left(\widehat{\uvec{F}}_{i+\frac{1}{2}}-\textcolor{black}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)
-									\\
-									&\frac{d}{dt}\textcolor{red}{\uvec{V}_{i}}(t)
-									= -\frac{1}{\Delta x}\left(
-									\textcolor{orange}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}
-									-\textcolor{orange}{\widehat{\widetilde{\uvec{F}}}_{i-\frac{1}{2}}}
-									\right)
-									\\
-									&+\textcolor{violet}{\frac{1}{\Delta x}
-										\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x\, dx}
-									+\textcolor{violet}{\frac{1}{\Delta x}
-										\left(\uvec{D}_{\uvec{\Psi},\imh}^+
-										+\uvec{D}_{\uvec{\Psi},\iph}^-\right)}\\
-									&\frac{d}{d t}\textcolor{red}{(\rho \phi)_{i}}(t)=-\frac{1}{\Delta x}\left[ \textcolor{orange}{\widehat{\widetilde{(\rho \phi v)}}_{i+\frac{1}{2}}}-\textcolor{orange}{\widehat{\widetilde{(\rho \phi v)}}_{i-\frac{1}{2}}} \right]
-								\end{cases}
-							\end{align*}
-						
-
-					\end{itemize}
-					
-				
-				
-			\end{minipage}
-			
-			
-		\end{column}
-		
-	\end{columns}
-	
-	
-	\vspace{0.5cm}
-	
-	Far from interface $\Rightarrow$ Same as before, shock--detection%\\
-%	Around the interface $\Rightarrow$ Evolve $\uvec{V}$ meaningfully to use it ($\uvec{D}_{\uvec{\Psi},\iph}^{\pm}\neq \uvec{0}$, 2-nd order reconstruction)
-
-	\vspace{0.2cm}
-	
-	$$
-	\left(\uvec{U}_i^{n}, \uvec{V}_i^{n}, (\rho \phi)_i^{n}\right) 
-	\xrightarrow{\text{RK}} 
-	\left(\uvec{U}_i^*, \uvec{V}_i^*, (\rho \phi)_i^{n+1} \right)
-	\xrightarrow{\text{PP}} 
-	\begin{cases}
-		\left(\textcolor{blue}{\uvec{U}_i^{n+1}:=\uvec{U}_i^*}, \uvec{V}_i^{n+1}:=\uvec{V}(\uvec{U}_i^*,(\rho \phi)_i^{n+1})\right), \quad \text{away from the interface ($\uvec{U}$)},	\\
-		\left(\uvec{U}_i^{n+1}:=\uvec{U}(\uvec{V}_i^*,(\rho \phi)_i^{n+1}), \textcolor{red}{\uvec{V}_i^{n+1}:=\uvec{V}_i^*}\right), \quad \text{around the interface ($\uvec{V}$)}
-	\end{cases}
-	$$
-	
-
-
-\end{frame}
-
-\begin{frame}{Shock--Bubble Interaction\footnote{{\tiny J.-F. Haas, B. Sturtevant, 1987, Interaction of weak shock waves with cylindrical and spherical gas inhomogeneities.}}}
-	
-	\centering
-	
-	\begin{tikzpicture}[scale=0.36]
-		% Define the length of the walls
-		\def\length{8}
-		
-		% Wall patterns
-		\fill[pattern=north east lines, pattern color=black!30] 
-		(-\length/2, 4) -- (\length/2, 4) -- (\length/2, 4.3) -- (-\length/2, 4.3) -- cycle;
-		\fill[pattern=north east lines, pattern color=black!30] 
-		(-\length/2, 0) -- (\length/2, 0) -- (\length/2, -0.3) -- (-\length/2, -0.3) -- cycle;
-		
-		% Draw rectangle, centered according to \length
-		\draw[thick] (-\length/2, 0) rectangle (\length/2, 4);
-		
-		% Draw the bubble
-		\draw[thick, fill=blue!30] (0, 2) circle (0.5);
-		
-		% Draw the shock wave
-		\draw[thick] (\length/2 - 2.75, 0) -- (\length/2 - 2.75, 4);
-		
-		% Draw the arrow indicating wave movement towards the left
-		\draw[->, thick] (\length/2 - 2.75, 3) -- (\length/2 - 3.75, 3) 
-		node[midway, above] {\tiny Air};
-		
-		% Labels
-		\node at (0, 1.2) {\tiny Bubble};
-	\end{tikzpicture}
-	
-	\vspace{-0.3em}
-	
-	\begin{columns}[T,onlytextwidth]
-		
-		% =====================================================
-		% Left column: numerical results
-		% =====================================================
-		\begin{column}{0.6\textwidth}
-			
-			% =========================
-			% R22 numerical
-			% =========================
-			\begin{minipage}[t]{\linewidth}
-				\centering
-				\foreach[count=\k from 1] \index in {30} {%
-					\only<\k>{%
-						\includegraphics[
-						width=0.90\linewidth,
-						trim=0cm 0cm 0cm 0.675cm,
-						clip
-						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\[-0.25em]
-						\includegraphics[
-						width=0.48\linewidth,
-						trim=0cm 0cm 0cm 0.675cm,
-						clip
-						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}%
-						\hfill
-						\includegraphics[
-						width=0.48\linewidth,
-						trim=0cm 0cm 0cm 0.675cm,
-						clip
-						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}%
-					}%
-				}
-			\end{minipage}
-			
-			\vspace{0.35em}
-			
-			% =========================
-			% Helium numerical
-			% =========================
-			\begin{minipage}[t]{\linewidth}
-				\centering
-				\foreach[count=\k from 1] \index in {30} {%
-					\only<\k>{%
-						\includegraphics[
-						width=0.90\linewidth,
-						trim=0cm 0cm 0cm 0.675cm,
-						clip
-						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\[-0.25em]
-						\includegraphics[
-						width=0.48\linewidth,
-						trim=0cm 0cm 0cm 0.675cm,
-						clip
-						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}%
-						\hfill
-						\includegraphics[
-						width=0.48\linewidth,
-						trim=0cm 0cm 0cm 0.675cm,
-						clip
-						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}%
-					}%
-				}
-			\end{minipage}
-			
-		\end{column}
-		
-		% =====================================================
-		% Right column: experimental comparison
-		% =====================================================
-		\begin{column}{0.40\textwidth}
-			\centering
-			
-			% =========================
-			% R22 experimental
-			% =========================
-			\begin{minipage}[t]{\linewidth}
-				\centering
-				\includegraphics[
-				width=0.63\linewidth
-				]{Figures_multifluid/numerical_vs_experimental/r22_cropped.pdf}
-			\end{minipage}
-			
-			\vspace{-3.0em}
-			
-			% =========================
-			% Helium experimental
-			% =========================
-			\begin{minipage}[t]{\linewidth}
-				\centering
-				\includegraphics[
-				width=0.63\linewidth
-				]{Figures_multifluid/numerical_vs_experimental/helium_cropped.pdf}
-			\end{minipage}
-			
-		\end{column}
-		
-	\end{columns}
-	
-
-	\vspace{-2.0em}
-
-\end{frame}
-
-
-
-
-
-
-
-
-
-\section{Conclusions}
-\frame\sectionpage
-
-
-\begin{frame}
-	\frametitle{Conclusions \& Future Perspectives}
-	
-	{\tiny
-	Summary:
-	\begin{itemize}
-		\item Novel DF scheme with $\textcolor{blue}{\uvec{U}}$ (conservative) and $\textcolor{red}{\uvec{V}}$ (nonconservative) and Post--processing
-		\item Application to AP: IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system\footnote{{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}}
-		\item Application to shock--detection: check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$ before PP\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}
-		\item Application to multifluid with level set approach: $\textcolor{red}{(\rho \phi)}$ added to $\textcolor{red}{\uvec{V}}$-variables\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
-		\item Just to mention... Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}} and AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}
-	\end{itemize}
-
-	Future perspectives:
-	\begin{itemize}
-	\item Other systems,e.g., SW ($\uvec{v}$ in dry areas)
-	\item Multifluid $+$ AP (incompressible modeled as low Mach)
-	\end{itemize}
-	}
-
-
-	
-	
-\end{frame}
-
-
-\begin{frame}[label=THEEND]
-\frametitle{The End}
-
-\begin{center}
-	Thank you
-\end{center}
-
-
-\begin{itemize}
-	\item {\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}
-	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
-	\item {\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}
-	\item {\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}
-	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}
-	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}
-\end{itemize}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\end{frame}
-
-
-\appendix
-\backupbegin
-
-
-
-\section{Backup slides}
-\frame\sectionpage
-
-
-\section{Adaptivity}
-\frame\sectionpage
 
 
 \begin{frame}
@@ -2572,8 +2076,306 @@ text centered]
 	
 \end{frame}
 
-\section{Multifluid}
+\section*{Application to multifluid}
 \frame\sectionpage
+
+
+
+
+\begin{frame}{Multifluid with level set approach\footnote{{\tiny A. Chertock, S. Chu, A. Kurganov, Hybrid Multifluid Algorithms Based on the Path-Conservative Central-Upwind Scheme, 2021}}}
+	
+	
+	\begin{columns}
+		\begin{column}{0.50\textwidth}
+			
+			\begin{minipage}[t]{1.0\linewidth}
+				\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=\textcolor{white}{\textbf{Conservative formulation}}, fonttitle=\scriptsize]
+					\centering
+					\tiny % Reduced font size
+					
+					\vspace{-0.7cm}
+					
+					\begin{align*}
+						\frac{\partial}{\partial t}\textcolor{blue}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U}&)=\uvec{0}\\
+						\textcolor{blue}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
+						\uvec{F}(\uvec{U}):=&\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}\\
+						\text{\textbf{EOS}:}\quad p=\left(\textcolor{teal}{\gamma}-1\right)\left[\right.E-&\frac{1}{2}\rho v^2\left.\right]-\textcolor{teal}{\gamma} \textcolor{teal}{p_{\infty}}
+					\end{align*}
+					\vspace{-0.2cm}
+					$\textcolor{teal}{\gamma}:=\frac{c_p}{c_v}$ adiabatic coefficient
+					
+					\vspace{0.2cm}
+					
+					$\textcolor{teal}{p_{\infty}}$ stiffness parameter
+				\end{tcolorbox}
+			\end{minipage}
+			
+			
+		\end{column}
+		
+		\begin{column}{0.50\textwidth}
+			
+			
+			\begin{minipage}[t]{1.0\linewidth}
+				\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=\textcolor{white}{\textbf{Primitive formulation}}, fonttitle=\scriptsize]
+					\centering
+					\tiny % Reduced font size
+					
+					
+					\vspace{-0.5cm}
+					
+					\begin{align*}
+						\frac{\partial}{\partial t}\textcolor{red}{\uvec{V}}+\frac{\partial}{\partial x}&\uvec{\widetilde F}(\uvec{V})=\textcolor{black}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}}\\
+						\textcolor{red}{\uvec{V}:=\begin{pmatrix}\rho\\v\\p\end{pmatrix}},&\quad
+						\uvec{\widetilde F}(\uvec{V}):=\begin{pmatrix}\rho v\\\dfrac{v^2}{2}\\ pv\end{pmatrix},\\
+						\textcolor{black}{\B(\uvec{V}):=}&\begin{pmatrix}0&0&0\\0&0&-\dfrac{1}{\rho}\\0&-\left[(\textcolor{teal}{\gamma}-1) p +\textcolor{teal}{\gamma} \textcolor{teal}{p_{\infty}}\right]&0\end{pmatrix}
+					\end{align*}
+					
+					\vspace{-0.4cm}
+					
+					
+				\end{tcolorbox}
+			\end{minipage}				
+			
+		\end{column}			
+		
+	\end{columns}	
+	
+	\vspace{-0.1cm}
+	
+	\begin{columns}
+		\begin{column}{0.50\textwidth}
+			% Fourth Box (Multifluid Setting)
+			\begin{minipage}[t]{1.\linewidth}
+				\begin{tcolorbox}[colback=blue!5!white, colframe=blue!75!black, title=\textcolor{white}{\textbf{Level set approach}}, fonttitle=\scriptsize]
+					\centering
+					\tiny
+					\begin{align*}
+						\textcolor{teal}{(\gamma,p_{\infty})}:=\begin{cases}
+							\gamma_1,p_{\infty,1}~\text{if}~\phi>0\\
+							\gamma_2,p_{\infty,2}~\text{if}~\phi\leq 0
+						\end{cases} ~ \textcolor{red}{\frac{\partial}{\partial t}(\rho\phi)+\frac{\partial}{\partial x}(\rho \phi v)=0}
+					\end{align*}
+					
+				\end{tcolorbox}
+			\end{minipage}
+			
+			
+		\end{column}			
+		
+		\begin{column}{0.50\textwidth}
+			
+			
+			% The image
+			\begin{center}
+				\begin{adjustbox}{scale=0.5}
+					\begin{tikzpicture}[scale=2.5]
+						\def\innerScale{1.2}
+						\fill[blue!50] (0, 0.5) rectangle (4, 3.);
+						\draw[thick] (0, 0.5) rectangle (4, 3.);
+						\begin{scope}
+							\draw[thick, smooth, fill=yellow!50] 
+							plot [smooth cycle, tension=1] coordinates {
+								(2, 1.5) % 1.2 + 0.3
+								(2 + 0.5*\innerScale, 1.2 + 0.8*\innerScale + 0.3)
+								(3 * \innerScale, 1.6 * \innerScale + 0.3)
+								(2.8 * \innerScale, 0.8 * \innerScale + 0.3)
+								(2, 0.4 * \innerScale + 0.3)
+								(1.2 * \innerScale, 0.8 * \innerScale + 0.3)
+								(1 * \innerScale, 1.6 * \innerScale + 0.3)
+								(1.7 * \innerScale, 2 * \innerScale + 0.3)
+							};
+						\end{scope}
+						\node at (3, 2.0) {$\phi\geq 0$};
+						\node at (1, 0.7) {$\phi < 0$};
+					\end{tikzpicture}
+				\end{adjustbox}
+			\end{center}
+			
+			
+		\end{column}			
+		
+	\end{columns}	
+	
+	
+	
+\end{frame}
+
+\begin{frame}{DF for multifluid}
+	
+	\vspace{-1.4em}	
+	
+	\tiny % Scale down the entire frame
+	\begin{columns}
+		
+		% Left Column: TikZ Figure
+		\begin{column}{0.5\textwidth}
+			
+			
+			
+			
+			\begin{tikzpicture}[scale=0.8] % Reduced scale
+				\tikzset{dot/.style={fill=black,circle}}
+				
+				% Set the width of the cell
+				\def\cellwidth{1.4} % Adjust this value to change the width of each cell
+				
+				% Horizontal line
+				\draw [black] (0,1) -- (6*\cellwidth,1);
+				
+				% Draw the first cell and point
+				\draw (0.5*\cellwidth,1) -- (0.5*\cellwidth,1.7);
+				\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,1.7);
+				\draw (0.5*\cellwidth,1.7) -- (1.5*\cellwidth,1.7);
+				\filldraw[blue] (1*\cellwidth,1.7) circle (2pt);
+				
+				% Draw the second cell and point
+				\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,2.7);
+				\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,2.7);
+				\draw (1.5*\cellwidth,2.7) -- (2.5*\cellwidth,2.7);
+				\filldraw[blue] (2*\cellwidth,2.7) circle (2pt);
+				
+				% Draw the third cell and point
+				\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,3.7);
+				\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.7);
+				\draw (2.5*\cellwidth,3.7) -- (3.5*\cellwidth,3.7);
+				\filldraw[blue] (3*\cellwidth,3.7) circle (2pt);
+				
+				% Draw the fourth cell and point
+				\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.2);
+				\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,3.2);
+				\draw (3.5*\cellwidth,3.2) -- (4.5*\cellwidth,3.2);
+				\filldraw[blue] (4*\cellwidth,3.2) circle (2pt);
+				
+				% Draw the fifth cell and point
+				\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,2.2);
+				\draw (5.5*\cellwidth,1) -- (5.5*\cellwidth,2.2);
+				\draw (4.5*\cellwidth,2.2) -- (5.5*\cellwidth,2.2);
+				\filldraw[blue] (5*\cellwidth,2.2) circle (2pt);
+				
+				% Vertical dashed lines at interfaces
+				\foreach \x in {1.5,2.5,...,4.5}
+				{
+					\draw [dashed] (\x*\cellwidth,0.5) -- (\x*\cellwidth,4.5); % vertical lines at interfaces
+				}
+				
+				% Labels with adjusted x positions
+				\node at (1.5*\cellwidth,0.25){$x_{i-\frac{3}{2}}$}; 
+				\node at (2.5*\cellwidth,0.25){$x_{i-\frac{1}{2}}$}; 
+				\node at (3.5*\cellwidth,0.25){$x_{i+\frac{1}{2}}$}; 
+				\node at (4.5*\cellwidth,0.25){$x_{i+\frac{3}{2}}$}; 
+				
+				
+				
+				% Cell labels
+				\node at (2*\cellwidth,0.7){$x_{i-1}$};
+				\node at (3*\cellwidth,0.7){$x_{i}$};
+				\node at (4*\cellwidth,0.7){$x_{i+1}$};
+				
+				
+				% Blue U labels for cells				
+				\node at (2*\cellwidth,3.2){$\textcolor{blue}{\uvec{U}_{i-1}}$};
+				\node at (3*\cellwidth,4.2){$\textcolor{blue}{\uvec{U}_{i}}$};
+				\node at (4*\cellwidth,3.7){$\textcolor{blue}{\uvec{U}_{i+1}}$};
+				
+				
+				\def\yoffset{0.4}
+				
+				\node at (2*\cellwidth,3.2+\yoffset){$\textcolor{red}{\uvec{V}_{i-1}}$};
+				\node at (3*\cellwidth,4.2+\yoffset){$\textcolor{red}{\uvec{V}_{i}}$};
+				\node at (4*\cellwidth,3.7+\yoffset){$\textcolor{red}{\uvec{V}_{i+1}}$};
+				
+				
+				\def\yoffset{0.8}
+				
+				\node at (2*\cellwidth,3.2+\yoffset){$\textcolor{red}{(\rho \phi)_{i-1}>0}$};
+				\node at (3*\cellwidth,4.2+\yoffset){$\textcolor{red}{(\rho \phi)_{i}>0}$};
+				\node at (4*\cellwidth,3.7+\yoffset){$\textcolor{red}{(\rho \phi)_{i+1}<0}$};
+				
+				\def\yoffset{1.2}
+				
+				% Cell labels
+				\node at (2*\cellwidth,3.2+\yoffset){$\textcolor{teal}{\gamma_1}, \textcolor{teal}{p_{\infty,1}}$};
+				\node at (3*\cellwidth,4.2+\yoffset){$\textcolor{teal}{\gamma_1}, \textcolor{teal}{p_{\infty,1}}$};
+				\node at (4*\cellwidth,3.7+\yoffset){$\textcolor{teal}{\gamma_2}, \textcolor{teal}{p_{\infty,2}}$};
+				
+				
+				
+				% Cross marks in each cell
+				%				\foreach \x in {0.5,1.5,2.5,...,4.5,5.5}
+				%				{
+					%					\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.3) -- (\x*\cellwidth+0.1,1.5); % Diagonal line /
+					%					\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.5) -- (\x*\cellwidth+0.1,1.3); % Diagonal line \
+					%				}
+				
+			\end{tikzpicture}
+			
+		\end{column}
+		
+		% Right Column: Text and Equations
+		\begin{column}{0.5\textwidth}
+			
+			\begin{minipage}[t]{1.\linewidth}
+				
+				
+				\begin{itemize}
+					\item Control variables: {\tiny $\textcolor{blue}{\uvec{U}_i}$ and  $(\textcolor{red}{\uvec{V}_{i}},\textcolor{red}{(\rho\phi)_{i}})$}
+					\item Scheme
+					
+					\begin{align*}
+						\begin{cases}
+							&\frac{d}{dt}\textcolor{blue}{\uvec{U}_i}(t)
+							= -\frac{1}{\Delta x}\left(\widehat{\uvec{F}}_{i+\frac{1}{2}}-\textcolor{black}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)
+							\\
+							&\frac{d}{dt}\textcolor{red}{\uvec{V}_{i}}(t)
+							= -\frac{1}{\Delta x}\left(
+							\textcolor{orange}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}
+							-\textcolor{orange}{\widehat{\widetilde{\uvec{F}}}_{i-\frac{1}{2}}}
+							\right)
+							\\
+							&+\textcolor{violet}{\frac{1}{\Delta x}
+								\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x\, dx}
+							+\textcolor{violet}{\frac{1}{\Delta x}
+								\left(\uvec{D}_{\uvec{\Psi},\imh}^+
+								+\uvec{D}_{\uvec{\Psi},\iph}^-\right)}\\
+							&\frac{d}{d t}\textcolor{red}{(\rho \phi)_{i}}(t)=-\frac{1}{\Delta x}\left[ \textcolor{orange}{\widehat{\widetilde{(\rho \phi v)}}_{i+\frac{1}{2}}}-\textcolor{orange}{\widehat{\widetilde{(\rho \phi v)}}_{i-\frac{1}{2}}} \right]
+						\end{cases}
+					\end{align*}
+					
+					
+				\end{itemize}
+				
+				
+				
+			\end{minipage}
+			
+			
+		\end{column}
+		
+	\end{columns}
+	
+	
+	\vspace{0.5cm}
+	
+	Far from interface $\Rightarrow$ Same as before, shock--detection%\\
+	%	Around the interface $\Rightarrow$ Evolve $\uvec{V}$ meaningfully to use it ($\uvec{D}_{\uvec{\Psi},\iph}^{\pm}\neq \uvec{0}$, 2-nd order reconstruction)
+	
+	\vspace{0.2cm}
+	
+	$$
+	\left(\uvec{U}_i^{n}, \uvec{V}_i^{n}, (\rho \phi)_i^{n}\right) 
+	\xrightarrow{\text{RK}} 
+	\left(\uvec{U}_i^*, \uvec{V}_i^*, (\rho \phi)_i^{n+1} \right)
+	\xrightarrow{\text{PP}} 
+	\begin{cases}
+		\left(\textcolor{blue}{\uvec{U}_i^{n+1}:=\uvec{U}_i^*}, \uvec{V}_i^{n+1}:=\uvec{V}(\uvec{U}_i^*,(\rho \phi)_i^{n+1})\right), \quad \text{away from the interface ($\uvec{U}$)},	\\
+		\left(\uvec{U}_i^{n+1}:=\uvec{U}(\uvec{V}_i^*,(\rho \phi)_i^{n+1}), \textcolor{red}{\uvec{V}_i^{n+1}:=\uvec{V}_i^*}\right), \quad \text{around the interface ($\uvec{V}$)}
+	\end{cases}
+	$$
+	
+	
+	
+\end{frame}
 
 \begin{frame}
 	\frametitle{DF, multifluid shock--tube}
@@ -2638,6 +2440,142 @@ text centered]
 	
 	$$N=400$$
 	
+	
+\end{frame}
+
+
+\begin{frame}{Shock--Bubble Interaction\footnote{{\tiny J.-F. Haas, B. Sturtevant, 1987, Interaction of weak shock waves with cylindrical and spherical gas inhomogeneities.}}}
+	
+	\centering
+	
+	\begin{tikzpicture}[scale=0.36]
+		% Define the length of the walls
+		\def\length{8}
+		
+		% Wall patterns
+		\fill[pattern=north east lines, pattern color=black!30] 
+		(-\length/2, 4) -- (\length/2, 4) -- (\length/2, 4.3) -- (-\length/2, 4.3) -- cycle;
+		\fill[pattern=north east lines, pattern color=black!30] 
+		(-\length/2, 0) -- (\length/2, 0) -- (\length/2, -0.3) -- (-\length/2, -0.3) -- cycle;
+		
+		% Draw rectangle, centered according to \length
+		\draw[thick] (-\length/2, 0) rectangle (\length/2, 4);
+		
+		% Draw the bubble
+		\draw[thick, fill=blue!30] (0, 2) circle (0.5);
+		
+		% Draw the shock wave
+		\draw[thick] (\length/2 - 2.75, 0) -- (\length/2 - 2.75, 4);
+		
+		% Draw the arrow indicating wave movement towards the left
+		\draw[->, thick] (\length/2 - 2.75, 3) -- (\length/2 - 3.75, 3) 
+		node[midway, above] {\tiny Air};
+		
+		% Labels
+		\node at (0, 1.2) {\tiny Bubble};
+	\end{tikzpicture}
+	
+	\vspace{-0.3em}
+	
+	\begin{columns}[T,onlytextwidth]
+		
+		% =====================================================
+		% Left column: numerical results
+		% =====================================================
+		\begin{column}{0.6\textwidth}
+			
+			% =========================
+			% R22 numerical
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\foreach[count=\k from 1] \index in {30} {%
+					\only<\k>{%
+						\includegraphics[
+						width=0.90\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\[-0.25em]
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}%
+						\hfill
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}%
+					}%
+				}
+			\end{minipage}
+			
+			\vspace{0.35em}
+			
+			% =========================
+			% Helium numerical
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\foreach[count=\k from 1] \index in {30} {%
+					\only<\k>{%
+						\includegraphics[
+						width=0.90\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\[-0.25em]
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}%
+						\hfill
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}%
+					}%
+				}
+			\end{minipage}
+			
+		\end{column}
+		
+		% =====================================================
+		% Right column: experimental comparison
+		% =====================================================
+		\begin{column}{0.40\textwidth}
+			\centering
+			
+			% =========================
+			% R22 experimental
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\includegraphics[
+				width=0.63\linewidth
+				]{Figures_multifluid/numerical_vs_experimental/r22_cropped.pdf}
+			\end{minipage}
+			
+			\vspace{-3.0em}
+			
+			% =========================
+			% Helium experimental
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\includegraphics[
+				width=0.63\linewidth
+				]{Figures_multifluid/numerical_vs_experimental/helium_cropped.pdf}
+			\end{minipage}
+			
+		\end{column}
+		
+	\end{columns}
+	
+	
+	\vspace{-2.0em}
 	
 \end{frame}
 
