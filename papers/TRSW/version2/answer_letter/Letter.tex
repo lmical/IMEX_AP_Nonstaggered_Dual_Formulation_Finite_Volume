@@ -516,7 +516,10 @@ We have added a clarification after the aforementioned passage.
 	{\bf Theorem 3.1 and Section 3.3.2: Is the proposed implicit step inf-sup stable, and is a unique solution guaranteed to exist independent of epsilon? These structural questions are vital to the validity of the AP property and the overall algorithm. Potential issues such as checkerboard modes or grid-staggering effects should be explicitly discussed, and the coupling strategy (e.g., the specific choice of gradients) should be detailed or referenced more thoroughly.}
 	
 	\medskip
-	{\sc\underline{Reply}}: 	
+	{\sc\underline{Reply}}: We thank the referee for this comment. We do not claim here a full inf-sup stability result for the fully discrete scheme. The implicit step leads to a linear elliptic problem, which is discretized using centered finite differences. The same type of centered discretization is used for the gradient, divergence, and Laplacian operators entering the semi-implicit update, so that the elliptic solve is based on a consistent discrete grad-div coupling.
+	
+	We have added a remark in Section~3.3.2 to clarify the structure of the implicit solve, the choice of the centered finite-difference operators, and the fact that no checkerboard modes or grid-decoupling effects were observed in the numerical experiments.
+
 \end{enumerate}
 
 {\bf Section 4}

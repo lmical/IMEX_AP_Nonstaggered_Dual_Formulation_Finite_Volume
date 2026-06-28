@@ -1049,10 +1049,64 @@ differences:
 \frac{\xbar{\psi}^{\,n+1}_{j,k+1}-\xbar{\psi}^{\,n+1}_{j,k-1}}{2\dy}\bigg)^\top\label{3.43b}.
 \end{align}
 \end{subequations}
+
+\RIIIcolor{Also the divergence operator, $\bnabla\!\cdot\!(\cdot)$, is discretized via central differences
+\begin{align}
+\bnabla\!\cdot\!(f^x,f^y)_{j,k}:=\frac{\,f^x_{j+1,k}-f^x_{j-1,k}}{2\dx}+\frac{f^y_{j,k+1}-f^y_{j,k-1}}{2\dy}.
+\end{align}
+}
+
 \begin{rmk}
 We emphasize the importance of using central differences to approximate $\nabla\psi$, as this helps ensure that no numerical diffusion terms
 of size ${\cal O}(\eps^{-1})$ are introduced.
 \end{rmk}
+
+\RIIIcolor{
+Notice that this choice of the discrete differential operators guarantees the well-posedness of the method at the discrete level, as shown in the following theorem.
+
+\begin{theorem}[Well-posedness of the discrete elliptic problems]
+	Let $a$, $b$, $\alpha$, $\nu$ and $\eps$ be positive parameters and consider the following elliptic PDE
+	\begin{align}
+		\big(\eps^2+a b (\alpha \dt)^2\big)\psi-\nu a b (\alpha \dt)^2\Delta\psi=r,
+	\end{align}
+	where $\psi$ is the unknown solution and $r$ is a given right-hand side.
+	If the Laplacian operator is discretized as in Equation~\eqref{3.43a}, then the linear system associated with the discretization of the problem is well posed.
+\end{theorem}
+\begin{proof}
+	We prove the result in one space dimension, but the main argument is precisely the same for multiple space dimensions.
+	%
+	The equation of the $j$-th grid node, constituting the $j$-th equation of the linear system, reads
+	\begin{align}
+		\big(\eps^2+a b (\alpha \dt)^2\big)\psi_j-\nu a b (\alpha \dt)^2\frac{\,\psi_{j-1}-2\,\psi_{j}+\,\psi_{j+1}}{(\dx)^2}=r_j,
+	\end{align}
+	which can be re-arranged as
+	\begin{align}
+		-\nu a b \left(\frac{\alpha \dt}{\dx}\right)^2 \psi_{j-1}
+		+\left(\eps^2+a b (\alpha \dt)^2+2\nu a b \left(\frac{\alpha \dt}{\dx}\right)^2\right)\psi_j
+		-\nu a b \left(\frac{\alpha \dt}{\dx}\right)^2 \psi_{j+1}
+		=r_j.
+	\end{align}
+	The linear system, up to boundary conditions, has the form
+	\begin{align}
+		M \mathbf{\psi}=\mathbf{r},
+	\end{align}
+	where the matrix $M$ has the following structure
+	\begin{align}
+		M_{j,k}:=\begin{cases}
+			\eps^2+a b (\alpha \dt)^2+2\nu a b \left(\frac{\alpha \dt}{\dx}\right)^2, \quad & k=j,\\
+			-\nu a b \left(\frac{\alpha \dt}{\dx}\right)^2, \quad & k=j\pm 1,\\
+			0, \quad & \text{otherwise},\\
+		\end{cases},
+	\end{align}
+	Indeed, such a matrix is strictly diagonally dominant by rows (and columns) because
+	$$\vert M_{j,j}\vert = M_{j,j} =  \eps^2+a b (\alpha \dt)^2+2\nu a b \left(\frac{\alpha \dt}{\dx}\right)^2 > 2\nu a b \left(\frac{\alpha \dt}{\dx}\right)^2 = \vert M_{j,j-1}\vert + \vert M_{j,j+1}\vert = \sum_{k\neq j} \vert M_{j,k} \vert. $$
+	Therefore, by Gershgorin's circle theorem~\cite{gershgorin1931uber,varga2011gervsgorin}, the matrix is nonsingular and hence the associated linear system has a unique solution.
+\end{proof}
+
+
+For the sake of generality, we have introduced the parameter $\alpha$, in order to include the linear systems arising from the second-order discretization presented in the following.
+
+}
 	
 %============================================================================
 \subsection{First-Order Semi-Implicit Fully Discrete AP Scheme}\label{sec34}
