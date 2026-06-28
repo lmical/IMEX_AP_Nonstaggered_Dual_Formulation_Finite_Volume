@@ -325,6 +325,7 @@ We remark that shocks are not expected to occur in the low-Rossby regime in the 
 
 {\large \textcolor{magenta}{Nan, add a little comment on the simulations when they are ready...}}
 
+{\large \textcolor{magenta}{Put also one without post-processing to show that we get wrong shock locations}}
 
 \end{enumerate}
 
@@ -393,7 +394,13 @@ We have added a remark on the time step restriction in Section 3.1.
 {\bf The switching mechanism between the two schemes is presented without a thorough explanation of its impact on the resulting discretization or flux variations. To the reader, this currently resembles a discrete switch between two independent methods rather than a unified framework. Providing a clear schematic or graph of the switching function behavior over its parameter domain would significantly improve clarity.}
 
 \medskip
-{\sc\underline{Reply}}: 
+{\sc\underline{Reply}}: Our post-processing is not a discrete switch, but rather a Rossby-dependent blending between the two formulations.
+%
+We have emphasized this in several passages, as this aspect was also raised in previous comments by the referee, e.g., in the abstract, in the introduction, and in Remark 4.1.
+%
+Furthermore, we have added, as required, a plot of the post-processing function, see Figure 4.1.
+
+{\large \textcolor{magenta}{Nan, if you put one result without post-processing, we can emphasize here that the post-processing is necessary to correctly capture shocks.}}
 
 \medskip
 \item
@@ -402,13 +409,27 @@ We have added a remark on the time step restriction in Section 3.1.
 {\bf The authors introduce a dual-scheme approach to span a wide range of Rossby numbers, but do not provide a sufficiently illustrative test case for the large Rossby regime (the initial convergence test is insufficient for this purpose). Furthermore, the detailed numerical experiments do not capture or evaluate the transitional regime of the switch (as highlighted in the attached plot). Please provide additional analytical insight or dedicated numerical experiments demonstrating behavior within this transition zone.}
 
 \medskip
-{\sc\underline{Reply}}: 
+{\sc\underline{Reply}}: We thank the referee for this comment. As discussed in a previous reply, we have added some additional tests to address this issue. In particular, the tests involve discontinuous solutions in the transitional regime from high to low-Rossby.
+%
+Such simulations are particularly challenging, as they assess the ability of the blending to sharply resolve shocks and to capture their correct location.
+%
+Indeed, the numerical results confirm that the approach is robust and able to provide accurate non--oscillatory numerical solutions even in the intermediate-Rossby regime.
+%
+We also emphasize that in the low-Rossby regime, the limit TQG dynamics is essentially smooth and no shock formation is expected. 
+
+
+{\large \textcolor{magenta}{Add explicit reference to the new simulations when they are ready...}}
+
 
 \medskip
 \item
 {\bf Structure}\medskip
 
 {\bf To improve readability, the authors might consider moving some of standard, routine update rules to an Appendix.}
+
+
+{\large \textcolor{magenta}{Not crucial, Alina and Alex will decide... But I think we can please the referee.}}
+
 
 \medskip
 {\sc\underline{Reply}}: 

@@ -1354,6 +1354,14 @@ $\eps>0.1$, the flow is in a high-Rossby-number regime, while for smaller values
 Therefore, the post-processing function should be almost zero for $\eps>0.1$. One can design many switching functions that satisfy these
 requirements. In the numerical experiments reported in \S\ref{sec5}, we have used $\varphi(\eps)=\exp(-2000\eps^6)$, which seems to be a
 robust choice.
+%
+\RIIIcolor{A plot of the post-processing function is reported in Figure~\ref{fig:switch}. One can see that it provides a continuous Rossby--dependent blending between the two formulations, rather than a discrete switch.}
+
+
+\begin{figure}[ht!]
+	\centerline{\includegraphics[width=0.32\textwidth]{switching_function}}
+	\caption{\sf \RIIIcolor{Post-processing function $\varphi(\varepsilon)$ plotted with respect to $1/\varepsilon$.}\label{fig:switch}}
+\end{figure}
 
 %========================================
 \section{Numerical Results}\label{sec5}
