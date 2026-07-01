@@ -1051,14 +1051,14 @@ text centered]
 					&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\frac{1}{\textcolor{violet}{\varepsilon}^2}\nabla_{\uvec{x}} p=\bm 0\\
 					&E_t+div_{\uvec{x}}((E+p)\bm v)=0\\
 					&E=\frac{p}{\gamma-1}+\frac{1}{2}\textcolor{violet}{\varepsilon}^2\rho \norm{\uvec{v}}^2\\ %, \quad \textcolor{violet}{\varepsilon:=\frac{v_0}{\sqrt{\gamma \frac{p_0}{\rho_0}}}}\\
-					&\lambda=\textcolor<2->{blue}{\norm{\uvec{v}}},\textcolor<2->{red}{\norm{\uvec{v}}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
+					&\lambda=\textcolor<1->{blue}{\norm{\uvec{v}}},\textcolor<1->{red}{\norm{\uvec{v}}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
 			\end{cases}}
 		\end{align*}
 		
 		
 		\vspace{0.1cm}
 		
-		\visible<1->{$\textcolor{violet}{\varepsilon}$: \textcolor{blue}{flow speed (entropy/vorticity)} vs \textcolor{red}{acoustic speed (pressure/density perturbations)}}
+		\visible<1->{$\textcolor{violet}{\varepsilon}$: \textcolor{blue}{flow speed} vs \textcolor{red}{acoustic speed}}
 		
 		\vspace{0.1cm}
 		
@@ -1569,14 +1569,14 @@ text centered]
 	{\tiny
 	Summary:
 	\begin{itemize}
-		\item Novel DF scheme with $\textcolor{blue}{\uvec{U}}$ (conservative) and $\textcolor{red}{\uvec{V}}$ (nonconservative) and Post--processing
-		\item Application to AP: IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system\footnote{{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}}
-		\item Just to mention... Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}}; AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}; shock--detection (check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$)\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}; multifluid with level set approach ($\textcolor{red}{\uvec{V}}$ at material interface)\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
+		\item Novel DF framework with $\textcolor{blue}{\uvec{U}}$ (conservative) and $\textcolor{red}{\uvec{V}}$ (nonconservative) and Post--processing
+		\item Application to low Mach: IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system\footnote{{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}}
+		\item Just to mention... Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}}; AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}; adaptivity (check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$)\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}; multifluid with level set approach ($\textcolor{red}{\uvec{V}}$ at material interface)\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
 	\end{itemize}
 
 	Future perspectives:
 	\begin{itemize}
-	\item Other systems,e.g., SW ($\uvec{v}$ in dry areas)
+	\item Other systems,e.g., SW
 	\item Multifluid $+$ AP (incompressible modeled as low Mach)
 	\end{itemize}
 	}
