@@ -1197,8 +1197,8 @@ text centered]
 			\end{column}
 		\end{columns}					
 		
-%		\visible<6->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
-%		
+		\visible<3->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
+		
 	}
 	
 \end{frame}
@@ -1244,7 +1244,7 @@ text centered]
 \end{frame}
 
 
-\begin{frame}{IMEX-Euler}
+\begin{frame}{IMEX-Euler operational details}
 	\centering
 	
 	\begin{align*}
@@ -1256,12 +1256,7 @@ text centered]
 	\end{align*}
 	
 	
-	%	\begin{align*}
-		%		\begin{cases}	&\frac{\rho^{n+1}-\rho^n}{\dt}+\textcolor{blue}{div_{\uvec{x}}(\rho^n\uvec{v}^n)}=0,\\
-			%			&\frac{\uvec{v}^{n+1}-\uvec{v}^n}{\dt}+\textcolor{blue}{(\uvec{v}^n\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^n+\frac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\,\nabla p^n}+\textcolor{red}{\frac{1}{\ve^2\rho_{\max}^n}\nabla_{\uvec{x}} p^{n+1}}=\bm 0\\
-			%			&\frac{p^{n+1}-p^n}{\dt}+\textcolor{blue}{\uvec{v}^n\!\cdot\!\nabla p^n+\gamma(p^n-p_{\min}^n)div_{\uvec{x}}\uvec{v}^n}+\textcolor{red}{\gamma p_{\min}^n div_{\uvec{x}}\uvec{v}^{n+1}}=0
-			%		\end{cases}
-		%	\end{align*}
+	
 	
 	Advantage: \textbf{Linear} system in $p^{n+1}$ and $\uvec{v}^{n+1}$\\
 	\visible<2->{We can do better... Take divergence of $\textcolor{violet}{\uvec{v}^{n+1}}$ and plug it in $p^{n+1}$}
@@ -1278,10 +1273,6 @@ text centered]
 		$$-\textcolor{red}{\Delta_{\uvec{x}} p^{n+1}}+\frac{\ve^2\rho_{\max}^n}{\dt^2\gamma p_{\min}^n}p^{n+1}=\text{rhs}^n$$
 		Well--posed elliptic problem and then explicit update for $\uvec{v}^{n+1}$
 	}
-	
-	
-	
-	
 	
 \end{frame}
 
@@ -1333,6 +1324,8 @@ text centered]
 	}
 	
 \end{frame}
+
+
 
 \begin{frame}{What about shocks?}
 	\centering
