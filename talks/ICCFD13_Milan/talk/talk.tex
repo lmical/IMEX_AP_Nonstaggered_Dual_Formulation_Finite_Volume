@@ -472,40 +472,40 @@ text centered]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begingroup
-\title[]{\textcolor{white}{\bfseries Conservation is very important... but sometimes we would like to use other equivalent formulations of the governing equations}}
-
-\author[Lorenzo Micalizzi] % (optional, for multiple authors)
-{\textbf{L.~Micalizzi}\inst{*}, A. Chertock, S. Karni and A. Kurganov}
-
-\institute[NCSU] % (optional)
-{
-	\inst{*}%
-	North Carolina State University, Raleigh, USA
-	
-	\vspace{3em}
-	
-	{\small
-		
-  ICCFD13, Milan, Italy, July 2026}
-	
-	
-	
-}
-
-
-\date[July 2026] % (optional)
-
-
-
-\logo{\includegraphics[height=1cm]{NCSU.png}}
-
-\begin{frame}[plain]
-	\titlepage
-	\vfill
-	\hfill\includegraphics[height=1cm]{NCSU.png}
-\end{frame}
-\endgroup
+%\begingroup
+%\title[]{\textcolor{white}{\bfseries Conservation is very important... but sometimes we would like to use other equivalent formulations of the governing equations}}
+%
+%\author[Lorenzo Micalizzi] % (optional, for multiple authors)
+%{\textbf{L.~Micalizzi}\inst{*}, A. Chertock, S. Karni and A. Kurganov}
+%
+%\institute[NCSU] % (optional)
+%{
+%	\inst{*}%
+%	North Carolina State University, Raleigh, USA
+%	
+%	\vspace{3em}
+%	
+%	{\small
+%		
+%  ICCFD13, Milan, Italy, July 2026}
+%	
+%	
+%	
+%}
+%
+%
+%\date[July 2026] % (optional)
+%
+%
+%
+%\logo{\includegraphics[height=1cm]{NCSU.png}}
+%
+%\begin{frame}[plain]
+%	\titlepage
+%	\vfill
+%	\hfill\includegraphics[height=1cm]{NCSU.png}
+%\end{frame}
+%\endgroup
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -544,178 +544,178 @@ text centered]
 \section{Preliminaries \& Motivation}
 \frame\sectionpage
 
-\begin{frame}
-	\frametitle{Conservative formulation}
-	
-	\centering
-	
-	\vspace{-0.7cm}
-	
-	{\footnotesize
-		
-			\begin{align*}
-				\frac{\partial}{\partial t}\textcolor{blue}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U})=\uvec{0},\quad  \textcolor{blue}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
-				\uvec{F}(\uvec{U}):=\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}
-			\end{align*}
-
-		\vspace{-0.3cm}
-
-		
-		\begin{itemize}
-			\item Structural property at the analytical level: \visible<1->{$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$}
-			\item Essential also at the discrete level:
-		\end{itemize}		
-
-		\vspace{-0.1cm}
-
-		\visible<1->{		
-			\begin{columns}
-			\begin{column}{0.5\textwidth}
-				
-				\begin{tikzpicture}[scale=0.7] % Reduced scale
-					\tikzset{dot/.style={fill=black,circle}}
-					
-					% Set the width of the cell
-					\def\cellwidth{1.2} % Adjust this value to change the width of each cell
-					
-					% Horizontal line
-					\draw [black] (0,1) -- (6*\cellwidth,1);
-					
-					% Draw the first cell and point
-					\draw (0.5*\cellwidth,1) -- (0.5*\cellwidth,1.7);
-					\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,1.7);
-					\draw (0.5*\cellwidth,1.7) -- (1.5*\cellwidth,1.7);
-					\filldraw[blue] (1*\cellwidth,1.7) circle (2pt);
-					
-					% Draw the second cell and point
-					\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,2.7);
-					\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,2.7);
-					\draw (1.5*\cellwidth,2.7) -- (2.5*\cellwidth,2.7);
-					\filldraw[blue] (2*\cellwidth,2.7) circle (2pt);
-					
-					% Draw the third cell and point
-					\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,3.7);
-					\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.7);
-					\draw (2.5*\cellwidth,3.7) -- (3.5*\cellwidth,3.7);
-					\filldraw[blue] (3*\cellwidth,3.7) circle (2pt);
-					
-					% Draw the fourth cell and point
-					\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.2);
-					\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,3.2);
-					\draw (3.5*\cellwidth,3.2) -- (4.5*\cellwidth,3.2);
-					\filldraw[blue] (4*\cellwidth,3.2) circle (2pt);
-					
-					% Draw the fifth cell and point
-					\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,2.2);
-					\draw (5.5*\cellwidth,1) -- (5.5*\cellwidth,2.2);
-					\draw (4.5*\cellwidth,2.2) -- (5.5*\cellwidth,2.2);
-					\filldraw[blue] (5*\cellwidth,2.2) circle (2pt);
-					
-					% Vertical dashed lines at interfaces
-					\foreach \x in {1.5,2.5,...,4.5}
-					{
-						\draw [dashed] (\x*\cellwidth,0.5) -- (\x*\cellwidth,4.5); % vertical lines at interfaces
-					}
-					
-					% Labels with adjusted x positions
-					\node at (1.5*\cellwidth,0.25){$x_{i-\frac{3}{2}}$}; 
-					\node at (2.5*\cellwidth,0.25){$x_{i-\frac{1}{2}}$}; 
-					\node at (3.5*\cellwidth,0.25){$x_{i+\frac{1}{2}}$}; 
-					\node at (4.5*\cellwidth,0.25){$x_{i+\frac{3}{2}}$}; 
-					
-					
-					
-					% Cell labels
-					\node at (2*\cellwidth,0.7){$x_{i-1}$};
-					\node at (3*\cellwidth,0.7){$x_{i}$};
-					\node at (4*\cellwidth,0.7){$x_{i+1}$};
-					
-					% Blue U labels for cells
-					\node at (2*\cellwidth,3.2){$\textcolor{blue}{\uvec{U}_{i-1}}$};
-					\node at (3*\cellwidth,4.2){$\textcolor{blue}{\uvec{U}_{i}}$};
-					\node at (4*\cellwidth,3.7){$\textcolor{blue}{\uvec{U}_{i+1}}$};
-					
-					
-					\node at (1.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{3}{2}}}$};
-					\node at (2.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}$};
-					\node at (3.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}$};
-					\node at (4.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{3}{2}}}$};
-					
-					
-					% Smooth local reconstruction curves passing through the dots
-					\visible<1->{
-						\draw[violet, thick]
-						(0.5*\cellwidth,1.60)
-						.. controls (0.75*\cellwidth,1.90) and (0.95*\cellwidth,1.75) ..
-						(1*\cellwidth,1.70)
-						.. controls (1.10*\cellwidth,1.60) and (1.30*\cellwidth,1.50) ..
-						(1.5*\cellwidth,1.65);
-						
-						\draw[violet, thick]
-						(1.5*\cellwidth,2.10)
-						.. controls (1.75*\cellwidth,2.95) and (1.95*\cellwidth,2.85) ..
-						(2*\cellwidth,2.70)
-						.. controls (2.10*\cellwidth,2.60) and (2.30*\cellwidth,2.55) ..
-						(2.5*\cellwidth,2.45);
-						
-						\draw[violet, thick]
-						(2.5*\cellwidth,3.8)
-						.. controls (2.75*\cellwidth,3.20) and (2.90*\cellwidth,4.20) ..
-						(3*\cellwidth,3.70)
-						.. controls (3.10*\cellwidth,3.40) and (3.30*\cellwidth,3.55) ..
-						(3.5*\cellwidth,3.65);
-						
-						\draw[violet, thick]
-						(3.5*\cellwidth,2.95)
-						.. controls (3.75*\cellwidth,3.40) and (3.90*\cellwidth,2.90) ..
-						(4*\cellwidth,3.20)
-						.. controls (4.10*\cellwidth,3.30) and (4.30*\cellwidth,3.35) ..
-						(4.5*\cellwidth,3.25);
-						
-						\draw[violet, thick]
-						(4.5*\cellwidth,2.45)
-						.. controls (4.75*\cellwidth,2.10) and (4.90*\cellwidth,2.45) ..
-						(5*\cellwidth,2.20)
-						.. controls (5.10*\cellwidth,2.10) and (5.30*\cellwidth,2.00) ..
-						(5.5*\cellwidth,1.85);				
-					}
-					
-					% Cross marks in each cell
-					\foreach \x in {0.5,1.5,2.5,...,4.5,5.5}
-					{
-						\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.3) -- (\x*\cellwidth+0.1,1.5); % Diagonal line /
-						\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.5) -- (\x*\cellwidth+0.1,1.3); % Diagonal line \
-					}
-					
-				\end{tikzpicture}
-			\end{column}
-			\begin{column}{0.55\textwidth}
-				\small
-
-				\begin{align*}
-					\frac{d}{d t}\textcolor{blue}{\uvec{U}_i}(t)&=-\frac{\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}}{\Delta x}\\
-					\frac{d}{d t} \sum\limits_{i}\textcolor{blue}{\uvec{U}_i} &=-\frac{1}{\Delta x}\sum\limits_{i}\left(\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)=\uvec{0}
-				\end{align*}
-			\end{column}
-		\end{columns}
-
-		\vspace{-0.2cm}
-				
-		\begin{block}{Lax-Wendroff Theorem}
-			{\tiny If a conservative numerical scheme converges, then it converges towards a "physically relevant" solution.}
-		\end{block}
-		
-		Structural violation of conservation $\Rightarrow$ Convergence to wrong solutions	
-		
-	}	
-	
-	
-	}
-	
-	
-	%In computational mathematics, the Lax-Wendroff theorem, named after Peter Lax and Burton Wendroff, states that if a conservative numerical scheme for a hyperbolic system of conservation laws converges, then it converges towards a weak solution.
-	
-\end{frame}
+%\begin{frame}
+%	\frametitle{Conservative formulation}
+%	
+%	\centering
+%	
+%	\vspace{-0.7cm}
+%	
+%	{\footnotesize
+%		
+%			\begin{align*}
+%				\frac{\partial}{\partial t}\textcolor{blue}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U})=\uvec{0},\quad  \textcolor{blue}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
+%				\uvec{F}(\uvec{U}):=\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}
+%			\end{align*}
+%
+%		\vspace{-0.3cm}
+%
+%		
+%		\begin{itemize}
+%			\item Structural property at the analytical level: \visible<1->{$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$}
+%			\item Essential also at the discrete level:
+%		\end{itemize}		
+%
+%		\vspace{-0.1cm}
+%
+%		\visible<1->{		
+%			\begin{columns}
+%			\begin{column}{0.5\textwidth}
+%				
+%				\begin{tikzpicture}[scale=0.7] % Reduced scale
+%					\tikzset{dot/.style={fill=black,circle}}
+%					
+%					% Set the width of the cell
+%					\def\cellwidth{1.2} % Adjust this value to change the width of each cell
+%					
+%					% Horizontal line
+%					\draw [black] (0,1) -- (6*\cellwidth,1);
+%					
+%					% Draw the first cell and point
+%					\draw (0.5*\cellwidth,1) -- (0.5*\cellwidth,1.7);
+%					\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,1.7);
+%					\draw (0.5*\cellwidth,1.7) -- (1.5*\cellwidth,1.7);
+%					\filldraw[blue] (1*\cellwidth,1.7) circle (2pt);
+%					
+%					% Draw the second cell and point
+%					\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,2.7);
+%					\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,2.7);
+%					\draw (1.5*\cellwidth,2.7) -- (2.5*\cellwidth,2.7);
+%					\filldraw[blue] (2*\cellwidth,2.7) circle (2pt);
+%					
+%					% Draw the third cell and point
+%					\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,3.7);
+%					\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.7);
+%					\draw (2.5*\cellwidth,3.7) -- (3.5*\cellwidth,3.7);
+%					\filldraw[blue] (3*\cellwidth,3.7) circle (2pt);
+%					
+%					% Draw the fourth cell and point
+%					\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.2);
+%					\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,3.2);
+%					\draw (3.5*\cellwidth,3.2) -- (4.5*\cellwidth,3.2);
+%					\filldraw[blue] (4*\cellwidth,3.2) circle (2pt);
+%					
+%					% Draw the fifth cell and point
+%					\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,2.2);
+%					\draw (5.5*\cellwidth,1) -- (5.5*\cellwidth,2.2);
+%					\draw (4.5*\cellwidth,2.2) -- (5.5*\cellwidth,2.2);
+%					\filldraw[blue] (5*\cellwidth,2.2) circle (2pt);
+%					
+%					% Vertical dashed lines at interfaces
+%					\foreach \x in {1.5,2.5,...,4.5}
+%					{
+%						\draw [dashed] (\x*\cellwidth,0.5) -- (\x*\cellwidth,4.5); % vertical lines at interfaces
+%					}
+%					
+%					% Labels with adjusted x positions
+%					\node at (1.5*\cellwidth,0.25){$x_{i-\frac{3}{2}}$}; 
+%					\node at (2.5*\cellwidth,0.25){$x_{i-\frac{1}{2}}$}; 
+%					\node at (3.5*\cellwidth,0.25){$x_{i+\frac{1}{2}}$}; 
+%					\node at (4.5*\cellwidth,0.25){$x_{i+\frac{3}{2}}$}; 
+%					
+%					
+%					
+%					% Cell labels
+%					\node at (2*\cellwidth,0.7){$x_{i-1}$};
+%					\node at (3*\cellwidth,0.7){$x_{i}$};
+%					\node at (4*\cellwidth,0.7){$x_{i+1}$};
+%					
+%					% Blue U labels for cells
+%					\node at (2*\cellwidth,3.2){$\textcolor{blue}{\uvec{U}_{i-1}}$};
+%					\node at (3*\cellwidth,4.2){$\textcolor{blue}{\uvec{U}_{i}}$};
+%					\node at (4*\cellwidth,3.7){$\textcolor{blue}{\uvec{U}_{i+1}}$};
+%					
+%					
+%					\node at (1.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{3}{2}}}$};
+%					\node at (2.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}$};
+%					\node at (3.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}$};
+%					\node at (4.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{3}{2}}}$};
+%					
+%					
+%					% Smooth local reconstruction curves passing through the dots
+%					\visible<1->{
+%						\draw[violet, thick]
+%						(0.5*\cellwidth,1.60)
+%						.. controls (0.75*\cellwidth,1.90) and (0.95*\cellwidth,1.75) ..
+%						(1*\cellwidth,1.70)
+%						.. controls (1.10*\cellwidth,1.60) and (1.30*\cellwidth,1.50) ..
+%						(1.5*\cellwidth,1.65);
+%						
+%						\draw[violet, thick]
+%						(1.5*\cellwidth,2.10)
+%						.. controls (1.75*\cellwidth,2.95) and (1.95*\cellwidth,2.85) ..
+%						(2*\cellwidth,2.70)
+%						.. controls (2.10*\cellwidth,2.60) and (2.30*\cellwidth,2.55) ..
+%						(2.5*\cellwidth,2.45);
+%						
+%						\draw[violet, thick]
+%						(2.5*\cellwidth,3.8)
+%						.. controls (2.75*\cellwidth,3.20) and (2.90*\cellwidth,4.20) ..
+%						(3*\cellwidth,3.70)
+%						.. controls (3.10*\cellwidth,3.40) and (3.30*\cellwidth,3.55) ..
+%						(3.5*\cellwidth,3.65);
+%						
+%						\draw[violet, thick]
+%						(3.5*\cellwidth,2.95)
+%						.. controls (3.75*\cellwidth,3.40) and (3.90*\cellwidth,2.90) ..
+%						(4*\cellwidth,3.20)
+%						.. controls (4.10*\cellwidth,3.30) and (4.30*\cellwidth,3.35) ..
+%						(4.5*\cellwidth,3.25);
+%						
+%						\draw[violet, thick]
+%						(4.5*\cellwidth,2.45)
+%						.. controls (4.75*\cellwidth,2.10) and (4.90*\cellwidth,2.45) ..
+%						(5*\cellwidth,2.20)
+%						.. controls (5.10*\cellwidth,2.10) and (5.30*\cellwidth,2.00) ..
+%						(5.5*\cellwidth,1.85);				
+%					}
+%					
+%					% Cross marks in each cell
+%					\foreach \x in {0.5,1.5,2.5,...,4.5,5.5}
+%					{
+%						\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.3) -- (\x*\cellwidth+0.1,1.5); % Diagonal line /
+%						\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.5) -- (\x*\cellwidth+0.1,1.3); % Diagonal line \
+%					}
+%					
+%				\end{tikzpicture}
+%			\end{column}
+%			\begin{column}{0.55\textwidth}
+%				\small
+%
+%				\begin{align*}
+%					\frac{d}{d t}\textcolor{blue}{\uvec{U}_i}(t)&=-\frac{\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}}{\Delta x}\\
+%					\frac{d}{d t} \sum\limits_{i}\textcolor{blue}{\uvec{U}_i} &=-\frac{1}{\Delta x}\sum\limits_{i}\left(\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)=\uvec{0}
+%				\end{align*}
+%			\end{column}
+%		\end{columns}
+%
+%		\vspace{-0.2cm}
+%				
+%		\begin{block}{Lax-Wendroff Theorem}
+%			{\tiny If a conservative numerical scheme converges, then it converges towards a "physically relevant" solution.}
+%		\end{block}
+%		
+%		Structural violation of conservation $\Rightarrow$ Convergence to wrong solutions	
+%		
+%	}	
+%	
+%	
+%	}
+%	
+%	
+%	%In computational mathematics, the Lax-Wendroff theorem, named after Peter Lax and Burton Wendroff, states that if a conservative numerical scheme for a hyperbolic system of conservation laws converges, then it converges towards a weak solution.
+%	
+%\end{frame}
 
 
 
@@ -755,7 +755,7 @@ text centered]
 	\end{align*}
 	}
 
-	\visible<2->{
+	\visible<1->{
 		{\footnotesize		
 			\centering
 			...offers some advantages:
@@ -806,58 +806,61 @@ text centered]
 
 	\centering
 			
-	{\footnotesize
+	{\tiny
 
-		\vspace{-1.cm}
+		\vspace{-0.5cm}
 
 		\begin{align*}
 			\frac{\partial}{\partial t}&\textcolor{black}{\uvec{V}} + \frac{\partial}{\partial x}\uvec{\widetilde F}(\uvec{V}) = \textcolor{violet}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}} 
 		\end{align*}
 	
-		\vspace{-0.25cm}
+		\vspace{-0.2cm}
 	
 		\begin{itemize}
 			\item Unclear definition (PC theory\footnote{{\tiny G. Dal Maso, P. Le Floch, F. Murat, Definition and weak stability of nonconservative products, 1995}})
 			\item Incorrect numerical solutions (PC schemes\footnote{{\tiny R. Abgrall, S. Karni, A comment on the computation of non-conservative products, 2010}})
 		\end{itemize}
 
-		\vspace{-0.5cm}
+		\vspace{-0.4cm}
 
 		$$\frac{d}{d t}\textcolor{black}{\uvec{V}_i}(t)+\frac{1}{\Delta x}\left(\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}-\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i-\frac{1}{2}}}\right)=\textcolor{violet}{\frac{1}{\Delta x}\left(\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x dx+\uvec{D}_{\uvec{\Psi},\imh}^+ +\uvec{D}_{\uvec{\Psi},\iph}^-\right)}$$
 
-		\vspace{-0.5cm}
+		\vspace{-0.4cm}
 	
 		$$\uvec{D}_{\uvec{\Psi},\iph}^++\uvec{D}_{\uvec{\Psi},\iph}^-=\textcolor{red}{\uvec{D}_{\uvec{\Psi},\iph}=\int_0^1 B(\textcolor{violet}{\uvec{\Psi}}(s,\uvec{V}_{\iph}^-,\uvec{V}_{\iph}^+))\frac{d\textcolor{violet}{\uvec{\Psi}}}{ds}(s,\uvec{V}_{\iph}^-,\uvec{V}_{\iph}^+) ds}$$
 
-		\vspace{-0.5cm}
 
-		\visible<2->{
-			$$\uvec{\Psi}~\text{segment}$$ 
+		\visible<1->{
 	
-			\vspace{-0.95cm}
-	
-			$$\Downarrow$$
-	
-			\vspace{-0.85cm}
-	
-			$$\textcolor{red}{\uvec{D}_{\uvec{\Psi},\iph}}=\frac{B(\uvec{V}_{\iph}^-)+B(\uvec{V}_{\iph}^+)}{2}(\uvec{V}_{\iph}^+-\uvec{V}_{\iph}^-), \quad \uvec{D}_{\uvec{\Psi},\iph}^+=\uvec{D}_{\uvec{\Psi},\iph}^-=\frac{1}{2}\uvec{D}_{\uvec{\Psi},\iph}$$
+			$$\textcolor{violet}{\uvec{\Psi}}~\text{segment} \quad \Rightarrow \quad \textcolor{red}{\uvec{D}_{\uvec{\Psi},\iph}}=\frac{B(\uvec{V}_{\iph}^-)+B(\uvec{V}_{\iph}^+)}{2}(\uvec{V}_{\iph}^+-\uvec{V}_{\iph}^-), \quad \uvec{D}_{\uvec{\Psi},\iph}^+=\uvec{D}_{\uvec{\Psi},\iph}^-=\frac{1}{2}\uvec{D}_{\uvec{\Psi},\iph}$$
 		}
-		\visible<3->{
-			RMK: It does not "fully" work.
+		\visible<1->{
+
+			\begin{columns}
+				\begin{column}{0.3\textwidth}
+					RMK: It does not "fully" work.
+				\end{column}
+				\begin{column}{0.6\textwidth}
+					\begin{figure}
+						\includegraphics[width=0.7\textwidth]{PC_not_working.png}
+					\end{figure}
+				\end{column}
+			\end{columns}
+
 		}
 	}
 	
 	
 \end{frame}
 
-\begin{frame}
-	\frametitle{Actual issue with nonconservative products: discontinuities\footnote{{\tiny R. Abgrall, S. Karni, A comment on the computation of non-conservative products, 2010}}}
-		
-		\begin{figure}
-			\includegraphics[width=0.7\textwidth]{PC_not_working.png}
-		\end{figure}
-		
-\end{frame}
+%\begin{frame}
+%	\frametitle{Actual issue with nonconservative products: discontinuities\footnote{{\tiny R. Abgrall, S. Karni, A comment on the computation of non-conservative products, 2010}}}
+%		
+%		\begin{figure}
+%			\includegraphics[width=0.7\textwidth]{PC_not_working.png}
+%		\end{figure}
+%		
+%\end{frame}
 
 
 \begin{frame}
@@ -1062,7 +1065,7 @@ text centered]
 		
 		\vspace{0.1cm}
 		
-		\visible<2->{
+		\visible<1->{
 			Low Mach $\Longleftrightarrow$ \textcolor{violet}{$\varepsilon$} $\longrightarrow$ 0 $\Longleftrightarrow$ \textcolor{blue}{slow flow speed} $<<$ \textcolor{red}{fast acoustic speed}
 		}
 		
@@ -1078,7 +1081,7 @@ text centered]
 			
 			\begin{column}{0.30\textwidth}
 				\centering
-				\visible<2->{
+				\visible<1->{
 					\textbf{Applications}
 					\begin{itemize}
 						\item Atmospheric flows
@@ -1094,7 +1097,7 @@ text centered]
 			\end{column}
 			\begin{column}{0.60\textwidth}
 				\centering
-				\visible<2->{
+				\visible<1->{
 					\textbf{Issues}	
 					\begin{itemize}
 						\item Stiffness
@@ -1103,7 +1106,7 @@ text centered]
 							\item {\tiny Implicit $=$ Nonlinear systems \& Diffusion}
 							%\item \textcolor{blue}{IM}\textcolor{red}{EX} (acoustics less resolved but OK)
 						\end{itemize}
-						\visible<2->{\item Asymptotic limit consistency...}
+						\visible<1->{\item Asymptotic limit consistency...}
 					\end{itemize}
 				}
 			\end{column}
@@ -1166,7 +1169,7 @@ text centered]
 		
 		\begin{columns}
 			\begin{column}{0.30\textwidth}
-				\visible<3->{
+				\visible<2->{
 					\begin{align*}
 						\begin{cases}
 							{\cal O}(\ve^{-2}): &\nabla_{\uvec{x}} p^{(0)}=\uvec{0}\\
@@ -1181,7 +1184,7 @@ text centered]
 			\end{column}
 			\begin{column}{0.30\textwidth}
 				\centering
-				\visible<3->{
+				\visible<2->{
 					\vspace{0.5cm}
 					BC: $p\equiv$ const $\partial \Omega$
 					\vspace{-0.7cm}
@@ -1197,7 +1200,7 @@ text centered]
 			\end{column}
 		\end{columns}					
 		
-		\visible<3->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
+		\visible<2->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
 		
 	}
 	
@@ -1571,15 +1574,22 @@ text centered]
 	\begin{itemize}
 		\item Novel DF framework with $\textcolor{blue}{\uvec{U}}$ (conservative) and $\textcolor{red}{\uvec{V}}$ (nonconservative) and Post--processing
 		\item Application to low Mach: IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system\footnote{{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}}
-		\item Just to mention... Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}}; AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}; adaptivity (check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$)\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}; multifluid with level set approach ($\textcolor{red}{\uvec{V}}$ at material interface)\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
 	\end{itemize}
+
+	Just to mention...\\ 
+	Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}}; AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}; adaptivity (check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$)\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}; multifluid with level set approach ($\textcolor{red}{\uvec{V}}$ at material interface)\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
 
 	Future perspectives:
 	\begin{itemize}
 	\item Other systems,e.g., SW
 	\item Multifluid $+$ AP (incompressible modeled as low Mach)
 	\end{itemize}
-	}
+	
+
+
+
+
+}
 
 
 	
@@ -1596,11 +1606,11 @@ text centered]
 
 
 \begin{itemize}
-	\item {\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}
 	\item {\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}
+	\item {\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}
 	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}
-	\item {\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}
 	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}
+	\item {\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}
 	\item {\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}
 \end{itemize}
 
