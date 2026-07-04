@@ -541,7 +541,7 @@ text centered]
 
 
 
-\section{Preliminaries \& Motivation}
+\section{Why nonconservative formulations?}
 \frame\sectionpage
 
 %\begin{frame}
@@ -732,7 +732,7 @@ text centered]
 
 
 \begin{frame}
-	\frametitle{Alternative (primitive) formulations}
+	\frametitle{Why not primitive formulations?}
 	
 	\centering
 	
@@ -771,6 +771,7 @@ text centered]
 
 \end{frame}
 
+\begin{comment}
 \begin{frame}
 	\frametitle{Proliferation of schemes with access to primitive variables}
 
@@ -800,6 +801,7 @@ text centered]
 		}
 
 \end{frame}
+\end{comment}
 
 \begin{frame}
 	\frametitle{Price to pay: Nonconservative products}
@@ -881,13 +883,13 @@ text centered]
 	
 \end{frame}
 
-\section{Dual Formulation Methods}
+\section{Dual Formulation Framework}
 \frame\sectionpage
 
 
 
 \begin{frame}
-	\frametitle{Dual Formulation Methods}
+	\frametitle{Dual Formulation Framework}
 	
 	
 	
@@ -1024,7 +1026,7 @@ text centered]
 		
 		Main goal: blend the two variables\\
 		Ex: Low-Mach ($\uvec{V}$ for low Mach, $\uvec{U}$ for high Mach)\\
-		Ex: Multifluid ($\uvec{V}$ at interface, $\uvec{U}$ far from it)
+%		Ex: Multifluid ($\uvec{V}$ at interface, $\uvec{U}$ far from it)
 
 
 	}
@@ -1216,7 +1218,7 @@ text centered]
 	
 	\vspace{0.5cm}
 	
-	\visible<3->{
+	\visible<1->{
 		{\tiny
 			$\pm \frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p$ in $\uvec{v}$-equation,
 			$\pm \gamma p_{\min}div_{\uvec{x}}\uvec{v}$ in $p$-equation\\
@@ -1226,23 +1228,23 @@ text centered]
 	
 	
 	{\footnotesize 	
-		$$\visible<2->{\begin{cases}
+		$$\visible<1->{\begin{cases}
 				&\rho_t+\textcolor{black}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
 				&\uvec{v}_t+\textcolor{black}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}}+\textcolor{black}{\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p}=\bm 0\\
 				&p_t+\textcolor{black}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma p div_{\uvec{x}} \uvec{v}}=0
-		\end{cases}}~\visible<3->{\Rightarrow~\begin{cases}
-				&\rho_t+\textcolor<4->{blue}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
-				&\uvec{v}_t+\textcolor<4->{blue}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\,\nabla_{\uvec{x}} p}=\textcolor<4->{red}{-\frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p}\\
-				&p_t+\textcolor<4->{blue}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma(p-p_{\min})div_{\uvec{x}}\uvec{v}}=\textcolor<4->{red}{-\gamma p_{\min}div_{\uvec{x}}\uvec{v}}
+		\end{cases}}~\visible<1->{\Rightarrow~\begin{cases}
+				&\rho_t+\textcolor<1->{blue}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
+				&\uvec{v}_t+\textcolor<1->{blue}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\,\nabla_{\uvec{x}} p}=\textcolor<1->{red}{-\frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p}\\
+				&p_t+\textcolor<1->{blue}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma(p-p_{\min})div_{\uvec{x}}\uvec{v}}=\textcolor<1->{red}{-\gamma p_{\min}div_{\uvec{x}}\uvec{v}}
 		\end{cases}}$$
 	}
-	\visible<5->{
+	\visible<2->{
 		{\footnotesize 	
 			$$\lambda=\norm{\uvec{v}},\norm{\uvec{v}}\pm \frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(p-p_{\min})}{\rho\rho_{\max}}}$$
 			$\frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(\textcolor{teal}{p-p_{\min}})}{\rho\rho_{\max}}}\in \mathbb{R}$ and $=O(1)$ because $\textcolor{teal}{p=p_0+\ve p_1+O(\ve^2)}$\\
 		}
 	}
-	\visible<5->{$\dt=\frac{\Delta x}{\max \vert \lambda \vert}$ independent of $\ve$}
+	\visible<2->{$\dt=\frac{\Delta x}{\max \vert \lambda \vert}$ independent of $\ve$}
 	
 \end{frame}
 
@@ -1581,8 +1583,8 @@ text centered]
 
 	Future perspectives:
 	\begin{itemize}
-	\item Other systems,e.g., SW
-	\item Multifluid $+$ AP (incompressible modeled as low Mach)
+	\item Multifluid $+$ AP (to model incompressible flows)
+	\item Adaptive scheme for SW
 	\end{itemize}
 	
 
