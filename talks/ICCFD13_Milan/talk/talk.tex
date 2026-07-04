@@ -763,7 +763,7 @@ text centered]
 				\item Low-Mach ($p$=const, $div_{\uvec{x}}\uvec{v}=0$)
 				\item Multifluid ($p,v$=const at interface)
 				\item Positivity preservation ($p > 0$, not $E$)
-				\item One measures primitive variables
+				\item Primitive variables are the relevant ones in applications
 				\item etc...
 			\end{itemize}
 		}
@@ -1026,7 +1026,7 @@ text centered]
 		
 		Main goal: blend the two variables\\
 		Ex: Low-Mach ($\uvec{V}$ for low Mach, $\uvec{U}$ for high Mach)\\
-%		Ex: Multifluid ($\uvec{V}$ at interface, $\uvec{U}$ far from it)
+		Ex: Multifluid ($\uvec{V}$ at interface, $\uvec{U}$ far from it)
 
 
 	}
@@ -1505,23 +1505,23 @@ text centered]
 \end{frame}
 
 
-\begin{frame}{Numerical results, Explosion problem}
-	\centering
-	
-	{\tiny
-		$$
-		(\rho,u,v,p)(x,y,0)=\begin{cases}(1,0,0,1),&\sqrt{x^2+y^2}<0.4,\\(0.125,0,0,0.1),&\mbox{otherwise},\end{cases}
-		$$
-	}
-	
-	
-	\begin{figure}[ht!]
-		\centerline{\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d1.0_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.9_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.6_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.3_with_timestep_relaxation_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}}
-		%		\caption{\sf Example 5: Surface plot of density for different values of $\ve$ and corresponding times.\label{fig49}}
-	\end{figure}
-	
-	
-\end{frame}
+%\begin{frame}{Numerical results, Explosion problem}
+%	\centering
+%	
+%	{\tiny
+%		$$
+%		(\rho,u,v,p)(x,y,0)=\begin{cases}(1,0,0,1),&\sqrt{x^2+y^2}<0.4,\\(0.125,0,0,0.1),&\mbox{otherwise},\end{cases}
+%		$$
+%	}
+%	
+%	
+%	\begin{figure}[ht!]
+%		\centerline{\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d1.0_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.9_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.6_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.3_with_timestep_relaxation_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}}
+%		%		\caption{\sf Example 5: Surface plot of density for different values of $\ve$ and corresponding times.\label{fig49}}
+%	\end{figure}
+%	
+%	
+%\end{frame}
 
 
 \begin{frame}{Numerical results, Explosion problem}
@@ -1569,7 +1569,7 @@ text centered]
 
 
 \begin{frame}
-	\frametitle{Conclusions \& Future Perspectives}
+	\frametitle{Conclusions}
 	
 	{\tiny
 	Summary:
@@ -1579,13 +1579,19 @@ text centered]
 	\end{itemize}
 
 	Just to mention...\\ 
-	Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}}; AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}; adaptivity (check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$)\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}; multifluid with level set approach ($\textcolor{red}{\uvec{V}}$ at material interface)\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
-
-	Future perspectives:
 	\begin{itemize}
-	\item Multifluid $+$ AP (to model incompressible flows)
-	\item Adaptive scheme for SW
+		\item Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}}
+		\item AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}
+		\item adaptivity (check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$)\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}
+		\item multifluid with level set approach ($\textcolor{red}{\uvec{V}}$ at material interface)\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
 	\end{itemize}
+	
+
+%	Future perspectives:
+%	\begin{itemize}
+%	\item Multifluid $+$ AP (to model incompressible flows)
+%	\item Adaptive scheme for SW
+%	\end{itemize}
 	
 
 
