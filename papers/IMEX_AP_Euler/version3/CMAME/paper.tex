@@ -41,7 +41,7 @@
 \usepackage[title]{appendix}
 
 \usepackage{cleveref}
-%\usepackage{refcheck}
+\usepackage{refcheck}
 
 \usepackage{theorem}
 \usepackage{empheq}
@@ -1390,7 +1390,7 @@ at the intermediate stage
 \label{3.50}
 \end{equation}
 and then post-process the primitive solution by replacing $\xbar{\bm V}^{\,*}_{j,k}$ with
-$r\Big(\bm V\big(\,\xbar{\bm U}^{\,*}_{j,k}\big),\,\xbar{\bm V}^{\,*}_{j,k}\big)$; see \S\ref{sec43}.
+$r\big(\bm V\big(\,\xbar{\bm U}^{\,*}_{j,k}\big),\,\xbar{\bm V}^{\,*}_{j,k}\big)$; see \S\ref{sec43}.
 
 \smallskip
 \noindent
@@ -1453,7 +1453,6 @@ matter of fact, explicit, since they are performed using the explicit part of th
 \end{remark}
 }
 
-
 \RIIcolor{
 \begin{remark}
 	Indeed, working with two sets of variables induces an overhead with respect to approaches based on a single formulation.
@@ -1466,27 +1465,22 @@ matter of fact, explicit, since they are performed using the explicit part of th
 \end{remark}
 }
 
-
 \subsection{Post-Processing}\label{sec43}
-Upon completion of Steps 4 and 8, we obtain two sets of numerical solutions: the $\bm V$-solution, which is AP but nonconservative, and the
-$\bm U$-solution, which is conservative but non-AP. We therefore design the post-processing \eref{4.5f} using their convex combination with
-coefficients dependent on $\ve$, leveraging the AP SI method in the low-Mach-number regime and the sharp conservative CU scheme in the
-moderate- and high-Mach-number regimes---thus ensuring accuracy, stability, and physical consistency across all flow regimes. Specifically,
-we select the following function $r$ in \eref{4.5f}:
+{\color{red}As mentioned in \S\ref{sec422},} upon completion of Steps 4 and 8, we {\color{red}replace $\xbar{\bm V}^{\,*}_{j,k}$ with
+$r\big(\bm V\big(\,\xbar{\bm U}^{\,*}_{j,k}\big),\,\xbar{\bm V}^{\,*}_{j,k}\big)$ and $\xbar{\bm V}^{\,n+1}_{j,k}$ with
+$r\big(\bm V\big(\,\xbar{\bm U}^{\,n+1}_{j,k}\big),\,\xbar{\bm V}^{\,n+1}_{j,k}\big)$, respectively. The function $r$ is selected based on
+the following considerations. Since the $\bm V$-solution is AP but nonconservative, and the $\bm U$-solution is conservative but non-AP, we
+use} their convex combination with coefficients dependent on $\ve$, leveraging the AP SI method in the low-Mach-number regime and the sharp
+conservative CU scheme in the moderate- and high-Mach-number regimes---thus ensuring accuracy, stability, and physical consistency across
+all flow regimes. Specifically, we select the following replacement function $r$:
 \begin{equation*}
-r\Big(\bm V\big(\,\xbar{\bm U}_{j,k}\big),\,\xbar{\bm V}_{j,k}\Big)=
+r\big(\bm V\big(\,\xbar{\bm U}_{j,k}\big),\,\xbar{\bm V}_{j,k}\big)=
 (1-s(\ve))\,\bm V\big(\,\xbar{\bm U}_{j,k}\big)+s(\ve)\,\xbar{\bm V}_{j,k},\quad\forall j,k,
 \end{equation*}
 where $s$ is a suitable switching function, which is supposed to be increasing, continuous, and satisfy $s(1)=0$ and $s(0)=1$. Moreover,
 in the high-Mach-number regime, $s$ should be $\sim0$ so that the primitive variables $\bm V$ are almost completely overwritten by
 $\bm V(\bm U)$, while, in the low-Mach-number regime, $s$ should be $\sim1$ so that the primitive variables $\bm V$ stay almost unchanged.
 For intermediate values of $\ve$, a smooth transition between $1$ and $0$ is expected.
-
-\RIcolor{
-\begin{remark}
-We remark that the post-processing procedure is performed after every stage of the SI-DeC time discretization, i.e., at the end of Steps 4 and 8. In particular, once both the conservative and primitive solutions have been updated to the current stage value, the blending parameter $s(\varepsilon)$ is applied to obtain the post-processed primitive solution used as input for the subsequent stage. Therefore, the post-processing is carried out after each stage rather than only at the end of a time step.
-\end{remark}
-}
 
 \section{Numerical Examples}\label{sec6}
 In this section, we verify the accuracy and robustness of the proposed AP scheme on a variety of numerical examples across different values 
@@ -1751,7 +1745,16 @@ To further assess the correctness of the computed solutions, we plot their one-d
 scheme from \cite{KLin} on a much finer mesh with $2000\times2000$ cells using the CFL number $0.2$ and the three-stage third-order strong
 stability preserving (SSP) Runge-Kutta method \cite{GKS,GST}. 
 %
-\RIcolor{In the large (intermediate)-Mach-number regimes considered in this test, the $\uvec{U}$-solution is reliable and plays a crucial role in ensuring a correct handling of the discontinuities through the post-processing. In order to emphasize this aspect we also plot the slices associated with the $\uvec{U}$-solution.}
+\RIcolor{In the large (intermediate)-Mach-number regimes considered in this test, the $\uvec{U}$-solution is reliable and plays a crucial role in ensuring a correct handling of the discontinuities through the post-processing. We omit the plots of the $\uvec{U}$-solution because they are indistinguishable from the ones reported.
+%
+In this situation, one can see how crucial is the role of the post-processing. Without it, the nonconservative evolution of the primitive variables would lead to incorrect solutions.
+%
+The unreliable solution obtained with the same scheme but without post-processing are reported in Figure~\ref{fig:411}.
+%
+As one cane see, there is a slight difference in the location of the discontinuities.
+%
+Furthermore, we emphasize that, in order to run this test avoiding simulation crashes, it was necessary to lower $K_{\text{CFL}}$ to 0.01.
+}
 
 
 
@@ -1768,6 +1771,13 @@ the reference ones, and the discontinuities locations are correctly captured.
 \caption{\sf Example 5: 1-D slices of the computed solutions along $y=x$ for different values of $\ve$ and at different times: $\ve=1$,
 $t=0.25$ (top row), $\ve=0.9$, $t=0.2$ (second row), $\ve=0.6$, $t=0.15$ (third row), and $\ve=0.3$, $t=0.08$ (bottom row).\label{fig410}}
 \end{figure}
+
+\begin{figure}[ht!]
+	\centerline{\includegraphics[width=0.8\textwidth]{only_V_solution_eps0.3_CFL0.01.pdf}}
+	\caption{\sf Example 5: 1-D slices of the unreliable solution along $y=x$ for $\ve=0.3$ and $t=0.08$ without post-processing.\label{fig:411}}
+\end{figure}
+
+
 \begin{remark}
 We stress that in this example, both terms in the numerator in \eref{4.48f} will vanish if $\rho_{\max}$ and $p_{\min}$ are computed using
 \eref{4.3}. While the modification \eref{4.9} ensures positivity of $\tilde c$, the resulting time steps might still be too big to guarantee
