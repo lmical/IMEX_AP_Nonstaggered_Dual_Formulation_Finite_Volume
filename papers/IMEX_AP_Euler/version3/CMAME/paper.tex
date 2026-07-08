@@ -651,7 +651,7 @@ and conservative variables.
 We begin by providing a precise definition of an asymptotic-preserving (AP) time discretization in the context of the zero-Mach-number
 limit.
 \begin{definition}[AP time discretization]\label{def41}
-Assume that the {\color{blue}semi-discrete (continuous in space) solution at time $t^n$, $(\rho^n(x,y),\bm u^n(x,y),p^n(x,y))$,} can be
+Assume that the {\color{blue}semi-discrete (not discretized in space) solution at time $t^n$, $(\rho^n(x,y),\bm u^n(x,y),p^n(x,y))$,} can be
 expanded as
 \begin{equation}
 \begin{aligned}
@@ -1511,7 +1511,7 @@ examples below. This switching function is plotted in Figure \ref{fig31}.
 \end{figure}
 {\color{blue}
 \begin{remark}
-Modification \eref{4.9} of the wave speeds is used to improve the handling of discontinuous solutions for large (intermediate)-Mach-number
+Modification \eref{4.9} is used to improve the handling of discontinuous solutions for large (intermediate)-Mach-number
 regimes. However, we would like to emphasize that it vanishes as $\ve\to0$ and therefore does not affect either the consistency of the
 method or the AP analysis presented in the paper.
 \end{remark}}
@@ -1608,7 +1608,7 @@ periodic boundary conditions. The initial conditions are
 \end{aligned}
 \end{equation*}
 {\color{red}It should be observed that the initial density discontinuity is not accompanied by a corresponding pressure discontinuity.
-Therefore, the initial data are not expected to generate any strong propagating compressible waves. On the other hands,} the acoustic wave
+Therefore, the initial data are not expected to generate any strong propagating compressible waves. On the other hand,} the acoustic wave
 induces different accelerations in the two density layers, which results in rotational excitation and in the formation of a long-wavelength
 sinusoidal shear layer. Due to the interaction with the acoustic wave, such a shear layer becomes unstable, and several
 Kelvin-Helmholtz-type unstable structures originate from it.
@@ -1718,13 +1718,13 @@ the reference ones, and the discontinuities locations are correctly captured.
 $t=0.2$ (top row), $\ve=0.6$, $t=0.15$ (middle row), and $\ve=0.3$, $t=0.08$ (bottom row).\label{fig410}}
 \end{figure}
 
-{\color{red}We stress that for the large (intermediate) Mach numbers considered in this example, the $\bm U$-solutions are reliable and
+{\color{red}We stress that for the large (intermediate) Mach numbers considered in this example, the $\bm U$-solution is reliable and
 plays a crucial role in ensuring a correct handling of the discontinuities through the post-processing. We omit the plots of the
-$\bm U$-solutions because they are visually indistinguishable from the ones reported. In this situation, one can see how crucial is the role
+$\bm U$-solution because they are visually indistinguishable from the ones reported. In this situation, one can see how crucial is the role
 of the post-processing. Without it, the nonconservative evolution of the primitive variables would lead to incorrect solutions. While in the
-case when $\ve=0.9$ or $0.6$, the weight $s(\ve)$ in \eref{star} is very close to $1$ and thus a post-processed solution is basically the
+case when $\ve=0.9$ or $0.6$, the weight $s(\ve)$ in \eref{star} is very close to $0$ and thus the post-processed solution is basically the
 conservative one, $\ve=0.3$ corresponds to a truly intermediate-Mach-number regime and it is instructive to look at the unreliable
-$\bm V$-solution obtained by the same scheme but without the post-processing in this case. This $\bm V$-solution is reported in Figure
+$\bm V$-solution obtained by the same scheme but without the post-processing. Such $\bm V$-solution is reported in Figure
 \ref{fig411}, where one can see a slight difference in the location of the discontinuities as well as other small numerical artifacts.
 Furthermore, we emphasize that in order to run the ``solely'' $\bm V$-simulation, it was necessary to lower $K_{\rm CFL}$ down to $0.01$.}
 \begin{figure}[ht!]
