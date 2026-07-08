@@ -113,215 +113,175 @@ correspond to remarks made by Reviewer \#2, and those marked in {\color{blue}blu
 \bigskip
 \underline{Response to the Comments of Reviewer \#2}
 
-
-{\bf A new asymptotic-preserving method for compressible flow is proposed. Conservative and non-conservative formulations are solved and blended. The past studies are properly reviewed and the new point of the present study using the dual formulations is clarified. The proposed method is explained in detail and the calculation examples are presented to show the accuracy and stability of the proposed method. Thus, the reviewer recommends publication. The following comments should be considered for revisions before publication.}
-
-\smallskip
-{\sc\underline{Reply}}: We thank the referee for appreciating our work.
-
-\medskip
-
-
+\begin{itemize}[wide, labelwidth=!, labelindent=0pt]
+\item
+{\bf Major comments:}
 
 \begin{itemize}[wide, labelwidth=!, labelindent=0pt]
-	\item
-	{\bf Major comments:}
-
-\begin{itemize}[wide, labelwidth=!, labelindent=0pt]
-	\item {\bf
- In 3.5, the conservative and nonconservative solutions are blended using parameter s(epsilon). Is blending done after all calculations are completed or at each time step?
-
-
-}
+\item{\bf In 3.5, the conservative and nonconservative solutions are blended using parameter s(epsilon). Is blending done after all
+calculations are completed or at each time step?}
 
 \smallskip
-{\sc\underline{Reply}}: The blending is performed at each stage of the SI-DeC time discretization. To prevent the same confusion for future readers, we have added a remark at the end of Section 3.5 clarifying this point.
-
-
+{\sc\underline{Reply}}: The blending is performed at each stage of the SI-DeC time discretization. We have clarified this point in \S3.5.
 
 \medskip
-	\item {\bf  To see the effect of the present proposal of the dual formulation, two solutions using the conservative and nonconservative solutions (V-solution and U-solution) can be shown in some of the calculation examples. If so, we will directly see that the interpolation using s makes a better solution.}
+\item{\bf To see the effect of the present proposal of the dual formulation, two solutions using the conservative and nonconservative
+solutions (V-solution and U-solution) can be shown in some of the calculation examples. If so, we will directly see that the interpolation
+using s makes a better solution.}
 
 \smallskip
-{\sc\underline{Reply}}: We remark that, while for large (intermediate)-Mach-number regimes the conservative $\uvec{U}$-solution is reliable and effectively used to enforce physical consistency in the  $\uvec{V}$-solution, in the low-Mach limit the $\uvec{U}$-solution is in general unreliable as it is evolved through a fully-explicit discretization.
-%
-The considered post-processing provides the necessary coupling between the two solutions for large (intermediate)-Mach-number regimes and the necessary decoupling for low-Mach regimes.
-
-
-As suggested by the referee, we have added some plots of the $\uvec{U}$-solution.
-%
-More in detail, we have added a plot of the local Mach number for the Gresho vortex for $\varepsilon=0.01$ to show that the $\uvec{U}$-solution is unreliable in the low-Mach limit, and we have complemented the plots of the Explosion Problem introducing the lines corresponding to the $\uvec{U}$-solution to show that for large (intermediate)-Mach-number regimes the two solutions agree.
-%
-See Figures~4.4 and 4.11.
-
-
+{\sc\underline{Reply}}: We have modified Example 5 to demonstrate the importance on the post-processing for the large (intermediate) values
+of $\varepsilon$.
 \end{itemize}
 
+\medskip
 \item
 {\bf Minor comments:}
 
-
-\medskip
 \begin{itemize}[wide, labelwidth=!, labelindent=0pt]
-	\item {\bf 
-
- In p.14, "PCCU" needs full spelling at the first time.
-
-}
+\item{\bf In p.14, "PCCU" needs full spelling at the first time.}
 
 \smallskip
-{\sc\underline{Reply}}: We have fixed it.
+{\sc\underline{Reply}}: We have fixed it and introduced the abbreviation PCCU on page 2, where it is first mentioned.
 
 \medskip
-	\item {\bf  In 3.4, can Step 1 and 2 be exchanged because the calculation result $\rho_{j,k}^*$ in Step 1 is not used in Step 2.}
+\item{\bf In 3.4, can Step 1 and 2 be exchanged because the calculation result $\rho_{j,k}^*$ in Step 1 is not used in Step 2.}
 
 \smallskip
-{\sc\underline{Reply}}:  Yes, indeed. Actually, the two steps can be independently performed in parallel.
-%
-Our reported algorithm corresponds to a plain serial implementation, however, some steps can be parallelized.
-%
-We have added a remark on this at the end of Section 3.4.
+{\sc\underline{Reply}}: Yes, indeed. Actually, these two steps can be independently performed in parallel. Our reported algorithm
+describes a plain serial implementation, however, some steps can be parallelized. We have added Remark 3.3 on this at the end of \S3.4.
 
+\newpage
+\item{\bf Figure 4.1 shows the relation between $s$ and $\varepsilon$ used in the present study. Is it used for all calculation examples?}
 
+\smallskip
+{\sc\underline{Reply}}: Yes, we have added Remark 4.2 after the definition of $s(\varepsilon)$ in the beginning of \S4 to prevent future
+readers from having the same doubt.
 
 \medskip
-	\item
-{\bf  Figure 4.1 shows the relation between s and epsilon used in the present study. Is it used for all calculation examples?}
+\item{\bf In Fig.4.2, the caption of the vertical axis and its definition should be written.}
 
 \smallskip
-{\sc\underline{Reply}}: Yes, we have added a remark after the definition of $s(\varepsilon)$ at the beginning of Section 4 to prevent future readers from having the same doubt.
+{\sc\underline{Reply}}: We have revised the manuscript accordingly. In particular, we have added a precise definition of the plotted
+quantities and clarified the meaning of the vertical axis in Figure 4.2.
 
 \medskip
-	\item
-{\bf  In Fig.4.2, the caption of the vertical axis and its definition should be written.}
+\item{\bf Example 4 is not understood well. We can see a large jump of density on $y=4$ at $t=0$. Usually, a large density jump makes wave
+propagation in later times but we cannot see such waves at $t=10$ and $20$.}
 
 \smallskip
-{\sc\underline{Reply}}: We have revised the manuscript accordingly. In particular, we have added a precise definition of the plotted quantity in the main text and clarified the meaning of the vertical axis in Figure 4.2.
-
-\medskip
-	\item
-{\bf  Example 4 is not understood well. We can see a large jump of density on y=4 at t=0. Usually, a large density jump makes wave propagation in later times but we cannot see such waves at t=10 and 20.}
-
-\smallskip
-{\sc\underline{Reply}}: We believe the reviewer is referring to Example 3 (Baroclinic Vorticity Generation), as the density is constant in Example 4.
-%
-Indeed, in such a test, a visible density jump is present at $y=4$ in the initial condition. This density discontinuity, however, is not accompanied by a corresponding pressure discontinuity. Therefore, the initial data do not correspond to a shock-tube-type configuration and one should not expect the generation of strong propagating compressible waves. 
-%
-In this setting, the flow evolution is driven by the interaction of the smooth pressure and velocity perturbations with the density interface. Since the pressure remains continuous across the interface, the density jump alone does not generate strong waves. Instead, this interaction generates vorticity and leads to the formation of shear-layer instabilities. Consequently, although a sharp density interface is initially present, one should not expect the appearance of strong wave structures at later times.
+{\sc\underline{Reply}}: We believe the reviewer is referring to Example 3 (Baroclinic Vorticity Generation), as the density is constant in
+Example 4. Indeed, in this test, a visible density jump is present at $y=4$ in the initial condition. This density discontinuity, however,
+is not accompanied by a corresponding pressure discontinuity. In this setting, the flow evolution is driven by the interaction of the smooth
+pressure and velocity perturbations with the density interface. Since the pressure remains continuous across the interface, the density jump
+alone does not generate strong waves. Instead, this interaction generates vorticity and leads to the formation of shear-layer instabilities.
 
 To avoid possible confusion, we have added a short clarification in the revised manuscript.
 
-
-
 \medskip
-\item
-{\bf  In [2] in the reference list, authors' names are not written.}
+\item{\bf In [2] in the reference list, authors' names are not written.}
+
 \smallskip
-
-{\sc\underline{Reply}}: We thank the reviewer for this observation. This is a standard convention of the SIAM bibliography style, where consecutive references by the same author(s) are abbreviated using a dash. To avoid possible confusion, we have modified the bibliography style so that all authors' names are explicitly displayed.
-
-
+{\sc\underline{Reply}}: This is a standard convention of the SIAM bibliography style, where consecutive references by the same author(s) are
+abbreviated using a dash. To avoid possible confusion, we have modified the bibliography style so that all authors' names are explicitly
+displayed.
 \end{itemize}
-
 \end{itemize}
-
 
 \bigskip
 \underline{Response to the Comments of Reviewer \#4}
 
+\begin{itemize}[wide, labelwidth=!, labelindent=0pt]
+\item{\bf Evolving two complete sets of variables leads to roughly double the memory requirements and substantially higher computational
+cost per time step (two Poisson problems per step).}
+	
+\smallskip
+{\sc\underline{Reply}}: Indeed, there is an overhead with respect to schemes evolving a single set of variables. However, we would like to
+point out that this does not strictly correspond to a double computational cost. For example, the same reconstructed cell interface values
+are used for both $\bm V$- and $\bm U$-solutions. Moreover, the evolution of the $\bm U$-solution is much computationally cheaper than the
+evolution of the $\bm V$-solution, as it is performed with an explicit scheme.
 
-{\bf The manuscript tackles a longstanding challenge in computational fluid dynamics: the severe stiffness of the compressible Euler equations in low-Mach-number regimes due to fast acoustic waves. The authors argue that constructing a purely conservative hyperbolic flux splitting for the full Euler system is highly challenging. To address this, they propose a Dual Formulation approach. Rather than relying on conservative splitting, the method isolates the stiff acoustic component using primitive (non-conservative) variables. To preserve shock-capturing properties, a standard conservative scheme is evolved in parallel, and the two solutions are blended at the end of each time step according to the local Mach number.
+\smallskip
+We have added Remark 3.4 on this at the end of \S3.4.
 	
-The theoretical strengths of the paper are noteworthy. The scheme achieves a physically consistent incompressible limit: in the zero-Mach regime, the velocity field becomes divergence-free, and the method correctly derives and solves the corresponding Poisson equation for pressure. Furthermore, the authors provide rigorous asymptotic-preserving proofs for both the first-order and second-order (DeC) semi-implicit time discretizations, which hold under suitable idealized boundary conditions.
+\medskip
+\item{\bf Additionally, the computation of characteristic wave speeds relies on global quantities $\rho_{\max}$ and $p_{\min}$ (the maximum
+density and minimum pressure over the entire domain). In large-scale parallel 3D simulations, this introduces frequent global reductions,
+creating a notable communication bottleneck.}
 	
+\smallskip
+{\sc\underline{Reply}}: The computation of the global quantities $\rho_{\max}$ and $p_{\min}$ only involves two scalar reductions and
+therefore represents a relatively small overhead compared with the overall cost of the algorithm, which is dominated by the solution of the
+linear systems arising from the pressure equation. Nevertheless, we agree that any global communication may affect scalability in extremely
+large-scale simulations.
+	
+\medskip
+\item{\bf To prevent wave-speed collapse in higher-Mach regions, the authors introduce an ad-hoc $\epsilon^4$ regularization. While this
+modification vanishes in the low-Mach limit, it remains an artificial fix.}
+
+\smallskip
+{\sc\underline{Reply}}: We agree that this is an artificial fix, but we found it necessary to improve the handling of discontinuous
+solutions in large (intermediate)-Mach-number regimes. Remark 4.1 has been added in the beginning of \S4.
+
+\medskip
+\item{\bf The method also employs a heuristic switching function $s(\epsilon)$ with empirically tuned parameters ($\epsilon_0=0.15$,
+$\epsilon_1=0.4$, $\alpha=14$) to blend the primitive and conservative solution, across all the numerical illustrations. Room for deeper
+mathematical understanding or Machine Learning is ok here ?
 }
 
 \smallskip
-{\sc\underline{Reply}}: We thank the referee for appreciating our work.
+{\sc\underline{Reply}}: Indeed, the adopted parameters have been selected empirically. Nevertheless, we would like to stress that the wide
+range of numerical experiments reported in the manuscript indicates that the proposed choice is sufficiently robust. We agree that a deeper
+theoretical understanding of the optimal design of the switching function and its parameters would be highly desirable. 
+
+\smallskip
+These aspects are now discussed in Remark 4.2 in the beginning of \S4.
+	
+\medskip
+\item{\bf Another important issue is that the primitive pressure equation (Eq.~2.7) depends on the term $\gamma p\nabla\cdot\mathbf{u}$,
+making the entire framework specific to ideal gases. Extending the method to real gases or complex thermodynamics would require a complete
+re-derivation of the splitting and the Poisson solver.}
+	
+\smallskip
+{\sc\underline{Reply}}: Indeed, the present derivation is performed for the ideal-gas Euler equations and extending the framework to more
+general equations of state would require a re-examination of the primitive-variable formulation including the pressure equation. Extensions
+to more complex thermodynamic models are certainly of interest, but lie beyond the scope of the current paper. We have added Remark 3.1 at
+the end of \S3.1.1 in the revised manuscript to clarify this point.
+	
+\medskip
+\item{\bf The authors describe purely conservative flux splitting as presenting ``significant challenges.'' While this is understandable,
+the claim should be nuanced in light of my previous remarks. The CFD community has already developed several viable and strictly
+conservative asymptotic-preserving schemes for the Euler equations.}
+
+\smallskip
+{\sc\underline{Reply}}: We fully agree that several viable and fully conservative AP schemes for the Euler equations have been successfully
+developed in recent years, and we have mentioned some of the relevant works in the Introduction. We have also emphasized there that the
+flux splitting strategy proposed in [26] is, in a certain sense, optimal for the isentropic Euler equations, and that extending this
+particular splitting strategy to the full Euler equations is not straightforward.
+
+\smallskip
+In this context, the main advantage of the proposed AP DF-FV method is that it can be viewed as an extension of the optimal splitting
+strategy from [26] to the full Euler system through the nonconservative formulation.
 
 \medskip
+\item{\bf Overall, the manuscript by Chertock et al.\ is a creative and mathematically rigorous contribution. It successfully demonstrates
+that dynamically coupling a non-conservative low-Mach solver with a conservative shock-capturing solver can yield a theoretically sound and
+asymptotic-preserving method. Nevertheless, the Dual Formulation approach does not completely overcome the practical difficulties of
+low-Mach CFD. For large-scale industrial applications, particularly those involving complex thermodynamics or massive parallelism, existing
+unified conservative AP methods may offer better efficiency and scalability. The authors may want to consider these remarks in their revised
+manuscript.}
+	
+\smallskip
+{\sc\underline{Reply}}: We have added Remarks 3.1, 3.4, and 4.2, in which some of the above points raised by the reviewer have been
+mentioned. In fact, we are very interested in extending our DF-FV approach to more practically relevant systems and we plan to investigate
+such possibilities in the nearest future.
 
-\begin{itemize}[wide, labelwidth=!, labelindent=0pt]
-	\item	
-	{\bf
-		However, these advantages come with computational and practical trade-offs.
-		
-		 Evolving two complete sets of variables leads to roughly double the memory requirements and substantially higher computational cost per time step (two Poisson problems per step).
-
-	}
+\medskip
+\item{\bf In Definition 3.1, the phrase ``computed solution'' could be misinterpreted as the final discrete solution. For greater clarity,
+the authors should explicitly describe $\rho^n$ and $p^n$ as semi-discrete (in time) solutions.}
 	
-	\smallskip
-	{\sc\underline{Reply}}: We understand the concern of the referee. Indeed, there is an overhead, under this specific point of view, with respect to schemes evolving a single set of variables.
-	%
-	However, we would like to point out that this does not strictly correspond to a double computational cost. For example, the reconstructed interface values are used for both $\uvec{V}$- and $\uvec{U}$-solutions, without need for a separate reconstruction.
-	%
-	Moreover, the evolution of the $\uvec{U}$-solution is much cheaper than the evolution of the $\uvec{V}$-solution, as it is performed with an explicit scheme.
-	%
-	We have added a remark on this at the end of Section 3.4.
-	
-	\item		
-	\medskip
-	{\bf  Additionally, the computation of characteristic wave speeds relies on global quantities $\rho_{\max}$ and $p_{\min}$ (the maximum density and minimum pressure over the entire domain). In large-scale parallel 3D simulations, this introduces frequent global reductions, creating a notable communication bottleneck.}
-	
-	\smallskip
-	{\sc\underline{Reply}}: We thank the reviewer for this observation. The proposed method indeed requires the computation of the global quantities $\rho_{\max}$ and $p_{\min}$. This operation only involves two scalar reductions and therefore represents a relatively small overhead compared with the overall cost of the algorithm, which is dominated by the solution of the linear systems arising from the pressure equation. Nevertheless, we agree that any global communication may affect scalability in extremely large-scale simulations.
-	
-	We have added a reference to this point in the remark of the previous point.
-	
-	
-	
-	\medskip
-	\item	
-	{\bf 
-		
-		 To prevent wave-speed collapse in higher-Mach regions, the authors introduce an ad-hoc $\epsilon^4$ regularization. While this modification vanishes in the low-Mach limit, it remains an artificial fix.
-		The method also employs a heuristic switching function $s(\epsilon)$ with empirically tuned parameters ($\epsilon_0 = 0.15$, $\epsilon_1 = 0.4$, $\alpha = 14$) to blend the primitive and conservative solution, across all the numerical illustrations. Room for deeper mathematical understanding or Machine Learing is ok here ?
-		
-	}
-	
-	\smallskip
-	{\sc\underline{Reply}}: We thank the reviewer for this observation.
-	
-	Concerning the $\varepsilon^4$-modification of the wave speeds, we found it necessary to improve the handling of discontinuous solutions in large (intermediate)-Mach-number regimes. %However, we would like to emphasize that it vanishes asymptotically as $\varepsilon\to0$ and therefore does not affect either the consistency of the method or the asymptotic-preserving analysis presented in the paper.
-	
-	Regarding the switching function $s(\varepsilon)$, we agree that the adopted parameters have been selected empirically. Nevertheless, we would like to stress that the wide range of numerical experiments reported in the manuscript indicates that the proposed choice is sufficiently robust.
-	%
-	We agree that a deeper theoretical understanding of the optimal design of the switching function and its parameters would be highly desirable. 
-	
-	
-	These aspects are now discussed in two new remarks at the beginning of Section 4.
-	
-	
-	\medskip
-	\item	
-	{\bf  Another important issue is that the primitive pressure equation (Eq.~2.7) depends on the term $\gamma p \nabla \cdot \mathbf{u}$, making the entire framework specific to ideal gases. Extending the method to real gases or complex thermodynamics would require a complete re-derivation of the splitting and the Poisson solver.}
-	
-	\smallskip
-	{\sc\underline{Reply}}: We agree that the present derivation is performed for the ideal-gas Euler equations and that extending the framework to more general equations of state would require a re-examination of both the primitive-variable formulation and of the resulting pressure equation. Extensions to more complex thermodynamic models are certainly of interest, but lie beyond the scope of the current paper. We have added a remark at the end of Section 3.1.1 in the revised manuscript to clarify this point.
-	
-	\medskip
-	\item	
-	{\bf  The authors describe purely conservative flux splitting as presenting ``significant challenges.'' While this is understandable, the claim should be nuanced in light of my previous remarks. The CFD community has already developed several viable and strictly conservative asymptotic-preserving schemes for the Euler equations.}
-	
-	\smallskip
-	{\sc\underline{Reply}}: We thank the reviewer for this observation. We agree that several viable and fully conservative asymptotic-preserving schemes for the Euler equations have been successfully developed in recent years. Our intention was not to suggest that conservative asymptotic-preserving approaches are unavailable, but rather to emphasize that extending the particular splitting strategy of \cite{haack2012all} to the full Euler equations is not straightforward. To avoid possible misunderstandings, we have revised the corresponding statement in the Introduction.
-	
-	
-	\medskip
-	\item	
-	{\bf  Overall, the manuscript by Chertock et al.\ is a creative and mathematically rigorous contribution. It successfully demonstrates that dynamically coupling a non-conservative low-Mach solver with a conservative shock-capturing solver can yield a theoretically sound and asymptotic-preserving method. Nevertheless, the Dual Formulation approach does not completely overcome the practical difficulties of low-Mach CFD. For large-scale industrial applications, particularly those involving complex thermodynamics or massive parallelism, existing unified conservative AP methods may offer better efficiency and scalability. The authors may want to consider these remarks in their revised manuscript.}
-	
-	\smallskip
-	{\sc\underline{Reply}}: We have added the remarks on all points raised by the reviewer.
-	
-	
-	\medskip
-	\item	
-	{\bf   \textbf{Minor Suggestion.} In Definition 3.1, the phrase ``computed solution'' could be misinterpreted as the final discrete solution. For greater clarity, the authors should explicitly describe $\rho^n$ and $p^n$ as semi-discrete (in time) solutions.}
-	
-	\smallskip
-	{\sc\underline{Reply}}: We have remarked this after Definition 3.1 to clarify on this point.
-
+\smallskip
+{\sc\underline{Reply}}: We have modified Definition 3.1 accordingly.
 \end{itemize}
 \vspace*{2cm}
 \closing{Sincerely} % eg Regards,
