@@ -480,7 +480,7 @@ In this paper, we propose an alternative way of accurately identifying and separ
 rewrite the studied system in a nonconservative form and then introduce a nonconservative hyperbolic splitting, which may be naturally
 viewed as an extension of the flux splitting from \cite{haack2012all}. We integrate the nonconservative system using a SI method 
 implemented as follows. The stiff part is approximated semi-implicitly using a simple second-order accurate central-differencing, and the 
-nonstiff part is handled explicitly using a second-order {\color{red}path-conservative central-upwind (PCCU)} discretization. The resulting
+nonstiff part is handled explicitly using a second-order {\color{black}path-conservative central-upwind (PCCU)} discretization. The resulting
 SI approach is then realized in such a way that the pressure update consists of solving a Poisson-type elliptic equation: this is used to 
 enforce the AP property.
 
@@ -651,7 +651,7 @@ and conservative variables.
 We begin by providing a precise definition of an asymptotic-preserving (AP) time discretization in the context of the zero-Mach-number
 limit.
 \begin{definition}[AP time discretization]\label{def41}
-Assume that the {\color{blue}semi-discrete (not discretized in space) solution at time $t^n$, $(\rho^n(x,y),\bm u^n(x,y),p^n(x,y))$,} can be
+Assume that the {\color{black}semi-discrete (not discretized in space) solution at time $t^n$, $(\rho^n(x,y),\bm u^n(x,y),p^n(x,y))$,} can be
 expanded as
 \begin{equation}
 \begin{aligned}
@@ -741,7 +741,7 @@ analysis in \S\ref{sec22}, which ensure that
 
 In the next subsection, we will utilize this splitting and design an AP time discretization based on an explicit approximation of the
 nonstiff subsystem and an SI discretization of the stiff terms on the right-hand sides (RHSs) of \eref{2.2} and \eref{2.3}.
-{\color{blue}
+{\color{black}
 \begin{remark}
 It should be pointed out that extensions of the proposed splitting to more general equations of state would require a re-examination of the
 primitive-variable formulation.
@@ -1437,13 +1437,13 @@ We recall that the interface values of $\bm U$ needed for the computation of the
 obtained from the reconstructed primitive variables $\bm V$ at the corresponding time levels. Note that the conservative updates are, as a
 matter of fact, explicit, since they are performed using the explicit part of the SI-DeC scheme.
 
-{\color{red}
+{\color{black}
 \begin{remark}
 It should be observed that some parts of the reported algorithm can be parallelized, for example, Steps 1 and 2 or Steps 5 and 6.
 Furthermore, Steps 1--3 can be performed in parallel with Step 4 before applying the post-processing, as well as Steps 5--7 with Step 8.
 \end{remark}}
 
-{\color{blue}
+{\color{black}
 \begin{remark}
 It should be observed that working with two sets of variables induces a computational overhead compared to approaches based on a single
 formulation. However, the computational cost is not doubled. For example, the same reconstructed cell interface values are shared by both
@@ -1453,7 +1453,7 @@ $\bm U$-solution is performed explicitly and is therefore computationally less d
 }
 
 \subsection{Post-Processing}\label{sec43}
-{\color{red}As mentioned in \S\ref{sec422},} upon completion of Steps 4 and 8, we {\color{red}replace $\xbar{\bm V}^{\,*}_{j,k}$ with
+{\color{black}As mentioned in \S\ref{sec422},} upon completion of Steps 4 and 8, we {\color{black}replace $\xbar{\bm V}^{\,*}_{j,k}$ with
 $r\big(\bm V\big(\,\xbar{\bm U}^{\,*}_{j,k}\big),\,\xbar{\bm V}^{\,*}_{j,k}\big)$ and $\xbar{\bm V}^{\,n+1}_{j,k}$ with
 $r\big(\bm V\big(\,\xbar{\bm U}^{\,n+1}_{j,k}\big),\,\xbar{\bm V}^{\,n+1}_{j,k}\big)$, respectively. The function $r$ is selected based on
 the following considerations. Since the $\bm V$-solution is AP but nonconservative, and the $\bm U$-solution is conservative but non-AP, we
@@ -1509,17 +1509,17 @@ examples below. This switching function is plotted in Figure \ref{fig31}.
 \centerline{\includegraphics[width=0.32\textwidth]{switching_function}}
 \caption{\sf Switching function $s(\varepsilon)$ plotted with respect to $1/\ve$.\label{fig31}}
 \end{figure}
-{\color{blue}
+{\color{black}
 \begin{remark}
 Modification \eref{4.9} is used to improve the handling of discontinuous solutions for large (intermediate)-Mach-number
 regimes. However, we would like to emphasize that it vanishes as $\ve\to0$ and therefore does not affect either the consistency of the
 method or the AP analysis presented in the paper.
 \end{remark}}
-{\color{red}
+{\color{black}
 \begin{remark}
 We stress that the same switching function, $s(\ve)$, together with the same values of the associated parameters, has been used in all of 
 the numerical examples reported below. The obtained numerical results indicate that this choice is sufficiently robust across the considered
-Mach-number regimes. {\color{blue}Further studies on the optimal design of the switching function and on the selection of its parameters
+Mach-number regimes. {\color{black}Further studies on the optimal design of the switching function and on the selection of its parameters
 may constitute interesting directions for future research.}
 \end{remark}}
 
@@ -1537,7 +1537,7 @@ E(\bm x_r)&=1+\ve^2\Big[\rho^2(\bm x_r)+\frac{\rho(\bm x_r)}{2}\big(u^2(\bm x_r)
 where $\bm x_r(x,y,t)=(x_r,y_r)^\top:=(x-t,y-t)^\top$.
 
 We take the CFL number $K_{\rm CFL}=0.475$ and compute the numerical solution until the final time $t=0.1$ on a series of uniform
-$N\times N$ meshes with $N=64$, $128$, $256$, and $512$ for $\ve=1$, $0.1$, $0.01$, and $0.001$. {\color{red}We study the convergence in
+$N\times N$ meshes with $N=64$, $128$, $256$, and $512$ for $\ve=1$, $0.1$, $0.01$, and $0.001$. {\color{black}We study the convergence in
 terms of the $L^1$-errors, defined for each scalar component $V$ of the $\bm V$-solution at the final time as
 $$
 \dx\dy\sum_{j,k}\abs{V_{j,k}(t=0.1)-V(x_j,y_k,t=0.1)},
@@ -1607,7 +1607,7 @@ periodic boundary conditions. The initial conditions are
 &u(x,y,0)=\frac{\sqrt{\gamma}}{2}[1+\cos(\ve\pi x)],\quad v(x,y,0)\equiv0,\quad p(x,y,0)=1+\frac{\ve\gamma}{2}[1+\cos(\ve\pi x)].
 \end{aligned}
 \end{equation*}
-{\color{red}It should be observed that the initial density discontinuity is not accompanied by a corresponding pressure discontinuity.
+{\color{black}It should be observed that the initial density discontinuity is not accompanied by a corresponding pressure discontinuity.
 Therefore, the initial data are not expected to generate any strong propagating compressible waves. On the other hand,} the acoustic wave
 induces different accelerations in the two density layers, which results in rotational excitation and in the formation of a long-wavelength
 sinusoidal shear layer. Due to the interaction with the acoustic wave, such a shear layer becomes unstable, and several
@@ -1718,7 +1718,7 @@ the reference ones, and the discontinuities locations are correctly captured.
 $t=0.2$ (top row), $\ve=0.6$, $t=0.15$ (middle row), and $\ve=0.3$, $t=0.08$ (bottom row).\label{fig410}}
 \end{figure}
 
-{\color{red}We stress that for the large (intermediate) Mach numbers considered in this example, the $\bm U$-solution is reliable and
+{\color{black}We stress that for the large (intermediate) Mach numbers considered in this example, the $\bm U$-solution is reliable and
 plays a crucial role in ensuring a correct handling of the discontinuities through the post-processing. We omit the plots of the
 $\bm U$-solution because they are visually indistinguishable from the ones reported. In this situation, one can see how crucial is the role
 of the post-processing. Without it, the nonconservative evolution of the primitive variables would lead to incorrect solutions. While in the
