@@ -546,321 +546,30 @@ text centered]
 \frame\sectionpage
 
 \begin{frame}
-	\frametitle{Governing equations}
-
-		\begin{equation*}
-			\label{sys}
-			\frac{\partial}{\partial t}\uvec{U}(\uvec{x},t)+div_{\uvec{x}} \uvec{F}(\uvec{U}(\uvec{x},t))=\boldsymbol{0}, \quad (\uvec{x},t) \in \Omega\times \mathbb{R}^+_0,
-		\end{equation*}
-		\visible<1->{
-			\begin{itemize}
-				\item $\Omega\subseteq \mathbb{R}^D$ spatial domain, a connected open set}
-				\visible<1->{\item $\uvec{U}:\overline{\Omega} \times \mathbb{R}^+_0 \rightarrow  \mathbb{R}^Q$ unknown solution} %with $N \in \mathbb{N}$ number of scalar equations of the system and $\mathcal{U}$ space of adimssible states
-				\visible<1->{\item $\uvec{F}:\mathbb{R}^Q \rightarrow \mathbb{R}^{Q \times D}$ flux}
-				\visible<1->{\item $\uvec{F}(\uvec{U})=(\uvec{F}_1,\uvec{F}_2,\dots,\uvec{F}_D) \in \mathbb{R}^{Q \times D}$ with $div_{\uvec{x}} \uvec{F}(\uvec{U})=\sum\limits_{d=1}^D \frac{\partial \uvec{F}_{d}}{\partial x_d} (\uvec{U}) \in \mathbb{R}^{Q}$} 
-%				\visible<1->{\item $\sum\limits_{d=1}^D \omega_d \frac{\partial \uvec{F}_{d}}{\partial \uvec{U}} (\uvec{U})$ real diagonalizable $\forall \uvec{U}\in \mathcal{U}$, $\forall \uvec{\omega}\in \mathbb{R}^D$}
-				\visible<1->{\item with some initial $\uvec{U}(\uvec{x},0)=\uvec{U}_0(\uvec{x})$ and boundary conditions}
-			\end{itemize}
-\end{frame}
-
-\begin{frame}[label=BalanceLawsSomeExamples]
-	\frametitle{An example: Euler equations}
-	$$\frac{\partial}{\partial t}\uvec{U}+div_{\uvec{x}} \uvec{F}(\uvec{U})=\boldsymbol{0},$$
-	
-	$$
-	\uvec{U}=\begin{pmatrix}
-		\rho\\
-		\rho u\\
-		\rho v\\
-		\rho w\\
-		E
-	\end{pmatrix}, \quad \uvec{F}(\uvec{U})=\begin{pmatrix}
-		\rho u & \rho v & \rho w \\ 
-		\rho u^2+p & \rho u v & \rho u w \\
-		\rho u v & \rho v^2+p & \rho v w \\
-		\rho u w & \rho v w & \rho w^2+p \\
-		(E+p)u & (E+p)v & (E+p)w
-	\end{pmatrix},
-	$$
-	with $p=(\gamma -1) \left[E- \frac{1}{2}\rho (u^2+v^2+w^2) \right]$.
-	
-\end{frame}
-
-
-\begin{frame}[label=BalanceLawsSomeExamples]
-	\frametitle{Some other examples}
-	
-	
-	\begin{figure}
-		\centering
-		\begin{subfigure}[t]{0.47\textwidth}
-			\centering
-			\includegraphics[height=2cm,width=3cm]{etna.jpg}
-			\caption{Vulcanian eruptions.}
-			\label{Etna}
-		\end{subfigure}\hskip 1em%
-		\begin{subfigure}[t]{0.47\textwidth}
-			\centering
-			\includegraphics[height=2cm,width=3cm]{terremotomessina.jpg}
-			\caption{Earthquakes}
-			\label{Earthquakes}
-		\end{subfigure}\hskip 1em%
-		\begin{subfigure}[t]{0.47\textwidth}
-			\centering
-			\includegraphics[height=2cm,width=3cm]{trafficflows.jpg}
-			\caption{Traffic}
-			\label{trafficflows}
-		\end{subfigure}\hskip 1em%
-		\begin{subfigure}[t]{0.47\textwidth}
-			\centering
-			\includegraphics[height=2cm,width=3cm]{biology.jpg}
-			\caption{Biological and chemical flows}
-			\label{biology}
-		\end{subfigure}
-	\end{figure}
-	but also crowd dynamics, weather predictions, avalanches, vulcanian eruptions, etc... 
-\end{frame}
-
-
-\begin{frame}[label=BalanceLawsDerivation]
-	\frametitle{Derivation}
-	\begin{columns}
-		\begin{column}{0.40\textwidth}
-			\begin{figure}[hp] \centering{\includegraphics[scale=0.20]{conservationwithoutsource.pdf}}
-				%\caption{Conservation.}
-				\label{conservation}
-			\end{figure}
-		\end{column}
-		\begin{column}{0.70\textwidth}
-			\begin{itemize}
-				\item $V\subseteq \Omega$ control volume
-				\item $\uvec{U}$ conserved quantities
-				\item $\flux \cdot \uvec{\nu}$ exiting from the control volume
-			\end{itemize}
-		\end{column}
-	\end{columns}
-	\visible<1->{		\scalebox{0.7}{\begin{minipage}[t]{1.2\textwidth}
-				\begin{beamercolorbox}[sep=0.5em,wd=\textwidth]{blockcolor1} 
-					$$\frac{\partial}{\partial t} \int_V \uvec{U} d \uvec{x} = - \int_{\partial V} \flux \cdot \uvec{\nu} d \sigma(\uvec{x}) , \quad  \forall V\subseteq \Omega.
-					$$
-					$$\Downarrow$$
-					$$\int_V \frac{\partial}{\partial t}\uvec{U} d \uvec{x} = - \int_V div_{\uvec{x}}\flux d \uvec{x} , \quad  \forall V\subseteq \Omega.$$
-					$$\Downarrow$$
-					$$\int_V \left(\frac{\partial}{\partial t}\uvec{U}  + div_{\uvec{x}}\flux  \right) d \uvec{x}=\uvec{0}, \quad  \forall V\subseteq \Omega.$$
-				\end{beamercolorbox}
-	\end{minipage}} }
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{A structural property: Conservation}
-		\begin{equation*}
-			\frac{\partial}{\partial t}\uvec{U}+ \frac{\partial}{\partial x} \uvec{F}(\uvec{U})=\boldsymbol{0}, \quad (x,t) \in (x_L,x_R)\times \mathbb{R}^+_0
-		\end{equation*}
-		$$\Downarrow$$
-$$\int_{x_L}^{x_R} \left( \frac{\partial}{\partial t}\uvec{U}+ \frac{\partial}{\partial x} \uvec{F}(\uvec{U}) \right) d \uvec{x} =\boldsymbol{0}$$
-		$$\Downarrow$$
-$$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U})\right]_{x=x_L}^{x=x_R}   =\boldsymbol{0}$$
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Importance of conservation at the discrete level}
-
-
-	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			
-			\begin{tikzpicture}[scale=0.8] % Reduced scale
-				\tikzset{dot/.style={fill=black,circle}}
-				
-				% Set the width of the cell
-				\def\cellwidth{1.2} % Adjust this value to change the width of each cell
-				
-				% Horizontal line
-				\draw [black] (0,1) -- (6*\cellwidth,1);
-				
-				% Draw the first cell and point
-				\draw (0.5*\cellwidth,1) -- (0.5*\cellwidth,1.7);
-				\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,1.7);
-				\draw (0.5*\cellwidth,1.7) -- (1.5*\cellwidth,1.7);
-				\filldraw[blue] (1*\cellwidth,1.7) circle (2pt);
-				
-				% Draw the second cell and point
-				\draw (1.5*\cellwidth,1) -- (1.5*\cellwidth,2.7);
-				\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,2.7);
-				\draw (1.5*\cellwidth,2.7) -- (2.5*\cellwidth,2.7);
-				\filldraw[blue] (2*\cellwidth,2.7) circle (2pt);
-				
-				% Draw the third cell and point
-				\draw (2.5*\cellwidth,1) -- (2.5*\cellwidth,3.7);
-				\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.7);
-				\draw (2.5*\cellwidth,3.7) -- (3.5*\cellwidth,3.7);
-				\filldraw[blue] (3*\cellwidth,3.7) circle (2pt);
-				
-				% Draw the fourth cell and point
-				\draw (3.5*\cellwidth,1) -- (3.5*\cellwidth,3.2);
-				\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,3.2);
-				\draw (3.5*\cellwidth,3.2) -- (4.5*\cellwidth,3.2);
-				\filldraw[blue] (4*\cellwidth,3.2) circle (2pt);
-				
-				% Draw the fifth cell and point
-				\draw (4.5*\cellwidth,1) -- (4.5*\cellwidth,2.2);
-				\draw (5.5*\cellwidth,1) -- (5.5*\cellwidth,2.2);
-				\draw (4.5*\cellwidth,2.2) -- (5.5*\cellwidth,2.2);
-				\filldraw[blue] (5*\cellwidth,2.2) circle (2pt);
-				
-				% Vertical dashed lines at interfaces
-				\foreach \x in {1.5,2.5,...,4.5}
-				{
-					\draw [dashed] (\x*\cellwidth,0.5) -- (\x*\cellwidth,4.5); % vertical lines at interfaces
-				}
-				
-				% Labels with adjusted x positions
-				\node at (1.5*\cellwidth,0.25){$x_{i-\frac{3}{2}}$}; 
-				\node at (2.5*\cellwidth,0.25){$x_{i-\frac{1}{2}}$}; 
-				\node at (3.5*\cellwidth,0.25){$x_{i+\frac{1}{2}}$}; 
-				\node at (4.5*\cellwidth,0.25){$x_{i+\frac{3}{2}}$}; 
-				
-				
-				
-				% Cell labels
-				\node at (2*\cellwidth,0.7){$x_{i-1}$};
-				\node at (3*\cellwidth,0.7){$x_{i}$};
-				\node at (4*\cellwidth,0.7){$x_{i+1}$};
-				
-				% Blue U labels for cells
-				\node at (2*\cellwidth,3.2){$\textcolor{blue}{\uvec{U}_{i-1}}$};
-				\node at (3*\cellwidth,4.2){$\textcolor{blue}{\uvec{U}_{i}}$};
-				\node at (4*\cellwidth,3.7){$\textcolor{blue}{\uvec{U}_{i+1}}$};
-				
-				
-				\node at (1.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{3}{2}}}$};
-				\node at (2.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}$};
-				\node at (3.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}$};
-				\node at (4.5*\cellwidth,5.0){$\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{3}{2}}}$};
-
-
-				% Smooth local reconstruction curves passing through the dots
-				\visible<1->{
-					\draw[violet, thick]
-					(0.5*\cellwidth,1.60)
-					.. controls (0.75*\cellwidth,1.90) and (0.95*\cellwidth,1.75) ..
-					(1*\cellwidth,1.70)
-					.. controls (1.10*\cellwidth,1.60) and (1.30*\cellwidth,1.50) ..
-					(1.5*\cellwidth,1.65);
-					
-					\draw[violet, thick]
-					(1.5*\cellwidth,2.10)
-					.. controls (1.75*\cellwidth,2.95) and (1.95*\cellwidth,2.85) ..
-					(2*\cellwidth,2.70)
-					.. controls (2.10*\cellwidth,2.60) and (2.30*\cellwidth,2.55) ..
-					(2.5*\cellwidth,2.45);
-					
-					\draw[violet, thick]
-					(2.5*\cellwidth,3.8)
-					.. controls (2.75*\cellwidth,3.20) and (2.90*\cellwidth,4.20) ..
-					(3*\cellwidth,3.70)
-					.. controls (3.10*\cellwidth,3.40) and (3.30*\cellwidth,3.55) ..
-					(3.5*\cellwidth,3.65);
-					
-					\draw[violet, thick]
-					(3.5*\cellwidth,2.95)
-					.. controls (3.75*\cellwidth,3.40) and (3.90*\cellwidth,2.90) ..
-					(4*\cellwidth,3.20)
-					.. controls (4.10*\cellwidth,3.30) and (4.30*\cellwidth,3.35) ..
-					(4.5*\cellwidth,3.25);
-					
-					\draw[violet, thick]
-					(4.5*\cellwidth,2.45)
-					.. controls (4.75*\cellwidth,2.10) and (4.90*\cellwidth,2.45) ..
-					(5*\cellwidth,2.20)
-					.. controls (5.10*\cellwidth,2.10) and (5.30*\cellwidth,2.00) ..
-					(5.5*\cellwidth,1.85);				
-				}
-		
-				% Cross marks in each cell
-				\foreach \x in {0.5,1.5,2.5,...,4.5,5.5}
-				{
-					\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.3) -- (\x*\cellwidth+0.1,1.5); % Diagonal line /
-					\draw[red, line width=1.pt] (\x*\cellwidth-0.1,1.5) -- (\x*\cellwidth+0.1,1.3); % Diagonal line \
-				}
-				
-			\end{tikzpicture}
-		\end{column}
-		\begin{column}{0.55\textwidth}
-			\small
-			$$\frac{\partial}{\partial t}\textcolor{black}{\uvec{U}}+\frac{\partial}{\partial x}\uvec{F}(\uvec{U})=\uvec{0}$$
-			$$\Downarrow$$
-			\begin{align*}
-					\frac{d}{d t}\textcolor{blue}{\uvec{U}_i}(t)&=-\frac{\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}}{\Delta x}\\
-					\visible<1->{
-					\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}&:=\widehat{\uvec{F}}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})}\\
-					\visible<1->{
-						\widehat{\uvec{F}}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-},\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})&\neq\frac{1}{2}\left(\uvec{F}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^-})+\uvec{F}(\textcolor{violet}{\uvec{U}_{i+\frac{1}{2}}^+})\right)}
-			\end{align*}
-		\end{column}
-	\end{columns}
-
-	\vspace{1cm}
-	\visible<1->{
-		$$\frac{d}{d t} \sum\limits_{i}\textcolor{blue}{\uvec{U}_i} =-\frac{1}{\Delta x}\sum\limits_{i}\left(\textcolor{red}{\widehat{\uvec{F}}_{i+\frac{1}{2}}}-\textcolor{red}{\widehat{\uvec{F}}_{i-\frac{1}{2}}}\right)=\uvec{0}$$
-	}
-\end{frame}
-
-
-
-
-\begin{frame}
-	\frametitle{Importance of conservation at the discrete level\footnote{{\tiny P. Lax, B. Wendroff, Systems of conservation laws, Technical report, LANL, 1958.}}}
-
-		
-		\centering
-
-
-
-
-		{\small All schemes \textbf{MUST} satisfy conservation.}\\
-
-
-		\vspace{1cm}
-	
-		\begin{block}{Lax-Wendroff Theorem}
-			{\footnotesize If a conservative numerical scheme converges, then it converges towards a "physically relevant" solution.}
-		\end{block}
-
-		\vspace{1cm}
-
-		Structural violation of conservation $\Rightarrow$ Convergence to wrong solutions	
-				
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Alternative (primitive) formulations}
+	\frametitle{Why nonconservative (primitive) formulations?}
 	
 	\centering
 	
 	{\footnotesize
-	\begin{align*}
-		\frac{\partial}{\partial t}\textcolor{black}{\uvec{U}}+&\frac{\partial}{\partial x}\uvec{F}(\uvec{U})=\uvec{0}\\
-		\textcolor{black}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
-		\uvec{F}(\uvec{U}):=&\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}, \quad E=\frac{p}{\gamma-1}+\frac{1}{2}\rho u^2
-	\end{align*}
-	
-	
-	\begin{align*}
-		\frac{\partial}{\partial t}&\textcolor{black}{\uvec{V}} + \frac{\partial}{\partial x}\uvec{\widetilde F}(\uvec{V}) = \textcolor{black}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}} \\
-		\textcolor{black}{\uvec{V} :=} \textcolor{black}{\begin{pmatrix} \rho \\ v \\ p \end{pmatrix}}, \quad
-		\uvec{\widetilde F}(\uvec{V})& := \begin{pmatrix} \rho v \\ \dfrac{v^2}{2} \\ p v \end{pmatrix}, \quad \textcolor{black}{\B(\uvec{V}) :=} \textcolor{black}{\begin{pmatrix}
-				0 & 0 & 0 \\
-				0 & 0 & -\dfrac{1}{\rho} \\
-				0 & -(\gamma-1) p & 0
-		\end{pmatrix}}
-	\end{align*}
+		\begin{align*}
+			\frac{\partial}{\partial t}\textcolor{blue}{\uvec{U}}+&\frac{\partial}{\partial x}\uvec{F}(\uvec{U})=\uvec{0}\\
+			\textcolor{blue}{\uvec{U}:=\begin{pmatrix}\rho\\\rho v\\E\end{pmatrix}},\quad
+			\uvec{F}(\uvec{U}):=&\begin{pmatrix}\rho v\\\rho v^2+p\\v(E+p)\end{pmatrix}, \quad E=\frac{p}{\gamma-1}+\frac{1}{2}\rho u^2
+		\end{align*}
+		
+		
+		\begin{align*}
+			\frac{\partial}{\partial t}&\textcolor{red}{\uvec{V}} + \frac{\partial}{\partial x}\uvec{\widetilde F}(\uvec{V}) = \textcolor{black}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}} \\
+			\textcolor{red}{\uvec{V} :=} \textcolor{red}{\begin{pmatrix} \rho \\ v \\ p \end{pmatrix}}, \quad
+			\uvec{\widetilde F}(\uvec{V})& := \begin{pmatrix} \rho v \\ \dfrac{v^2}{2} \\ p v \end{pmatrix}, \quad \textcolor{black}{\B(\uvec{V}) :=} \textcolor{black}{\begin{pmatrix}
+					0 & 0 & 0 \\
+					0 & 0 & -\dfrac{1}{\rho} \\
+					0 & -(\gamma-1) p & 0
+			\end{pmatrix}}
+		\end{align*}
 	}
-
-	\visible<2->{
+	
+	\visible<1->{
 		{\footnotesize		
 			\centering
 			...offers some advantages:
@@ -868,20 +577,20 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 				\item Low-Mach ($p$=const, $div_{\uvec{x}}\uvec{v}=0$)
 				\item Multifluid ($p,v$=const at interface)
 				\item Positivity preservation ($p > 0$, not $E$)
-				\item One measures primitive variables
+				\item Primitive variables are the relevant ones in applications
 				\item etc...
 			\end{itemize}
 		}
 	}
-
+	
 \end{frame}
 
 \begin{frame}
 	\frametitle{Proliferation of schemes with access to primitive variables}
-
-		
-		
-		{\tiny
+	
+	
+	
+	{\tiny
 		
 		
 		\begin{itemize}
@@ -900,69 +609,72 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			\item A. Chertock, S. Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026
 			\item A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026
 		\end{itemize}
-
-
-		}
-
+		
+		
+	}
+	
 \end{frame}
 
 \begin{frame}
 	\frametitle{Price to pay: Nonconservative products}
-
+	
 	\centering
-			
-	{\footnotesize
-
-		\vspace{-1.cm}
-
+	
+	{\tiny
+		
+		\vspace{-0.5cm}
+		
 		\begin{align*}
 			\frac{\partial}{\partial t}&\textcolor{black}{\uvec{V}} + \frac{\partial}{\partial x}\uvec{\widetilde F}(\uvec{V}) = \textcolor{violet}{\B(\uvec{V})\frac{\partial}{\partial x}\uvec{V}} 
 		\end{align*}
-	
-		\vspace{-0.25cm}
-	
+		
+		\vspace{-0.2cm}
+		
 		\begin{itemize}
 			\item Unclear definition (PC theory\footnote{{\tiny G. Dal Maso, P. Le Floch, F. Murat, Definition and weak stability of nonconservative products, 1995}})
 			\item Incorrect numerical solutions (PC schemes\footnote{{\tiny R. Abgrall, S. Karni, A comment on the computation of non-conservative products, 2010}})
 		\end{itemize}
-
-		\vspace{-0.5cm}
-
+		
+		\vspace{-0.4cm}
+		
 		$$\frac{d}{d t}\textcolor{black}{\uvec{V}_i}(t)+\frac{1}{\Delta x}\left(\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}-\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i-\frac{1}{2}}}\right)=\textcolor{violet}{\frac{1}{\Delta x}\left(\int_{x_{\imh}}^{x_{\iph}}B(\uvec{V})\uvec{V}_x dx+\uvec{D}_{\uvec{\Psi},\imh}^+ +\uvec{D}_{\uvec{\Psi},\iph}^-\right)}$$
-
-		\vspace{-0.5cm}
-	
+		
+		\vspace{-0.4cm}
+		
 		$$\uvec{D}_{\uvec{\Psi},\iph}^++\uvec{D}_{\uvec{\Psi},\iph}^-=\textcolor{red}{\uvec{D}_{\uvec{\Psi},\iph}=\int_0^1 B(\textcolor{violet}{\uvec{\Psi}}(s,\uvec{V}_{\iph}^-,\uvec{V}_{\iph}^+))\frac{d\textcolor{violet}{\uvec{\Psi}}}{ds}(s,\uvec{V}_{\iph}^-,\uvec{V}_{\iph}^+) ds}$$
-
-		\vspace{-0.5cm}
-
-		\visible<2->{
-			$$\uvec{\Psi}~\text{segment}$$ 
-	
-			\vspace{-0.95cm}
-	
-			$$\Downarrow$$
-	
-			\vspace{-0.85cm}
-	
-			$$\textcolor{red}{\uvec{D}_{\uvec{\Psi},\iph}}=\frac{B(\uvec{V}_{\iph}^-)+B(\uvec{V}_{\iph}^+)}{2}(\uvec{V}_{\iph}^+-\uvec{V}_{\iph}^-), \quad \uvec{D}_{\uvec{\Psi},\iph}^+=\uvec{D}_{\uvec{\Psi},\iph}^-=\frac{1}{2}\uvec{D}_{\uvec{\Psi},\iph}$$
+		
+		
+		\visible<1->{
+			
+			$$\textcolor{violet}{\uvec{\Psi}}~\text{segment} \quad \Rightarrow \quad \textcolor{red}{\uvec{D}_{\uvec{\Psi},\iph}}=\frac{B(\uvec{V}_{\iph}^-)+B(\uvec{V}_{\iph}^+)}{2}(\uvec{V}_{\iph}^+-\uvec{V}_{\iph}^-), \quad \uvec{D}_{\uvec{\Psi},\iph}^+=\uvec{D}_{\uvec{\Psi},\iph}^-=\frac{1}{2}\uvec{D}_{\uvec{\Psi},\iph}$$
 		}
-		\visible<3->{
-			RMK: It does not "fully" work.
+		\visible<1->{
+			
+			\begin{columns}
+				\begin{column}{0.3\textwidth}
+					RMK: It does not "fully" work.
+				\end{column}
+				\begin{column}{0.6\textwidth}
+					\begin{figure}
+						\includegraphics[width=0.7\textwidth]{PC_not_working.png}
+					\end{figure}
+				\end{column}
+			\end{columns}
+			
 		}
 	}
 	
 	
 \end{frame}
 
-\begin{frame}
-	\frametitle{Actual issue with nonconservative products: discontinuities\footnote{{\tiny R. Abgrall, S. Karni, A comment on the computation of non-conservative products, 2010}}}
-		
-		\begin{figure}
-			\includegraphics[width=0.7\textwidth]{PC_not_working.png}
-		\end{figure}
-		
-\end{frame}
+%\begin{frame}
+%	\frametitle{Actual issue with nonconservative products: discontinuities\footnote{{\tiny R. Abgrall, S. Karni, A comment on the computation of non-conservative products, 2010}}}
+%		
+%		\begin{figure}
+	%			\includegraphics[width=0.7\textwidth]{PC_not_working.png}
+	%		\end{figure}
+%		
+%\end{frame}
 
 
 \begin{frame}
@@ -971,17 +683,21 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 	\centering
 	
 	{\footnotesize	
-	\begin{itemize}
-		\item Introduce a new framework based on both conservative and primitive formulations
-		\item Application to adaptivity
-		\item Application to multifluid
-		\item Application to low-Mach
-	\end{itemize}
+		\begin{itemize}
+			\item Introduce a new framework based on both conservative and primitive formulations
+			\item Application to adaptivity
+			\item Application to multifluid
+			\item Application to low-Mach
+			%		\visible<2->{
+				%			\item ...Application to adaptivity
+				%			\item ...Application to multifluid
+				%		}
+		\end{itemize}
 	}
 	
 \end{frame}
 
-\section{Dual Formulation Methods}
+\section{Dual Formulation Framework}
 \frame\sectionpage
 
 
@@ -2084,7 +1800,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 	
 \end{frame}
 
-
+\begin{comment}
 \begin{frame}{Shock--Bubble Interaction}
 	\vspace{0.5em} % Adds some vertical space after the title
 
@@ -2121,17 +1837,13 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 \end{tikzpicture}
 		
 	
-	% Include images
-%	\vspace{1em} % Adds some vertical space between the box and the images
-%	\includegraphics[width=0.3\linewidth]{results/helium_cropped.pdf} % Adjust the path and size
-%	\includegraphics[width=0.3\linewidth]{results/r22_cropped.pdf} % Adjust the path and size
 
 
 
 \end{frame}
+\end{comment}
 
-
-%\begin{comment}
+\begin{comment}
 	\begin{frame}{Shock--Bubble Interaction (Helium top, R22 bottom)}
 		\centering
 		\begin{minipage}[t]{0.9\textwidth}
@@ -2156,7 +1868,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			}%
 		\end{minipage}
 	\end{frame}
-%\end{comment}
+\end{comment}
 
 
 \begin{comment}
@@ -2220,6 +1932,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 \end{frame}
 \end{comment}
 
+\begin{comment}
 \begin{frame}{Shock--Bubble Interaction\footnote{{\tiny J.-F. Haas, B. Sturtevant, 1987, Interaction of weak shock waves with cylindrical and spherical gas inhomogeneities.}}}
 \centering
 
@@ -2240,6 +1953,143 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 \vspace{-7em}
 
 \end{frame}
+\end{comment}
+
+
+\begin{frame}{Shock--Bubble Interaction\footnote{{\tiny J.-F. Haas, B. Sturtevant, 1987, Interaction of weak shock waves with cylindrical and spherical gas inhomogeneities.}}}
+	
+	\centering
+	
+	\begin{tikzpicture}[scale=0.36]
+		% Define the length of the walls
+		\def\length{8}
+		
+		% Wall patterns
+		\fill[pattern=north east lines, pattern color=black!30] 
+		(-\length/2, 4) -- (\length/2, 4) -- (\length/2, 4.3) -- (-\length/2, 4.3) -- cycle;
+		\fill[pattern=north east lines, pattern color=black!30] 
+		(-\length/2, 0) -- (\length/2, 0) -- (\length/2, -0.3) -- (-\length/2, -0.3) -- cycle;
+		
+		% Draw rectangle, centered according to \length
+		\draw[thick] (-\length/2, 0) rectangle (\length/2, 4);
+		
+		% Draw the bubble
+		\draw[thick, fill=blue!30] (0, 2) circle (0.5);
+		
+		% Draw the shock wave
+		\draw[thick] (\length/2 - 2.75, 0) -- (\length/2 - 2.75, 4);
+		
+		% Draw the arrow indicating wave movement towards the left
+		\draw[->, thick] (\length/2 - 2.75, 3) -- (\length/2 - 3.75, 3) 
+		node[midway, above] {\tiny Air};
+		
+		% Labels
+		\node at (0, 1.2) {\tiny Bubble};
+	\end{tikzpicture}
+	
+	\vspace{-0.3em}
+	
+	\begin{columns}[T,onlytextwidth]
+		
+		% =====================================================
+		% Left column: numerical results
+		% =====================================================
+		\begin{column}{0.6\textwidth}
+			
+			% =========================
+			% R22 numerical
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\foreach[count=\k from 1] \index in {30} {%
+					\only<\k>{%
+						\includegraphics[
+						width=0.90\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/Schlieren_rho/frame_\index.png}\\[-0.25em]
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_x/frame_\index.png}%
+						\hfill
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_r22_K_rhou_x_3d_1_K_p_x_2d_1_more_simulations/SmoothID_y/frame_\index.png}%
+					}%
+				}
+			\end{minipage}
+			
+			\vspace{0.35em}
+			
+			% =========================
+			% Helium numerical
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\foreach[count=\k from 1] \index in {30} {%
+					\only<\k>{%
+						\includegraphics[
+						width=0.90\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/Schlieren_rho/frame_\index.png}\\[-0.25em]
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_x/frame_\index.png}%
+						\hfill
+						\includegraphics[
+						width=0.48\linewidth,
+						trim=0cm 0cm 0cm 0.675cm,
+						clip
+						]{Figures_multifluid/output_final_bubble_helium_K_rhou_x_3d_1_K_p_x_4d_1_more_simulations/SmoothID_y/frame_\index.png}%
+					}%
+				}
+			\end{minipage}
+			
+		\end{column}
+		
+		% =====================================================
+		% Right column: experimental comparison
+		% =====================================================
+		\begin{column}{0.40\textwidth}
+			\centering
+			
+			% =========================
+			% R22 experimental
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\includegraphics[
+				width=0.63\linewidth
+				]{Figures_multifluid/numerical_vs_experimental/r22_cropped.pdf}
+			\end{minipage}
+			
+			\vspace{-3.0em}
+			
+			% =========================
+			% Helium experimental
+			% =========================
+			\begin{minipage}[t]{\linewidth}
+				\centering
+				\includegraphics[
+				width=0.63\linewidth
+				]{Figures_multifluid/numerical_vs_experimental/helium_cropped.pdf}
+			\end{minipage}
+			
+		\end{column}
+		
+	\end{columns}
+	
+	
+	\vspace{-2.0em}
+	
+\end{frame}
 
 
 \section{Application to low Mach}
@@ -2247,7 +2097,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 
 \begin{frame}{Motivation, low Mach flows}
 	\centering
-
+	
 	{\footnotesize
 		\begin{align*}
 			\begin{cases}
@@ -2257,175 +2107,175 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 				&E=\frac{p}{\gamma-1}+\frac{1}{2}\rho \norm{\uvec{v}}^2\\
 				&\lambda=\norm{\uvec{v}},\norm{\uvec{v}}\pm \sqrt{\gamma\frac{p}{\rho}} 
 			\end{cases}
-			 \visible<2->{\Rightarrow  
+			\visible<1->{\Rightarrow  
 				\begin{cases}
 					&\rho_t+div_{\uvec{x}}(\rho\bm v)=0\\
 					&(\rho\bm v)_t+div_{\uvec{x}}(\rho\bm v\otimes\bm v)+\frac{1}{\textcolor{violet}{\varepsilon}^2}\nabla_{\uvec{x}} p=\bm 0\\
 					&E_t+div_{\uvec{x}}((E+p)\bm v)=0\\
 					&E=\frac{p}{\gamma-1}+\frac{1}{2}\textcolor{violet}{\varepsilon}^2\rho \norm{\uvec{v}}^2\\ %, \quad \textcolor{violet}{\varepsilon:=\frac{v_0}{\sqrt{\gamma \frac{p_0}{\rho_0}}}}\\
-					&\lambda=\textcolor<2->{blue}{\norm{\uvec{v}}},\textcolor<2->{red}{\norm{\uvec{v}}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
-				\end{cases}}
+					&\lambda=\textcolor<1->{blue}{\norm{\uvec{v}}},\textcolor<1->{red}{\norm{\uvec{v}}\pm \frac{1}{\textcolor{violet}{\varepsilon}}\sqrt{\gamma\frac{p}{\rho}}} 
+			\end{cases}}
 		\end{align*}
-
 		
-			\vspace{0.1cm}
 		
-			\visible<2->{$\textcolor{violet}{\varepsilon}$: \textcolor{blue}{flow speed (entropy/vorticity)} vs \textcolor{red}{acoustic speed (pressure/density perturbations)}}
-			
-			\vspace{0.1cm}
+		\vspace{0.1cm}
+		
+		\visible<1->{$\textcolor{violet}{\varepsilon}$: \textcolor{blue}{flow speed} vs \textcolor{red}{acoustic speed}}
+		
+		\vspace{0.1cm}
+		
+		\visible<1->{
+			Low Mach $\Longleftrightarrow$ \textcolor{violet}{$\varepsilon$} $\longrightarrow$ 0 $\Longleftrightarrow$ \textcolor{blue}{slow flow speed} $<<$ \textcolor{red}{fast acoustic speed}
+		}
+		
+		\vspace{0.3cm}
+		
+	}
 	
-			\visible<3->{
-				Low Mach $\Longleftrightarrow$ \textcolor{violet}{$\varepsilon$} $\longrightarrow$ 0 $\Longleftrightarrow$ \textcolor{blue}{slow flow speed} $<<$ \textcolor{red}{fast acoustic speed}
-			}
-
-			\vspace{0.3cm}
-
-	}
-					
-
+	
 	{\tiny
-
-			\begin{columns}
-
-
-				\begin{column}{0.30\textwidth}
-					\centering
-						\visible<3->{
-							\textbf{Applications}
-								\begin{itemize}
-									\item Atmospheric flows
-									\item Oceanography
-									\item Astrophysical flows
-									\item Industrial flows
-									\item Combustion 
-									\item Reacting flows
-									\item Some astrophysical flows
-									\item etc...
-								\end{itemize}
-						}
-				\end{column}
-				\begin{column}{0.60\textwidth}
-					\centering
-						\visible<4->{
-							\textbf{Issues}	
-								\begin{itemize}
-									\item Stiffness
-										\begin{itemize}
-											\item {\tiny$\max{\vert \lambda \vert}=O(\varepsilon^{-1}) \Rightarrow \Delta t^{\text{Explicit}} = \frac{\Delta x}{\max{\vert \lambda \vert}}=O(\varepsilon)$ }
-											\item {\tiny Implicit $=$ Nonlinear systems \& Diffusion}
-											%\item \textcolor{blue}{IM}\textcolor{red}{EX} (acoustics less resolved but OK)
-										\end{itemize}
-									\visible<4->{\item Asymptotic limit consistency...}
-								\end{itemize}
-						}
-				\end{column}
-			\end{columns}					
+		
+		\begin{columns}
+			
+			
+			\begin{column}{0.30\textwidth}
+				\centering
+				\visible<1->{
+					\textbf{Applications}
+					\begin{itemize}
+						\item Atmospheric flows
+						\item Oceanography
+						\item Astrophysical flows
+						\item Industrial flows
+						\item Combustion 
+						\item Reacting flows
+						\item Some astrophysical flows
+						\item etc...
+					\end{itemize}
+				}
+			\end{column}
+			\begin{column}{0.60\textwidth}
+				\centering
+				\visible<1->{
+					\textbf{Issues}	
+					\begin{itemize}
+						\item Stiffness
+						\begin{itemize}
+							\item {\tiny$\max{\vert \lambda \vert}=O(\varepsilon^{-1}) \Rightarrow \Delta t^{\text{Explicit}} = \frac{\Delta x}{\max{\vert \lambda \vert}}=O(\varepsilon)$ }
+							\item {\tiny Implicit $=$ Nonlinear systems \& Diffusion}
+							%\item \textcolor{blue}{IM}\textcolor{red}{EX} (acoustics less resolved but OK)
+						\end{itemize}
+						\visible<1->{\item Asymptotic limit consistency...}
+					\end{itemize}
+				}
+			\end{column}
+		\end{columns}					
 	}
-					
-					
-
-
+	
+	
+	
+	
 \end{frame}
 
 \begin{frame}{Motivation, low Mach limit}
 	\centering
-
-		\begin{tikzpicture}[scale=1.2, >=stealth]
-			
-			% Nodes
-			\node (A) at (0,2) {$\mathcal{P}^{\Delta x}_{\varepsilon}$};
-			\node (B) at (3,2) {$\mathcal{P}_{\varepsilon}$};
-			\node (C) at (0,0) {$\mathcal{P}^{\Delta x}$};
-			\node (D) at (3,0) {$\mathcal{P}$};
-			
-			% Arrows
-			\draw[->] (A) -- node[above] {\textcolor<1->{green}{$\Delta x \to 0$}} (B);
-			\draw[->] (C) -- node[above] {\textcolor<1->{red}{$\Delta x \to 0$}} (D);
-			\draw[->] (A) -- node[left]  {\textcolor<1->{red}{$\varepsilon \to 0$}} (C);
-			\draw[->] (B) -- node[right] {\textcolor<1->{green}{$\varepsilon \to 0$}} (D);			
-		\end{tikzpicture}
-
-		\vspace{-0.3cm}
-
-
-{\tiny
-	\begin{columns}
-		\begin{column}{0.25\textwidth}
-			\visible<2->{
-				\begin{align*}
-					\begin{cases}
-						&\rho_t+div_{\uvec{x}}(\rho\uvec{v})=0\\
-						&\uvec{v}_t+(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p=\bm 0\\
-						&p_t+\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma pdiv_{\uvec{x}} \uvec{v}=0
-					\end{cases}
-				\end{align*}
-			}
-		\end{column}
-		\begin{column}{0.30\textwidth}
-			\visible<3->{
-				\begin{align*}
-					\begin{cases}
-						&\rho(\uvec{x},t)=\rho^{(0)}(\uvec{x},t)+\ve\rho^{(1)}(\uvec{x},t)+\ve^2\rho^{(2)}(\uvec{x},t)+\dots\\
-						&\uvec{v}(\uvec{x},t)=\uvec{v}^{(0)}(\uvec{x},t)+\ve\uvec{v}^{(1)}(\uvec{x},t)+\ve^2\uvec{v}^{(2)}(\uvec{x},t)+\dots,\\
-						&p(\uvec{x},t)=p^{(0)}(\uvec{x},t)+\ve p^{(1)}(\uvec{x},t)+\ve^2p^{(2)}(\uvec{x},t)+\dots
-					\end{cases}
-				\end{align*}
-			}
-		\end{column}
-	\end{columns}					
-
+	
+	\begin{tikzpicture}[scale=1.2, >=stealth]
+		
+		% Nodes
+		\node (A) at (0,2) {$\mathcal{P}^{\Delta x}_{\varepsilon}$};
+		\node (B) at (3,2) {$\mathcal{P}_{\varepsilon}$};
+		\node (C) at (0,0) {$\mathcal{P}^{\Delta x}$};
+		\node (D) at (3,0) {$\mathcal{P}$};
+		
+		% Arrows
+		\draw[->] (A) -- node[above] {\textcolor<1->{green}{$\Delta x \to 0$}} (B);
+		\draw[->] (C) -- node[above] {\textcolor<1->{red}{$\Delta x \to 0$}} (D);
+		\draw[->] (A) -- node[left]  {\textcolor<1->{red}{$\varepsilon \to 0$}} (C);
+		\draw[->] (B) -- node[right] {\textcolor<1->{green}{$\varepsilon \to 0$}} (D);			
+	\end{tikzpicture}
+	
 	\vspace{-0.3cm}
-
-	\begin{columns}
-		\begin{column}{0.30\textwidth}
-			\visible<4->{
-				\begin{align*}
-					\begin{cases}
-						{\cal O}(\ve^{-2}): &\nabla_{\uvec{x}} p^{(0)}=\uvec{0}\\
-						{\cal O}(\ve^{-1}): &\nabla_{\uvec{x}} p^{(1)}=\uvec{0}\\
-						{\cal O}(1): &\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
-						&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)} \cdot \nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0\\
-						&p^{(0)}_t+\gamma p^{(0)}div_{\uvec{x}}\uvec{v}^{(0)}=0\\
-						{\cal O}(\ve): &p^{(1)}_t+\gamma\big(p^{(1)}div_{\uvec{x}}\uvec{v}^{(0)}+p^{(0)}div_{\uvec{x}}\uvec{v}^{(1)}\big)=0
-					\end{cases}
-				\end{align*}
-			}
-		\end{column}
-		\begin{column}{0.30\textwidth}
-			\centering
-			\visible<5->{
-				\vspace{0.5cm}
-				BC: $p\equiv$ const $\partial \Omega$
-				\vspace{-0.7cm}
-				\begin{align*}
-					\begin{cases}
-						&p^{(0)}\equiv\,\xbar p_0,\quad p^{(1)}\equiv\,\xbar p_1\\
-						&div_{\uvec{x}}\uvec{v}^{(0)}=0,\quad div_{\uvec{x}}\uvec{v}^{(1)}=0\\
-						&\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
-						&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0\\
-					\end{cases}
-				\end{align*}
-			}
-		\end{column}
-	\end{columns}					
-
-	\visible<6->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
-
-}
+	
+	
+	{\tiny
+		\begin{columns}
+			\begin{column}{0.25\textwidth}
+				\visible<2->{
+					\begin{align*}
+						\begin{cases}
+							&\rho_t+div_{\uvec{x}}(\rho\uvec{v})=0\\
+							&\uvec{v}_t+(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p=\bm 0\\
+							&p_t+\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma pdiv_{\uvec{x}} \uvec{v}=0
+						\end{cases}
+					\end{align*}
+				}
+			\end{column}
+			\begin{column}{0.30\textwidth}
+				\visible<2->{
+					\begin{align*}
+						\begin{cases}
+							&\rho(\uvec{x},t)=\rho^{(0)}(\uvec{x},t)+\ve\rho^{(1)}(\uvec{x},t)+\ve^2\rho^{(2)}(\uvec{x},t)+\dots\\
+							&\uvec{v}(\uvec{x},t)=\uvec{v}^{(0)}(\uvec{x},t)+\ve\uvec{v}^{(1)}(\uvec{x},t)+\ve^2\uvec{v}^{(2)}(\uvec{x},t)+\dots,\\
+							&p(\uvec{x},t)=p^{(0)}(\uvec{x},t)+\ve p^{(1)}(\uvec{x},t)+\ve^2p^{(2)}(\uvec{x},t)+\dots
+						\end{cases}
+					\end{align*}
+				}
+			\end{column}
+		\end{columns}					
+		
+		\vspace{-0.3cm}
+		
+		\begin{columns}
+			\begin{column}{0.30\textwidth}
+				\visible<2->{
+					\begin{align*}
+						\begin{cases}
+							{\cal O}(\ve^{-2}): &\nabla_{\uvec{x}} p^{(0)}=\uvec{0}\\
+							{\cal O}(\ve^{-1}): &\nabla_{\uvec{x}} p^{(1)}=\uvec{0}\\
+							{\cal O}(1): &\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
+							&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)} \cdot \nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0\\
+							&p^{(0)}_t+\gamma p^{(0)}div_{\uvec{x}}\uvec{v}^{(0)}=0\\
+							{\cal O}(\ve): &p^{(1)}_t+\gamma\big(p^{(1)}div_{\uvec{x}}\uvec{v}^{(0)}+p^{(0)}div_{\uvec{x}}\uvec{v}^{(1)}\big)=0
+						\end{cases}
+					\end{align*}
+				}
+			\end{column}
+			\begin{column}{0.30\textwidth}
+				\centering
+				\visible<2->{
+					\vspace{0.5cm}
+					BC: $p\equiv$ const $\partial \Omega$
+					\vspace{-0.7cm}
+					\begin{align*}
+						\begin{cases}
+							&\textcolor{violet}{p^{(0)}\equiv\,\xbar p_0,\quad p^{(1)}\equiv\,\xbar p_1}\\
+							&\textcolor{violet}{div_{\uvec{x}}\uvec{v}^{(0)}=0,\quad div_{\uvec{x}}\uvec{v}^{(1)}=0}\\
+							&\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
+							&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0\\
+						\end{cases}
+					\end{align*}
+				}
+			\end{column}
+		\end{columns}					
+		
+		\visible<2->{Low Mach $\Rightarrow$ No shocks $\Rightarrow$ Primitive formulation OK}
+		
+	}
 	
 \end{frame}
 
-\begin{frame}{IMEX (for the primitive system)}
+\begin{frame}{IMEX (for the primitive system)\footnote{{\tiny Haack, Jin, Liu, An all-speed asymptotic-preserving method for the isentropic Euler and Navier-Stokes equations, 2012}}}
 	\centering
 	
 	%Let us work with the primitive system
 	%But we'll need to keep conservation into account later
 	
 	{\footnotesize Explicit and implicit do not work $\Rightarrow$ \textcolor{red}{IM}\textcolor{blue}{EX}}
-
+	
 	\vspace{0.5cm}
-
-	\visible<3->{
+	
+	\visible<1->{
 		{\tiny
 			$\pm \frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p$ in $\uvec{v}$-equation,
 			$\pm \gamma p_{\min}div_{\uvec{x}}\uvec{v}$ in $p$-equation\\
@@ -2435,28 +2285,28 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 	
 	
 	{\footnotesize 	
-			$$\visible<2->{\begin{cases}
+		$$\visible<1->{\begin{cases}
 				&\rho_t+\textcolor{black}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
 				&\uvec{v}_t+\textcolor{black}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}}+\textcolor{black}{\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p}=\bm 0\\
 				&p_t+\textcolor{black}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma p div_{\uvec{x}} \uvec{v}}=0
-				\end{cases}}~\visible<3->{\Rightarrow~\begin{cases}
-				&\rho_t+\textcolor<4->{blue}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
-				&\uvec{v}_t+\textcolor<4->{blue}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\,\nabla_{\uvec{x}} p}=\textcolor<4->{red}{-\frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p}\\
-				&p_t+\textcolor<4->{blue}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma(p-p_{\min})div_{\uvec{x}}\uvec{v}}=\textcolor<4->{red}{-\gamma p_{\min}div_{\uvec{x}}\uvec{v}}
-			\end{cases}}$$
+		\end{cases}}~\visible<1->{\Rightarrow~\begin{cases}
+				&\rho_t+\textcolor<1->{blue}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
+				&\uvec{v}_t+\textcolor<1->{blue}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}+\frac{\rho_{\max}-\rho}{\ve^2\rho\rho_{\max}}\,\nabla_{\uvec{x}} p}=\textcolor<1->{red}{-\frac{1}{\ve^2\rho_{\max}}\nabla_{\uvec{x}} p}\\
+				&p_t+\textcolor<1->{blue}{\uvec{v}\!\cdot\!\nabla_{\uvec{x}} p+\gamma(p-p_{\min})div_{\uvec{x}}\uvec{v}}=\textcolor<1->{red}{-\gamma p_{\min}div_{\uvec{x}}\uvec{v}}
+		\end{cases}}$$
 	}
-	\visible<5->{
+	\visible<2->{
 		{\footnotesize 	
 			$$\lambda=\norm{\uvec{v}},\norm{\uvec{v}}\pm \frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(p-p_{\min})}{\rho\rho_{\max}}}$$
 			$\frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(\textcolor{teal}{p-p_{\min}})}{\rho\rho_{\max}}}\in \mathbb{R}$ and $=O(1)$ because $\textcolor{teal}{p=p_0+\ve p_1+O(\ve^2)}$\\
 		}
 	}
-	\visible<5->{$\dt=\frac{\Delta x}{\max \vert \lambda \vert}$ independent of $\ve$}
-		
+	\visible<2->{$\dt=\frac{\Delta x}{\max \vert \lambda \vert}$ independent of $\ve$}
+	
 \end{frame}
 
 
-\begin{frame}{IMEX-Euler}
+\begin{frame}{IMEX-Euler operational details}
 	\centering
 	
 	\begin{align*}
@@ -2468,13 +2318,8 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 	\end{align*}
 	
 	
-%	\begin{align*}
-%		\begin{cases}	&\frac{\rho^{n+1}-\rho^n}{\dt}+\textcolor{blue}{div_{\uvec{x}}(\rho^n\uvec{v}^n)}=0,\\
-%			&\frac{\uvec{v}^{n+1}-\uvec{v}^n}{\dt}+\textcolor{blue}{(\uvec{v}^n\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^n+\frac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\,\nabla p^n}+\textcolor{red}{\frac{1}{\ve^2\rho_{\max}^n}\nabla_{\uvec{x}} p^{n+1}}=\bm 0\\
-%			&\frac{p^{n+1}-p^n}{\dt}+\textcolor{blue}{\uvec{v}^n\!\cdot\!\nabla p^n+\gamma(p^n-p_{\min}^n)div_{\uvec{x}}\uvec{v}^n}+\textcolor{red}{\gamma p_{\min}^n div_{\uvec{x}}\uvec{v}^{n+1}}=0
-%		\end{cases}
-%	\end{align*}
-
+	
+	
 	Advantage: \textbf{Linear} system in $p^{n+1}$ and $\uvec{v}^{n+1}$\\
 	\visible<2->{We can do better... Take divergence of $\textcolor{violet}{\uvec{v}^{n+1}}$ and plug it in $p^{n+1}$}
 	\visible<2->{
@@ -2486,72 +2331,70 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 		}
 	}
 	\visible<2->{
-			$$\Updownarrow$$
-			$$-\textcolor{red}{\Delta_{\uvec{x}} p^{n+1}}+\frac{\ve^2\rho_{\max}^n}{\dt^2\gamma p_{\min}^n}p^{n+1}=\text{rhs}^n$$
-			Well--posed elliptic problem and then explicit update for $\uvec{v}^{n+1}$
+		$$\Updownarrow$$
+		$$-\textcolor{red}{\Delta_{\uvec{x}} p^{n+1}}+\frac{\ve^2\rho_{\max}^n}{\dt^2\gamma p_{\min}^n}p^{n+1}=\text{rhs}^n$$
+		Well--posed elliptic problem and then explicit update for $\uvec{v}^{n+1}$
 	}
-		
-
-
-
 	
 \end{frame}
 
 \begin{frame}{IMEX-Euler is AP}
-%	\centering
-
-		{\footnotesize
-			Starting from $(\rho^{n},\uvec{v}^{n},p^{n})$ compatible with the asymptotic limit, i.e.,
-			\begin{equation}
-				\begin{aligned}
-					\begin{cases}
-						&\rho^n=\rho^{(0),n}+\ve\rho^{(1),n}+\ve^2\rho^{(2),n}+\dots\\
-						&\uvec{v}^n=\uvec{v}^{(0),n}+\ve\uvec{v}^{(1),n}+\ve^2\uvec{v}^{(2),n}+\dots\\
-						&p^n=p^{(0),n}+\ve p^{(1),n}+\ve^2p^{(2),n}+\dots
-					\end{cases}
-					\label{eq:expansion}
-				\end{aligned}
-			\end{equation}
-			with
-			\begin{equation}
-				\begin{aligned}
-					\begin{cases}
-						&p^{(0),n}\equiv\,\xbar p_0,\quad p^{(1),n}\equiv\,\xbar p_1,\\
-						&div_{\uvec{x}}\uvec{v}^{(0),n}=0,\quad div_{\uvec{x}}\uvec{v}^{(1),n}=0,
-					\end{cases}
-				\label{eq:p_v}
-				\end{aligned}
-			\end{equation}
+	%	\centering
 	
-			and assuming BCs compatible with the asymptotic limit
-			\begin{equation*}
-				p\equiv\,\text{const},\quad \partial\Omega,
-			\end{equation*}
-			then, $(\rho^{n+1},\uvec{v}^{n+1},p^{n+1})$ admits an expansion of the type~\eqref{eq:expansion}, satisfying~\eqref{eq:p_v},
-			and the data are associated with a consistent discretization of 
-			$$
-			\begin{cases}
+	{\footnotesize
+		Starting from $(\rho^{n},\uvec{v}^{n},p^{n})$ compatible with the asymptotic limit, i.e.,
+		\begin{equation}
+			\begin{aligned}
+				\begin{cases}
+					&\rho^n=\rho^{(0),n}+\ve\rho^{(1),n}+\ve^2\rho^{(2),n}+\dots\\
+					&\uvec{v}^n=\uvec{v}^{(0),n}+\ve\uvec{v}^{(1),n}+\ve^2\uvec{v}^{(2),n}+\dots\\
+					&p^n=p^{(0),n}+\ve p^{(1),n}+\ve^2p^{(2),n}+\dots
+				\end{cases}
+				\label{eq:expansion}
+			\end{aligned}
+		\end{equation}
+		with
+		\begin{equation}
+			\begin{aligned}
+				\begin{cases}
+					&p^{(0),n}\equiv\,\xbar p_0,\quad p^{(1),n}\equiv\,\xbar p_1,\\
+					&div_{\uvec{x}}\uvec{v}^{(0),n}=0,\quad div_{\uvec{x}}\uvec{v}^{(1),n}=0,
+				\end{cases}
+				\label{eq:p_v}
+			\end{aligned}
+		\end{equation}
+		
+		and assuming BCs compatible with the asymptotic limit
+		\begin{equation*}
+			p\equiv\,\text{const},\quad \partial\Omega,
+		\end{equation*}
+		then, $(\rho^{n+1},\uvec{v}^{n+1},p^{n+1})$ admits an expansion of the type~\eqref{eq:expansion}, satisfying~\eqref{eq:p_v},
+		and the data are associated with a consistent discretization of 
+		$$
+		\begin{cases}
 			&\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
 			&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)} \cdot \nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0
-			\end{cases}
-			$$		
-		}
-
-
-		\visible<1->{
-		
-			{\tiny 	Second order extension (but also arbitrary HO) with DeC}	
+		\end{cases}
+		$$		
+	}
 	
-		}
-
+	
+	\visible<1->{
+		
+		{\tiny 	Second order extension (but also arbitrary HO) with DeC}	
+		
+	}
+	
 \end{frame}
+
+
 
 \begin{frame}{What about shocks?}
 	\centering
 	
 	
 	
-
+	
 	What about conservation? What about high Mach? $\Rightarrow$ Post--processing
 	
 	\visible<1->{	
@@ -2563,10 +2406,10 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			$$\textcolor{blue}{s(1)=0},\quad \textcolor{red}{s(0)=1}$$
 			
 		\end{itemize}
-	
+		
 		\begin{figure}[ht!]
 			\centerline{\includegraphics[width=0.5\textwidth]{Figures_AP/switching_function}}
-	%		\caption{\sf Switching function $s(\varepsilon)$ plotted with respect to $1/\ve$.\label{fig31}}
+			%		\caption{\sf Switching function $s(\varepsilon)$ plotted with respect to $1/\ve$.\label{fig31}}
 		\end{figure}
 	}
 	
@@ -2577,7 +2420,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 
 \begin{frame}{Numerical results, smooth unsteady vortex}
 	\centering
-
+	
 	{\tiny
 		\begin{equation*}
 			\begin{aligned}
@@ -2589,74 +2432,74 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 		\end{equation*}
 		where $\bm x_r(x,y,t)=(x_r,y_r)^\top:=(x-t,y-t)^\top$.
 	}
-
+	
 	\begin{figure}[ht!]
 		\centerline{\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_rho.pdf}~%\hspace*{0.8cm}
-		\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_u.pdf}~%\hspace*{0.8cm}
-		\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_v.pdf}~
-		\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_p.pdf}}
-%		\caption{\sf Example 1: Convergence analysis.\label{fig42}}
+			\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_u.pdf}~%\hspace*{0.8cm}
+			\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_v.pdf}~
+			\includegraphics[width=0.23\textwidth]{Figures_AP/AP_paper_convergence_low_mach_vortex_64_512_CFL0.475_p.pdf}}
+		%		\caption{\sf Example 1: Convergence analysis.\label{fig42}}
 	\end{figure}
-
+	
 \end{frame}
 
 \begin{frame}{Numerical results, Gresho vortex}
 	\centering
-
+	
 	\vspace{-0.5cm}
-
+	
 	{\tiny
-	\begin{columns}
-		\begin{column}{0.30\textwidth}
-			\begin{align*}
-				\begin{cases}
-					\rho(r)\equiv1,\\ 
-					u(r)=-\frac{y_r}{r}\psi(r),\\ 
-					v(r)=\frac{x_r}{r}\psi(r),
-				\end{cases}\quad 
-				p(r)&=\begin{cases}
-					1+12.5\ve^2r^2,&r<0.2,\\
-					1+\ve^2\left(4\ln(5r)+4-20r+12.5r^2\right),&0.2\le r<0.4,\\
-					1+\ve^2(4\ln2-2),&r\ge0.4,
-				\end{cases}
-			\end{align*}
-		\end{column}
-		\begin{column}{0.30\textwidth}
-			\begin{align*}
-				\psi(r):=\begin{cases}
-					5r,&r<0.2,\\
-					2-5r,&0.2\le r<0.4,\\
-					0,&r\ge0.4.
-				\end{cases},\quad T_f=1
+		\begin{columns}
+			\begin{column}{0.30\textwidth}
+				\begin{align*}
+					\begin{cases}
+						\rho(r)\equiv1,\\ 
+						u(r)=-\frac{y_r}{r}\psi(r),\\ 
+						v(r)=\frac{x_r}{r}\psi(r),
+					\end{cases}\quad 
+					p(r)&=\begin{cases}
+						1+12.5\ve^2r^2,&r<0.2,\\
+						1+\ve^2\left(4\ln(5r)+4-20r+12.5r^2\right),&0.2\le r<0.4,\\
+						1+\ve^2(4\ln2-2),&r\ge0.4,
+					\end{cases}
 				\end{align*}
-		\end{column}
-	\end{columns}
+			\end{column}
+			\begin{column}{0.30\textwidth}
+				\begin{align*}
+					\psi(r):=\begin{cases}
+						5r,&r<0.2,\\
+						2-5r,&0.2\le r<0.4,\\
+						0,&r\ge0.4.
+					\end{cases},\quad T_f=1
+				\end{align*}
+			\end{column}
+		\end{columns}
 	}
-
+	
 	\vspace{-0.2cm}
-
+	
 	\begin{figure}[ht!]
-		\centerline{\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_initial}}
-%		\vskip8pt
-		\centerline{\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps0.1_CFL0.475}\hspace*{0.1cm}
-			\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps0.01_CFL0.475}\hspace*{0.1cm}
-			\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps0.001_CFL0.475}}
-%		\vskip8pt
-		\centerline{\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps0.0001_CFL0.475}\hspace*{0.1cm}
-			\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps1e-05_CFL0.475}\hspace*{0.1cm}
-			\includegraphics[width=0.25\textwidth]{Figures_AP/gresho_T1_eps1e-06_CFL0.475}}
-%		\caption{\sf Example 2: Initial local Mach number independently of $\ve$ (top) and local Mach number at $t=1$ for different values of $\ve$.
-%			\label{fig43}}
+		\centerline{\includegraphics[width=0.25\textwidth]{Figures_AP/V_gresho_initial}}
+		%		\vskip8pt
+		\centerline{\includegraphics[width=0.25\textwidth]{Figures_AP/V_gresho_T1_eps0.1_CFL0.475}\hspace*{0.1cm}
+			\includegraphics[width=0.25\textwidth]{Figures_AP/V_gresho_T1_eps0.01_CFL0.475}\hspace*{0.1cm}
+			\includegraphics[width=0.25\textwidth]{Figures_AP/V_gresho_T1_eps0.001_CFL0.475}}
+		%		\vskip8pt
+		\centerline{\includegraphics[width=0.25\textwidth]{Figures_AP/V_gresho_T1_eps0.0001_CFL0.475}\hspace*{0.1cm}
+			\includegraphics[width=0.25\textwidth]{Figures_AP/V_gresho_T1_eps1e-05_CFL0.475}\hspace*{0.1cm}
+			\includegraphics[width=0.25\textwidth]{Figures_AP/V_gresho_T1_eps1e-06_CFL0.475}}
+		%		\caption{\sf Example 2: Initial local Mach number independently of $\ve$ (top) and local Mach number at $t=1$ for different values of $\ve$.
+			%			\label{fig43}}
 	\end{figure}
-
+	
 \end{frame}
 
 
 \begin{frame}{Numerical results, Double shear layer, $T_f=6$}
 	\centering
-
+	
 	\vspace{-0.5cm}
-
+	
 	{\tiny
 		\begin{align*}
 			&\rho(x,y,0)\equiv\frac{\pi}{15},\quad
@@ -2667,9 +2510,9 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			v(x,y,0)=0.05\sin (x),\quad p(x,y,0)\equiv\frac{1}{\gamma},
 		\end{align*}
 	}
-
+	
 	\vspace{-0.2cm}
-
+	
 	\begin{figure}[ht!]
 		\centerline{\includegraphics[width=0.22\textwidth]{Figures_AP/double_shear_layer_initial_vorticity}}
 		%		\vskip8pt
@@ -2681,15 +2524,15 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000006.0000000.dat_eps1e-05_CFL0.1}\hspace*{0.1cm}
 			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000006.0000000.dat_eps1e-06_CFL0.1}}
 	\end{figure}
-
-
+	
+	
 \end{frame}
 
 \begin{frame}{Numerical results, Double shear layer, $T_f=10$}
 	\centering
-
+	
 	\vspace{-0.5cm}
-
+	
 	{\tiny
 		\begin{align*}
 			&\rho(x,y,0)\equiv\frac{\pi}{15},\quad
@@ -2714,28 +2557,28 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps1e-05_CFL0.1}\hspace*{0.1cm}
 			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps1e-06_CFL0.1}}
 	\end{figure}
-
-
-\end{frame}
-
-
-\begin{frame}{Numerical results, Explosion problem}
-	\centering
 	
-	{\tiny
-	$$
-	(\rho,u,v,p)(x,y,0)=\begin{cases}(1,0,0,1),&\sqrt{x^2+y^2}<0.4,\\(0.125,0,0,0.1),&\mbox{otherwise},\end{cases}
-	$$
-	}
-
-
-	\begin{figure}[ht!]
-		\centerline{\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d1.0_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.9_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.6_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.3_with_timestep_relaxation_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}}
-%		\caption{\sf Example 5: Surface plot of density for different values of $\ve$ and corresponding times.\label{fig49}}
-	\end{figure}
-
-
+	
 \end{frame}
+
+
+%\begin{frame}{Numerical results, Explosion problem}
+%	\centering
+%	
+%	{\tiny
+	%		$$
+	%		(\rho,u,v,p)(x,y,0)=\begin{cases}(1,0,0,1),&\sqrt{x^2+y^2}<0.4,\\(0.125,0,0,0.1),&\mbox{otherwise},\end{cases}
+	%		$$
+	%	}
+%	
+%	
+%	\begin{figure}[ht!]
+	%		\centerline{\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d1.0_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.9_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.6_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}~\includegraphics[width=0.25\textwidth, trim=200 260 190 250, clip]{Figures_AP/new_sod2d0.3_with_timestep_relaxation_rho_3d_time_scheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475}}
+	%		%		\caption{\sf Example 5: Surface plot of density for different values of $\ve$ and corresponding times.\label{fig49}}
+	%	\end{figure}
+%	
+%	
+%\end{frame}
 
 
 \begin{frame}{Numerical results, Explosion problem}
@@ -2748,42 +2591,34 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 	}
 	
 	\begin{figure}[ht!]
-	
-	\begin{subfigure}{0.48\textwidth}
-		\includegraphics[width=\linewidth]{Figures_AP/new_sod2d1.0_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
-		\caption*{$\varepsilon=1.0$}
-	\end{subfigure}\quad
-	\begin{subfigure}{0.48\textwidth}
-		\includegraphics[width=\linewidth]{Figures_AP/new_sod2d0.9_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
-		\caption*{$\varepsilon=0.9$}
-	\end{subfigure}
-	
-	\vskip3pt
-	
-	\begin{subfigure}{0.48\textwidth}
-		\includegraphics[width=\linewidth]{Figures_AP/new_sod2d0.6_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
-		\caption*{$\varepsilon=0.6$}
-	\end{subfigure}\quad
-	\begin{subfigure}{0.48\textwidth}
-		\includegraphics[width=\linewidth]{Figures_AP/new_sod2d0.3_with_timestep_relaxation_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
-		\caption*{$\varepsilon=0.3$}
-	\end{subfigure}
-	
-	\caption{Diagonal slices $y=x$}
+		
+		\begin{subfigure}{0.48\textwidth}
+			\includegraphics[width=\linewidth]{Figures_AP/new_sod2d1.0_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
+			\caption*{$\varepsilon=1.0$}
+		\end{subfigure}\quad
+		\begin{subfigure}{0.48\textwidth}
+			\includegraphics[width=\linewidth]{Figures_AP/new_sod2d0.9_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
+			\caption*{$\varepsilon=0.9$}
+		\end{subfigure}
+		
+		\vskip3pt
+		
+		\begin{subfigure}{0.48\textwidth}
+			\includegraphics[width=\linewidth]{Figures_AP/new_sod2d0.6_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
+			\caption*{$\varepsilon=0.6$}
+		\end{subfigure}\quad
+		\begin{subfigure}{0.48\textwidth}
+			\includegraphics[width=\linewidth]{Figures_AP/new_sod2d0.3_with_timestep_relaxation_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
+			\caption*{$\varepsilon=0.3$}
+		\end{subfigure}
+		
+		\caption{Diagonal slices $y=x$}
 	\end{figure}	
 	
-%	\begin{figure}[ht!]
-%		\includegraphics[width=0.45\textwidth]{Figures_AP/new_sod2d1.0_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}\quad
-%%		\vskip3pt
-%		\includegraphics[width=0.45\textwidth]{Figures_AP/new_sod2d0.9_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}\\
-%		\vskip3pt
-%		\includegraphics[width=0.45\textwidth]{Figures_AP/new_sod2d0.6_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}\quad
-%%		\vskip3pt
-%		\includegraphics[width=0.45\textwidth]{Figures_AP/new_sod2d0.3_with_timestep_relaxation_timescheme_IMEX_DeC2_Prim_Explicit_Cons_CFL0.475_V_compare_diag}
-%	\end{figure}
 	
 	
 \end{frame}
+
 
 \section{Conclusions}
 \frame\sectionpage
