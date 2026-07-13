@@ -853,69 +853,69 @@ text centered]
 \frame\sectionpage
 
 
-\begin{frame}
-	\frametitle{Motivation}
-	
-	\begin{definition}[Method of order $P$]
-		On smooth problems, $\text{error}=\norm{\uvec{u}^{\text{num}}-\uvec{u}^{\text{ex}}}\approx O(\Delta^P)$
-	\end{definition}
-	
-	\centering
-	
-	\visible<1->{In general, HO > LO}
-	
-	\vspace{0.4cm}
-	
-	\visible<1->{ Fixed accuracy $\Rightarrow$ Coarser discretizations $\Rightarrow$ Shorter times 
-		
-		
-		\begin{figure}
-			% Equal length
-			\centering
-			\subcaptionbox*{Error vs $\Delta$}{\includegraphics[width=1.6in]{HO/ConvAn.pdf}}\hspace{1em}%
-			\subcaptionbox*{Error vs time}{\includegraphics[width=1.6in]{HO/ErrTime.pdf}}%
-		\end{figure}  
-		
-		
-	}
-	
-	
-\end{frame}
-
-
-
-
-
-\begin{frame}
-	\frametitle{Motivation}
-	
-	\centering
-	
-	Real applications  $\Rightarrow$ Discontinuities $\Rightarrow$ Problems 
-		\begin{columns}
-			\begin{column}{0.40\textwidth}
-				\begin{itemize}
-					\item First order convergence
-					\item Spurious oscillations  
-				\end{itemize} 
-			\end{column}
-			\begin{column}{0.40\textwidth}
-				\begin{figure}[hp] 
-					\centering{\includegraphics[scale=0.35]{HO/FW.png}}
-				\end{figure}
-			\end{column}
-		\end{columns}
-
-
-	\vspace{1cm}
-
-	\visible<2->{
-		Discontinuities do not cover the whole domain
-		$$\Downarrow$$	
-		Adaptivity, shock detectors, local switch to low order
-	}
-	
-\end{frame}
+%\begin{frame}
+%	\frametitle{Motivation}
+%	
+%	\begin{definition}[Method of order $P$]
+%		On smooth problems, $\text{error}=\norm{\uvec{u}^{\text{num}}-\uvec{u}^{\text{ex}}}\approx O(\Delta^P)$
+%	\end{definition}
+%	
+%	\centering
+%	
+%	\visible<1->{In general, HO > LO}
+%	
+%	\vspace{0.4cm}
+%	
+%	\visible<1->{ Fixed accuracy $\Rightarrow$ Coarser discretizations $\Rightarrow$ Shorter times 
+%		
+%		
+%		\begin{figure}
+%			% Equal length
+%			\centering
+%			\subcaptionbox*{Error vs $\Delta$}{\includegraphics[width=1.6in]{HO/ConvAn.pdf}}\hspace{1em}%
+%			\subcaptionbox*{Error vs time}{\includegraphics[width=1.6in]{HO/ErrTime.pdf}}%
+%		\end{figure}  
+%		
+%		
+%	}
+%	
+%	
+%\end{frame}
+%
+%
+%
+%
+%
+%\begin{frame}
+%	\frametitle{Motivation}
+%	
+%	\centering
+%	
+%	Real applications  $\Rightarrow$ Discontinuities $\Rightarrow$ Problems 
+%		\begin{columns}
+%			\begin{column}{0.40\textwidth}
+%				\begin{itemize}
+%					\item First order convergence
+%					\item Spurious oscillations  
+%				\end{itemize} 
+%			\end{column}
+%			\begin{column}{0.40\textwidth}
+%				\begin{figure}[hp] 
+%					\centering{\includegraphics[scale=0.35]{HO/FW.png}}
+%				\end{figure}
+%			\end{column}
+%		\end{columns}
+%
+%
+%	\vspace{1cm}
+%
+%	\visible<2->{
+%		Discontinuities do not cover the whole domain
+%		$$\Downarrow$$	
+%		Adaptivity, shock detectors, local switch to low order
+%	}
+%	
+%\end{frame}
 
 
 
@@ -1242,93 +1242,132 @@ text centered]
 \end{frame}
 
 
-\begin{frame}
-	\frametitle{Adaptivity, Shock-Density Wave Interaction Problem}
-
-		\begin{equation*}
-			(\rho(x,0),u(x,0),p(x,0))=
-			\begin{cases}\bigg(\dfrac{27}{7},\dfrac{4\sqrt{35}}{9},\dfrac{31}{3}\bigg),&x<-4,\\(1+0.2\sin(5x),0,1),&x>-4,\end{cases}
-		\end{equation*}
-	
-		\begin{figure}[ht!]
-			\centerline{\includegraphics[trim=0.1cm 0.0cm 0.0cm 0.1cm, clip, width=0.5\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho}%\hspace*{0.8cm}
-				\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho_zoom}}
-%				\caption*{Same computational time}
-%			\caption{\sf Example 1: Density $\rho$ computed by the adaptive and A-WENO scheme with $\dx=2/87$ and $\dx=1/30$, respectively (left) and
-%				zoom at $x\in[8.9,14]$ (right).\label{fig52}}
-		\end{figure}
-
-		%RMK: SAME COMPUTATIONAL TIME HERE
-		%RMK: SAME MESH REFINEMENT IN THE NEXT TESTS
-
-\end{frame}
-
 
 \begin{frame}
-	\frametitle{Adaptivity, Woodward--Colella}
+	\frametitle{Shock-Turbulence Interaction and Woodward--Colella}
 	
-	\begin{equation*}
-		(\rho(x,0),u(x,0),p(x,0))= \begin{cases}(1,0,1000),&x<0.1,\\(1,0,0.01),& 0.1<x<0.9,\\(1,0,100),&x>0.9,\end{cases}
-	\end{equation*}
 	
 	\begin{figure}[ht!]
-		\centerline{\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.49\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho}%\hspace*{0.8cm}
-			\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho_zoom}}
-%				\caption*{From now on, same mesh refinement}
-		%			\caption{\sf Example 3: Density $\rho$ (left) and zoom at $x\in[0.56,0.62]$ (right).\label{fig54}}
+		\centering
+		\includegraphics[trim=0.1cm 0.0cm 0.0cm 0.1cm, clip, width=0.4\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho}%\hspace*{0.8cm}
+		\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.42\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho_zoom}\\
+		\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.4\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho}%\hspace*{0.8cm}
+		\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.42\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho_zoom}
 	\end{figure}
 	
-	%RMK: SAME MESH REFINEMENT
+	%RMK: SAME COMPUTATIONAL TIME HERE
+	%RMK: SAME MESH REFINEMENT IN THE NEXT TESTS
 	
 \end{frame}
 
+%\begin{frame}
+%	\frametitle{Adaptivity, Shock-Density Wave Interaction Problem}
+%
+%		\begin{equation*}
+%			(\rho(x,0),u(x,0),p(x,0))=
+%			\begin{cases}\bigg(\dfrac{27}{7},\dfrac{4\sqrt{35}}{9},\dfrac{31}{3}\bigg),&x<-4,\\(1+0.2\sin(5x),0,1),&x>-4,\end{cases}
+%		\end{equation*}
+%	
+%		\begin{figure}[ht!]
+%			\centerline{\includegraphics[trim=0.1cm 0.0cm 0.0cm 0.1cm, clip, width=0.5\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho}%\hspace*{0.8cm}
+%				\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_4_Mesh_600_vs_870_rho_zoom}}
+%%				\caption*{Same computational time}
+%%			\caption{\sf Example 1: Density $\rho$ computed by the adaptive and A-WENO scheme with $\dx=2/87$ and $\dx=1/30$, respectively (left) and
+%%				zoom at $x\in[8.9,14]$ (right).\label{fig52}}
+%		\end{figure}
+%
+%		%RMK: SAME COMPUTATIONAL TIME HERE
+%		%RMK: SAME MESH REFINEMENT IN THE NEXT TESTS
+%
+%\end{frame}
+%
+%
+%\begin{frame}
+%	\frametitle{Adaptivity, Woodward--Colella}
+%	
+%	\begin{equation*}
+%		(\rho(x,0),u(x,0),p(x,0))= \begin{cases}(1,0,1000),&x<0.1,\\(1,0,0.01),& 0.1<x<0.9,\\(1,0,100),&x>0.9,\end{cases}
+%	\end{equation*}
+%	
+%	\begin{figure}[ht!]
+%		\centerline{\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.49\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho}%\hspace*{0.8cm}
+%			\includegraphics[trim=0.1cm 0.1cm 0.1cm 0.0cm, clip, width=0.52\textwidth]{Figures_adaptivity/260111_1D_Euler_3_Mesh_400_rho_zoom}}
+%%				\caption*{From now on, same mesh refinement}
+%		%			\caption{\sf Example 3: Density $\rho$ (left) and zoom at $x\in[0.56,0.62]$ (right).\label{fig54}}
+%	\end{figure}
+%	
+%	%RMK: SAME MESH REFINEMENT
+%	
+%\end{frame}
+
 \begin{frame}
-	\frametitle{Adaptivity, 2-D Riemann problem, Configuration 3}
+	\frametitle{2-D tests}
 
-\begin{figure}[ht!]
-	\centerline{\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}
-		\hspace*{0.5cm}
-		\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/uniform_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}}
-	\vskip10pt
-	\hspace*{-0.2cm}\centerline{\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDX}
-		\hspace*{1.0cm}
-		\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDY}}
-%	\caption{\sf Example 4 (Configuration 3): Same as in Figure \ref{fig55} but for the mesh with $\dx=\dy=3/2000$.\label{fig56}}
-\end{figure}
-
-
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Adaptivity, 2-D Riemann problem, Configuration 12}
 		\begin{figure}[ht!]
-			\centerline{\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}
-				\hspace*{0.5cm}
-				\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}}
-			\vskip10pt   
-			\hspace*{-0.2cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDX}
-				\hspace*{1.0cm}
-				\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDY}}
-%			\caption{\sf Example 4 (Configuration 12): Same as in Figure \ref{fig57} but for the mesh with $\dx=\dy=3/4000$.\label{fig58}}
+			\centerline{\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}
+			\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/uniform_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDX}
+			\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDY}}
+			\centerline{\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}
+			\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/uniform_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}
+			\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDX}
+			\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDY}}
+			\centerline{\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}
+			\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/uniform_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}
+			\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDX}
+			\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDY}}
 		\end{figure}
 
+
 \end{frame}
 
 
-\begin{frame}
-	\frametitle{Adaptivity, Implosion problem}
-		\begin{figure}[ht!]
-			\centerline{\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}
-				\hspace*{0.5cm}
-				\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}}
-			\vskip10pt
-			\hspace*{-0.3cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDX}\hspace*{1.1cm}
-				\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDY}}
-%			\caption{\sf Example 5: Same as in Figure \ref{fig59} but with $\dx = 3/4000$.\label{fig510}}
-		\end{figure}
-	
-\end{frame}
+%\begin{frame}
+%	\frametitle{Adaptivity, 2-D Riemann problem, Configuration 3}
+%
+%\begin{figure}[ht!]
+%	\centerline{\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}
+%		\hspace*{0.5cm}
+%		\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.35\textwidth]{Figures_adaptivity/uniform_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}}
+%	\vskip10pt
+%	\hspace*{-0.2cm}\centerline{\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDX}
+%		\hspace*{1.0cm}
+%		\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.31\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDY}}
+%%	\caption{\sf Example 4 (Configuration 3): Same as in Figure \ref{fig55} but for the mesh with $\dx=\dy=3/2000$.\label{fig56}}
+%\end{figure}
+%
+%
+%\end{frame}
+
+
+%\begin{frame}
+%	\frametitle{Adaptivity, 2-D Riemann problem, Configuration 12}
+%		\begin{figure}[ht!]
+%			\centerline{\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}
+%				\hspace*{0.5cm}
+%				\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}}
+%			\vskip10pt   
+%			\hspace*{-0.2cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDX}
+%				\hspace*{1.0cm}
+%				\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.305\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDY}}
+%%			\caption{\sf Example 4 (Configuration 12): Same as in Figure \ref{fig57} but for the mesh with $\dx=\dy=3/4000$.\label{fig58}}
+%		\end{figure}
+%
+%\end{frame}
+
+
+%\begin{frame}
+%	\frametitle{Adaptivity, Implosion problem}
+%		\begin{figure}[ht!]
+%			\centerline{\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}
+%				\hspace*{0.5cm}
+%				\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.34\textwidth]{Figures_adaptivity/uniform_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}}
+%			\vskip10pt
+%			\hspace*{-0.3cm}\centerline{\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDX}\hspace*{1.1cm}
+%				\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.30\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDY}}
+%%			\caption{\sf Example 5: Same as in Figure \ref{fig59} but with $\dx = 3/4000$.\label{fig510}}
+%		\end{figure}
+%	
+%\end{frame}
 
 \begin{frame}
 	\frametitle{Adaptivity, Parameter tuning}
