@@ -1082,24 +1082,24 @@ text centered]
 		\begin{itemize}
 			\item Rough (R): $\varepsilon^{\rho u}_i>A \overline{\varepsilon}^{\rho u}$
 
-			\visible<2->{
+			\visible<1->{
 				\begin{itemize}
 					\item Rough no contact (RNC): $\varepsilon^{p}_i>B \overline{\varepsilon}^{p}$\\
-						\visible<3->{$\textcolor{blue}{\uvec{U}}$: $5$-th order WENO}
+						\visible<1->{$\textcolor{blue}{\uvec{U}}$: $5$-th order WENO}
 					\item Rough contact (RC): otherwise\\
-						\visible<3->{$\textcolor{blue}{\uvec{U}}$: \textcolor<5->{green}{$2$-nd order overcompressive\only<5->{\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}}}
+						\visible<1->{$\textcolor{blue}{\uvec{U}}$: \textcolor<1->{green}{$2$-nd order overcompressive\only<1->{\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}}}
 						}
 				\end{itemize}
 			}
 
 			\item Smooth (S): otherwise\\
-				\visible<3->{$\textcolor{blue}{\uvec{U}}$: $5$-th order unlimited}
+				\visible<1->{$\textcolor{blue}{\uvec{U}}$: $5$-th order unlimited}
 
 		\end{itemize}
 		
 		\vspace{0.4cm}
 
-		\visible<4->{$\textcolor{red}{\uvec{V}}$: $5$-th order unlimited $+$ no PC
+		\visible<1->{$\textcolor{red}{\uvec{V}}$: $5$-th order unlimited $+$ no PC
 			{\footnotesize
 				$$\frac{d}{dt}\textcolor{red}{\uvec{V}_{i}}(t)= -\frac{1}{\Delta x}\left(
 				\textcolor{black}{\widehat{\widetilde{\uvec{F}}}_{i+\frac{1}{2}}}
@@ -1117,109 +1117,6 @@ text centered]
 
 \end{frame}
 
-
-\begin{frame}
-	\frametitle{Shock detection}
-		\begin{columns}
-			\begin{column}{0.5\textwidth}
-				\centering
-				
-				{\footnotesize Shock $=$ Compression}
-				
-				\begin{tikzpicture}[scale=0.75, >=stealth]
-					
-					% axes
-					\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
-					\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
-					
-					% parameters
-					\def\xs{3.2}   % shock foot
-					\def\xt{4.8}   % shock top x
-					\def\yt{3.2}   % shock top t
-					
-					% shock
-					\draw[red, very thick] (\xs,0) -- (\xt,\yt);
-					
-					% left characteristics: parallel lines, stopped at the shock
-					% line direction chosen so that the first one goes from origin to shock top
-					\foreach \xzero in {0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
-					{
-						\pgfmathsetmacro{\yend}{\yt-\xzero}
-						\pgfmathsetmacro{\xend}{\xs + (\xt-\xs)*\yend/\yt}
-						\draw[black] (\xzero,0) -- (\xend,\yend);
-					}
-					
-					% right characteristics: tilted left, stopped at shock or max height
-					\def\tilt{0.35} % larger = more left tilt
-					\def\ymax{3.2}  % maximum height
-					
-					\foreach \xzero in {3.50,3.80,4.10,4.40,4.70,5.00,5.30,5.60,5.90}
-					{
-						% height at which the tilted characteristic hits the shock
-						\pgfmathsetmacro{\yhit}{\yt*(\xzero-\xs)/((\xt-\xs)+\tilt)}
-						
-						% stop either at the shock or at ymax
-						\pgfmathsetmacro{\yend}{min(\yhit,\ymax)}
-						
-						% corresponding x-coordinate
-						\pgfmathsetmacro{\xend}{\xzero-\tilt*\yend/\yt}
-						
-						\draw[black] (\xzero,0) -- ({\xend},{\yend});
-					}
-					
-				\end{tikzpicture}
-			\end{column}
-			\begin{column}{0.5\textwidth}
-				\centering
-				
-
-				
-				{\footnotesize Contact $=$ No compression ($p,v=$const)}
-
-
-				\begin{tikzpicture}[scale=0.75, >=stealth]
-					
-					% axes
-					\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
-					\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
-					
-					% parameters
-					\def\xs{3.2}
-					\def\xt{4.8}
-					\def\yt{3.2}
-					\def\tilt{0.35}
-					
-					% contact line
-					\draw[red, very thick] (\xs,0) -- (\xt,\yt);
-					
-					% slope dx/dt of the contact
-					\pgfmathsetmacro{\slope}{(\xt-\xs)/\yt}
-					
-					% left characteristics: parallel to the contact
-					\foreach \xzero in {0.0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
-					{
-						\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
-					}
-					
-					% right characteristics: tilted left, crossing the contact
-					\foreach \xzero in {3.60,3.95,4.30,4.65,5.00}
-					{
-						\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
-					}
-					
-				\end{tikzpicture}
-
-			\end{column}
-		\end{columns}
-	
-		\begin{figure}[hp] 
-			\centering{\includegraphics[scale=0.15]{sod_rome_200_cons_rus_MINMODVL_SSPRK2_CFL0.9.pdf}}
-		\end{figure}
-
-
-\end{frame}
-
-
 \begin{frame}
 	\frametitle{Adaptivity, overcompressive limiter\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}}
 	
@@ -1228,16 +1125,16 @@ text centered]
 		\centering{\includegraphics[scale=0.2]{shock_turbulence_modified_example_2_3200_plot_rome_overcompressive.pdf}}
 	\end{figure}
 	{\tiny	
-	$$U\approx U_j+(U_x)_j(x-x_j)$$
-	\begin{equation*}
-		\begin{aligned}
-			&(U_x)_j=\phi^{\rm SBM}_{\theta,\tau}\left(\frac{U_{j+1}-U_j}{U_j-U_{j-1}}\right)
-			\frac{U_j-U_{j-1}}{\dx}, \quad \phi^{\rm SBM}_{\theta,\tau}(r):=\begin{cases}0&\mbox{if $r<0$},\\\min\{r\theta,1+\tau(r-1)\}&\mbox{if}~0<r\le1,\\
-				r\phi^{\rm SBM}_{\theta,\tau}(1/r)&\text{otherwise,}\end{cases}
-		\end{aligned}
-		\label{3.6f}
-	\end{equation*}
-	$\theta=2$ and $\tau=-0.25$}
+		$$U\approx U_j+(U_x)_j(x-x_j)$$
+		\begin{equation*}
+			\begin{aligned}
+				&(U_x)_j=\phi^{\rm SBM}_{\theta,\tau}\left(\frac{U_{j+1}-U_j}{U_j-U_{j-1}}\right)
+				\frac{U_j-U_{j-1}}{\dx}, \quad \phi^{\rm SBM}_{\theta,\tau}(r):=\begin{cases}0&\mbox{if $r<0$},\\\min\{r\theta,1+\tau(r-1)\}&\mbox{if}~0<r\le1,\\
+					r\phi^{\rm SBM}_{\theta,\tau}(1/r)&\text{otherwise,}\end{cases}
+			\end{aligned}
+			\label{3.6f}
+		\end{equation*}
+		$\theta=2$ and $\tau=-0.25$}
 	
 \end{frame}
 
@@ -1301,20 +1198,21 @@ text centered]
 %\end{frame}
 
 \begin{frame}
-	\frametitle{2-D tests}
+	\frametitle{2-D tests, adaptive, shock-indicators, non-adaptive}
 
 		\begin{figure}[ht!]
 			\centerline{\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}
-			\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/uniform_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDX}
-			\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDY}}
+			\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDX}
+			\includegraphics[trim=1.0cm 1.9cm 1.4cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_IDY}
+			\includegraphics[trim=1.0cm 2.8cm 0.8cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/uniform_2D_Euler_5_WENO_Flag_1_N_x_800_N_y_800_rho}}
 			\centerline{\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}
-			\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/uniform_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}
 			\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDX}
-			\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDY}}
+			\includegraphics[trim=0.9cm 1.9cm 1.0cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_IDY}
+			\includegraphics[trim=0.9cm 2.8cm 0.8cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/uniform_2D_Euler_7_WENO_Flag_1_N_x_800_N_y_800_rho}}
 			\centerline{\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}
-			\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/uniform_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}
 			\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDX}
-			\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDY}}
+			\includegraphics[trim=0.9cm 1.9cm 1.7cm 1.0cm, clip, width=0.21\textwidth]{Figures_adaptivity/251215_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_IDY}
+			\includegraphics[trim=1.0cm 2.9cm 0.9cm 2.3cm, clip, width=0.24\textwidth]{Figures_adaptivity/uniform_2D_Euler_4_WENO_Flag_1_N_x_400_N_y_400_rho}}
 		\end{figure}
 
 
@@ -1369,14 +1267,7 @@ text centered]
 %	
 %\end{frame}
 
-\begin{frame}
-	\frametitle{Adaptivity, Parameter tuning}
-		
-		\centering 
-		
-		RMK: Parameter tuning performed on coarse meshes (cheap).
 
-\end{frame}
 
 
 \section{Application to multifluid}
@@ -2728,6 +2619,141 @@ text centered]
 \backupbegin
 
 \section*{Backup slides}
+
+\section*{Application to adaptivity}
+\frame\sectionpage
+
+\begin{frame}
+	\frametitle{Shock detection}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\centering
+			
+			{\footnotesize Shock $=$ Compression}
+			
+			\begin{tikzpicture}[scale=0.75, >=stealth]
+				
+				% axes
+				\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
+				\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
+				
+				% parameters
+				\def\xs{3.2}   % shock foot
+				\def\xt{4.8}   % shock top x
+				\def\yt{3.2}   % shock top t
+				
+				% shock
+				\draw[red, very thick] (\xs,0) -- (\xt,\yt);
+				
+				% left characteristics: parallel lines, stopped at the shock
+				% line direction chosen so that the first one goes from origin to shock top
+				\foreach \xzero in {0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
+				{
+					\pgfmathsetmacro{\yend}{\yt-\xzero}
+					\pgfmathsetmacro{\xend}{\xs + (\xt-\xs)*\yend/\yt}
+					\draw[black] (\xzero,0) -- (\xend,\yend);
+				}
+				
+				% right characteristics: tilted left, stopped at shock or max height
+				\def\tilt{0.35} % larger = more left tilt
+				\def\ymax{3.2}  % maximum height
+				
+				\foreach \xzero in {3.50,3.80,4.10,4.40,4.70,5.00,5.30,5.60,5.90}
+				{
+					% height at which the tilted characteristic hits the shock
+					\pgfmathsetmacro{\yhit}{\yt*(\xzero-\xs)/((\xt-\xs)+\tilt)}
+					
+					% stop either at the shock or at ymax
+					\pgfmathsetmacro{\yend}{min(\yhit,\ymax)}
+					
+					% corresponding x-coordinate
+					\pgfmathsetmacro{\xend}{\xzero-\tilt*\yend/\yt}
+					
+					\draw[black] (\xzero,0) -- ({\xend},{\yend});
+				}
+				
+			\end{tikzpicture}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\centering
+			
+			
+			
+			{\footnotesize Contact $=$ No compression ($p,v=$const)}
+			
+			
+			\begin{tikzpicture}[scale=0.75, >=stealth]
+				
+				% axes
+				\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
+				\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
+				
+				% parameters
+				\def\xs{3.2}
+				\def\xt{4.8}
+				\def\yt{3.2}
+				\def\tilt{0.35}
+				
+				% contact line
+				\draw[red, very thick] (\xs,0) -- (\xt,\yt);
+				
+				% slope dx/dt of the contact
+				\pgfmathsetmacro{\slope}{(\xt-\xs)/\yt}
+				
+				% left characteristics: parallel to the contact
+				\foreach \xzero in {0.0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
+				{
+					\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
+				}
+				
+				% right characteristics: tilted left, crossing the contact
+				\foreach \xzero in {3.60,3.95,4.30,4.65,5.00}
+				{
+					\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
+				}
+				
+			\end{tikzpicture}
+			
+		\end{column}
+	\end{columns}
+	
+	\begin{figure}[hp] 
+		\centering{\includegraphics[scale=0.15]{sod_rome_200_cons_rus_MINMODVL_SSPRK2_CFL0.9.pdf}}
+	\end{figure}
+	
+	
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Adaptivity, overcompressive limiter\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}}
+	
+	
+	\begin{figure}[hp] 
+		\centering{\includegraphics[scale=0.2]{shock_turbulence_modified_example_2_3200_plot_rome_overcompressive.pdf}}
+	\end{figure}
+	{\tiny	
+		$$U\approx U_j+(U_x)_j(x-x_j)$$
+		\begin{equation*}
+			\begin{aligned}
+				&(U_x)_j=\phi^{\rm SBM}_{\theta,\tau}\left(\frac{U_{j+1}-U_j}{U_j-U_{j-1}}\right)
+				\frac{U_j-U_{j-1}}{\dx}, \quad \phi^{\rm SBM}_{\theta,\tau}(r):=\begin{cases}0&\mbox{if $r<0$},\\\min\{r\theta,1+\tau(r-1)\}&\mbox{if}~0<r\le1,\\
+					r\phi^{\rm SBM}_{\theta,\tau}(1/r)&\text{otherwise,}\end{cases}
+			\end{aligned}
+			\label{3.6f}
+		\end{equation*}
+		$\theta=2$ and $\tau=-0.25$}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Adaptivity, Parameter tuning}
+	
+	\centering 
+	
+	RMK: Parameter tuning performed on coarse meshes (cheap).
+	
+\end{frame}
 
 \begin{frame}
 	\frametitle{Adaptivity, Configuration 3, coarse mesh}
