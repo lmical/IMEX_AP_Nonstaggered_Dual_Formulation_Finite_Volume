@@ -1120,21 +1120,121 @@ text centered]
 \begin{frame}
 	\frametitle{Adaptivity, overcompressive limiter\footnote{{\tiny K.-A. Lie, S. Noelle, SIAM J. Sci. Comput., 2003}}}
 	
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\centering
+			
+			{\footnotesize Shock $=$ Compression}
+			
+			\begin{tikzpicture}[scale=0.6, >=stealth]
+				
+				% axes
+				\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
+				\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
+				
+				% parameters
+				\def\xs{3.2}   % shock foot
+				\def\xt{4.8}   % shock top x
+				\def\yt{3.2}   % shock top t
+				
+				% shock
+				\draw[red, very thick] (\xs,0) -- (\xt,\yt);
+				
+				% left characteristics: parallel lines, stopped at the shock
+				% line direction chosen so that the first one goes from origin to shock top
+				\foreach \xzero in {0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
+				{
+					\pgfmathsetmacro{\yend}{\yt-\xzero}
+					\pgfmathsetmacro{\xend}{\xs + (\xt-\xs)*\yend/\yt}
+					\draw[black] (\xzero,0) -- (\xend,\yend);
+				}
+				
+				% right characteristics: tilted left, stopped at shock or max height
+				\def\tilt{0.35} % larger = more left tilt
+				\def\ymax{3.2}  % maximum height
+				
+				\foreach \xzero in {3.50,3.80,4.10,4.40,4.70,5.00,5.30,5.60,5.90}
+				{
+					% height at which the tilted characteristic hits the shock
+					\pgfmathsetmacro{\yhit}{\yt*(\xzero-\xs)/((\xt-\xs)+\tilt)}
+					
+					% stop either at the shock or at ymax
+					\pgfmathsetmacro{\yend}{min(\yhit,\ymax)}
+					
+					% corresponding x-coordinate
+					\pgfmathsetmacro{\xend}{\xzero-\tilt*\yend/\yt}
+					
+					\draw[black] (\xzero,0) -- ({\xend},{\yend});
+				}
+				
+			\end{tikzpicture}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\centering
+			
+			
+			
+			{\footnotesize Contact $=$ No compression ($p,v=$const)}
+			
+			
+			\begin{tikzpicture}[scale=0.6, >=stealth]
+				
+				% axes
+				\draw[->] (0,0) -- (6.3,0) node[right] {$x$};
+				\draw[->] (0,0) -- (0,3.6) node[above] {$t$};
+				
+				% parameters
+				\def\xs{3.2}
+				\def\xt{4.8}
+				\def\yt{3.2}
+				\def\tilt{0.35}
+				
+				% contact line
+				\draw[red, very thick] (\xs,0) -- (\xt,\yt);
+				
+				% slope dx/dt of the contact
+				\pgfmathsetmacro{\slope}{(\xt-\xs)/\yt}
+				
+				% left characteristics: parallel to the contact
+				\foreach \xzero in {0.0,0.35,0.70,1.05,1.40,1.75,2.10,2.45,2.80}
+				{
+					\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
+				}
+				
+				% right characteristics: tilted left, crossing the contact
+				\foreach \xzero in {3.60,3.95,4.30,4.65,5.00}
+				{
+					\draw[black] (\xzero,0) -- ({\xzero+\slope*\yt},\yt);
+				}
+				
+			\end{tikzpicture}
+			
+		\end{column}
+	\end{columns}
 	
-	\begin{figure}[hp] 
-		\centering{\includegraphics[scale=0.2]{shock_turbulence_modified_example_2_3200_plot_rome_overcompressive.pdf}}
-	\end{figure}
-	{\tiny	
-		$$U\approx U_j+(U_x)_j(x-x_j)$$
-		\begin{equation*}
-			\begin{aligned}
-				&(U_x)_j=\phi^{\rm SBM}_{\theta,\tau}\left(\frac{U_{j+1}-U_j}{U_j-U_{j-1}}\right)
-				\frac{U_j-U_{j-1}}{\dx}, \quad \phi^{\rm SBM}_{\theta,\tau}(r):=\begin{cases}0&\mbox{if $r<0$},\\\min\{r\theta,1+\tau(r-1)\}&\mbox{if}~0<r\le1,\\
-					r\phi^{\rm SBM}_{\theta,\tau}(1/r)&\text{otherwise,}\end{cases}
-			\end{aligned}
-			\label{3.6f}
-		\end{equation*}
-		$\theta=2$ and $\tau=-0.25$}
+	
+	\begin{columns}
+		\begin{column}{0.49\textwidth}
+	
+			\begin{figure}[hp] 
+				\centering{\includegraphics[scale=0.15]{shock_turbulence_modified_example_2_3200_plot_rome_overcompressive.pdf}}
+			\end{figure}
+		\end{column}
+		\begin{column}{0.49\textwidth}
+			{\tiny	
+				$$U\approx U_j+(U_x)_j(x-x_j)$$
+				\begin{equation*}
+					\begin{aligned}
+						&(U_x)_j=\phi^{\rm SBM}_{\theta,\tau}\left(\frac{U_{j+1}-U_j}{U_j-U_{j-1}}\right)
+						\frac{U_j-U_{j-1}}{\dx}, \\ &\phi^{\rm SBM}_{\theta,\tau}(r):=\begin{cases}0&\mbox{if $r<0$},\\\min\{r\theta,1+\tau(r-1)\}&\mbox{if}~0<r\le1,\\
+							r\phi^{\rm SBM}_{\theta,\tau}(1/r)&\text{otherwise,}\end{cases}\\
+						&\theta=2~\text{and}~\tau=-0.25
+					\end{aligned}
+					\label{3.6f}
+				\end{equation*}
+			}
+		\end{column}
+	\end{columns}
 	
 \end{frame}
 
@@ -1273,7 +1373,7 @@ text centered]
 \section{Application to multifluid}
 \frame\sectionpage
 
-
+%\begin{comment}
 \begin{frame}
 	\frametitle{Motivation}
 	
@@ -1362,6 +1462,7 @@ text centered]
 	
 	
 \end{frame}
+%\end{comment}
 
 
 \begin{frame}{Multifluid with level set approach\footnote{{\tiny A. Chertock, S. Chu, A. Kurganov, Hybrid Multifluid Algorithms Based on the Path-Conservative Central-Upwind Scheme, 2021}}}
@@ -2022,7 +2123,7 @@ text centered]
 \end{frame}
 
 
-\section{Application to low Mach}
+\section{Application to low Mach (very quick overview)}
 \frame\sectionpage
 
 \begin{frame}{Motivation, low Mach flows}
@@ -2201,7 +2302,7 @@ text centered]
 	%Let us work with the primitive system
 	%But we'll need to keep conservation into account later
 	
-	{\footnotesize Explicit and implicit do not work $\Rightarrow$ \textcolor{red}{IM}\textcolor{blue}{EX}}
+	{\tiny Explicit and implicit do not work $\Rightarrow$ \textcolor{red}{IM}\textcolor{blue}{EX}}
 	
 	\vspace{0.5cm}
 	
@@ -2214,7 +2315,7 @@ text centered]
 	}
 	
 	
-	{\footnotesize 	
+	{\tiny 	
 		$$\visible<1->{\begin{cases}
 				&\rho_t+\textcolor{black}{div_{\uvec{x}}(\rho\uvec{v})}=0\\
 				&\uvec{v}_t+\textcolor{black}{(\uvec{v}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}}+\textcolor{black}{\frac{1}{\varepsilon^2\rho}\nabla_{\uvec{x}} p}=\bm 0\\
@@ -2226,16 +2327,27 @@ text centered]
 		\end{cases}}$$
 	}
 	\visible<2->{
-		{\footnotesize 	
+		{\tiny
 			$$\lambda=\norm{\uvec{v}},\norm{\uvec{v}}\pm \frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(p-p_{\min})}{\rho\rho_{\max}}}$$
 			$\frac{1}{\ve}\sqrt{\gamma\frac{(\rho_{\max}-\rho)(\textcolor{teal}{p-p_{\min}})}{\rho\rho_{\max}}}\in \mathbb{R}$ and $=O(1)$ because $\textcolor{teal}{p=p_0+\ve p_1+O(\ve^2)}$\\
 		}
 	}
-	\visible<2->{$\dt=\frac{\Delta x}{\max \vert \lambda \vert}$ independent of $\ve$}
+	\visible<2->{{\tiny$\dt=\frac{\Delta x}{\max \vert \lambda \vert}$ independent of $\ve$}}
+
+	\visible<3->{	
+		{\tiny
+		\begin{itemize}
+			\item IMEX (SI) discretization for $\uvec{V}$-system
+			\item Well-posed elliptic problem for $p$ and explicit update for the other variables
+			\item AP property
+			\item (Arbitrary) high order with Deferred Correction
+		\end{itemize}	
+		}
+	}
 	
 \end{frame}
 
-
+\begin{comment}
 \begin{frame}{IMEX-Euler operational details}
 	\centering
 	
@@ -2316,6 +2428,7 @@ text centered]
 	}
 	
 \end{frame}
+\end{comment}
 
 
 
@@ -2458,38 +2571,38 @@ text centered]
 	
 \end{frame}
 
-\begin{frame}{Numerical results, Double shear layer, $T_f=10$}
-	\centering
-	
-	\vspace{-0.5cm}
-	
-	{\tiny
-		\begin{align*}
-			&\rho(x,y,0)\equiv\frac{\pi}{15},\quad
-			u(x,y,0)=\left\{\begin{aligned}
-				&\tanh\!\left[15\Big(\frac{y}{\pi}-\frac{1}{2}\Big)\right],&&y\le\pi,\\[0.5ex]
-				&\tanh\!\left[15\Big(\frac{3}{2}-\frac{y}{\pi}\Big)\right],&&\mbox{otherwise},
-			\end{aligned}\right.\quad 
-			v(x,y,0)=0.05\sin (x),\quad p(x,y,0)\equiv\frac{1}{\gamma},
-		\end{align*}
-	}
-	
-	\vspace{-0.2cm}
-	
-	\begin{figure}[ht!]
-		\centerline{\includegraphics[width=0.22\textwidth]{Figures_AP/double_shear_layer_initial_vorticity}}
-		%		\vskip8pt
-		\centerline{\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.1_CFL0.1}\hspace*{0.1cm}
-			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.01_CFL0.1}\hspace*{0.1cm}
-			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.001_CFL0.1}}
-		%		\vskip8pt
-		\centerline{\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.0001_CFL0.1}\hspace*{0.1cm}
-			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps1e-05_CFL0.1}\hspace*{0.1cm}
-			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps1e-06_CFL0.1}}
-	\end{figure}
-	
-	
-\end{frame}
+%\begin{frame}{Numerical results, Double shear layer, $T_f=10$}
+%	\centering
+%	
+%	\vspace{-0.5cm}
+%	
+%	{\tiny
+%		\begin{align*}
+%			&\rho(x,y,0)\equiv\frac{\pi}{15},\quad
+%			u(x,y,0)=\left\{\begin{aligned}
+%				&\tanh\!\left[15\Big(\frac{y}{\pi}-\frac{1}{2}\Big)\right],&&y\le\pi,\\[0.5ex]
+%				&\tanh\!\left[15\Big(\frac{3}{2}-\frac{y}{\pi}\Big)\right],&&\mbox{otherwise},
+%			\end{aligned}\right.\quad 
+%			v(x,y,0)=0.05\sin (x),\quad p(x,y,0)\equiv\frac{1}{\gamma},
+%		\end{align*}
+%	}
+%	
+%	\vspace{-0.2cm}
+%	
+%	\begin{figure}[ht!]
+%		\centerline{\includegraphics[width=0.22\textwidth]{Figures_AP/double_shear_layer_initial_vorticity}}
+%		%		\vskip8pt
+%		\centerline{\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.1_CFL0.1}\hspace*{0.1cm}
+%			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.01_CFL0.1}\hspace*{0.1cm}
+%			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.001_CFL0.1}}
+%		%		\vskip8pt
+%		\centerline{\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.0001_CFL0.1}\hspace*{0.1cm}
+%			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps1e-05_CFL0.1}\hspace*{0.1cm}
+%			\includegraphics[width=0.23\textwidth]{Figures_AP/double_shear_layer_WC_SOLUTION_OCT_0000010.0000000.dat_eps1e-06_CFL0.1}}
+%	\end{figure}
+%	
+%	
+%\end{frame}
 
 
 %\begin{frame}{Numerical results, Explosion problem}
@@ -2564,12 +2677,17 @@ text centered]
 		\item Application to shock--detection: check $\norm{\textcolor{blue}{\uvec{U}}-\uvec{U}(\textcolor{red}{\uvec{V}})}$ before PP\footnote{{\tiny A. Chertock, Q. Fu, A. Kurganov, L. Micalizzi, New Adaptive Numerical Methods Based on Dual Formulation of Hyperbolic Conservation Laws, 2026}}
 		\item Application to multifluid with level set approach: $\textcolor{red}{(\rho \phi)}$ added to $\textcolor{red}{\uvec{V}}$-variables\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, Adaptive Dual Formulation Method for Compressible Multifluid Flows, in preparation}}
 		\item Application to AP: IMEX-splitting for $\textcolor{red}{\uvec{V}}$-system\footnote{{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}}
-		\item Just to mention... Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}} and AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}
 	\end{itemize}
+
+	\vspace{0.2cm}
+
+	Just to mention: Staggered\footnote{{\tiny R. Abgrall, A. Chertock, A. Kurganov, L. Micalizzi, Dual Formulation Finite-Volume Methods on Overlapping Meshes for Hyperbolic Conservation Laws, 2025}}\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, New Smoothness Indicator Within an Active Flux Framework, 2025}} and AP for TRSW\footnote{{\tiny A. Chertock, A. Kurganov, L. Micalizzi, N. Zhang, An Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Thermal Rotating Shallow Water Equations, 2026}}
+
+	\vspace{0.2cm}
 
 	Future perspectives:
 	\begin{itemize}
-	\item Other systems,e.g., SW ($\uvec{v}$ in dry areas)
+	\item Adaptive scheme for Shallow Water
 	\item Multifluid $+$ AP (incompressible modeled as low Mach)
 	\end{itemize}
 	}
@@ -2805,6 +2923,89 @@ text centered]
 	
 \end{frame}
 
+\section*{Application to low Mach}
+\frame\sectionpage
+
+\begin{frame}{IMEX-Euler operational details}
+	\centering
+	
+	\begin{align*}
+		\begin{cases}	
+			&\rho^{n+1}=\rho^n-\dt \textcolor{blue}{div_{\uvec{x}}(\rho^n\uvec{v}^n)},\\
+			&\textcolor<2->{violet}{\uvec{v}^{n+1}}=\uvec{v}^n-\dt\left[\textcolor{blue}{(\uvec{v}^n\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^n+\frac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\,\nabla p^n}\right]-\dt\textcolor{red}{\frac{1}{\ve^2\rho_{\max}^n}\nabla_{\uvec{x}} p^{n+1}}\\
+			&p^{n+1}=p^n-\dt\left[\textcolor{blue}{\uvec{v}^n\!\cdot\!\nabla p^n+\gamma(p^n-p_{\min}^n)div_{\uvec{x}}\uvec{v}^n}\right]-\dt\textcolor{red}{\gamma p_{\min}^n div_{\uvec{x}}\textcolor<2->{violet}{\uvec{v}^{n+1}}}
+		\end{cases}
+	\end{align*}
+	
+	
+	
+	
+	Advantage: \textbf{Linear} system in $p^{n+1}$ and $\uvec{v}^{n+1}$\\
+	\visible<2->{We can do better... Take divergence of $\textcolor{violet}{\uvec{v}^{n+1}}$ and plug it in $p^{n+1}$}
+	\visible<2->{
+		{%\tiny 
+			\begin{align*}
+				p^{n+1}=p^n-\dt\left[\textcolor{blue}{\uvec{v}^n\!\cdot\!\nabla p^n+\gamma(p^n-p_{\min}^n)div_{\uvec{x}}\uvec{v}^n}\right]-\dt\gamma p_{\min}^n div_{\uvec{x}}\textcolor{black}{\uvec{v}^{n}}\\
+				+\dt^2\gamma p_{\min}^n div_{\uvec{x}}\left[\textcolor{violet}{\textcolor{blue}{(\uvec{v}^n\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^n+\frac{\rho_{\max}^n-\rho^n}{\ve^2\rho^n\rho_{\max}^n}\,\nabla p^n}}\right]+\frac{\dt^2\gamma p_{\min}^n}{\ve^2\rho_{\max}^n}\textcolor{red}{\Delta_{\uvec{x}} p^{n+1}}
+			\end{align*}
+		}
+	}
+	\visible<2->{
+		$$\Updownarrow$$
+		$$-\textcolor{red}{\Delta_{\uvec{x}} p^{n+1}}+\frac{\ve^2\rho_{\max}^n}{\dt^2\gamma p_{\min}^n}p^{n+1}=\text{rhs}^n$$
+		Well--posed elliptic problem and then explicit update for $\uvec{v}^{n+1}$
+	}
+	
+\end{frame}
+
+\begin{frame}{IMEX-Euler is AP}
+	%	\centering
+	
+	{\footnotesize
+		Starting from $(\rho^{n},\uvec{v}^{n},p^{n})$ compatible with the asymptotic limit, i.e.,
+		\begin{equation}
+			\begin{aligned}
+				\begin{cases}
+					&\rho^n=\rho^{(0),n}+\ve\rho^{(1),n}+\ve^2\rho^{(2),n}+\dots\\
+					&\uvec{v}^n=\uvec{v}^{(0),n}+\ve\uvec{v}^{(1),n}+\ve^2\uvec{v}^{(2),n}+\dots\\
+					&p^n=p^{(0),n}+\ve p^{(1),n}+\ve^2p^{(2),n}+\dots
+				\end{cases}
+				\label{eq:expansion}
+			\end{aligned}
+		\end{equation}
+		with
+		\begin{equation}
+			\begin{aligned}
+				\begin{cases}
+					&p^{(0),n}\equiv\,\xbar p_0,\quad p^{(1),n}\equiv\,\xbar p_1,\\
+					&div_{\uvec{x}}\uvec{v}^{(0),n}=0,\quad div_{\uvec{x}}\uvec{v}^{(1),n}=0,
+				\end{cases}
+				\label{eq:p_v}
+			\end{aligned}
+		\end{equation}
+		
+		and assuming BCs compatible with the asymptotic limit
+		\begin{equation*}
+			p\equiv\,\text{const},\quad \partial\Omega,
+		\end{equation*}
+		then, $(\rho^{n+1},\uvec{v}^{n+1},p^{n+1})$ admits an expansion of the type~\eqref{eq:expansion}, satisfying~\eqref{eq:p_v},
+		and the data are associated with a consistent discretization of 
+		$$
+		\begin{cases}
+			&\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
+			&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)} \cdot \nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0
+		\end{cases}
+		$$		
+	}
+	
+	
+	\visible<1->{
+		
+		{\tiny 	Second order extension (but also arbitrary HO) with DeC}	
+		
+	}
+	
+\end{frame}
 
 \backupend
 
