@@ -2545,13 +2545,145 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 		}
 
 
-		\visible<1->{
-		
-			{\tiny 	Second order extension (but also arbitrary HO) with DeC}	
-	
-		}
+%		\visible<1->{
+%		
+%			{\tiny 	Second order extension (but also arbitrary HO) with DeC}	
+%	
+%		}
 
 \end{frame}
+
+\begin{frame}{Sketch of the proof, expansion for $\rho^{n+1}$}
+	\centering
+	{\tiny
+		Plug the expansion of the solution 
+		\begin{align*}
+				\begin{cases}
+					&\rho^n=\rho^{(0),n}+\ve\rho^{(1),n}+\ve^2\rho^{(2),n}+\dots\\
+					&\uvec{v}^n=\uvec{v}^{(0),n}+\ve\uvec{v}^{(1),n}+\ve^2\uvec{v}^{(2),n}+\dots\\
+					&p^n=p^{(0),n}+\ve p^{(1),n}+\ve^2p^{(2),n}+\dots
+				\end{cases}\quad \begin{cases}
+				&p^{(0),n}\equiv\,\xbar p_0,\quad p^{(1),n}\equiv\,\xbar p_1,\\
+				&div_{\uvec{x}}\uvec{v}^{(0),n}=0,\quad div_{\uvec{x}}\uvec{v}^{(1),n}=0,
+			\end{cases}
+			\end{align*}
+		
+		in the scheme
+	
+			\begin{align*}
+			&\begin{aligned}
+				\rho^{n+1}&=\textcolor{red}{\rho^{(0),n}}+\ve\textcolor{blue}{\rho^{(1),n}}+\ve^2\textcolor{green}{\rho^{(2),n}}\textcolor{red}{-\dt div_{\uvec{x}}(\rho^{(0),n}\uvec{v}^{(0),n})}\\
+				&-\ve \textcolor{blue}{\dt \big[ div_{\uvec{x}}(\rho^{(1),n}\uvec{v}^{(0),n})+ div_{\uvec{x}}(\rho^{(0),n}\uvec{v}^{(1),n})\big]}\\
+				&-\ve^2 \textcolor{green}{\dt \big[ div_{\uvec{x}}(\rho^{(2),n}\uvec{v}^{(0),n})+ div_{\uvec{x}}(\rho^{(1),n}\uvec{v}^{(1),n})+ div_{\uvec{x}}(\rho^{(0),n}\uvec{v}^{(2),n})\big]}+{\cal O}(\ve^3),
+			\end{aligned}\\
+			&\begin{aligned}
+				\uvec{v}^{n+1}&=\uvec{v}^{(0),n}+\ve\uvec{v}^{(1),n}+\ve^2\uvec{v}^{(2),n}-\dt\Big[(\uvec{v}^{(0),n}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(0),n}+
+				\frac{\rho_{\max}^n-\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla_{\uvec{x}} p^{(2),n}\Big]\\
+				&-\ve\dt\Big[(\uvec{v}^{(1),n}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(0),n}+(\uvec{v}^{(0),n}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(1),n}-
+				\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla_{\uvec{x}} p^{(2),n}-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla_{\uvec{x}} p^{(3),n}\Big]\\
+				&-\ve^2\dt\Big[(\uvec{v}^{(2),n}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(0),n}+(\uvec{v}^{(1),n}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(1),n}+
+				(\uvec{v}^{(0),n}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(2),n}\\
+				&\hspace*{-0.3cm}
+				-\frac{\rho^{(2),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla_{\uvec{x}} p^{(2),n}-\frac{\rho^{(1),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla_{\uvec{x}} p^{(3),n}
+				-\frac{\rho^{(0),n}}{\rho^{(0),n}\rho_{\max}^n}\,\nabla_{\uvec{x}} p^{(4),n}\Big]
+				-\frac{\dt}{\ve^2 \rho_{\max}^n}\,\nabla_{\uvec{x}} p^{n+1}+{\cal O}(\ve^3),
+			\end{aligned}\\[0.8ex]
+			&p^{n+1}=\,\xbar p_0+\ve\,\xbar p_1+\ve^2 p^{(2),n}-\ve^2 \dt \uvec{v}^{(0),n}\!\cdot\!\nabla p^{(2),n} -\dt\gamma p_{\min}^n div_{\uvec{x}} \uvec{v}^{n+1}+{\cal O}(\ve^3).
+		\end{align*}
+	
+	
+		$$\rho^{n+1}=\textcolor{red}{\rho^{(0),n+1}}+\ve\textcolor{blue}{\rho^{(1),n+1}}+\ve^2\textcolor{green}{\rho^{(2),n+1}}+\dots$$
+	
+	}
+
+\end{frame}
+
+
+\begin{frame}{Sketch of the proof, expansion for $p^{n+1}$ and $\uvec{v}^{n+1}$}
+	\centering
+	{\tiny
+		Plug the div of the velocity in the pressure 
+		
+			$$
+			-\Delta_{\uvec{x}} p^{n+1}+\frac{\ve^2\rho_{\max}^n}{(\dt)^2\gamma p_{\min}^n}\,p^{n+1}={\cal O}(\ve^2),
+			$$
+			with BC: $p\equiv\,\text{const},$ $\partial\Omega$
+			
+			\vspace{0.5cm}
+			
+			...Laplace equation up to ${\cal O}(\ve^2)$ (theory of perturbed elliptic operators)... 
+		
+			\begin{align*}
+				&p^{n+1}=p^{(0),n+1}+\ve p^{(1),n+1}+\ve^2p^{(2),n+1}+\dots,\label{3.20f}\\
+				&\textcolor{red}{p^{(0),n+1}=p^{(0),n}\equiv\,\xbar p_0},\quad \textcolor{red}{p^{(1),n+1}=p^{(1),n}\equiv\,\xbar p_1}
+			\end{align*}
+
+			\vspace{0.5cm}
+
+			Then, from the explicit update of the velocity, we get
+
+			$$\uvec{v}^{n+1}=\textcolor{black}{\uvec{v}^{(0),n+1}}+\ve\textcolor{black}{\uvec{v}^{(1),n+1}}+\ve^2\textcolor{black}{\uvec{v}^{(2),n+1}}+\dots$$
+
+	}
+	
+\end{frame}
+
+\begin{frame}{Sketch of the proof, div free conditions}
+	\centering
+	{\tiny
+		The pressure update
+		
+		$$p^{n+1}=\,\xbar p_0+\ve\,\xbar p_1+\ve^2 p^{(2),n}-\ve^2 \dt \uvec{v}^{(0),n}\!\cdot\!\nabla_{\uvec{x}} p^{(2),n} -\dt\gamma p_{\min}^n div_{\uvec{x}} \uvec{v}^{n+1}+{\cal O}(\ve^3)$$
+	
+		yields
+
+		$$\ve^2p^{(2),n+1}=\ve^2p^{(2),n}-\ve^2\dt\uvec{v}^{(0),n}\!\cdot\!\nabla_{\uvec{x}} p^{(2),n}-\textcolor{red}{\dt\gamma p_{\min}^n div_{\uvec{x}}\uvec{v}^{(0),n+1}}-\ve\textcolor{blue}{\dt\gamma p_{\min}^n div_{\uvec{x}}\uvec{v}^{(1),n+1}}-\ve^2\dt\gamma p_{\min}^n div_{\uvec{x}}\uvec{v}^{(2),n+1}+{\cal O}(\ve^3)$$
+
+		...up to ${\cal O}(\ve^2)$... 
+		
+		$$\textcolor{red}{div_{\uvec{x}} \uvec{v}^{(0),n+1}}=\textcolor{blue}{div_{\uvec{x}} \uvec{v}^{(1),n+1}}=0$$
+
+
+	}
+
+\end{frame}
+
+
+\begin{frame}{Sketch of the proof, final consistency relations}
+	\centering
+	{\tiny
+			$$
+			\begin{cases}
+				&\rho^{(0)}_t+div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})=0\\
+				&\uvec{v}^{(0)}_t+(\uvec{v}^{(0)} \cdot \nabla_{\uvec{x}})\uvec{v}^{(0)}+\frac{1}{\rho^{(0)}}\nabla_{\uvec{x}} p^{(2)}=\bm 0
+			\end{cases}
+			$$		
+			
+			
+			Updates of density and velocity, up to ${\cal O}(\ve)$, yield
+			
+			
+			\begin{align*}
+				\rho^{(0),n+1}&=\rho^{(0),n}-\dt div_{\uvec{x}}(\rho^{(0)}\uvec{v}^{(0)})\\
+				\uvec{v}^{(0),n+1}&=\uvec{v}^{(0),n}-\dt\bigg[(\uvec{v}^{(0),n}\!\cdot\!\nabla_{\uvec{x}})\uvec{v}^{(0),n}+\frac{\nabla_{\uvec{x}} p^{(2),n}}{\rho^{(0),n}}\bigg]
+				-\textcolor{red}{\frac{\dt}{\rho_{\max}^n}\left(\nabla_{\uvec{x}} p^{(2),n+1}-\nabla_{\uvec{x}} p^{(2),n}\right)},
+			\end{align*}
+			
+			
+			...consistent first order approximation with a \textcolor{red}{second order diffusion term}
+
+	}
+
+\end{frame}
+
+
+\begin{frame}{Generalization to higher order}
+	\centering
+
+	Generalization to second (arbitrary high) order within the DeC framework\footnote{\tiny A. Chertock, S.Karni, A. Kurganov, L. Micalizzi, A New Asymptotic-Preserving Dual Formulation Finite-Volume Method for the Compressible Euler Equations, 2026}
+
+\end{frame}
+
 
 \begin{frame}{What about shocks?}
 	\centering
@@ -2593,7 +2725,7 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 \end{frame}
 
 
-\begin{frame}{Numerical results, smooth unsteady vortex}
+\begin{frame}{Numerical results, smooth unsteady vortex\footnote{\tiny Zeifang et al., A novel full-Euler low Mach number IMEX splitting, 2020}}
 	\centering
 
 	{\tiny
@@ -2805,6 +2937,29 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 
 \end{frame}
 
+\begin{frame}{Numerical results, Baroclinic Vorticity Generation\footnote{\tiny Zeifang et al., A novel full-Euler low Mach number IMEX splitting, 2020}}
+	\centering
+
+	\vspace{-0.5cm}
+
+	{\tiny	
+	\begin{align*}
+			\rho(x,y,0)&=1+\frac{\ve}{2000}[1+\cos(\ve\pi x)]+4.5\ve y-\begin{cases}0,&0\le y\le\frac{1}{5\ve},\\1.8,&\mbox{otherwise,}\end{cases},\\ u(x,y,0)&=\frac{\sqrt{\gamma}}{2}[1+\cos(\ve\pi x)],\quad v(x,y,0)\equiv0, \quad
+			p(x,y,0)=1+\frac{\ve\gamma}{2}[1+\cos(\ve\pi x)], \quad \varepsilon=0.05
+	\end{align*}
+	}
+
+	\vspace{-0.2cm}
+	
+	\begin{figure}[ht!]
+		\includegraphics[width=0.75\textwidth]{Figures_AP/baroclinic_WC_SOLUTION_OCT_0000000.0000000.dat_eps0.05_CFL0.475}
+		\includegraphics[width=0.75\textwidth]{Figures_AP/baroclinic_WC_SOLUTION_OCT_0000010.0000000.dat_eps0.05_CFL0.475}
+		\includegraphics[width=0.75\textwidth]{Figures_AP/baroclinic_WC_SOLUTION_OCT_0000020.0000000.dat_eps0.05_CFL0.475}
+	\end{figure}
+	
+	
+\end{frame}
+
 
 \begin{frame}{Numerical results, Explosion problem}
 	\centering
@@ -2866,11 +3021,6 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 \begin{frame}{Numerical results, Explosion problem}
 	\centering
 	
-%	{\tiny
-%		$$
-%		(\rho,u,v,p)(x,y,0)=\begin{cases}(1,0,0,1),&\sqrt{x^2+y^2}<0.4,\\(0.125,0,0,0.1),&\mbox{otherwise},\end{cases}
-%		$$
-%	}
 	
 	\begin{figure}[ht!]
 		
@@ -2893,6 +3043,21 @@ $$\frac{d}{d t} \int_{x_L}^{x_R} \uvec{U} d \uvec{x} = - \left[\uvec{F}(\uvec{U}
 	
 \end{frame}
 
+
+\begin{frame}{Numerical results, Explosion problem}
+	\centering
+	
+%	{\tiny
+		$$
+		(\rho,u,v,p)(x,y,0)=\begin{cases}(\textcolor{red}{1},0,0,\textcolor{red}{1}),&\sqrt{x^2+y^2}<0.4,\\(\textcolor{red}{0.125},0,0,\textcolor{red}{0.1}),&\mbox{otherwise},\end{cases}
+		$$
+%	}
+	
+
+	RMK: Academic tests, solutions are smooth in low-Mach	
+	
+	
+\end{frame}
 
 \section{Conclusions}
 \frame\sectionpage
