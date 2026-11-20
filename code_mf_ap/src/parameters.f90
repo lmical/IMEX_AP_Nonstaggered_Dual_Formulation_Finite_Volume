@@ -2081,7 +2081,7 @@ ENDIF
 
 
 WhichOutput  = 1 ! 0 Nothing, 1 Octave, 2 Tecplot, 3 Both
-nOutputFiles = 5 !*1
+nOutputFiles = 1 !*1
 PRINT*, "N OUTPUT FILES", nOutputFiles
 
 VarNameVisu(1) = "Density"
