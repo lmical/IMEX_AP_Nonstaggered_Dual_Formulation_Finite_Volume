@@ -2919,21 +2919,6 @@ SELECT CASE (ReconstructedVariable)
 
 
 
-#ifdef PWCINTROUBLEDCELLS
-#ifdef MULTIFLUID
-        IF(PRESENT(Troubled_Cell_W)) THEN
-          IF (Troubled_Cell_W(ii,jj) .NE. 0) THEN !*REPLACE BY PWC
-            WM(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-            WP(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-          END IF
-        END IF
-#else
-        PRINT*, "Impossible to use PWCINTROUBLEDCELLS"
-        PRINT*, "Disable this flag"
-        PRINT*, "You should not be here"
-        STOP
-#endif
-#endif
 
 #ifdef MULTIFLUID
         WM(nVar+1,1,ii,jj)=W(nVar,ii,jj)
@@ -3256,21 +3241,6 @@ END DO
 
 
 
-#ifdef PWCINTROUBLEDCELLS
-#ifdef MULTIFLUID
-        IF(PRESENT(Troubled_Cell_W)) THEN
-          IF (Troubled_Cell_W(ii,jj) .NE. 0) THEN !*REPLACE BY PWC
-            WM(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-            WP(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-          END IF
-        END IF
-#else
-        PRINT*, "Impossible to use PWCINTROUBLEDCELLS"
-        PRINT*, "Disable this flag"
-        PRINT*, "You should not be here"
-        STOP
-#endif
-#endif
 
 
 #ifdef MULTIFLUID
@@ -3535,21 +3505,6 @@ SELECT CASE (ReconstructedVariable)
 
 
 
-#ifdef PWCINTROUBLEDCELLS
-#ifdef MULTIFLUID
-        IF(PRESENT(Troubled_Cell_W)) THEN
-          IF (Troubled_Cell_W(ii,jj) .NE. 0) THEN !*REPLACE BY PWC
-            WM(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-            WP(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-          END IF
-        END IF
-#else
-        PRINT*, "Impossible to use PWCINTROUBLEDCELLS"
-        PRINT*, "Disable this flag"
-        PRINT*, "You should not be here"
-        STOP
-#endif
-#endif
 
 #ifdef MULTIFLUID
         WM(nVar+1,1,ii,jj)=W(nVar,ii,jj)
@@ -3880,21 +3835,6 @@ SELECT CASE (ReconstructedVariable)
 
 
 
-#ifdef PWCINTROUBLEDCELLS
-#ifdef MULTIFLUID
-        IF(PRESENT(Troubled_Cell_W)) THEN
-          IF (Troubled_Cell_W(ii,jj) .NE. 0) THEN !*REPLACE BY PWC
-            WM(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-            WP(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-          END IF
-        END IF
-#else
-        PRINT*, "Impossible to use PWCINTROUBLEDCELLS"
-        PRINT*, "Disable this flag"
-        PRINT*, "You should not be here"
-        STOP
-#endif
-#endif
 
 #ifdef MULTIFLUID
         WM(nVar+1,1,ii,jj)=W(nVar,ii,jj)
@@ -4146,21 +4086,6 @@ SELECT CASE (ReconstructedVariable)
 
 
 
-#ifdef PWCINTROUBLEDCELLS
-#ifdef MULTIFLUID
-        IF(PRESENT(Troubled_Cell_W)) THEN
-          IF (Troubled_Cell_W(ii,jj) .NE. 0) THEN !*REPLACE BY PWC
-            WM(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-            WP(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-          END IF
-        END IF
-#else
-        PRINT*, "Impossible to use PWCINTROUBLEDCELLS"
-        PRINT*, "Disable this flag"
-        PRINT*, "You should not be here"
-        STOP
-#endif
-#endif
 
 #ifdef MULTIFLUID
         WM(nVar+1,1,ii,jj)=W(nVar,ii,jj)
@@ -4423,21 +4348,6 @@ SELECT CASE (ReconstructedVariable)
 
 
 
-#ifdef PWCINTROUBLEDCELLS
-#ifdef MULTIFLUID
-        IF(PRESENT(Troubled_Cell_W)) THEN
-          IF (Troubled_Cell_W(ii,jj) .NE. 0) THEN !*REPLACE BY PWC
-            WM(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-            WP(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-          END IF
-        END IF
-#else
-        PRINT*, "Impossible to use PWCINTROUBLEDCELLS"
-        PRINT*, "Disable this flag"
-        PRINT*, "You should not be here"
-        STOP
-#endif
-#endif
 
 #ifdef MULTIFLUID
         WM(nVar+1,1,ii,jj)=W(nVar,ii,jj)
@@ -6148,21 +6058,6 @@ SELECT CASE (ReconstructedVariable)
 
 
 
-#ifdef PWCINTROUBLEDCELLS
-#ifdef MULTIFLUID
-        IF(PRESENT(Troubled_Cell_W)) THEN
-          IF (Troubled_Cell_W(ii,jj) .NE. 0) THEN !*REPLACE BY PWC
-            WM(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-            WP(1:nVar,nGPs,ii,jj) = W(1:nVar,ii,jj)
-          END IF
-        END IF
-#else
-        PRINT*, "Impossible to use PWCINTROUBLEDCELLS"
-        PRINT*, "Disable this flag"
-        PRINT*, "You should not be here"
-        STOP
-#endif
-#endif
 
 #ifdef MULTIFLUID
         WM(nVar+1,1,ii,jj)=W(nVar,ii,jj)

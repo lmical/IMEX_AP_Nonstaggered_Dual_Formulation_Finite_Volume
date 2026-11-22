@@ -39,7 +39,6 @@ REAL, DIMENSION(nVar, nGPs, nGPs) :: WtempCons, WtempPrim
 #endif
 
 PRINT*, "--------------------------"
-#ifndef PRIMITIVEONLY
 ALLOCATE( L1error(1:nVar) )
 ALLOCATE( Uexact(1:nVar,1:nElemsX,1:nElemsY))
  
@@ -72,7 +71,6 @@ WRITE(666,*) nElemsX, nElemsY, L1error(1:nVar)
 
 DEALLOCATE( L1error )
 DEALLOCATE( Uexact )
-#endif
 
 !*One can uncomment them if needed. 
 !*They work
@@ -85,18 +83,9 @@ WRITE(666,*) computationalTime
 
 
 
-#ifdef PATANKAR
-averageJacobi = REAL(SUM(JacobiIterations(1:JacobiCounter)))/JacobiCounter
-std_deviation = SQRT(SUM((REAL(JacobiIterations(1:JacobiCounter))-averageJacobi)**2)/(JacobiCounter-1))
-WRITE(666,*) 'Jacobi average iterations'
-WRITE(666,*) averageJacobi
-WRITE(666,*) 'Jacobi standard deviation'
-WRITE(666,*) std_deviation
-#endif
 
 CLOSE(666)
 
-#ifndef PRIMITIVEONLY
 open(unit=7,file='den251')
 i=0
 do k=1,nElemsY
@@ -105,7 +94,6 @@ do k=1,nElemsY
       write(7,*) i, U(1,j,k)
   enddo
 enddo
-#endif
 
 #ifdef CENTEREDPRIMITIVE
 ALLOCATE( L1error(1:nVar) )

@@ -230,20 +230,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: ap_qp
 
 
 
-#ifdef PATANKAR 
-USE MOD_FiniteVolume2D_vars,ONLY: NNZsparse
-USE MOD_FiniteVolume2D_vars,ONLY: NGlobalRows
-USE MOD_FiniteVolume2D_vars,ONLY: ProductionSparse
-USE MOD_FiniteVolume2D_vars,ONLY: DestructionSparse
-USE MOD_FiniteVolume2D_vars,ONLY: RowStart
-USE MOD_FiniteVolume2D_vars,ONLY: ColumnsVector
-USE MOD_FiniteVolume2D_vars,ONLY: ProdUp
-USE MOD_FiniteVolume2D_vars,ONLY: DestUp 
-USE MOD_FiniteVolume2D_vars,ONLY: SparseIndexMat
-USE MOD_Mesh,               ONLY: GlobalElem
-USE MOD_FiniteVolume2D_vars,ONLY: JacobiCounter
-USE MOD_FiniteVolume2D_vars,ONLY: JacobiIterations
-#endif
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -361,25 +347,7 @@ ALLOCATE(ap_qp(1:nGPs,0:nElemsX+1,0:nElemsY+1))                               !*
 #endif
 
 
-#ifdef WELLBALANCED
-ALLOCATE( UtWB(1:nVar,1:nElemsX,1:nElemsY))
-ALLOCATE( SWB(1:nVar,1:nElemsX,1:nElemsY))
-ALLOCATE(FXWB(1:nVar,0:nElemsX,1:nElemsY))
-ALLOCATE(FYWB(1:nVar,1:nElemsX,0:nElemsY))
-#endif
 
-#ifdef PATANKAR
-NNZsparse = 5*nElemsX*nElemsY
-NGlobalRows = nElemsX*nElemsY
-ALLOCATE(ProductionSparse(1:NNZsparse))
-ALLOCATE(DestructionSparse(1:NNZsparse))
-ALLOCATE(ColumnsVector(1:NNZsparse))
-ALLOCATE(RowStart(1:NGlobalRows+1))
-ALLOCATE(ProdUp(1:4,1:NNZsparse))
-ALLOCATE(DestUp(1:4,1:NNZsparse))
-ALLOCATE(SparseIndexMat(1:nElemsX*nElemsY,1:5))
-ALLOCATE(JacobiIterations(1:maxTimeSteps))
-#endif
 
 U  = 0.0
 V  = 0.0
@@ -430,69 +398,9 @@ FWp_WC = 0.0
 
 
 
-#ifdef WELLBALANCED
-UtWB = 0.
-SWB  = 0.0
-FXWB = 0.0
-FYWB = 0.0
-#endif
 
 
 
-#ifdef PATANKAR
-iSparseVect = 0
-iRowStart=0
-
-DO jj=1,nElemsY
-  DO ii=1,nElemsX
-    K = GlobalElem(ii,jj)
-    !K = (ii-1)*NelemsY + jj
-    iSparseVect = iSparseVect + 1
-    iRowStart = iRowStart +1
-
-    RowStart(iRowStart) = iSparseVect
-    !*PRINT*, "iRowStart", iRowStart, "RowStart(iRowStart)", RowStart(iRowStart)
-
-
-    L = GlobalElem(ii,jj-1)
-    ColumnsVector(iSparseVect) = L
-    SparseIndexMat(K,1) = iSparseVect
-
-
-    iSparseVect = iSparseVect + 1
-    L = GlobalElem(ii-1,jj)
-    ColumnsVector(iSparseVect) = L
-    SparseIndexMat(K,2) = iSparseVect
-
-
-    iSparseVect = iSparseVect + 1
-    L = GlobalElem(ii,jj)
-    ColumnsVector(iSparseVect) = L
-    SparseIndexMat(K,3) = iSparseVect
-
-
-    iSparseVect = iSparseVect + 1
-    L = GlobalElem(ii+1,jj)
-    ColumnsVector(iSparseVect) = L
-    SparseIndexMat(K,4) = iSparseVect
-
-
-
-    iSparseVect = iSparseVect + 1
-    L = GlobalElem(ii,jj+1)
-    ColumnsVector(iSparseVect) = L
-    SparseIndexMat(K,5) = iSparseVect
-
-
-  END DO
-END DO
-
-RowStart(nElemsX*nElemsY+1) = RowStart(nElemsX*nElemsY)+5 
-!*PRINT*, "iRowStart", nElemsX*nElemsY+1, "RowStart(iRowStart)", RowStart(nElemsX*nElemsY+1)
-
-JacobiCounter = 0
-
-#endif
 
 
 !*=================================================================
@@ -1195,12 +1103,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: FXWB
 USE MOD_FiniteVolume2D_vars,ONLY: FYWB
 USE MOD_FiniteVolume2D_vars,ONLY: SWB
 
-#ifdef PATANKAR
-USE MOD_FiniteVolume2D_vars,ONLY: ProductionSparse
-USE MOD_FiniteVolume2D_vars,ONLY: DestructionSparse
-USE MOD_FiniteVolume2D_vars,ONLY: ColumnsVector
-USE MOD_FiniteVolume2D_vars,ONLY: RowStart
-#endif
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -1214,61 +1116,14 @@ INTEGER :: ii, jj, K, L, iSparseVect, iRowStart
 !Production = 0.
 !Destruction = 0.
 
-#ifdef PATANKAR
-  iSparseVect = 0
-  iRowStart=0
-#endif  
 
-#ifdef WELLBALANCED
-  FX=FX-FXWB
-  FY=FY-FYWB
-  S =S -SWB
-#endif
 
 DO jj=1,nElemsY
   DO ii=1,nElemsX
-#ifdef PATANKAR   
-    K = GlobalElem(ii,jj)
-    
-    iSparseVect = iSparseVect + 1
-    iRowStart = iRowStart +1
-
-    L = GlobalElem(ii,jj-1)
-    ProductionSparse(iSparseVect) = max(FY(1,ii+0,jj-1),0.)/Mesh_DX(2)
-    DestructionSparse(iSparseVect) = -min(FY(1,ii+0,jj-1),0.)/Mesh_DX(2)
-
-    iSparseVect = iSparseVect + 1
-    L = GlobalElem(ii-1,jj)
-    ProductionSparse(iSparseVect) =   max(FX(1,ii-1,jj+0),0.)/Mesh_DX(1)
-    DestructionSparse(iSparseVect) = -min(FX(1,ii-1,jj+0),0.)/Mesh_DX(1)
-
-
-    iSparseVect = iSparseVect + 1
-    L = GlobalElem(ii,jj)
-    ProductionSparse(iSparseVect) = 0.
-    DestructionSparse(iSparseVect) = 0.
-
-
-    iSparseVect = iSparseVect + 1
-    L = GlobalElem(ii+1,jj)
-    ProductionSparse(iSparseVect) =  max(-FX(1,ii+0,jj+0),0.)/Mesh_DX(1)
-    DestructionSparse(iSparseVect) = -min(-FX(1,ii+0,jj+0),0.)/Mesh_DX(1)
-
-    iSparseVect = iSparseVect + 1
-    L = GlobalElem(ii,jj+1)
-    ProductionSparse(iSparseVect) = max(-FY(1,ii+0,jj+0),0.)/Mesh_DX(2)
-    DestructionSparse(iSparseVect) = -min(-FY(1,ii+0,jj+0),0.)/Mesh_DX(2)
-
-    Ut(2:nVar,ii,jj) = S(2:nVar,ii,jj) &
-                     - (FX(2:nVar,ii+0,jj+0)-FX(2:nVar,ii-1,jj+0))/Mesh_DX(1) &
-                     - (FY(2:nVar,ii+0,jj+0)-FY(2:nVar,ii+0,jj-1))/Mesh_DX(2)
-
-#else
     Ut(1:nVar,ii,jj) = S(1:nVar,ii,jj) &
                      - (FX(1:nVar,ii+0,jj+0)-FX(1:nVar,ii-1,jj+0))/Mesh_DX(1) &
                      - (FY(1:nVar,ii+0,jj+0)-FY(1:nVar,ii+0,jj-1))/Mesh_DX(2)
 
-#endif
   END DO !ii
 END DO !jj
 
@@ -2052,17 +1907,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: am_qp
 USE MOD_FiniteVolume2D_vars,ONLY: ap_qp
 #endif
 
-#ifdef PATANKAR 
-USE MOD_FiniteVolume2D_vars,ONLY: NNZsparse
-USE MOD_FiniteVolume2D_vars,ONLY: ProductionSparse
-USE MOD_FiniteVolume2D_vars,ONLY: DestructionSparse
-USE MOD_FiniteVolume2D_vars,ONLY: RowStart
-USE MOD_FiniteVolume2D_vars,ONLY: ColumnsVector
-USE MOD_FiniteVolume2D_vars,ONLY: ProdUp
-USE MOD_FiniteVolume2D_vars,ONLY: DestUp
-USE MOD_FiniteVolume2D_vars,ONLY: SparseIndexMat
-USE MOD_FiniteVolume2D_vars,ONLY: JacobiIterations
-#endif   
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -2160,25 +2004,7 @@ DEALLOCATE(am_qp)
 DEALLOCATE(ap_qp)
 #endif
 
-#ifdef WELLBALANCED
-DEALLOCATE(UtWB)
-DEALLOCATE(FXWB)
-DEALLOCATE(FYWB)
-DEALLOCATE(SWB)
-#endif
 
-#ifdef PATANKAR
-DEALLOCATE(ProductionSparse)
-DEALLOCATE(DestructionSparse)
-DEALLOCATE(ColumnsVector)
-DEALLOCATE(RowStart)
-
-DEALLOCATE(ProdUp)
-DEALLOCATE(DestUp)
-DEALLOCATE(SparseIndexMat)
-
-DEALLOCATE(JacobiIterations)
-#endif   
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE FinalizeFiniteVolume
@@ -2572,20 +2398,6 @@ BVol_in_qp = 0.0
 DO jj=lbYs,lbYe
   DO ii=lbXs,lbXe
 
-#ifdef PWCINTROUBLEDCELLS
-#ifdef MULTIFLUID
-    IF(PRESENT(Troubled_Cell_W)) THEN
-      IF (Troubled_Cell_W(ii,jj) .NE. 0) THEN !*PWC
-        CYCLE
-      END IF
-    END IF
-#else
-PRINT*, "Impossible to use PWCINTROUBLEDCELLS"
-PRINT*, "Disable this flag"
-PRINT*, "You should not be here"
-STOP
-#endif
-#endif
 
     SELECT CASE (ABS(ReconstructionUsed))
       CASE(1)
@@ -2819,20 +2631,6 @@ BVol_in_qp = 0.0
 DO jj=lbYs,lbYe
   DO ii=lbXs,lbXe
 
-#ifdef PWCINTROUBLEDCELLS
-#ifdef MULTIFLUID
-    IF(PRESENT(Troubled_Cell_W)) THEN
-      IF (Troubled_Cell_W(ii,jj) .NE. 0) THEN !*PWC
-        CYCLE
-      END IF
-    END IF
-#else
-PRINT*, "Impossible to use PWCINTROUBLEDCELLS"
-PRINT*, "Disable this flag"
-PRINT*, "You should not be here"
-STOP
-#endif
-#endif
 
     SELECT CASE (ABS(ReconstructionUsed))
       CASE(1)

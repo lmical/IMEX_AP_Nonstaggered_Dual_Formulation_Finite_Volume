@@ -22,17 +22,6 @@ INTEGER             :: nGhosts
 INTEGER             :: nElemsX 
 INTEGER             :: nElemsY
 
-#ifdef PATANKAR
-INTEGER             :: NNZsparse
-INTEGER             :: NGlobalRows
-INTEGER,ALLOCATABLE :: RowStart(:)
-INTEGER,ALLOCATABLE :: ColumnsVector(:)
-REAL, ALLOCATABLE   :: ProductionSparse(:)
-REAL, ALLOCATABLE   :: DestructionSparse(:)
-REAL,ALLOCATABLE    :: ProdUp(:,:)
-REAL,ALLOCATABLE    :: DestUp(:,:)
-INTEGER, ALLOCATABLE   :: SparseIndexMat(:,:)
-#endif
 
 
 
@@ -183,10 +172,6 @@ INTEGER             :: NRelaxedTimesteps
 REAL                :: DiscontinuityLocation !*For Toro's Riemann Problems
 REAL                :: Lambda_Lax
 INTEGER             :: GravitationalPotentialFlag
-#ifdef SW
-REAL                :: Gravity
-REAL                :: Kappa
-#endif
 
 INTEGER             :: maxTimeSteps
 INTEGER             :: WhichRiemannSolver
@@ -196,10 +181,6 @@ INTEGER             :: WhichRiemannSolverPrimitiveSystem
 REAL                :: computationalTime
 REAL                :: global_min
 
-#ifdef PATANKAR
-INTEGER, ALLOCATABLE:: JacobiIterations(:)
-INTEGER             :: JacobiCounter
-#endif
 
 #ifdef CENTEREDPRIMITIVE
 #ifdef IMEX

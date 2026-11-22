@@ -245,10 +245,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState3
 USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState4
 USE MOD_FiniteVolume2D_vars,ONLY: MIN_DENSITY
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Gravity
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 #ifdef RELAXATION
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
 #endif
@@ -292,42 +288,6 @@ REAL               :: ss, ro, p
 Cons = 0.0
 Prim = 0.0
 SELECT CASE(WhichInitialCondition)
-#ifdef SW
-  !*------------------------------------------
-  !*[1] Unsteady smooth vortex for SW
-  !*------------------------------------------
-  CASE(1) 
-    u_inf = 2.
-    v_inf = 3.
-    H_inf=1.
-    r0 = 1.
-
-    xm(1) = MESH_X0(1)+0.5*MESH_SX(1)
-    xm(2) = MESH_X0(2)+0.5*MESH_SX(2)
-    xc(1) = MODULO( x(1)-u_inf*t-MESH_X0(1) , Mesh_SX(1) ) + MESH_X0(1)-xm(1)
-    xc(2) = MODULO( x(2)-v_inf*t-MESH_X0(2) , Mesh_SX(2) ) + MESH_X0(2)-xm(2)
-    r     = (xc(1)**2 + xc(2)**2)
-    Omega = sqrt(2.*Gravity*hDerivSmoothAuxiliary(r))
-    
-    Prim(1) = H_inf
-    Prim(2) = u_inf
-    Prim(3) = v_inf
-
-    IF (r .LT. 1) THEN
-      Prim(1) = hSmoothAuxiliary(r)
-      Prim(2) = Prim(2)+Omega*(+xc(2))
-      Prim(3) = Prim(3)+Omega*(-xc(1))
-    END IF
-
-    Prim(4)= Kappa*Prim(1)**Gmm
-
-#ifdef MULTIFLUID
-    Prim(5)=0.0
-#endif
-
-
-    CALL PrimToCons(Prim,Cons)
-#else
   !*------------------------------------------
   !*[2] Steady isentropic vortex
   !*------------------------------------------
@@ -1573,7 +1533,6 @@ SELECT CASE(WhichInitialCondition)
 
 
 
-#endif
   CASE DEFAULT
     ErrorMessage = "Exact function not specified"
     WRITE(*,*) ErrorMessage
@@ -1583,23 +1542,6 @@ END SELECT
 !-------------------------------------------------------------------------------!
 CONTAINS
    
-#ifdef SW
-  REAL FUNCTION hSmoothAuxiliary(x)
-    IMPLICIT NONE
-    REAL, INTENT(IN) :: x
-
-    hSmoothAuxiliary=1.-0.5*exp(-1./atan(1.-x)**3.)
-
-  END FUNCTION
-
-  REAL FUNCTION hDerivSmoothAuxiliary(x)
-    IMPLICIT NONE
-    REAL, INTENT(IN) :: x
-
-    hDerivSmoothAuxiliary=3.*0.5*exp(1./atan(x - 1.)**3.)/(atan(x - 1.)**4*((x - 1.)**2 + 1.))
-
-  END FUNCTION
-#endif
 
   REAL FUNCTION pfunction(r)
     IMPLICIT NONE
@@ -3273,9 +3215,6 @@ SUBROUTINE WaveSpeeds1D(Prim,slowest,fastest,fastest_in_absolute_value,slowest_w
 !-------------------------------------------------------------------------------!
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 #ifdef RELAXATION
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
 #endif
@@ -3313,9 +3252,6 @@ ro = Prim(1)
 vx = Prim(2)
 vy = Prim(3)
 p  = Prim(4)
-#ifdef SW
-p  = Kappa*ro**Gmm
-#endif
 #ifdef MULTIFLUID
 roPhi = Prim(5)
 Gmm=Get_Gamma(roPhi)
@@ -3399,9 +3335,6 @@ SUBROUTINE WaveSpeeds2D(Prim,slowestx,fastestx,fastest_in_absolute_valuex,slowes
 !-------------------------------------------------------------------------------!
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 #ifdef RELAXATION
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
 #endif
@@ -3445,9 +3378,6 @@ ro = Prim(1)
 vx = Prim(2)
 vy = Prim(3)
 p  = Prim(4)
-#ifdef SW
-p  = Kappa*ro**Gmm
-#endif
 #ifdef MULTIFLUID
 roPhi  = Prim(5)
 Gmm=Get_Gamma(roPhi)
@@ -3589,9 +3519,6 @@ Gmm=Get_Gamma(roPhi)
 pinf=Get_Pressure_Infinity(roPhi)
 #endif
 
-#ifdef PATANKAR
-rot = ro + MIN_DENSITY/ro
-#else
 #ifdef POSITIVITYCHECKS
 IF (ro .LT. MIN_DENSITY) THEN
   ro = MIN_DENSITY
@@ -3610,7 +3537,6 @@ vy=rovy/ro
 
 #endif
 rot = ro
-#endif
 
 
 Prim(1) = ro
@@ -3662,9 +3588,6 @@ SUBROUTINE PrimToCons(Prim, Cons)
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
 USE MOD_FiniteVolume2D_vars,ONLY: MIN_DENSITY, MIN_SPEED, MIN_PRESSURE
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 #ifdef RELAXATION
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
 #endif
@@ -3689,9 +3612,6 @@ ro  = Prim(1)
 vx  = Prim(2)
 vy  = Prim(3)
 p   = Prim(4)
-#ifdef SW
-p   = Kappa*ro**Gmm
-#endif
 #ifdef MULTIFLUID
 roPhi=Prim(5)
 Gmm =Get_Gamma(roPhi)
@@ -3699,16 +3619,12 @@ pinf=Get_Pressure_Infinity(roPhi)
 #endif
 
 
-#ifdef PATANKAR
-
-#else
 #ifdef POSITIVITYCHECKS
 IF (ro .LT. MIN_DENSITY) THEN
  ro = MIN_DENSITY
  vx=0.
  vy=0.
 END IF
-#endif
 #endif
 
 #ifdef POSITIVITYCHECKS
@@ -3757,9 +3673,6 @@ SUBROUTINE EvaluateFlux1D(Prim,Flux)
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
 USE MOD_FiniteVolume2D_vars,ONLY: MIN_DENSITY, MIN_SPEED, MIN_PRESSURE
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 #ifdef RELAXATION
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
 #endif
@@ -3784,25 +3697,18 @@ ro = Prim(1)
 vx = Prim(2)
 vy = Prim(3)
 p  = Prim(4)
-#ifdef SW
-p  = Kappa*ro**Gmm
-#endif
 #ifdef MULTIFLUID
 roPhi=Prim(5)
 Gmm=Get_Gamma(roPhi)
 pinf=Get_Pressure_Infinity(roPhi)
 #endif
 
-#ifdef PATANKAR
-
-#else
 #ifdef POSITIVITYCHECKS
 IF (ro .LT. MIN_DENSITY) THEN
  ro = MIN_DENSITY
  vx=0.
  vy=0.
 END IF
-#endif
 #endif
 
 #ifdef POSITIVITYCHECKS
@@ -3863,9 +3769,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: nDims
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
 USE MOD_FiniteVolume2D_vars,ONLY: WhichRiemannSolver
 USE exact_riemann_mod,      ONLY: exact_riemann
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 #ifdef RELAXATION
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
 #endif
@@ -5384,9 +5287,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: nGPs
 USE MOD_FiniteVolume2D_vars,ONLY: nDims
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
@@ -5438,9 +5338,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: nGPs
 USE MOD_FiniteVolume2D_vars,ONLY: nDims
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 USE MOD_FiniteVolume2D_vars,ONLY: WhichRiemannSolverPrimitiveSystem
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
@@ -5814,9 +5711,6 @@ SUBROUTINE EvaluateFluxPrimitiveSystem1D(Prim,Flux)
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
 USE MOD_FiniteVolume2D_vars,ONLY: MIN_DENSITY, MIN_SPEED, MIN_PRESSURE
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 #ifdef RELAXATION
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
 #endif
@@ -5841,9 +5735,6 @@ ro = Prim(1)
 vx = Prim(2)
 vy = Prim(3)
 p  = Prim(4)
-#ifdef SW
-p  = Kappa*ro**Gmm
-#endif
 #ifdef MULTIFLUID
 roPhi=Prim(5)
 #endif
@@ -5857,16 +5748,12 @@ pinf=Get_Pressure_Infinity(roPhi)
 
 
 
-#ifdef PATANKAR
-
-#else
 #ifdef POSITIVITYCHECKS
 IF (ro .LT. MIN_DENSITY) THEN
  ro = MIN_DENSITY
  vx=0.
  vy=0.
 END IF
-#endif
 #endif
 
 
@@ -5916,9 +5803,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: nGPs
 USE MOD_FiniteVolume2D_vars,ONLY: nDims
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -6189,7 +6073,6 @@ min_p  = HUGE(1.0)
 max_ro = 0.0
 
 #if(1==0)
-#ifndef PRIMITIVEONLY
 !*=======================
 !*ALERT: CONSERVED VARIABLES EXCLUDED
 !*=======================
@@ -6201,7 +6084,6 @@ DO jj=1,nElemsY
     min_p  = MIN(min_p,Prim(4))
   END DO
 END DO
-#endif
 #endif
 
 

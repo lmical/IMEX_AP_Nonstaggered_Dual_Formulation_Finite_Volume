@@ -50,10 +50,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: ReconstructedVariable
 USE MOD_FiniteVolume2D_vars,ONLY: WhichSpeedEstimateForDtComputation
 USE MOD_FiniteVolume2D_vars,ONLY: relaxed_dt
 USE MOD_FiniteVolume2D_vars,ONLY: NRelaxedTimesteps
-#ifdef SW
-USE MOD_FiniteVolume2D_vars,ONLY: Gravity
-USE MOD_FiniteVolume2D_vars,ONLY: Kappa
-#endif
 #ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: VarNameVisu_W
 #endif
@@ -117,7 +113,6 @@ END IF
 
 SELECT CASE(InitialCondition)
 !*------------------------------------------
-!*NB: Due to the flag, a test for SW can have the same number as a test for Euler
 !*But try to avoid it
 !*------------------------------------------
 !*Boudary conditions are
@@ -128,30 +123,6 @@ SELECT CASE(InitialCondition)
 !*4 outflow
 !*5 wall
 !*------------------------------------------
-#ifdef SW
-  !*------------------------------------------
-  !*[1] Unsteady smooth vortex for SW
-  !*------------------------------------------
-  CASE(1) !*UNSTEADY SMOOTH VORTEX
-    NameTest="Unsteady smooth vortex for SW (NB: to be run with SW flag)"
-    TEnd    = 0.1
-    Gravity = 9.81
-    Kappa   = 0.5*Gravity
-    Gmm     = 2.0
-    nElemsX = 512
-    nElemsY = nElemsX
-    MESH_X0 = (/0.0,0.0/)
-    MESH_X1 = (/3.0,3.0/)
-    BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#ifdef CENTEREDPRIMITIVE
-#ifdef IMEX
-    BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-    GravitationalPotentialFlag = 0       
-    relaxed_dt                 = 0.0
-    NRelaxedTimesteps          = 0
-#else
   !*------------------------------------------
   !*[2] Steady isentropic smooth vortex
   !*------------------------------------------
@@ -1525,7 +1496,6 @@ SELECT CASE(InitialCondition)
 
 
 #endif
-#endif
   CASE DEFAULT
     ErrorMessage = "Initial condition not implemented"
     WRITE(*,*) ErrorMessage
@@ -1726,27 +1696,8 @@ SELECT CASE(WhichSpeedEstimateForDtComputation)
 END SELECT
 PRINT*, "--------------------------"
 
-#ifdef SW
-  PRINT*, "--------------------------"
-  PRINT*, "SW setting"
-  PRINT*, "p     = K*rho**gamma"
-  PRINT*, "K     = ", Kappa
-  PRINT*, "gamma = ", Gmm
-  PRINT*, "--------------------------"
-  !*Equivalence if K=g/2.0 and gamma=2.0
-#endif
 
-#ifdef PATANKAR
-  PRINT*, "--------------------------"
-  PRINT*, "Patankar active"
-  PRINT*, "--------------------------"
-#endif
 
-#ifdef WELLBALANCED
-  PRINT*, "--------------------------"
-  PRINT*, "Well-balanced active"
-  PRINT*, "--------------------------"
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -1766,10 +1717,6 @@ PRINT*, "--------------------------"
 
 
 
-#ifdef PRIMITIVEONLY
-  PRINT*, "Impossible to evolve only primitive variables without Active Flux flag."
-  STOP
-#endif
 
 #ifdef RELAXATION
   PRINT*, "--------------------------"
@@ -1861,9 +1808,6 @@ STOP
 PRINT*, "...evolving also the level set variable in U"
 #endif
 
-#ifdef PWCINTROUBLEDCELLS
-PRINT*, "...piecewise constant reconstruction in troubled cells"
-#endif
 
 #ifdef RECONSTRUCTIONPHI
 PRINT*, "...reconstruction of phi rather than rophi"

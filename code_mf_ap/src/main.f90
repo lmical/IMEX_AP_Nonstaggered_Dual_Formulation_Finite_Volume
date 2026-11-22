@@ -22,9 +22,6 @@ CALL InitializeParameters()
 CALL InitializeFiniteVolume()
 CALL BuildMesh()
 
-#ifdef WELLBALANCED
-CALL InitializeWBVariables()
-#endif
 
 
 CALL FillInitialConditions()

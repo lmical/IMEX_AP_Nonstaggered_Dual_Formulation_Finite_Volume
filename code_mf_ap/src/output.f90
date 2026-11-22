@@ -110,7 +110,6 @@ FileNameOct_WC     = TRIM("WC_") // TRIM(FileNameOct)
 FileNameOct_WC_ERR = TRIM("WC_Err_") // TRIM(FileNameOct)
 #endif
 
-#ifndef PRIMITIVEONLY
 U_NVisu = 0.
 #ifdef CENTEREDPRIMITIVE
 WC_NVisu = 0.
@@ -151,19 +150,16 @@ DO jj=1,nElemsY
   END DO
 END DO
 Conservation_Integral=Conservation_Integral*MESH_DX(1)*MESH_DX(2)
-#endif
 
 
 
 PRINT*, "=========================="
 PRINT*, "Time:", OutputTime 
-#ifndef PRIMITIVEONLY
 PRINT*, "Conservation integrals:", Conservation_Integral
 PRINT*, "--------------------------"
 DO iVar=1,nVar
   PRINT*, "Maximum and Minimum of conserved variable U", iVar, "is", MAXVAL(U(iVar,1:nElemsX,1:nElemsY)),  MINVAL(U(iVar,1:nElemsX,1:nElemsY))
 END DO
-#endif
 #ifdef CENTEREDPRIMITIVE
 PRINT*, "--------------------------"
 DO iVar=1,nVar
@@ -192,7 +188,6 @@ END DO
 
 
 IF (WhichOutput .EQ. 1) THEN
-#ifndef PRIMITIVEONLY
   CALL WriteDataToDisk_OCTAVE(&
         nVar,                &
         (/nElemsX,nElemsY/), &
@@ -203,7 +198,6 @@ IF (WhichOutput .EQ. 1) THEN
         OutputTime,          &
         TRIM(FileNameOct),      &
         "FV2D")
-#endif
 #ifdef CENTEREDPRIMITIVE
   CALL WriteDataToDisk_OCTAVE(&
         nVar,                &
@@ -347,7 +341,6 @@ INTEGER            :: ii, jj
 CHARACTER(LEN=255) :: FileName
 !-------------------------------------------------------------------------------!
 
-#ifndef PRIMITIVEONLY
 Filename = TRIM("MESH_CoordinateX.dat")
 WRITE(*,'(A22,1X,A)') &
   "Writing DATA to Disk: ", "OCTAVE ASCII"//" => "//TRIM(FileName)
@@ -367,7 +360,6 @@ DO jj=1,nElemsY
   WRITE(UNIT_FILE,'(SP,1(ES21.14E2))') MeshBary(2,1,jj)
 END DO
 CLOSE(UNIT_FILE)
-#endif
 
 
 
