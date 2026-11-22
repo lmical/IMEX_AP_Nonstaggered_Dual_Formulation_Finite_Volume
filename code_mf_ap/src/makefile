@@ -47,7 +47,6 @@ MAIN_LIB = libmain.a
 #--------------------------------------------------------------------------------------------------#
 # FCFLAGS += -I. -DTRICKSTOAVOIDDIVISIONSBYZERO
 FCFLAGS += -I. -DCENTEREDPRIMITIVE
-# FCFLAGS += -I. -DRECONSTRUCTFROMCONSERVED
 # FCFLAGS += -I. -DDONOTOVERWRITEPRIMITIVE
 FCFLAGS += -I. -DRELAXATION
 FCFLAGS += -I. -DIMEX

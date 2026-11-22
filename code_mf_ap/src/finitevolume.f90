@@ -1011,34 +1011,12 @@ CALL BoundaryConditions(t)
 !*=========================
 
 
-#ifdef RECONSTRUCTFROMCONSERVED
-CALL ComputeTransitionMatricesConservedInput(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),  &  !*Vector
-                          & -nGhosts,nElemsX+nGhosts+1, &  !*X bounds vector  
-                          & -nGhosts,nElemsY+nGhosts+1,   &  !*Y bounds vector
-                          & 1,nElemsX, &                   !*X bounds loop    
-                          & 1,nElemsY)                       !*Y bounds loop 
-#else
 CALL ComputeTransitionMatricesPrimitiveInput(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),  &  !*Vector
                           & -nGhosts,nElemsX+nGhosts+1, &  !*X bounds vector  
                           & -nGhosts,nElemsY+nGhosts+1,   &  !*Y bounds vector
                           & 1,nElemsX, &                   !*X bounds loop    
                           & 1,nElemsY)                       !*Y bounds loop 
-#endif
 
-#ifdef RECONSTRUCTFROMCONSERVED
-CALL ReconstructionX_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
-                          & 0,nElemsX+1, &                 !*X bounds loop  
-                          & 1,nElemsY)                   !*Y bounds loop    
-
-
-CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-CALL ConsToPrimInTheWholeMeshInterfaces(WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-
-#else
 CALL ReconstructionX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
                           &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
                           &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
@@ -1046,27 +1024,9 @@ CALL ReconstructionX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 1,nElemsY)                   !*Y bounds loop    
 
 
-#endif
 
 CALL NumericalFluxFX()
 
-#ifdef RECONSTRUCTFROMCONSERVED
-CALL ReconstructionY_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
-                          & 1,nElemsX, &                   !*X bounds loop
-                          & 0,nElemsY+1)                 !*Y bounds loop    
-
-
-
-
-CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-CALL ConsToPrimInTheWholeMeshInterfaces(WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-
-
-#else
 CALL ReconstructionY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
                           &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
                           &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
@@ -1074,7 +1034,6 @@ CALL ReconstructionY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 0,nElemsY+1)                 !*Y bounds loop    
 
 
-#endif
 
 
 
@@ -1098,19 +1057,6 @@ CALL UpdateTimeDerivative()
 !*WC
 !*=========================
 
-#ifdef RECONSTRUCTFROMCONSERVED
-CALL ReconstructionX_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
-                          & 0,nElemsX+1, &                 !*X bounds loop  
-                          & 1,nElemsY)                   !*Y bounds loop    
-
-
-CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-CALL ConsToPrimInTheWholeMeshInterfaces(WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-#else
 CALL ReconstructionX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
                           &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
                           &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
@@ -1118,7 +1064,6 @@ CALL ReconstructionX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 1,nElemsY)                   !*Y bounds loop    
 
 
-#endif
 
 
 CALL NumericalFluxFX_W_INPUT( 0,nElemsX,&                    !*X bounds loop    
@@ -1133,20 +1078,6 @@ CALL BVolX_W_INPUT(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhost
                   & 1,nElemsX, &                             !*X bounds loop    
                   & 1,nElemsY)                               !*Y bounds loop  
 
-#ifdef RECONSTRUCTFROMCONSERVED
-CALL ReconstructionY_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
-                          & 1,nElemsX, &                   !*X bounds loop
-                          & 0,nElemsY+1)                 !*Y bounds loop    
-
-
-
-CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-CALL ConsToPrimInTheWholeMeshInterfaces(WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-#else
 CALL ReconstructionY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
                           &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
                           &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
@@ -1154,7 +1085,6 @@ CALL ReconstructionY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 0,nElemsY+1)                 !*Y bounds loop    
 
 
-#endif
 
 CALL NumericalFluxFY_W_INPUT( 1,nElemsX, &                   !*X bounds loop    
                             & 0,nElemsY )                    !*Y bounds loop  
@@ -3405,34 +3335,12 @@ CALL BoundaryConditions(t)
 !*=========================
 
 
-#ifdef RECONSTRUCTFROMCONSERVED
-CALL ComputeTransitionMatricesConservedInput(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),  &  !*Vector
-                          & -nGhosts,nElemsX+nGhosts+1, &  !*X bounds vector  
-                          & -nGhosts,nElemsY+nGhosts+1,   &  !*Y bounds vector
-                          & 1,nElemsX, &                   !*X bounds loop    
-                          & 1,nElemsY)                       !*Y bounds loop 
-#else
 CALL ComputeTransitionMatricesPrimitiveInput(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),  &  !*Vector
                           & -nGhosts,nElemsX+nGhosts+1, &  !*X bounds vector  
                           & -nGhosts,nElemsY+nGhosts+1,   &  !*Y bounds vector
                           & 1,nElemsX, &                   !*X bounds loop    
                           & 1,nElemsY)                       !*Y bounds loop 
-#endif
 
-#ifdef RECONSTRUCTFROMCONSERVED
-CALL ReconstructionX_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
-                          & 0,nElemsX+1, &                 !*X bounds loop  
-                          & 1,nElemsY)                   !*Y bounds loop    
-
-
-CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-CALL ConsToPrimInTheWholeMeshInterfaces(WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-
-#else
 CALL ReconstructionX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
                           &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
                           &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
@@ -3440,27 +3348,9 @@ CALL ReconstructionX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 1,nElemsY)                   !*Y bounds loop    
 
 
-#endif
 
 CALL NumericalFluxFX()
 
-#ifdef RECONSTRUCTFROMCONSERVED
-CALL ReconstructionY_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
-                          & 1,nElemsX, &                   !*X bounds loop
-                          & 0,nElemsY+1)                 !*Y bounds loop    
-
-
-
-
-CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-CALL ConsToPrimInTheWholeMeshInterfaces(WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
-WP(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WP_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
-
-
-#else
 CALL ReconstructionY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
                           &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
                           &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
@@ -3468,7 +3358,6 @@ CALL ReconstructionY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 0,nElemsY+1)                 !*Y bounds loop    
 
 
-#endif
 
 
 

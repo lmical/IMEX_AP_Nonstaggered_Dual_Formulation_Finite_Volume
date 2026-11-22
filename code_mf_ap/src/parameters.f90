@@ -1752,13 +1752,8 @@ PRINT*, "--------------------------"
 #ifdef CENTEREDPRIMITIVE
   PRINT*, "--------------------------"
   PRINT*, "Centered primitive active"
-#ifdef RECONSTRUCTFROMCONSERVED
-  PRINT*, "--------------------------"
-  PRINT*, "Reconstruct interface values from conserved variables"
-#else
   PRINT*, "--------------------------"
   PRINT*, "Reconstruct interface values from primitive variables"
-#endif
 #ifdef DONOTOVERWRITEPRIMITIVE
       PRINT*, "Not overwriting primitive, basically for debugging"
 #else
