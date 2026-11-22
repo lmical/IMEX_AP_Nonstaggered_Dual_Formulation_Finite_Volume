@@ -35,7 +35,7 @@ USE MOD_FiniteVolume2D_vars,ONLY: Reconstruction
 USE MOD_FiniteVolume2D_vars,ONLY: ReconstructionFix
 USE MOD_FiniteVolume2D_vars,ONLY: timescheme
 USE MOD_FiniteVolume2D_vars,ONLY: WhichRiemannSolver
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: WhichRiemannSolverPrimitiveSystem
 #endif
 USE MOD_FiniteVolume2D_vars,ONLY: WhichOutput
@@ -54,13 +54,10 @@ USE MOD_FiniteVolume2D_vars,ONLY: NRelaxedTimesteps
 USE MOD_FiniteVolume2D_vars,ONLY: Gravity
 USE MOD_FiniteVolume2D_vars,ONLY: Kappa
 #endif
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: VarNameVisu_W
 #endif
-#ifdef ACTIVEFLUX
-USE MOD_FiniteVolume2D_vars,ONLY: AF_PostProcessing
-#endif
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
 USE MOD_FiniteVolume2D_vars,ONLY: SAFETY_K_TO_AVOID_HYPERBOLICITY_LOSS
 #endif
@@ -86,7 +83,7 @@ USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState4
 USE MOD_FiniteVolume2D_vars,ONLY: K_coefficient_PCSD
 USE MOD_FiniteVolume2D_vars,ONLY: WhichVariableForLimiting_PCSD
 #endif
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
 USE MOD_FiniteVolume2D_vars,ONLY: maxLenghtJacobiCounter
 USE MOD_FiniteVolume2D_vars,ONLY: BoundaryConditionsTypeIMEXLinearSystem
@@ -150,17 +147,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/0.0,0.0/)
     MESH_X1 = (/3.0,3.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -179,17 +168,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-10.0,-10.0/)
     MESH_X1 = (/10.0,10.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0
@@ -207,17 +188,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-10.0,-10.0/)
     MESH_X1 = (/10.0,10.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0     
@@ -235,17 +208,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/0.0,0.0/)
     MESH_X1 = (/1.0,1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -263,17 +228,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/0.0,0.0/)
     MESH_X1 = (/1.0,1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -293,17 +250,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-1.0,0.0/)
     MESH_X1 = (/ 1.0,1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -324,17 +273,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/0.0,0.0/)
     MESH_X1 = (/1.0,1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -352,17 +293,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-1.0,-1.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -386,17 +319,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-1.0,-1.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -421,17 +346,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-1.0,-1.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -455,17 +372,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-1.0,-1.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -514,17 +423,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-1.0,-1.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -557,17 +458,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -591,17 +484,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -625,17 +510,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -659,17 +536,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -693,17 +562,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -727,17 +588,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 0.3, 0.3/)
     BoundaryConditionsType = (/5,5,5,5/) !*Reflecting
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -761,17 +614,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.2, 1.2/)
     BoundaryConditionsType = (/2,2,2,2/) !*Transmissive (free)
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -796,7 +641,7 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0 , 0.0/)
     MESH_X1 = (/ 0.25, 1.0/)
     BoundaryConditionsType = (/3,5,3,5/) !*Transmissive (free)
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
@@ -807,14 +652,6 @@ SELECT CASE(InitialCondition)
 #else
     PrimRefState1 = (/2.0, 0.0, 0.0, 1.0/)
     PrimRefState3 = (/1.0, 0.0, 0.0, 2.5/)
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
-#endif
 #endif
     GravitationalPotentialFlag = 1       
 #if defined(IMEX) || defined(IMEXMOMENTUM)
@@ -845,17 +682,9 @@ SELECT CASE(InitialCondition)
     PrimRefState4 = (/1.0, SQRT(Gmm)*Ma_shock,0.0, 1.0/)
 #endif
     BoundaryConditionsType = (/2,2,2,3/) !*Transmissive all but left
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -883,17 +712,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ -5.0, -1.0/)
     MESH_X1 = (/  5.0,  1.0/)
     BoundaryConditionsType = (/5,2,5,3/) !B wall, R transmissive, U wall, L inflow
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -919,17 +740,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ -5.0, -1.0/)
     MESH_X1 = (/  5.0,  1.0/)
     BoundaryConditionsType = (/5,2,5,3/) !B wall, R transmissive, U wall, L inflow
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -955,17 +768,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ -5.0, -1.0/)
     MESH_X1 = (/  5.0,  1.0/)
     BoundaryConditionsType = (/5,2,5,3/) !B wall, R transmissive, U wall, L inflow
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -990,17 +795,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/   -5.0, -1.0/)
     MESH_X1 = (/   15.0,  1.0/)
     BoundaryConditionsType = (/5,2,5,3/) !B wall, R transmissive, U wall, L inflow
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1025,17 +822,9 @@ SELECT CASE(InitialCondition)
     PrimRefState4 = (/1.515695,0.523346,0.0,1.80500/)
 #endif
     BoundaryConditionsType = (/5,2,5,2/) !B wall, R transmissive, U wall, L transmissive
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1055,17 +844,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/   -5.0, -1.0/)
     MESH_X1 = (/   15.0,  1.0/)
     BoundaryConditionsType = (/5,2,5,2/) !B wall, R transmissive, U wall, L transmissive
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1087,17 +868,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,5,1,5/) !wall
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1117,17 +890,9 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.3
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1147,17 +912,9 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.5
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1177,17 +934,9 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.5
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1207,17 +956,9 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.4
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1237,17 +978,9 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.8
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1267,17 +1000,9 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.5
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1297,17 +1022,9 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.5
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1327,17 +1044,9 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.5
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1357,17 +1066,9 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 10.0, 10.0/)
     Lambda_Lax = 1.0
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1387,17 +1088,9 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 10.0, 10.0/)
     Lambda_Lax = 1e-3
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1421,17 +1114,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Transmissive
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1=1.4
-    Gmm2=1.6
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1455,17 +1140,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Transmissive
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1=1.4
-    Gmm2=1.6
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1489,17 +1166,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Transmissive
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1=1.6
-    Gmm2=1.4
-    pinf1=0.0
-    pinf2=0.0    
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1524,17 +1193,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Transmissive
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1=1.4
-    Gmm2=1.6
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1558,17 +1219,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,2,1,2/) !*Periodic BU and transmissive RL
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1=4.4
-    Gmm2=1.4
-    pinf1=6.0*10.0**8
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1593,17 +1246,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ -1.5, -0.5/)
     MESH_X1 = (/ 1.0, 0.5/)
     BoundaryConditionsType = (/5,2,5,2/) !*5 wall B U
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1=5.0/3.0
-    Gmm2=1.4
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1627,17 +1272,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ -1.5, -0.5/)
     MESH_X1 = (/ 1.0, 0.5/)
     BoundaryConditionsType = (/5,2,5,2/) !*5 wall B U
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1=1.249
-    Gmm2=1.4
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1660,17 +1297,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/0.0,0.0/)
     MESH_X1 = (/1.0,1.0/)
     BoundaryConditionsType = (/5,5,5,5/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1693,17 +1322,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*Periodic BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1724,17 +1345,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*Periodic BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1757,17 +1370,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*Periodic BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1788,18 +1393,10 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/ 0.0, 0.0/)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*Periodic BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
     !*BoundaryConditionsTypeIMEXLinearSystem=(/3,3,3,3/) !*NO
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0       
@@ -1822,17 +1419,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-10.0,-10.0/)
     MESH_X1 = (/10.0,10.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0     
@@ -1853,17 +1442,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-10.0,-10.0/)
     MESH_X1 = (/10.0,10.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0     
@@ -1884,17 +1465,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/0.0,0.0/)
     MESH_X1 = (/2.0*PI,2.0*PI/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0     
@@ -1921,17 +1494,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/-1.0/EPS_LM, 0.0/)
     MESH_X1 = (/ 1.0/EPS_LM,2.0*(1.0/EPS_LM)/5.0 /)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0     
@@ -1953,17 +1518,9 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/0.0, 0.0/)
     MESH_X1 = (/2.0, 1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
-#endif
-#endif
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-    Gmm1 = Gmm
-    Gmm2 = Gmm
-    pinf1=0.0
-    pinf2=0.0
 #endif
 #endif
     GravitationalPotentialFlag = 0     
@@ -1995,7 +1552,7 @@ END IF
 
 
 maxTimeSteps           = 100000000
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
 maxLenghtJacobiCounter = 10000000
 #endif
@@ -2021,7 +1578,7 @@ maxLenghtJacobiCounter = 10000000
 Reconstruction    = -26
 ReconstructionFix = Reconstruction
 WhichRiemannSolver = 1                                     !* 0 Rusanov, -1 CU, 1 LDCU,   2 LDCU new antidiffusion, 3 Exact
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 WhichRiemannSolverPrimitiveSystem =1                       !* 0 Rusanov, -1 CU, 1 LDPCCU
 #endif
 ReconstructedVariable =2 !*0=Conserved, 1=Characteristic, 2=Primitive, -1=Characteristic Alex' and Shaoshuai
@@ -2093,7 +1650,7 @@ VarNameVisu(5) = "Level_Set_Variable" !*This is actually not going to be updated
 #endif
 VarNameVisu(nVar+1) = "Gravitational_Potential"
 
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 VarNameVisu_W(1) = "Density"
 VarNameVisu_W(2) = "VelocityX"
 VarNameVisu_W(3) = "VelocityY"
@@ -2101,11 +1658,6 @@ VarNameVisu_W(4) = "Pressure"
 VarNameVisu_W(nVar+1) = "Gravitational_Potential"
 #endif
 
-#ifdef ACTIVEFLUX
-#ifdef MULTIFLUID
-VarNameVisu_W(5) = "Level_Set_Variable" !*Rho*Phi
-#endif
-#endif
 
 PRINT*, "--------------------------"
 PRINT*, "Test              = ", InitialCondition, TRIM(NameTest)
@@ -2126,7 +1678,6 @@ SELECT CASE(ReconstructedVariable)
     PRINT*, ReconstructedVariable
     STOP
 END SELECT
-#if !defined(ACTIVEFLUX)
 SELECT CASE(WhichRiemannSolver)
   CASE(0)
     PRINT*, "Riemann solver conserved system: Rusanov"
@@ -2143,8 +1694,7 @@ SELECT CASE(WhichRiemannSolver)
     PRINT*, WhichRiemannSolver
     STOP
 END SELECT
-#endif
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 SELECT CASE(WhichRiemannSolverPrimitiveSystem)
   CASE(0)
     PRINT*, "Riemann solver primitive system: Rusanov"
@@ -2277,51 +1827,10 @@ PRINT*, "--------------------------"
 
 
 
-#ifdef ACTIVEFLUX
-  PRINT*, "--------------------------"
-  PRINT*, "Active flux active"
-
-  !*---------------------------------------------
-  !*POSTPROCESSING LEGEND
-  !*---------------------------------------------
-  !*  0 nothing
-  !*  1 minmod, first x and then y
-  !*  2 minmod, first y and then x
-  !*  The following depend on eps
-  !*  3 minmod, first x and then y WORKING BUT NOT CONSERVATIVE
-  !*  4 minmod, first y and then x WORKING BUT NOT CONSERVATIVE
-  !*  5 minmod, first x and then y CONSERVATIVE
-  !*  6 minmod, first y and then x CONSERVATIVE
-  !*---------------------------------------------
-
-  AF_PostProcessing = 1
-  index=index+1
-  IF (nargs > index) THEN
-    CALL get_command_ARGUMENT(index+1, arg)
-    READ(arg, *) iarg
-    AF_PostProcessing = iarg
-  END IF
 
 #ifdef PRIMITIVEONLY
-  PRINT*, "Evolution of primitive variables only"
-#else
-  PRINT*, "Postprocessing = ", AF_PostProcessing
-#if (defined(OTHERPOSTPROCESSING) + defined(FOURINPUTSPOSTPROCESSING) + defined(ALINAPOSTPROCESSING) + defined(SIDEDPOSTPROCESSING)) > 1
-  PRINT*, "Impossible to have multiple post-processing flags active"
-  STOP
-#endif
-
-
-#endif
-
-  PRINT*, "--------------------------"
-#endif
-
-#ifdef PRIMITIVEONLY
-#ifndef ACTIVEFLUX
   PRINT*, "Impossible to evolve only primitive variables without Active Flux flag."
   STOP
-#endif
 #endif
 
 #ifdef RELAXATION
@@ -2349,7 +1858,7 @@ PRINT*, "--------------------------"
 #endif
 
 
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
   SAFETY_K_TO_AVOID_HYPERBOLICITY_LOSS=0.0
   index=index+1
@@ -2361,7 +1870,7 @@ PRINT*, "--------------------------"
 #endif
 #endif
 
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
   PRINT*, "--------------------------"
   PRINT*, "IMEX active"
@@ -2414,37 +1923,6 @@ PRINT*, "--------------------------"
 #endif
 
 
-#ifdef ACTIVEFLUX
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-  PRINT*, "--------------------------"
-  PRINT*, "Momentum in primitive variables"
-  PRINT*, "--------------------------"
-#endif
-#ifdef RECONSTRUCTIONVELOCITY
-  PRINT*, "--------------------------"
-  PRINT*, "Reconstruction velocity in primitive variables"
-  PRINT*, "--------------------------"
-#ifndef MOMENTUMINPRIMITIVEVARIABLES
-  PRINT*, "RECONSTRUCTIONVELOCITY is kind of redundant and useless if I do not have MOMENTUMINPRIMITIVEVARIABLES"
-  PRINT*, "Disable it"
-  STOP
-#endif
-#endif
-#ifdef ALTERNATIVEFORMULATIONPRESSURE
-  PRINT*, "--------------------------"
-  PRINT*, "Alternative formulation for pressure equation, the one which is not good for IMEX splitting"
-  PRINT*, "--------------------------"
-#endif
-#ifdef PRESSUREFORMULATIONFORIMEXMOMENTUM
-  PRINT*, "--------------------------"
-  PRINT*, "Alternative formulation for pressure equation, the one which is suitable for IMEX splitting and momentum equation"
-  PRINT*, "--------------------------"
-#endif
-#if (defined(ALTERNATIVEFORMULATIONPRESSURE) + defined(PRESSUREFORMULATIONFORIMEXMOMENTUM) ) > 1
-  PRINT*, "Impossible to have multiple PRESSUREFORMULATION flags active"
-  STOP
-#endif
-#endif
 
 
 SELECT CASE (timescheme)
@@ -2459,38 +1937,6 @@ SELECT CASE (timescheme)
 END SELECT 
 
 
-#ifdef ACTIVEFLUX
-
-#if defined(PRIMITIVEONLY) && defined(IMPLICITUPDATECONSERVED)
-PRINT*, "PRIMITIVEONLY incompatible with IMPLICITUPDATECONSERVED"
-STOP
-#endif
-
-#ifdef IMEX
-
-#ifdef NORMALIZEALL
-PRINT*, "Normalization of linear systems by all"
-#elif defined(NORMALIZELINEARSYSTEMS)
-PRINT*, "Normalization of linear systems by dx only"
-PRINT*, "I prefer to normalize by all, so I do not let it run in this mode"
-STOP
-#else
-PRINT*, "No normalization"
-PRINT*, "I prefer to normalize by all, so I do not let it run in this mode"
-STOP
-#endif
-PRINT*, "--------------------------"
-
-
-#if defined(NORMALIZEALL) && defined(NORMALIZELINEARSYSTEMS)
-  PRINT*, "Double normalization not possible"
-  PRINT*, "Go to makefile and get rid of one of the two"
-  STOP
-#endif
-
-#endif
-
-#endif
 
 
 #ifdef MULTIFLUID
@@ -2498,10 +1944,6 @@ PRINT*, "--------------------------"
 PRINT*, "Multifluid active"
 PRINT*, "Gamma 1", Gmm1
 PRINT*, "Gamma 2", Gmm2
-#ifndef ACTIVEFLUX
-PRINT*, "Impossible to run Multifluid without ACTIVEFLUX"
-STOP
-#endif
 PRINT*, "...with N troubled neighbours: ", N_Troubled_Neighbors
 #if defined(RELAXATION) || defined(IMEX)
 PRINT*, "Multifluid incompatible with RELAXATION or IMEX"
@@ -2542,10 +1984,6 @@ PRINT*, "--------------------------"
 
 #endif
 
-#if defined(CENTEREDPRIMITIVE) &&  defined(ACTIVEFLUX)
-PRINT*, "CENTEREDPRIMITIVE and ACTIVEFLUX are incompatible"
-STOP
-#endif
 
 #if defined(CENTEREDPRIMITIVE) &&  defined(RECONSTRUCTIONVELOCITY)
 PRINT*, "CENTEREDPRIMITIVE and RECONSTRUCTIONVELOCITY are incompatible"

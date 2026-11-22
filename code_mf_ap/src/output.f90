@@ -52,21 +52,13 @@ USE MOD_FiniteVolume2D_vars,ONLY: MESH_DX
 USE MOD_FiniteVolume2D_vars,ONLY: Errors_PCSD
 USE MOD_FiniteVolume2D     ,ONLY: Compute_Errors_PCSD
 #endif
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: VarNameVisu_W
 #endif
 #ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: WC
 #endif
-#ifdef ACTIVEFLUX
-USE MOD_FiniteVolume2D_vars,ONLY: W_X
-USE MOD_FiniteVolume2D_vars,ONLY: W_Y
-USE MOD_FiniteVolume2D_vars,ONLY: MeshBary_X
-USE MOD_FiniteVolume2D_vars,ONLY: MeshBary_Y
-USE MOD_Equation           ,ONLY: BoundaryConditions
-USE MOD_Reconstruction     ,ONLY: First_Derivative_Central_Order2
-#endif
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE) 
+#ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
 USE MOD_FiniteVolume2D_vars,ONLY: HyperbolicityLoss
 #endif
@@ -95,12 +87,6 @@ CHARACTER(LEN=255) :: FileNameOct_WC_ERR
 REAL,ALLOCATABLE   :: WC_NVisu(:,:,:)
 REAL,ALLOCATABLE   :: WC_ERR_NVisu(:,:,:)
 #endif
-#ifdef ACTIVEFLUX
-CHARACTER(LEN=255) :: FileNameOct_W_X
-CHARACTER(LEN=255) :: FileNameOct_W_Y
-REAL,ALLOCATABLE   :: W_X_NVisu(:,:,:)
-REAL,ALLOCATABLE   :: W_Y_NVisu(:,:,:)
-#endif
 REAL, DIMENSION(nVar) :: WC_temp
 REAL                  :: Error_temp(1:nVar), weight
 INTEGER               :: indi, indj
@@ -113,10 +99,6 @@ ALLOCATE(Uexact(1:nVar,1:nElemsX,1:nElemsY))
 ALLOCATE(WC_NVisu(1:nVar+1,1:nElemsX,1:nElemsY))
 ALLOCATE(WC_ERR_NVisu(1:nVar+1,1:nElemsX,1:nElemsY))
 #endif
-#ifdef ACTIVEFLUX
-ALLOCATE(W_X_NVisu(1:nVar+1,1:nElemsX+1,1:nElemsY))
-ALLOCATE(W_Y_NVisu(1:nVar+1,1:nElemsX,1:nElemsY+1))
-#endif
 
 FileNameOct = TIMESTAMP("SOLUTION_OCT",OutputTime)
 FileNameOct = TRIM(FileNameOct)//".dat"
@@ -126,10 +108,6 @@ FileNameTec = TRIM(FileNameTec)//".dat"
 #ifdef CENTEREDPRIMITIVE
 FileNameOct_WC     = TRIM("WC_") // TRIM(FileNameOct)
 FileNameOct_WC_ERR = TRIM("WC_Err_") // TRIM(FileNameOct)
-#endif
-#ifdef ACTIVEFLUX
-FileNameOct_W_X = TRIM("W_X_") // TRIM(FileNameOct)
-FileNameOct_W_Y = TRIM("W_Y_") // TRIM(FileNameOct)
 #endif
 
 #ifndef PRIMITIVEONLY
@@ -175,33 +153,6 @@ END DO
 Conservation_Integral=Conservation_Integral*MESH_DX(1)*MESH_DX(2)
 #endif
 
-#ifdef ACTIVEFLUX
-!*Computation of int_{\Omega} |div(v)| to check whether the div free constraints is satisfied
-CALL BoundaryConditions(tGlobal)
-
-!*Staggering in X direction
-int_abs_div_v_W_X=0.0
-DO jj=1,nElemsY
-  DO ii=1,nElemsX+1
-    dxvx=First_Derivative_Central_Order2(W_X(2,ii-1:ii+1,jj),MESH_DX(1))
-    dyvy=First_Derivative_Central_Order2(W_X(3,ii,jj-1:jj+1),MESH_DX(2))
-    int_abs_div_v_W_X=int_abs_div_v_W_X+ABS(dxvx+dyvy)
-  END DO
-END DO
-int_abs_div_v_W_X=int_abs_div_v_W_X*MESH_DX(1)*MESH_DX(2)
-
-!*Staggering in Y direction
-int_abs_div_v_W_Y=0.0
-DO jj=1,nElemsY+1
-  DO ii=1,nElemsX
-    dxvx=First_Derivative_Central_Order2(W_Y(2,ii-1:ii+1,jj),MESH_DX(1))
-    dyvy=First_Derivative_Central_Order2(W_Y(3,ii,jj-1:jj+1),MESH_DX(2))
-    int_abs_div_v_W_Y=int_abs_div_v_W_Y+ABS(dxvx+dyvy)
-    ! PRINT*, ii, jj, dxvx+dyvy, W_Y(2,ii-1:ii+1,jj)
-  END DO
-END DO
-int_abs_div_v_W_Y=int_abs_div_v_W_Y*MESH_DX(1)*MESH_DX(2)
-#endif
 
 
 PRINT*, "=========================="
@@ -219,21 +170,7 @@ DO iVar=1,nVar
   PRINT*, "Maximum and Minimum of conserved variable WC", iVar, "is", MAXVAL(WC(iVar,1:nElemsX,1:nElemsY)),  MINVAL(WC(iVar,1:nElemsX,1:nElemsY))
 END DO
 #endif
-#ifdef ACTIVEFLUX
-PRINT*, "--------------------------"
-DO iVar=1,nVar
-  PRINT*, "Maximum and Minimum of primitive variable W_X", iVar, "is", MAXVAL(W_X(iVar,1:nElemsX+1,1:nElemsY)),  MINVAL(W_X(iVar,1:nElemsX+1,1:nElemsY))
-END DO
-PRINT*, "--------------------------"
-DO iVar=1,nVar
-  PRINT*, "Maximum and Minimum of primitive variable W_Y", iVar, "is", MAXVAL(W_Y(iVar,1:nElemsX,1:nElemsY+1)),  MINVAL(W_Y(iVar,1:nElemsX+1,1:nElemsY+1))
-END DO
-PRINT*, "--------------------------"
-PRINT*, "Divergence of velocity field in W_X", int_abs_div_v_W_X
-PRINT*, "Divergence of velocity field in W_Y", int_abs_div_v_W_Y
-PRINT*, "--------------------------"
-#endif
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE) 
+#ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
 PRINT*, "Hyperbolicity loss", HyperbolicityLoss
 #endif
@@ -241,28 +178,6 @@ PRINT*, "Hyperbolicity loss", HyperbolicityLoss
 PRINT*, "=========================="
 
 
-#ifdef ACTIVEFLUX
-DO jj=1,nElemsY
-  DO ii=1,nElemsX+1 !*NB:+1 in X direction
-    W_X_NVisu(1:nVar,ii,jj) = W_X(1:nVar,ii,jj)
-    W_X_NVisu(nVar+1,ii,jj) = 0.0
-#if MOMENTUMINPRIMITIVEVARIABLES
-    W_X_NVisu(2:3,ii,jj) = W_X(2:3,ii,jj)/W_X(1,ii,jj)
-#endif
-  END DO
-END DO
-
-
-DO jj=1,nElemsY+1 !*NB:+1 in Y direction
-  DO ii=1,nElemsX
-    W_Y_NVisu(1:nVar,ii,jj) = W_Y(1:nVar,ii,jj)
-    W_Y_NVisu(nVar+1,ii,jj) = 0.0
-#if MOMENTUMINPRIMITIVEVARIABLES
-    W_Y_NVisu(2:3,ii,jj) = W_Y(2:3,ii,jj)/W_Y(1,ii,jj)
-#endif
-  END DO
-END DO
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -313,29 +228,6 @@ IF (WhichOutput .EQ. 1) THEN
         WC_ERR_NVisu,             &
         OutputTime,          &
         TRIM(FileNameOct_WC_ERR),      &
-        "FV2D")        
-#endif
-#ifdef ACTIVEFLUX
-  CALL WriteDataToDisk_OCTAVE(                 &
-        nVar,                                  &
-        (/nElemsX+1,nElemsY/),                 & !*NB:+1 in X direction
-        'XY',                                  &
-        MeshBary_X(1:2,1:nElemsX+1,1:nElemsY), & !*NB:+1 in X direction
-        VarNameVisu_W,                         &
-        W_X_NVisu,        & !*NB:+1 in X direction
-        OutputTime,                            &
-        TRIM(FileNameOct_W_X),                 &
-        "FV2D")
-
-  CALL WriteDataToDisk_OCTAVE(                 &
-        nVar,                                  &
-        (/nElemsX,nElemsY+1/),                 & !*NB:+1 in Y direction
-        'XY',                                  &
-        MeshBary_Y(1:2,1:nElemsX,1:nElemsY+1), & !*NB:+1 in Y direction
-        VarNameVisu_W,                         &
-        W_Y_NVisu,        & !*NB:+1 in Y direction
-        OutputTime,                            &
-        TRIM(FileNameOct_W_Y),                 &
         "FV2D")        
 #endif
 
@@ -433,10 +325,6 @@ DEALLOCATE(Uexact)
 DEALLOCATE(WC_NVisu)
 DEALLOCATE(WC_ERR_NVisu)
 #endif
-#ifdef ACTIVEFLUX
-DEALLOCATE(W_X_NVisu)
-DEALLOCATE(W_Y_NVisu)
-#endif
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE WriteSolutionToDisk
@@ -451,10 +339,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: nElemsX
 USE MOD_FiniteVolume2D_vars,ONLY: nElemsY
 USE MOD_FiniteVolume2D_vars,ONLY: MeshBary
 USE MOD_FiniteVolume2D_vars,ONLY: UNIT_FILE
-#ifdef ACTIVEFLUX
-USE MOD_FiniteVolume2D_vars,ONLY: MeshBary_X
-USE MOD_FiniteVolume2D_vars,ONLY: MeshBary_Y
-#endif
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -489,47 +373,6 @@ CLOSE(UNIT_FILE)
 #endif
 
 
-#ifdef ACTIVEFLUX
-Filename = TRIM("W_X_MESH_CoordinateX.dat")
-WRITE(*,'(A22,1X,A)') &
-  "Writing DATA to Disk: ", "OCTAVE ASCII"//" => "//TRIM(FileName)
-OPEN(UNIT_FILE, FILE=Filename)
-WRITE(UNIT_FILE,'(A)') "CoordinateX"
-DO ii=1,nElemsX+1 !*NB:+1 in X direction
-  WRITE(UNIT_FILE,'(SP,1(ES21.14E2))') MeshBary_X(1,ii,1)
-END DO
-CLOSE(UNIT_FILE)
-
-Filename = TRIM("W_X_MESH_CoordinateY.dat")
-WRITE(*,'(A22,1X,A)') &
-  "Writing DATA to Disk: ", "OCTAVE ASCII"//" => "//TRIM(FileName)
-OPEN(UNIT_FILE, FILE=Filename)
-WRITE(UNIT_FILE,'(A)') "CoordinateY"
-DO jj=1,nElemsY
-  WRITE(UNIT_FILE,'(SP,1(ES21.14E2))') MeshBary_X(2,1,jj)
-END DO
-CLOSE(UNIT_FILE)
-
-Filename = TRIM("W_Y_MESH_CoordinateX.dat")
-WRITE(*,'(A22,1X,A)') &
-  "Writing DATA to Disk: ", "OCTAVE ASCII"//" => "//TRIM(FileName)
-OPEN(UNIT_FILE, FILE=Filename)
-WRITE(UNIT_FILE,'(A)') "CoordinateX"
-DO ii=1,nElemsX
-  WRITE(UNIT_FILE,'(SP,1(ES21.14E2))') MeshBary_Y(1,ii,1)
-END DO
-CLOSE(UNIT_FILE)
-
-Filename = TRIM("W_Y_MESH_CoordinateY.dat")
-WRITE(*,'(A22,1X,A)') &
-  "Writing DATA to Disk: ", "OCTAVE ASCII"//" => "//TRIM(FileName)
-OPEN(UNIT_FILE, FILE=Filename)
-WRITE(UNIT_FILE,'(A)') "CoordinateY"
-DO jj=1,nElemsY+1 !*NB:+1 in Y direction
-  WRITE(UNIT_FILE,'(SP,1(ES21.14E2))') MeshBary_Y(2,1,jj)
-END DO
-CLOSE(UNIT_FILE)
-#endif
 
 
 !-------------------------------------------------------------------------------!

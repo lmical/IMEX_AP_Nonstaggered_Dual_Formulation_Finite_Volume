@@ -46,7 +46,6 @@ BLAS_LAPACK = -llapack -lblas
 MAIN_LIB = libmain.a
 #--------------------------------------------------------------------------------------------------#
 # FCFLAGS += -I. -DTRICKSTOAVOIDDIVISIONSBYZERO
-# FCFLAGS += -I. -DACTIVEFLUX
 FCFLAGS += -I. -DCENTEREDPRIMITIVE
 # FCFLAGS += -I. -DRECONSTRUCTFROMCONSERVED
 # FCFLAGS += -I. -DDONOTOVERWRITEPRIMITIVE

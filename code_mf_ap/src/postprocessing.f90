@@ -36,7 +36,7 @@ CHARACTER(LEN=255)   :: FNAME
 REAL, DIMENSION(nVar, nGPs, nGPs) :: Utemp
 REAL                 :: averageJacobi, std_deviation
 
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 REAL, ALLOCATABLE    :: Wexact(:,:,:)
 REAL, DIMENSION(nVar, nGPs, nGPs) :: WtempCons, WtempPrim
 #endif
@@ -103,91 +103,6 @@ WRITE(666,*) nElemsX, nElemsY, Error_Max_temp(1:nVar)
 #endif
 
 
-#ifdef ACTIVEFLUX
-
-!*Staggering in X direction
-ALLOCATE( L1error(1:nVar) )
-ALLOCATE( Wexact(1:nVar,1:nElemsX+1,1:nElemsY)) !*NB:+1 in X direction
- 
-Wexact(:,:,:) = 0.
-L1error(:) = 0. 
-WtempCons = 0.
-WtempPrim = 0.
-DO jj = 1,nElemsY  
-  DO ii = 1,nElemsX+1 !*NB:+1 in X direction
-    DO iGP=1,nGPs
-      DO jGP=1,nGPs
-        CALL ExactFunction(InitialCondition, tEnd, MeshGP_X(:,ii,jj,iGP,jGP), WtempCons(1:nVar,iGP,jGP))
-        CALL ConsToPrim(WtempCons(1:nVar,iGP,jGP),WtempPrim(1:nVar,iGP,jGP))
-        Wexact(1:nVar,ii,jj) = Wexact(1:nVar,ii,jj) + WeightsGP(iGP,jGP)* WtempPrim(1:nVar,iGP,jGP)
-      END DO
-    END DO
-    L1error(:) = L1error(:) + ABS( W_X(:,ii,jj) - Wexact(:,ii,jj) ) 
-  ENDDO
-ENDDO
-
-L1error(:) = L1error(:) * MESH_DX(1) * MESH_DX(2)
-
-PRINT*, "Error W_X", L1error
-
-FNAME = 'W_X_ErrorL1_XXXX_XXXX.dat'
-WRITE(FNAME(9+4:12+4),FMT="(I4.4)") nElemsX
-WRITE(FNAME(14+4:17+4),FMT="(I4.4)") nElemsY
-
-OPEN(666,FILE=TRIM(FNAME))
-WRITE(666,*) nElemsX, nElemsY, L1error(1:nVar)
-
-#ifdef ACTIVEFLUX
-#ifdef IMEX
-WRITE(666,*) HyperbolicityLoss
-#endif
-#endif
-
-DEALLOCATE( L1error )
-DEALLOCATE( Wexact )
-
-
-!*Staggering in Y direction
-ALLOCATE( L1error(1:nVar) )
-ALLOCATE( Wexact(1:nVar,1:nElemsX,1:nElemsY+1)) !*NB:+1 in Y direction
- 
-Wexact(:,:,:) = 0.
-L1error(:) = 0. 
-WtempCons = 0.
-WtempPrim = 0.
-DO jj = 1,nElemsY+1 !*NB:+1 in Y direction
-  DO ii = 1,nElemsX
-    DO iGP=1,nGPs
-      DO jGP=1,nGPs
-        CALL ExactFunction(InitialCondition, tEnd, MeshGP_Y(:,ii,jj,iGP,jGP), WtempCons(1:nVar,iGP,jGP))
-        CALL ConsToPrim(WtempCons(1:nVar,iGP,jGP),WtempPrim(1:nVar,iGP,jGP))
-        Wexact(1:nVar,ii,jj) = Wexact(1:nVar,ii,jj) + WeightsGP(iGP,jGP)* WtempPrim(1:nVar,iGP,jGP)
-      END DO
-    END DO
-    L1error(:) = L1error(:) + ABS( W_Y(:,ii,jj) - Wexact(:,ii,jj) ) 
-  ENDDO
-ENDDO
-
-L1error(:) = L1error(:) * MESH_DX(1) * MESH_DX(2)
-
-PRINT*, "Error W_Y", L1error
-
-FNAME = 'W_Y_ErrorL1_XXXX_XXXX.dat'
-WRITE(FNAME(9+4:12+4),FMT="(I4.4)") nElemsX
-WRITE(FNAME(14+4:17+4),FMT="(I4.4)") nElemsY
-
-OPEN(666,FILE=TRIM(FNAME))
-WRITE(666,*) nElemsX, nElemsY, L1error(1:nVar)
-#ifdef ACTIVEFLUX
-#ifdef IMEX
-WRITE(666,*) HyperbolicityLoss
-#endif
-#endif
-
-DEALLOCATE( L1error )
-DEALLOCATE( Wexact )
-
-#endif
 
 #ifdef PATANKAR
 averageJacobi = REAL(SUM(JacobiIterations(1:JacobiCounter)))/JacobiCounter

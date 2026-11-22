@@ -44,15 +44,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: MeshBary
 USE MOD_FiniteVolume2D_vars,ONLY: MeshGP   
 USE MOD_FiniteVolume2D_vars,ONLY: WeightsGP   
 USE MOD_FiniteVolume2D_vars,ONLY: WeightsGPBnd  
-#ifdef ACTIVEFLUX
-!*For staggering in X direction
-USE MOD_FiniteVolume2D_vars,ONLY: MeshBary_X
-USE MOD_FiniteVolume2D_vars,ONLY: MeshGP_X
-
-!*For staggering in Y direction
-USE MOD_FiniteVolume2D_vars,ONLY: MeshBary_Y
-USE MOD_FiniteVolume2D_vars,ONLY: MeshGP_Y
-#endif
 
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
@@ -81,68 +72,6 @@ DO jj=1,nElemsY
   END DO
 END DO
 
-#ifdef ACTIVEFLUX
-!*For staggering in X direction
-DO jj=1,nElemsY
-  DO ii=1,nElemsX
-    MeshBary_X(2,ii,jj) = MeshBary(2,ii,jj)                !*Same y
-    MeshBary_X(1,ii,jj) = MeshBary(1,ii,jj)-0.5*Mesh_DX(1) !*Staggered x
-  END DO
-END DO
-
-!*Last point in X direction skipped
-DO jj=1,nElemsY
-  MeshBary_X(2,nElemsX+1,jj) = MeshBary(2,nElemsX,jj)                !*Same y
-  MeshBary_X(1,nElemsX+1,jj) = MeshBary(1,nElemsX,jj)+0.5*Mesh_DX(1) !*Staggered x
-END DO
-
-!*------------------------------
-!*SAFETY CHECK
-!*------------------------------
-!*Same y
-!*Staggered x
-!*------------------------------
-! DO jj=1,nElemsY
-!   PRINT*
-!   PRINT*, "jj", jj, MeshBary_X(2,1,jj) !*y level
-!   DO ii=1,nElemsX+1
-!     PRINT*, ii, jj, MeshBary_X(:,ii,jj)
-!   END DO
-! END DO
-! STOP
-!*------------------------------
-
-
-!*For staggering in Y direction
-DO jj=1,nElemsY
-  DO ii=1,nElemsX
-    MeshBary_Y(1,ii,jj) = MeshBary(1,ii,jj)                !*Same x
-    MeshBary_Y(2,ii,jj) = MeshBary(2,ii,jj)-0.5*Mesh_DX(2) !*Staggered y
-  END DO
-END DO
-
-!*Last point in Y direction skipped
-DO ii=1,nElemsX
-  MeshBary_Y(1,ii,nElemsY+1) = MeshBary(1,ii,nElemsY)                !*Same x
-  MeshBary_Y(2,ii,nElemsY+1) = MeshBary(2,ii,nElemsY)+0.5*Mesh_DX(2) !*Staggered y
-END DO
-
-!*------------------------------
-!*SAFETY CHECK
-!*------------------------------
-!*Same x
-!*Staggered y
-!*------------------------------
-! DO jj=1,nElemsY+1
-!   PRINT*
-!   PRINT*, "jj", jj, MeshBary_Y(2,1,jj)
-!   DO ii=1,nElemsX
-!     PRINT*, ii, jj, MeshBary_Y(:,ii,jj)
-!   END DO
-! END DO
-! STOP
-!*------------------------------
-#endif
 
 !*------------------------------
 !*NB: +1 in X and Y direction added for Active flux in all the normals
@@ -205,87 +134,6 @@ DO iGP = 1, nGPs
 END DO
 
 
-#ifdef ACTIVEFLUX
-!*For staggering in X direction
-DO iGP = 1, nGPs
-  DO jGP = 1, nGPs
-    DO jj=1,nElemsY
-      DO ii=1,nElemsX+1
-        MeshGP_X(1:nDims,ii,jj,iGP,jGP) = (/ MeshBary_X(1,ii,jj) +quadNodes1D(iGP)*Mesh_DX(1) , MeshBary_X(2,ii,jj)  +quadNodes1D(jGP)*Mesh_DX(2) /)
-        !*------------------------
-        !*SAFETY CHECK
-        !*------------------------
-        ! IF (ii .NE. nElemsX+1) THEN
-        !   IF( ABS( MeshGP(1,ii,jj,iGP,jGP) - MeshGP_X(1,ii,jj,iGP,jGP)-0.5*Mesh_DX(1) ) .GT. 1e-15 ) THEN
-        !     PRINT*, "PROBLEM 1",ii,jj,iGP,jGP
-        !     PRINT*, ABS(MeshGP(1,ii,jj,iGP,jGP) - MeshGP_X(1,ii,jj,iGP,jGP)-0.5*Mesh_DX(1))
-        !     STOP
-        !   END IF
-        !   IF( ABS( MeshGP(2,ii,jj,iGP,jGP) - MeshGP_X(2,ii,jj,iGP,jGP) ) .GT. 1e-15 ) THEN
-        !     PRINT*, "PROBLEM 2",ii,jj,iGP,jGP
-        !     PRINT*, ABS( MeshGP(2,ii,jj,iGP,jGP) - MeshGP_X(2,ii,jj,iGP,jGP) )
-        !     STOP
-        !   END IF
-        ! ELSE
-        !   IF( ABS( MeshGP(1,nElemsX,jj,iGP,jGP) - MeshGP_X(1,nElemsX+1,jj,iGP,jGP)+0.5*Mesh_DX(1) ) .GT. 1e-15 ) THEN
-        !     PRINT*, "PROBLEM 3",ii,jj,iGP,jGP
-        !     PRINT*, ABS( MeshGP(1,nElemsX,jj,iGP,jGP) - MeshGP_X(1,nElemsX+1,jj,iGP,jGP)+0.5*Mesh_DX(1) )
-        !     STOP
-        !   END IF
-        !   IF( ABS( MeshGP(2,nElemsX,jj,iGP,jGP) - MeshGP_X(2,nElemsX+1,jj,iGP,jGP) ) .GT. 1e-15 ) THEN
-        !     PRINT*, "PROBLEM 4",ii,jj,iGP,jGP
-        !     PRINT*, ABS( MeshGP(2,nElemsX,jj,iGP,jGP) - MeshGP_X(2,nElemsX+1,jj,iGP,jGP) )
-        !     STOP
-        !   END IF
-        ! END IF
-        !*------------------------
-      END DO
-    END DO
-  END DO
-END DO
-
-
-!*For staggering in Y direction
-DO iGP = 1, nGPs
-  DO jGP = 1, nGPs
-    DO jj=1,nElemsY+1
-      DO ii=1,nElemsX
-        MeshGP_Y(1:nDims,ii,jj,iGP,jGP) = (/ MeshBary_Y(1,ii,jj) +quadNodes1D(iGP)*Mesh_DX(1) , MeshBary_Y(2,ii,jj)  +quadNodes1D(jGP)*Mesh_DX(2) /)
-        !*------------------------
-        !*SAFETY CHECK
-        !*------------------------
-        ! IF (jj .NE. nElemsY+1) THEN
-        !   IF( ABS( MeshGP(2,ii,jj,iGP,jGP) - MeshGP_Y(2,ii,jj,iGP,jGP)-0.5*Mesh_DX(2) ) .GT. 1e-15 ) THEN
-        !     PRINT*, "PROBLEM 5",ii,jj,iGP,jGP
-        !     PRINT*, ABS(MeshGP(2,ii,jj,iGP,jGP) - MeshGP_X(2,ii,jj,iGP,jGP)-0.5*Mesh_DX(2))
-        !     STOP
-        !   END IF
-        !   IF( ABS( MeshGP(1,ii,jj,iGP,jGP) - MeshGP_Y(1,ii,jj,iGP,jGP) ) .GT. 1e-15 ) THEN
-        !     PRINT*, "PROBLEM 6",ii,jj,iGP,jGP
-        !     PRINT*, ABS( MeshGP(1,ii,jj,iGP,jGP) - MeshGP_Y(1,ii,jj,iGP,jGP) )
-        !     STOP
-        !   END IF
-        ! ELSE
-        !   IF( ABS( MeshGP(2,ii,nElemsY,iGP,jGP) - MeshGP_Y(2,ii,nElemsY+1,iGP,jGP)+0.5*Mesh_DX(2) ) .GT. 1e-15 ) THEN
-        !     PRINT*, "PROBLEM 7",ii,jj,iGP,jGP
-        !     PRINT*, ABS( MeshGP(2,ii,nElemsY,iGP,jGP) - MeshGP_Y(2,ii,nElemsY+1,iGP,jGP)+0.5*Mesh_DX(2) )
-        !     STOP
-        !   END IF
-        !   IF( ABS( MeshGP(1,ii,nElemsY,iGP,jGP) - MeshGP_Y(1,ii,nElemsY+1,iGP,jGP) ) .GT. 1e-15 ) THEN
-        !     PRINT*, "PROBLEM 8",ii,jj,iGP,jGP
-        !     PRINT*, ABS( MeshGP(1,ii,nElemsY,iGP,jGP) - MeshGP_Y(1,ii,nElemsY+1,iGP,jGP) )
-        !     STOP
-        !   END IF
-        ! END IF
-        !*------------------------
-      END DO
-    END DO
-  END DO
-END DO
-
-
-
-#endif
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE BuildMesh
