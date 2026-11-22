@@ -2954,10 +2954,6 @@ END DO
     STOP
 #else
 
-#if defined(MOMENTUMINPRIMITIVEVARIABLES) && !defined(RECONSTRUCTIONVELOCITY)
-    PRINT*, "Reconstruction of Characteristic variables not set up for MOMENTUMINPRIMITIVEVARIABLES without RECONSTRUCTIONVELOCITY"
-    STOP
-#endif
 
     DO jj=lbYs,lbYe
       DO ii=lbXs,lbXe
@@ -3571,10 +3567,6 @@ SELECT CASE (ReconstructedVariable)
     STOP
 #else
 
-#if defined(MOMENTUMINPRIMITIVEVARIABLES) && !defined(RECONSTRUCTIONVELOCITY)
-    PRINT*, "Reconstruction of Characteristic variables not set up for MOMENTUMINPRIMITIVEVARIABLES without RECONSTRUCTIONVELOCITY"
-    STOP
-#endif
 
     DO jj=lbYs,lbYe
       DO ii=lbXs,lbXe
@@ -4730,10 +4722,6 @@ END DO
     STOP
 #else
 
-#if defined(MOMENTUMINPRIMITIVEVARIABLES) && !defined(RECONSTRUCTIONVELOCITY)
-    PRINT*, "Reconstruction of Characteristic variables not set up for MOMENTUMINPRIMITIVEVARIABLES without RECONSTRUCTIONVELOCITY"
-    STOP
-#endif
 
     DO jj=lbYs,lbYe
       DO ii=lbXs,lbXe
@@ -5325,10 +5313,6 @@ SELECT CASE (ReconstructedVariable)
     STOP
 #else
 
-#if defined(MOMENTUMINPRIMITIVEVARIABLES) && !defined(RECONSTRUCTIONVELOCITY)
-    PRINT*, "Reconstruction of Characteristic variables not set up for MOMENTUMINPRIMITIVEVARIABLES without RECONSTRUCTIONVELOCITY"
-    STOP
-#endif
 
     DO jj=lbYs,lbYe
       DO ii=lbXs,lbXe

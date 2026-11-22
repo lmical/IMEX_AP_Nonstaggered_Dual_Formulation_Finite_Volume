@@ -124,11 +124,6 @@ INTERFACE TransitionMatrixPrimToCons
   MODULE PROCEDURE TransitionMatrixPrimToCons
 END INTERFACE
 
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-INTERFACE Impose_BC_on_Troubled_Cell_INPUT
-  MODULE PROCEDURE Impose_BC_on_Troubled_Cell_INPUT
-END INTERFACE
-#endif
 
 #ifdef CENTEREDPRIMITIVE
 INTERFACE NormalFlux1D
@@ -206,9 +201,6 @@ PUBLIC :: TransitionMatrixConsToPrim
 PUBLIC :: TransitionMatrixPrimToCons
 PUBLIC :: BoundaryConditions_On_Cell_Centered_Data_Primitive_INPUT
 
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-PUBLIC :: Impose_BC_on_Troubled_Cell_INPUT
-#endif
 
 #ifdef CENTEREDPRIMITIVE
 PUBLIC :: NormalFlux1D
@@ -334,9 +326,6 @@ SELECT CASE(WhichInitialCondition)
 #endif
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 #else
   !*------------------------------------------
@@ -372,9 +361,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -426,9 +412,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -447,9 +430,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -468,9 +448,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -490,9 +467,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -513,9 +487,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -544,9 +515,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -572,9 +540,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -600,9 +565,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -629,9 +591,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -666,9 +625,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -696,9 +652,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -773,9 +726,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -794,9 +744,6 @@ SELECT CASE(WhichInitialCondition)
     Cons(5)=0.0
 #endif
 
-! #ifdef MOMENTUMINPRIMITIVEVARIABLES
-!     Prim(2:3)=Prim(2:3)*Prim(1)
-! #endif
 !     CALL PrimToCons(Prim,Cons)
 
 
@@ -823,9 +770,6 @@ SELECT CASE(WhichInitialCondition)
 #endif
     END IF
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -851,9 +795,6 @@ SELECT CASE(WhichInitialCondition)
 #endif
     END IF
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -887,9 +828,6 @@ SELECT CASE(WhichInitialCondition)
 
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -923,9 +861,6 @@ SELECT CASE(WhichInitialCondition)
 
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -958,9 +893,6 @@ SELECT CASE(WhichInitialCondition)
 #endif
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -1000,9 +932,6 @@ SELECT CASE(WhichInitialCondition)
 
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -1034,9 +963,6 @@ SELECT CASE(WhichInitialCondition)
 
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -1075,9 +1001,6 @@ SELECT CASE(WhichInitialCondition)
     END IF
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -1116,9 +1039,6 @@ SELECT CASE(WhichInitialCondition)
     END IF
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(-300) ! Shock-turbulence interaction Shu-Osher
@@ -1141,9 +1061,6 @@ SELECT CASE(WhichInitialCondition)
 #endif
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(-301) ! Shock-turbulence interaction Shu-Osher modified by Titarev and Toro
@@ -1166,9 +1083,6 @@ SELECT CASE(WhichInitialCondition)
 #endif
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -1191,9 +1105,6 @@ SELECT CASE(WhichInitialCondition)
 #endif
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -1216,9 +1127,6 @@ SELECT CASE(WhichInitialCondition)
 #endif
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -1234,9 +1142,6 @@ SELECT CASE(WhichInitialCondition)
     END IF
 
     Prim(3)=0.0
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(401) ! RP1 
@@ -1251,9 +1156,6 @@ SELECT CASE(WhichInitialCondition)
     END IF
 
     Prim(3)=0.0
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(402) ! RP2
@@ -1268,9 +1170,6 @@ SELECT CASE(WhichInitialCondition)
     END IF
 
     Prim(3)=0.0
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(412) ! RP2 !*Modified velocity
@@ -1285,9 +1184,6 @@ SELECT CASE(WhichInitialCondition)
     END IF
 
     Prim(3)=0.0
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(403) ! RP3
@@ -1302,9 +1198,6 @@ SELECT CASE(WhichInitialCondition)
     END IF
 
     Prim(3)=0.0
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(404) ! RP4
@@ -1319,9 +1212,6 @@ SELECT CASE(WhichInitialCondition)
     END IF
 
     Prim(3)=0.0
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(405) ! RP5
@@ -1336,9 +1226,6 @@ SELECT CASE(WhichInitialCondition)
     END IF
 
     Prim(3)=0.0
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(406) ! RP6
@@ -1353,9 +1240,6 @@ SELECT CASE(WhichInitialCondition)
     END IF
 
     Prim(3)=0.0
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(420) ! Stationary contact
@@ -1371,9 +1255,6 @@ SELECT CASE(WhichInitialCondition)
       Prim(4) = 1.0
     END IF
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(421) ! Moving contact
@@ -1389,9 +1270,6 @@ SELECT CASE(WhichInitialCondition)
       Prim(4) = 1.0
     END IF
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   CASE(500,501) ! Lax
@@ -1407,9 +1285,6 @@ SELECT CASE(WhichInitialCondition)
 
 
     Prim(3)=0.0
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -1462,9 +1337,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -1516,9 +1388,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -1650,9 +1519,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
@@ -1676,9 +1542,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -1703,9 +1566,6 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
 #endif
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-    Prim(2:3)=Prim(2:3)*Prim(1)
-#endif
     CALL PrimToCons(Prim,Cons)
 
 
@@ -2343,13 +2203,8 @@ REAL, DIMENSION(1:nDims) , INTENT(IN)  :: X
 REAL, DIMENSION(1:nVar) :: S 
 
 S(1) = 0.
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-S(2) = -Q(1)*Gravitational_Potential_X(X) 
-S(3) = -Q(1)*Gravitational_Potential_Y(X) 
-#else
 S(2) = -Gravitational_Potential_X(X) 
 S(3) = -Gravitational_Potential_Y(X) 
-#endif
 S(4) = 0.0
 
 !-------------------------------------------------------------------------------!
@@ -3095,9 +2950,6 @@ INTEGER :: ii, jj
 REAL    :: PrimL(1:nVar), PrimR(1:nVar)
 REAL    :: PrimLL(1:nVar), PrimRR(1:nVar)
 REAL    :: NormVect(nDims), TangVect(nDims)
-#ifdef BLENDINGDT
-REAL    :: dt_explicit, theta
-#endif
 !-------------------------------------------------------------------------------!
 
 LambdaMaxX = 0.0
@@ -3402,33 +3254,6 @@ END DO
 END IF
 
 #ifdef IMEX
-#ifdef BLENDINGDT
-dt_explicit=HUGE(1.0)
-DO jj=1,nElemsY
-  DO ii=1,nElemsX
-    Prim(1:nVar)=WC(1:nVar,ii,jj)
-
-    !*NB: This should be ok also for defined(RELAXATION) && !(defined(IMEX)) 
-    CALL WaveSpeeds2D(Prim(1:nVar),fastestx_without_splitting=FastestWaveXInAbsoluteValue,fastesty_without_splitting=FastestWaveYInAbsoluteValue)
-
-    LambdaMaxX = MAX(LambdaMaxX,ABS(FastestWaveXInAbsoluteValue))
-    LambdaMaxY = MAX(LambdaMaxY,ABS(FastestWaveYInAbsoluteValue))
-    dt_explicit  = MIN(dt_explicit,MESH_DX(1)/LambdaMaxX,MESH_DX(2)/LambdaMaxY)
-  END DO
-END DO
-
-#ifdef RELAXATION
-theta=Switching_Function(EPS_LM)
-IF (TimeStep .GT. MESH_DX(1)*1000.0) THEN !*IF THE IMPLICIT DOES NOT MAKE SENSE
-  TimeStep=dt_explicit
-ELSE 
-  TimeStep=(1.0-theta)*dt_explicit+theta*TimeStep
-END IF
-#else
-TimeStep=dt_explicit
-#endif
-
-#endif
 #endif
 
 TimeStep = CFL*TimeStep
@@ -3485,13 +3310,8 @@ REAL             :: problem_if_negative
 !-------------------------------------------------------------------------------!
 
 ro = Prim(1)
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-vx = Prim(2)/Prim(1)
-vy = Prim(3)/Prim(1)
-#else
 vx = Prim(2)
 vy = Prim(3)
-#endif
 p  = Prim(4)
 #ifdef SW
 p  = Kappa*ro**Gmm
@@ -3514,10 +3334,6 @@ pinf=Get_Pressure_Infinity(roPhi)
     problem_if_negative=(max_ro-ro)*(p-min_p)
   END IF
   ss  = SQRT(Gmm*problem_if_negative/(ro*max_ro))
-
-#elif defined(IMEXMOMENTUM)
-
-  ss=0.0
 
 #else
 
@@ -3626,13 +3442,8 @@ REAL             :: problem_if_negative
 !-------------------------------------------------------------------------------!
 
 ro = Prim(1)
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-vx = Prim(2)/Prim(1)
-vy = Prim(3)/Prim(1)
-#else
 vx = Prim(2)
 vy = Prim(3)
-#endif
 p  = Prim(4)
 #ifdef SW
 p  = Kappa*ro**Gmm
@@ -3654,10 +3465,6 @@ pinf=Get_Pressure_Infinity(roPhi)
     problem_if_negative=(max_ro-ro)*(p-min_p)
   END IF
   ss  = SQRT(Gmm*problem_if_negative/(ro*max_ro))
-
-#elif defined(IMEXMOMENTUM)
-
-  ss=0.0
 
 #else
 
@@ -3807,13 +3614,8 @@ rot = ro
 
 
 Prim(1) = ro
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-Prim(2) = rovx
-Prim(3) = rovy
-#else
 Prim(2) = rovx/rot
 Prim(3) = rovy/rot
-#endif
 
 #ifdef RELAXATION
 Prim(4) = (Gmm-1.0)*( Energy-EPS_LM**2*0.5*ro*(vx**2+vy**2) )
@@ -3884,13 +3686,8 @@ REAL             :: pinf
 !-------------------------------------------------------------------------------!
 
 ro  = Prim(1)
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-vx  = Prim(2)/Prim(1)
-vy  = Prim(3)/Prim(1)
-#else
 vx  = Prim(2)
 vy  = Prim(3)
-#endif
 p   = Prim(4)
 #ifdef SW
 p   = Kappa*ro**Gmm
@@ -3984,13 +3781,8 @@ REAL             :: pinf
 !-------------------------------------------------------------------------------!
 
 ro = Prim(1)
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-vx = Prim(2)/Prim(1)
-vy = Prim(3)/Prim(1)
-#else
 vx = Prim(2)
 vy = Prim(3)
-#endif
 p  = Prim(4)
 #ifdef SW
 p  = Kappa*ro**Gmm
@@ -5229,13 +5021,8 @@ REAL               :: ro, u, v, p, Hs, H1, a, abis, pinf
 #else
 
 ro = Prim(1)
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-u  = Prim(2)/Prim(1)
-v  = Prim(3)/Prim(1)
-#else
 u  = Prim(2)
 v  = Prim(3)
-#endif
 p  = Prim(4)
 #ifdef MULTIFLUID
 Gmm=Get_Gamma(Prim(5))
@@ -5287,13 +5074,8 @@ REAL               :: ro, u, v, p, Hs, H1, a, abis, pinf
 #else
 
 ro = Prim(1)
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-u  = Prim(2)/Prim(1)
-v  = Prim(3)/Prim(1)
-#else
 u  = Prim(2)
 v  = Prim(3)
-#endif
 p  = Prim(4)
 #ifdef MULTIFLUID
 Gmm=Get_Gamma(Prim(5))
@@ -5344,13 +5126,8 @@ REAL               :: ro, u, v, p, Hs, H1, a, abis, pinf
 #else
 
 ro = Prim(1)
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-u  = Prim(2)/Prim(1)
-v  = Prim(3)/Prim(1)
-#else
 u  = Prim(2)
 v  = Prim(3)
-#endif
 p  = Prim(4)
 #ifdef MULTIFLUID
 Gmm=Get_Gamma(Prim(5))
@@ -5400,13 +5177,8 @@ REAL               :: ro, u, v, p, Hs, H1, a, abis, pinf
 #else
 
 ro = Prim(1)
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-u  = Prim(2)/Prim(1)
-v  = Prim(3)/Prim(1)
-#else
 u  = Prim(2)
 v  = Prim(3)
-#endif
 p  = Prim(4)
 #ifdef MULTIFLUID
 Gmm=Get_Gamma(Prim(5))
@@ -5490,17 +5262,10 @@ ro_safe=ro
 #endif
 
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-LMat(1:4,1) = (/ 1.0,  0.0,    0.0,    0.0               /)
-LMat(1:4,2) = (/ 0.0,  1.0,    0.0,  -0.5*(Gmm-1.0)*ueps /)
-LMat(1:4,3) = (/ 0.0,  0.0,    1.0,  -0.5*(Gmm-1.0)*veps /)
-LMat(1:4,4) = (/ 0.0,  0.0,    0.0,      Gmm-1.0         /)
-#else
 LMat(1:4,1) = (/ 1.0,         0.0,          0.0,    0.0               /)
 LMat(1:4,2) = (/ 0.0, 1.0/ro_safe,          0.0,  -0.5*(Gmm-1.0)*ueps /)
 LMat(1:4,3) = (/ 0.0,          0.0, 1.0/ro_safe,  -0.5*(Gmm-1.0)*veps /)
 LMat(1:4,4) = (/ 0.0,          0.0,         0.0,      Gmm-1.0         /)
-#endif
 
 #ifdef MULTIFLUID
 #ifdef PRIMITIVEFORMULATIONLEVELSET
@@ -5592,17 +5357,10 @@ roveps=rov
 
 RMat=0.0
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-RMat(1:4,1) = (/ 1.0, 0.0,   0.0,    0.0              /)
-RMat(1:4,2) = (/ 0.0, 1.0,   0.0,    0.5*ueps         /)
-RMat(1:4,3) = (/ 0.0, 0.0,   1.0,    0.5*veps         /)
-RMat(1:4,4) = (/ 0.0, 0.0,   0.0,    1.0/(Gmm-1.0)    /)
-#else
 RMat(1:4,1) = (/ 1.0, 0.0,   0.0,    0.0              /)
 RMat(1:4,2) = (/ 0.0,  ro,   0.0,    0.5*roueps       /)
 RMat(1:4,3) = (/ 0.0, 0.0,    ro,    0.5*roveps       /)
 RMat(1:4,4) = (/ 0.0, 0.0,   0.0,    1.0/(Gmm-1.0)    /)
-#endif
 
 #ifdef MULTIFLUID
 #ifdef PRIMITIVEFORMULATIONLEVELSET
@@ -5817,13 +5575,8 @@ CALL EvaluateFluxPrimitiveSystem1D(PrimR,FluxR)
 roL = PrimL(1)
 roR = PrimR(1)
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-vxL = PrimL(2)/PrimL(1)
-vxR = PrimR(2)/PrimR(1)
-#else
 vxL = PrimL(2)
 vxR = PrimR(2)
-#endif
 
 pL  = PrimL(4)
 pR  = PrimR(4)
@@ -5922,13 +5675,8 @@ CALL EvaluateFluxPrimitiveSystem1D(PrimR,FluxR)
 roL = PrimL(1)
 roR = PrimR(1)
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-vxL = PrimL(2)/PrimL(1)
-vxR = PrimR(2)/PrimR(1)
-#else
 vxL = PrimL(2)
 vxR = PrimR(2)
-#endif
 
 pL  = PrimL(4)
 pR  = PrimR(4)
@@ -5972,13 +5720,8 @@ Q           = 0.0
 Vstar       = ( ap*PrimR - am*PrimL - ( FluxR - FluxL ) ) / ( ap-am )
 Vstar(4)    = 0.0
 Vstar(nVar) = 0.0 !*Only active for MULTIFLUID
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-uxstar       = Vstar(2)/Vstar(1)
-uystar       = Vstar(3)/Vstar(1)
-#else
 uxstar       = Vstar(2)
 uystar       = Vstar(3)
-#endif
 IF (uxstar .LT. 0.0) THEN
   alphastar=ap/(ap-uxstar)
 ELSE
@@ -5986,13 +5729,8 @@ ELSE
 END IF
 qro=MINMOD( (uxstar-am)*(Vstar(1)-PrimL(1)), (ap-uxstar)*(PrimR(1)-Vstar(1)) )
 Q(1)=alphastar*qro*1.0
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-Q(2)=alphastar*qro*uxstar
-Q(3)=alphastar*qro*uystar
-#else
 Q(2)=alphastar*uxstar
 Q(3)=alphastar*uystar
-#endif
 
 Flux = ( ap*FluxL - am*FluxR +ap*am*(PrimR-PrimL) ) / (ap-am) + Q
 #else
@@ -6062,13 +5800,8 @@ CALL EvaluateFluxPrimitiveSystem1D(PrimR,FluxR)
 roL = PrimL(1)
 roR = PrimR(1)
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-vxL = PrimL(2)/PrimL(1)
-vxR = PrimR(2)/PrimR(1)
-#else
 vxL = PrimL(2)
 vxR = PrimR(2)
-#endif
 
 pL  = PrimL(4)
 pR  = PrimR(4)
@@ -6127,13 +5860,8 @@ REAL             :: pinf
 !-------------------------------------------------------------------------------!
 
 ro = Prim(1)
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-vx = Prim(2)/Prim(1)
-vy = Prim(3)/Prim(1)
-#else
 vx = Prim(2)
 vy = Prim(3)
-#endif
 p  = Prim(4)
 #ifdef SW
 p  = Kappa*ro**Gmm
@@ -6176,39 +5904,10 @@ END IF
 !*Energy = p/(Gmm-1.0)+EPS_LM**2*0.5*ro*(vx**2+vy**2)
 
 Flux(1) = ro*vx
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-!*START MOMENTUMINPRIMITIVEVARIABLES
-
-#ifdef IMEXMOMENTUM
-  !*START IMEXMOMENTUM
-  Flux(2) = ro*vx**2
-
-#else
-  !*ELSE IMEXMOMENTUM
-
-#ifdef RELAXATION
-    !*START RELAXATION
-    Flux(2) = ro*vx**2+p/EPS_LM**2
-#else
-    !*ELSE RELAXATION
-    Flux(2) = ro*vx**2+p
-#endif
-    !*END RELAXATION
-
-#endif
-  !*END IMEXMOMENTUM
-
-  Flux(3) = ro*vx*vy
-
-
-#else
-!*ELSE MOMENTUMINPRIMITIVEVARIABLES
 
 Flux(2) = 0.5*vx**2
 Flux(3) = 0.0
 
-#endif
-!*END MOMENTUMINPRIMITIVEVARIABLES
 
 !*=======================
 !*SPLITTING
@@ -6365,19 +6064,11 @@ B_Sur=0.0
 roL = PrimL(1)
 roR = PrimR(1)
 
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-vxL = PrimL(2)/PrimL(1)
-vxR = PrimR(2)/PrimR(1)
-
-vyL = PrimL(3)/PrimL(1)
-vyR = PrimR(3)/PrimR(1)
-#else
 vxL = PrimL(2)
 vxR = PrimR(2)
 
 vyL = PrimL(3)
 vyR = PrimR(3)
-#endif
 
 pL  = PrimL(4)
 pR  = PrimR(4)
@@ -6429,8 +6120,6 @@ ap = MAX( fastest_L, fastest_R, +EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU )
 B_Sur(1) =  0.0
 
 
-#ifndef MOMENTUMINPRIMITIVEVARIABLES
-!*START not MOMENTUMINPRIMITIVEVARIABLES
 
 #ifdef IMEX
   !*START IMEX
@@ -6458,8 +6147,6 @@ B_Sur(1) =  0.0
 
 B_Sur(3) = -0.5 *             ( vxL + vxR         ) * ( vyR - vyL )
 
-#endif
-!*END not MOMENTUMINPRIMITIVEVARIABLES
 
 
 !*=======================
@@ -6493,17 +6180,9 @@ B_Sur(3) = -0.5 *             ( vxL + vxR         ) * ( vyR - vyL )
 #elif defined(PRESSUREFORMULATIONFORIMEXMOMENTUM)
 !*ELSE ALTERNATIVEFORMULATIONPRESSURE
 
-#ifdef IMEXMOMENTUM
-    !*START IMEXMOMENTUM
-    B_Sur(4) =  + 0.5 * Gmm* ( pL/roL*vxL + pR/roR*vxR ) * ( roR  - roL  ) &
-            &  - 0.5 *      (        vxL + vxR        ) * (  pR  - pL   )
-#else
-    !*ELSE IMEXMOMENTUM
     B_Sur(4) =  + 0.5 * Gmm* ( pL/roL*vxL + pR/roR*vxR ) * ( roR  - roL  ) &
             &  - 0.5 * Gmm* (     pL/roL + pR/roR     ) * ( roR*vxR  - roL*vxL  ) &
             &  - 0.5 *      (        vxL + vxR        ) * (  pR  - pL   )
-#endif
-    !*END IMEXMOMENTUM
 
 #else
 !*ELSE ALTERNATIVEFORMULATIONPRESSURE
@@ -7222,7 +6901,7 @@ END SUBROUTINE Impose_BC_on_WC
 !
 !
 !===============================================================================!
-#if defined(CENTEREDPRIMITIVE) || defined(PATHCONSERVATIVESHOCKDETECTION)
+#ifdef CENTEREDPRIMITIVE
 SUBROUTINE Impose_BC_on_Troubled_Cell_INPUT(Troubled_Cell)
 !-------------------------------------------------------------------------------!
 USE MOD_FiniteVolume2D_vars,ONLY: nVar

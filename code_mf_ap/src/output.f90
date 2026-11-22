@@ -185,9 +185,6 @@ DO jj=1,nElemsY
   DO ii=1,nElemsX
     WC_NVisu(1:nVar,ii,jj) = WC(1:nVar,ii,jj)
     WC_NVisu(nVar+1,ii,jj) = 0.0
-#if MOMENTUMINPRIMITIVEVARIABLES
-    WC_NVisu(2:3,ii,jj) = WC(2:3,ii,jj)/WC(1,ii,jj)
-#endif
   END DO
 END DO
 #endif

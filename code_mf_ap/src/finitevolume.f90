@@ -38,11 +38,6 @@ INTERFACE Overwrite_WC_from_U
   MODULE PROCEDURE Overwrite_WC_from_U
 END INTERFACE
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-INTERFACE Shock_Detector_Based_On_Path_Conservative
-  MODULE PROCEDURE Shock_Detector_Based_On_Path_Conservative
-END INTERFACE
-#endif
 #endif
 
 
@@ -65,7 +60,7 @@ END INTERFACE
 
 
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
 INTERFACE Put_Matrix_In_Vector
   MODULE PROCEDURE Put_Matrix_In_Vector
 END INTERFACE
@@ -86,9 +81,6 @@ PUBLIC :: ComputeTransitionMatricesConservedInput
 PUBLIC :: Impose_Symmetric_Update_Y_Axis
 #ifdef CENTEREDPRIMITIVE
 PUBLIC :: Overwrite_WC_from_U
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-PUBLIC :: Shock_Detector_Based_On_Path_Conservative
-#endif
 #endif
 #ifdef CENTEREDPRIMITIVE
 PUBLIC :: FVTimeDerivativePrimitiveOnly
@@ -98,7 +90,7 @@ PUBLIC :: FVTimeDerivativeConservedOnly
 PUBLIC :: Compute_Errors_PCSD
 #endif
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
 PUBLIC :: Put_Matrix_In_Vector
 PUBLIC :: Put_Vector_In_Matrix
 #endif
@@ -209,16 +201,13 @@ USE MOD_FiniteVolume2D_vars,ONLY: JacobiIterations_WC
 #endif
 
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
 USE MOD_FiniteVolume2D_vars,ONLY: BoundaryConditionsTypeIMEXLinearSystem
 USE MOD_FiniteVolume2D_vars,ONLY: maxLenghtJacobiCounter
 #endif
 #endif
 
 
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-USE MOD_FiniteVolume2D_vars,ONLY: Cell_To_Limit_PCSD
-#endif
 #if defined(CENTEREDPRIMITIVE)
 USE MOD_FiniteVolume2D_vars,ONLY: Errors_PCSD
 #endif
@@ -352,9 +341,6 @@ ALLOCATE(Wp_WC(1:MStepsMax,1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nG
 ALLOCATE(FWp_WC(1:MStepsMax,1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))!*NB:made analogous to WC for IMEX
 #endif
 
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-ALLOCATE( Cell_To_Limit_PCSD(-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1)) 
-#endif
 #if defined(CENTEREDPRIMITIVE)
 ALLOCATE( Errors_PCSD(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1)) 
 #endif
@@ -438,10 +424,6 @@ Wp_WC  = 0.0
 FWp_WC = 0.0
 #endif
 
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-Cell_To_Limit_PCSD=0 
-Errors_PCSD       =0.0
-#endif
 
 
 
@@ -974,9 +956,6 @@ USE MOD_ShocksIndicator,ONLY: ShocksIndicatorY
 #ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars, ONLY: WC
 USE MOD_FiniteVolume2D_vars, ONLY: WCt
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-USE MOD_FiniteVolume2D_vars, ONLY: Cell_To_Limit_PCSD
-#endif
 #endif
 USE MOD_Reconstruction,      ONLY: ReconstructionX_INPUT_PRIMITIVE
 USE MOD_Reconstruction,      ONLY: ReconstructionY_INPUT_PRIMITIVE
@@ -1053,14 +1032,6 @@ CALL ReconstructionX_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhos
                           & 0,nElemsX+1, &                 !*X bounds loop  
                           & 1,nElemsY)                   !*Y bounds loop    
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixX_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
-                          & 0,nElemsX+1, &                 !*X bounds loop  
-                          & 1,nElemsY, &                   !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
 WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
@@ -1074,14 +1045,6 @@ CALL ReconstructionX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 0,nElemsX+1, &                 !*X bounds loop  
                           & 1,nElemsY)                   !*Y bounds loop    
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
-                          & 0,nElemsX+1, &                 !*X bounds loop  
-                          & 1,nElemsY, &                   !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 #endif
 
@@ -1095,14 +1058,6 @@ CALL ReconstructionY_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhos
                           & 0,nElemsY+1)                 !*Y bounds loop    
 
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixY_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
-                          & 1,nElemsX, &                   !*X bounds loop
-                          & 0,nElemsY+1, &                 !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 
 CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
@@ -1118,14 +1073,6 @@ CALL ReconstructionY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 1,nElemsX, &                   !*X bounds loop
                           & 0,nElemsY+1)                 !*Y bounds loop    
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
-                          & 1,nElemsX, &                   !*X bounds loop
-                          & 0,nElemsY+1, &                 !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 #endif
 
@@ -1158,14 +1105,6 @@ CALL ReconstructionX_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhos
                           & 0,nElemsX+1, &                 !*X bounds loop  
                           & 1,nElemsY)                   !*Y bounds loop    
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixX_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
-                          & 0,nElemsX+1, &                 !*X bounds loop  
-                          & 1,nElemsY, &                   !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
 WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
@@ -1178,14 +1117,6 @@ CALL ReconstructionX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 0,nElemsX+1, &                 !*X bounds loop  
                           & 1,nElemsY)                   !*Y bounds loop    
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
-                          & 0,nElemsX+1, &                 !*X bounds loop  
-                          & 1,nElemsY, &                   !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 #endif
 
@@ -1209,14 +1140,6 @@ CALL ReconstructionY_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhos
                           & 1,nElemsX, &                   !*X bounds loop
                           & 0,nElemsY+1)                 !*Y bounds loop    
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixY_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
-                          & 1,nElemsX, &                   !*X bounds loop
-                          & 0,nElemsY+1, &                 !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 
 CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
@@ -1230,14 +1153,6 @@ CALL ReconstructionY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 1,nElemsX, &                   !*X bounds loop
                           & 0,nElemsY+1)                 !*Y bounds loop    
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
-                          & 1,nElemsX, &                   !*X bounds loop
-                          & 0,nElemsY+1, &                 !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 #endif
 
@@ -2190,9 +2105,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: JacobiIterations_WC
 #endif
 #endif
 
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-USE MOD_FiniteVolume2D_vars,ONLY: Cell_To_Limit_PCSD
-#endif
 #if defined(CENTEREDPRIMITIVE)
 USE MOD_FiniteVolume2D_vars,ONLY: Errors_PCSD
 #endif
@@ -2301,9 +2213,6 @@ DEALLOCATE(JacobiIterations_WC)
 
 #endif
 
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-DEALLOCATE(Cell_To_Limit_PCSD)
-#endif
 #if defined(CENTEREDPRIMITIVE)
 DEALLOCATE(Errors_PCSD)
 #endif
@@ -2759,10 +2668,6 @@ STOP
         VtempMsupport(:,nGPs)=WM(1:nVar,nGPs,ii,jj)
         VtempPsupport(:,nGPs)=WP(1:nVar,nGPs,ii,jj)
 
-#if MOMENTUMINPRIMITIVEVARIABLES
-        VtempMsupport(2:3,nGPs)=VtempMsupport(2:3,nGPs)/VtempMsupport(1,nGPs)
-        VtempPsupport(2:3,nGPs)=VtempPsupport(2:3,nGPs)/VtempPsupport(1,nGPs)
-#endif
 
         VtempM(1:nVar,nGPs)=VtempMsupport(1:nVar,nGPs)
         VtempP(1:nVar,nGPs)=VtempPsupport(1:nVar,nGPs)
@@ -2785,20 +2690,12 @@ STOP
 
         ro = W(1,ii,jj)
         p  = W(4,ii,jj)
-#if defined(MOMENTUMINPRIMITIVEVARIABLES)
-        !*In this case I am entering with momentum
-        vx = W(2,ii,jj)/W(1,ii,jj)
-        vy = W(3,ii,jj)/W(1,ii,jj)
-#else
         vx = W(2,ii,jj)
         vy = W(3,ii,jj)
-#endif
 
 
         BVol_in_qp(1,nGPs,nGPs,ii,jj) =  0.
 
-#ifndef MOMENTUMINPRIMITIVEVARIABLES
-!*START not MOMENTUMINPRIMITIVEVARIABLES
 
 #ifdef IMEX
   !*START IMEX
@@ -2830,8 +2727,6 @@ STOP
 #endif
   !*END RELAXATION
   BVol_in_qp(3,nGPs,nGPs,ii,jj) = -         vx * dxvy   !*NB: W(2,ii,jj) is already the average
-#endif
-!*END not MOMENTUMINPRIMITIVEVARIABLES
 
         !*=======================
         !*SPLITTING
@@ -2868,17 +2763,9 @@ pinf=Get_Pressure_Infinity(roPhi)
 #elif defined(PRESSUREFORMULATIONFORIMEXMOMENTUM)
 !*ELSE ALTERNATIVEFORMULATIONPRESSURE
 
-#ifdef IMEXMOMENTUM
-  !*START IMEXMOMENTUM
-  BVol_in_qp(4,nGPs,nGPs,ii,jj) = Gmm*p/ro*vx * dxro &
-                                & -vx *dxp
-#else
-  !*ELSE IMEXMOMENTUM
   BVol_in_qp(4,nGPs,nGPs,ii,jj) = Gmm*p/ro*vx * dxro &
                                 & -Gmm*p/vx* dxrovx &
                                 & -vx *dxp
-#endif
-  !*END IMEXMOMENTUM
 
 #else
 !*ELSE ALTERNATIVEFORMULATIONPRESSURE
@@ -3076,10 +2963,6 @@ STOP
         VtempMsupport(:,nGPs)=WM(1:nVar,nGPs,ii,jj)
         VtempPsupport(:,nGPs)=WP(1:nVar,nGPs,ii,jj)
 
-#if MOMENTUMINPRIMITIVEVARIABLES
-        VtempMsupport(2:3,nGPs)=VtempMsupport(2:3,nGPs)/VtempMsupport(1,nGPs)
-        VtempPsupport(2:3,nGPs)=VtempPsupport(2:3,nGPs)/VtempPsupport(1,nGPs)
-#endif
 
         VtempM(1:nVar,nGPs)=VtempMsupport(1:nVar,nGPs)
         VtempP(1:nVar,nGPs)=VtempPsupport(1:nVar,nGPs)
@@ -3102,21 +2985,13 @@ STOP
 
         ro = W(1,ii,jj)
         p  = W(4,ii,jj)
-#if defined(MOMENTUMINPRIMITIVEVARIABLES)
-        !*In this case I am entering with momentum
-        vx = W(2,ii,jj)/W(1,ii,jj)
-        vy = W(3,ii,jj)/W(1,ii,jj)
-#else
         vx = W(2,ii,jj)
         vy = W(3,ii,jj)
-#endif
 
         BVol_in_qp(1,nGPs,nGPs,ii,jj) =  0.
 
 
 
-#ifndef MOMENTUMINPRIMITIVEVARIABLES
-!*START not MOMENTUMINPRIMITIVEVARIABLES
 BVol_in_qp(2,nGPs,nGPs,ii,jj) = -         vy * dyvx   !*NB: vy is already the average
 #ifdef IMEX
   !*START IMEX
@@ -3149,8 +3024,6 @@ BVol_in_qp(2,nGPs,nGPs,ii,jj) = -         vy * dyvx   !*NB: vy is already the av
 #endif
   !*END RELAXATION
 
-#endif
-!*END not MOMENTUMINPRIMITIVEVARIABLES
 
 
         !*=======================
@@ -3188,17 +3061,9 @@ pinf=Get_Pressure_Infinity(roPhi)
 #elif defined(PRESSUREFORMULATIONFORIMEXMOMENTUM)
 !*ELSE ALTERNATIVEFORMULATIONPRESSURE
 
-#ifdef IMEXMOMENTUM
-  !*START IMEXMOMENTUM
-  BVol_in_qp(4,nGPs,nGPs,ii,jj) = Gmm*p/ro*vy * dyro &
-                                & -vy *dyp
-#else
-  !*ELSE IMEXMOMENTUM
   BVol_in_qp(4,nGPs,nGPs,ii,jj) = Gmm*p/ro*vy * dyro &
                                 & -Gmm*p/ro* dyrovy &
                                 & -vy *dyp
-#endif
-  !*END IMEXMOMENTUM
 
 #else
 !*ELSE ALTERNATIVEFORMULATIONPRESSURE
@@ -3413,7 +3278,7 @@ END SUBROUTINE UpdateTimeDerivative_W_INPUT
 !
 !===============================================================================!
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
 SUBROUTINE Put_Matrix_In_Vector(M,vec)
 !-------------------------------------------------------------------------------!
 USE MOD_FiniteVolume2D_vars,ONLY: nDims
@@ -3493,7 +3358,7 @@ END SUBROUTINE Put_Matrix_In_Vector
 !
 !===============================================================================!
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
 SUBROUTINE Put_Vector_In_Matrix(vec,M)
 !-------------------------------------------------------------------------------!
 USE MOD_FiniteVolume2D_vars,ONLY: nDims
@@ -3582,9 +3447,6 @@ USE MOD_ShocksIndicator,ONLY: ShocksIndicatorY
 #ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars, ONLY: WC
 USE MOD_FiniteVolume2D_vars, ONLY: WCt
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-USE MOD_FiniteVolume2D_vars, ONLY: Cell_To_Limit_PCSD
-#endif
 #endif
 USE MOD_Reconstruction,      ONLY: ReconstructionX_INPUT_PRIMITIVE
 USE MOD_Reconstruction,      ONLY: ReconstructionY_INPUT_PRIMITIVE
@@ -3661,14 +3523,6 @@ CALL ReconstructionX_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhos
                           & 0,nElemsX+1, &                 !*X bounds loop  
                           & 1,nElemsY)                   !*Y bounds loop    
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixX_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
-                          & 0,nElemsX+1, &                 !*X bounds loop  
-                          & 1,nElemsY, &                   !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
 WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)=WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)
@@ -3682,14 +3536,6 @@ CALL ReconstructionX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 0,nElemsX+1, &                 !*X bounds loop  
                           & 1,nElemsY)                   !*Y bounds loop    
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&    !*Y bounds vector  
-                          & 0,nElemsX+1, &                 !*X bounds loop  
-                          & 1,nElemsY, &                   !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 #endif
 
@@ -3703,14 +3549,6 @@ CALL ReconstructionY_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhos
                           & 0,nElemsY+1)                 !*Y bounds loop    
 
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixY_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
-                          & 1,nElemsX, &                   !*X bounds loop
-                          & 0,nElemsY+1, &                 !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 
 CALL ConsToPrimInTheWholeMeshInterfaces(WM(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1),0,nElemsX+1+1,0,nElemsY+1+1,WM_support(1:nVar,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1))
@@ -3726,14 +3564,6 @@ CALL ReconstructionY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGho
                           & 1,nElemsX, &                   !*X bounds loop
                           & 0,nElemsY+1)                 !*Y bounds loop    
 
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-CALL ReconstructionFixY_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
-                          &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
-                          &-nGhosts,nElemsY+nGhosts+1,&  !*Y bounds vector 
-                          & 1,nElemsX, &                   !*X bounds loop
-                          & 0,nElemsY+1, &                 !*Y bounds loop    
-                          & Cell_To_Limit_PCSD( -nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1) )
-#endif
 
 #endif
 
@@ -4117,116 +3947,6 @@ END SUBROUTINE Overwrite_WC_from_U
 !
 !
 !===============================================================================!
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-SUBROUTINE Shock_Detector_Based_On_Path_Conservative()
-!-------------------------------------------------------------------------------!
-USE MOD_FiniteVolume2D_vars,ONLY: U
-USE MOD_FiniteVolume2D_vars,ONLY: WC
-USE MOD_FiniteVolume2D_vars,ONLY: nVar
-USE MOD_FiniteVolume2D_vars,ONLY: nElemsX
-USE MOD_FiniteVolume2D_vars,ONLY: nElemsY
-USE MOD_FiniteVolume2D_vars,ONLY: nGhosts
-USE MOD_FiniteVolume2D_vars,ONLY: N_Limited_Neighbors_PCSD
-USE MOD_FiniteVolume2D_vars,ONLY: K_coefficient_PCSD
-USE MOD_FiniteVolume2D_vars,ONLY: Cell_To_Limit_PCSD
-USE MOD_FiniteVolume2D_vars,ONLY: IsSomeoneFlagged_PCSD
-USE MOD_FiniteVolume2D_vars,ONLY: Errors_PCSD
-USE MOD_FiniteVolume2D_vars,ONLY: WhichVariableForLimiting_PCSD
-USE MOD_Equation           ,ONLY: Impose_BC_on_Troubled_Cell_INPUT
-USE MOD_Equation           ,ONLY: PrimToCons
-!-------------------------------------------------------------------------------!
-IMPLICIT NONE
-!-------------------------------------------------------------------------------!
-! >> FORMAL ARGUMENTS                                                           !
-!-------------------------------------------------------------------------------!
-! >> LOCAL VARIABLES                                                            !
-!-------------------------------------------------------------------------------!
-INTEGER            :: ii, jj, indn, indi, indj
-CHARACTER(LEN=255) :: ErrorMessage
-REAL               :: WC_temp(1:nVar), Error_temp(1:nVar), Average_Error(1:nVar), weight
-!-------------------------------------------------------------------------------!
-
-IsSomeoneFlagged_PCSD=.FALSE.
-
-Cell_To_Limit_PCSD=0
-Average_Error(1:nVar)=0.0
-
-CALL Compute_Errors_PCSD()
-
-DO jj=1,nElemsY
-  DO ii=1,nElemsX
-    Average_Error(1:nVar)=Average_Error(1:nVar)+Errors_PCSD(1:nVar,ii,jj)
-  END DO
-END DO
-
-Average_Error(1:nVar)=Average_Error(1:nVar)/(REAL(nElemsX)*REAL(nElemsY))
-
-
-DO jj=1,nElemsY
-  DO ii=1,nElemsX
-
-    IF (WhichVariableForLimiting_PCSD .EQ. 1) THEN !*Density
-      IF (Errors_PCSD(1,ii,jj) .GT. K_coefficient_PCSD*Average_Error(1)) THEN
-        Cell_To_Limit_PCSD(ii,jj)=1
-        IsSomeoneFlagged_PCSD=.TRUE.
-      END IF
-    ELSE IF (WhichVariableForLimiting_PCSD .EQ. 2) THEN !*Momentum
-      IF ((Errors_PCSD(2,ii,jj) .GT. K_coefficient_PCSD*Average_Error(2)) .OR. (Errors_PCSD(3,ii,jj) .GT. K_coefficient_PCSD*Average_Error(3))) THEN !*NB: Checking momentum error
-        Cell_To_Limit_PCSD(ii,jj)=1
-        IsSomeoneFlagged_PCSD=.TRUE.
-      END IF
-    ELSE IF (WhichVariableForLimiting_PCSD .EQ. 3) THEN !*Energy
-      IF (Errors_PCSD(4,ii,jj) .GT. K_coefficient_PCSD*Average_Error(4)) THEN
-        Cell_To_Limit_PCSD(ii,jj)=1
-        IsSomeoneFlagged_PCSD=.TRUE.
-      END IF
-    ELSE
-      PRINT*, "Wrong choice for limiting variable."
-      PRINT*, "Stopping in Shock_Detector_Based_On_Path_Conservative."
-      PRINT*, WhichVariableForLimiting_PCSD
-      STOP
-    END IF
-
-  END DO
-END DO
-
-!*================================
-!*Detection of neighbours
-!*================================
-DO indn=1,N_Limited_Neighbors_PCSD
-  CALL Impose_BC_on_Troubled_Cell_INPUT(Cell_To_Limit_PCSD(-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
-  DO jj=1,nElemsY
-    DO ii=1,nElemsX
-      IF ( Cell_To_Limit_PCSD(ii,jj) .EQ. indn ) THEN !* Check neighbors
-        IF ( Cell_To_Limit_PCSD(ii-1,jj) .EQ. 0 ) THEN
-          Cell_To_Limit_PCSD(ii-1,jj)=indn+1
-        END IF
-
-        IF ( Cell_To_Limit_PCSD(ii+1,jj) .EQ. 0 ) THEN
-          Cell_To_Limit_PCSD(ii+1,jj)=indn+1
-        END IF
-
-        IF ( Cell_To_Limit_PCSD(ii,jj-1) .EQ. 0 ) THEN
-          Cell_To_Limit_PCSD(ii,jj-1)=indn+1
-        END IF
-
-        IF ( Cell_To_Limit_PCSD(ii,jj+1) .EQ. 0 ) THEN
-          Cell_To_Limit_PCSD(ii,jj+1)=indn+1
-        END IF
-
-      END IF
-    END DO
-  END DO
-
-END DO
-
-CALL Impose_BC_on_Troubled_Cell_INPUT(Cell_To_Limit_PCSD(-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
-
-
-
-!-------------------------------------------------------------------------------!
-END SUBROUTINE Shock_Detector_Based_On_Path_Conservative
-#endif
 !===============================================================================!
 !
 !

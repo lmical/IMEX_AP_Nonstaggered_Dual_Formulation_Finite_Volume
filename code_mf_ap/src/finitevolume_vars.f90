@@ -153,7 +153,7 @@ INTEGER             :: nOutputFiles
 INTEGER             :: InitialCondition
 INTEGER             :: BoundaryConditionsType(4)
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
 INTEGER             :: BoundaryConditionsTypeIMEXLinearSystem(4)
 #endif
 #endif
@@ -247,13 +247,6 @@ CHARACTER(LEN=255)  :: VarNameVisu(1:nVar+1)
 CHARACTER(LEN=255)  :: VarNameVisu_W(1:nVar+1)
 #endif
 
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-REAL                 :: K_coefficient_PCSD            = 0.025
-INTEGER, PARAMETER   :: N_Limited_Neighbors_PCSD      = 0
-INTEGER, ALLOCATABLE :: Cell_To_Limit_PCSD(:,:)
-LOGICAL              :: IsSomeoneFlagged_PCSD         = .FALSE.
-INTEGER              :: WhichVariableForLimiting_PCSD = 0 !*1 density, 2 momentum, 3 energy
-#endif
 #if defined(CENTEREDPRIMITIVE)
 REAL,    ALLOCATABLE :: Errors_PCSD(:,:,:)
 #endif

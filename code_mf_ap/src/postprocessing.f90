@@ -24,9 +24,6 @@ CONTAINS
 SUBROUTINE PostProcessing
 USE MOD_Equation, ONLY :  ExactFunction
 USE MOD_Equation, ONLY :  ConsToPrim
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-USE MOD_FiniteVolume2D, ONLY : Compute_Errors_PCSD
-#endif
 USE MOD_FiniteVolume2D_vars
 IMPLICIT NONE
 INTEGER              :: ii, jj, iGP, jGP, iVar, i, j, k
@@ -85,22 +82,6 @@ WRITE(666,*) computationalTime
 ! WRITE(666,*) global_min
 
 
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-Error_Max_temp = 0.0
-
-CALL Compute_Errors_PCSD()
-
-DO iVar=1,nVar
-  Error_Max_temp(iVar)=MAXVAL(Errors_PCSD(iVar,:,:))
-END DO
-
-FNAME = 'WC_MaxError_XXXX_XXXX.dat'
-WRITE(FNAME(13:16),FMT="(I4.4)") nElemsX
-WRITE(FNAME(18:21),FMT="(I4.4)") nElemsY
-
-OPEN(666,FILE=TRIM(FNAME))
-WRITE(666,*) nElemsX, nElemsY, Error_Max_temp(1:nVar)
-#endif
 
 
 

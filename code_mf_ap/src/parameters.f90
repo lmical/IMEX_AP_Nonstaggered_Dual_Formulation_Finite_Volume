@@ -79,12 +79,8 @@ USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState1
 USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState2
 USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState3
 USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState4
-#if defined(CENTEREDPRIMITIVE) && defined(PATHCONSERVATIVESHOCKDETECTION)
-USE MOD_FiniteVolume2D_vars,ONLY: K_coefficient_PCSD
-USE MOD_FiniteVolume2D_vars,ONLY: WhichVariableForLimiting_PCSD
-#endif
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
 USE MOD_FiniteVolume2D_vars,ONLY: maxLenghtJacobiCounter
 USE MOD_FiniteVolume2D_vars,ONLY: BoundaryConditionsTypeIMEXLinearSystem
 #endif
@@ -148,7 +144,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/3.0,3.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -169,7 +165,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/10.0,10.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -189,7 +185,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/10.0,10.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -209,7 +205,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/1.0,1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -229,7 +225,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/1.0,1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -251,7 +247,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0,1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -274,7 +270,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/1.0,1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -294,12 +290,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 0
 #else
@@ -320,12 +316,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -347,12 +343,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 0
 #else
@@ -373,12 +369,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -424,12 +420,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     SELECT CASE(InitialCondition)
         CASE(-71,-72,-73,-74,-75)
             relaxed_dt                 = 1e-4
@@ -459,12 +455,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 0
 #else
@@ -485,12 +481,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -511,12 +507,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 0
 #else
@@ -537,12 +533,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -563,12 +559,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -589,12 +585,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 0.3, 0.3/)
     BoundaryConditionsType = (/5,5,5,5/) !*Reflecting
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -615,12 +611,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.2, 1.2/)
     BoundaryConditionsType = (/2,2,2,2/) !*Transmissive (free)
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -642,7 +638,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 0.25, 1.0/)
     BoundaryConditionsType = (/3,5,3,5/) !*Transmissive (free)
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -654,7 +650,7 @@ SELECT CASE(InitialCondition)
     PrimRefState3 = (/1.0, 0.0, 0.0, 2.5/)
 #endif
     GravitationalPotentialFlag = 1       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -683,12 +679,12 @@ SELECT CASE(InitialCondition)
 #endif
     BoundaryConditionsType = (/2,2,2,3/) !*Transmissive all but left
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -713,12 +709,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/  5.0,  1.0/)
     BoundaryConditionsType = (/5,2,5,3/) !B wall, R transmissive, U wall, L inflow
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -741,12 +737,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/  5.0,  1.0/)
     BoundaryConditionsType = (/5,2,5,3/) !B wall, R transmissive, U wall, L inflow
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -769,12 +765,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/  5.0,  1.0/)
     BoundaryConditionsType = (/5,2,5,3/) !B wall, R transmissive, U wall, L inflow
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -796,12 +792,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/   15.0,  1.0/)
     BoundaryConditionsType = (/5,2,5,3/) !B wall, R transmissive, U wall, L inflow
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -823,12 +819,12 @@ SELECT CASE(InitialCondition)
 #endif
     BoundaryConditionsType = (/5,2,5,2/) !B wall, R transmissive, U wall, L transmissive
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -845,12 +841,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/   15.0,  1.0/)
     BoundaryConditionsType = (/5,2,5,2/) !B wall, R transmissive, U wall, L transmissive
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -869,12 +865,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,5,1,5/) !wall
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -891,12 +887,12 @@ SELECT CASE(InitialCondition)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.3
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -913,12 +909,12 @@ SELECT CASE(InitialCondition)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.5
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -935,12 +931,12 @@ SELECT CASE(InitialCondition)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.5
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -957,12 +953,12 @@ SELECT CASE(InitialCondition)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.4
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -979,12 +975,12 @@ SELECT CASE(InitialCondition)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.8
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1001,12 +997,12 @@ SELECT CASE(InitialCondition)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.5
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1023,12 +1019,12 @@ SELECT CASE(InitialCondition)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.5
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1045,12 +1041,12 @@ SELECT CASE(InitialCondition)
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
     DiscontinuityLocation=0.5
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1067,12 +1063,12 @@ SELECT CASE(InitialCondition)
     Lambda_Lax = 1.0
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1089,12 +1085,12 @@ SELECT CASE(InitialCondition)
     Lambda_Lax = 1e-3
     BoundaryConditionsType = (/2,2,2,2/) !transmissive
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1115,12 +1111,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Transmissive
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1141,12 +1137,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Transmissive
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1167,12 +1163,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Transmissive
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1194,12 +1190,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,2/) !*Transmissive
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1220,12 +1216,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,2,1,2/) !*Periodic BU and transmissive RL
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1247,12 +1243,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 0.5/)
     BoundaryConditionsType = (/5,2,5,2/) !*5 wall B U
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1273,12 +1269,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 0.5/)
     BoundaryConditionsType = (/5,2,5,2/) !*5 wall B U
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0       
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 1e-4
     NRelaxedTimesteps          = 10
 #else
@@ -1298,7 +1294,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/1.0,1.0/)
     BoundaryConditionsType = (/5,5,5,5/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -1323,7 +1319,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*Periodic BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -1346,7 +1342,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*Periodic BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -1371,7 +1367,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*Periodic BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -1394,7 +1390,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0, 1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*Periodic BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
     !*BoundaryConditionsTypeIMEXLinearSystem=(/3,3,3,3/) !*NO
 #endif
@@ -1420,7 +1416,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/10.0,10.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -1443,7 +1439,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/10.0,10.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -1466,12 +1462,12 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/2.0*PI,2.0*PI/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
     GravitationalPotentialFlag = 0     
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     relaxed_dt                 = 0.0
     NRelaxedTimesteps          = 0
 #else
@@ -1495,7 +1491,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/ 1.0/EPS_LM,2.0*(1.0/EPS_LM)/5.0 /)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -1519,7 +1515,7 @@ SELECT CASE(InitialCondition)
     MESH_X1 = (/2.0, 1.0/)
     BoundaryConditionsType = (/1,1,1,1/) !*PERIODIC BCs
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
@@ -1553,7 +1549,7 @@ END IF
 
 maxTimeSteps           = 100000000
 #ifdef CENTEREDPRIMITIVE
-#if defined(IMEX) || defined(IMEXMOMENTUM)
+#ifdef IMEX
 maxLenghtJacobiCounter = 10000000
 #endif
 #endif
@@ -1763,43 +1759,6 @@ PRINT*, "--------------------------"
   PRINT*, "--------------------------"
   PRINT*, "Reconstruct interface values from primitive variables"
 #endif
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-  PRINT*, "--------------------------"
-  PRINT*, "Momentum in primitive variables"
-#endif
-#ifdef PATHCONSERVATIVESHOCKDETECTION
-  K_coefficient_PCSD = 0.025
-  index=index+1
-  IF (nargs > index) THEN
-    CALL get_command_ARGUMENT(index+1, arg)
-    READ(arg, *) iarg_real
-    K_coefficient_PCSD = iarg_real
-  END IF
-  PRINT*, "--------------------------"
-  PRINT*, "Shock detection based on Path Conservative"
-  PRINT*, "...with K=", K_coefficient_PCSD
-  WhichVariableForLimiting_PCSD = 3
-  index=index+1
-  IF (nargs > index) THEN
-    CALL get_command_ARGUMENT(index+1, arg)
-    READ(arg, *) iarg
-    WhichVariableForLimiting_PCSD = iarg
-  END IF
-  SELECT CASE(WhichVariableForLimiting_PCSD)
-    CASE(1)
-      PRINT*, "...limiting on density"
-    CASE(2)
-      PRINT*, "...limiting on momentum"
-    CASE(3)
-      PRINT*, "...limiting on energy"
-    CASE DEFAULT
-      PRINT*, "Wrong choice for limiting variable"
-      PRINT*, WhichVariableForLimiting_PCSD
-      STOP
-  END SELECT
-      PRINT*, "...smoothing limiter NOT active"
-      PRINT*, "...detect only at the beginning of the time step"
-#endif
 #ifdef DONOTOVERWRITEPRIMITIVE
       PRINT*, "Not overwriting primitive, basically for debugging"
 #else
@@ -1883,27 +1842,9 @@ PRINT*, "--------------------------"
   PRINT*, "ALTERNATIVEFORMULATIONPRESSURE not compatible with IMEX splitting"
   STOP
 #endif
-#ifdef BLENDINGDT
-  PRINT*, "...with blending of dt implicit and implicit"
-  PRINT*, "YOU'RE NOT SUPPOSED TO USE THIS"
-  STOP
-#endif
   PRINT*, "--------------------------"
 #endif
 
-#ifdef IMEXMOMENTUM
-  PRINT*, "--------------------------"
-  PRINT*, "IMEXMOMENTUM active"
-#ifndef MOMENTUMINPRIMITIVEVARIABLES
-  PRINT*, "IMEXMOMENTUM requires MOMENTUMINPRIMITIVEVARIABLES"
-  STOP
-#endif
-#ifndef PRESSUREFORMULATIONFORIMEXMOMENTUM
-  PRINT*, "IMEXMOMENTUM requires PRESSUREFORMULATIONFORIMEXMOMENTUM"
-  STOP
-#endif
-  PRINT*, "--------------------------"
-#endif
 #endif
 
 
@@ -1950,12 +1891,6 @@ IF ( ReconstructedVariable .EQ. -1 ) THEN
 END IF
 #endif
 
-#if defined(MOMENTUMINPRIMITIVEVARIABLES) && !defined(RECONSTRUCTIONVELOCITY)
-IF ( ReconstructedVariable .EQ. -1 ) THEN
-    PRINT*, "Reconstruction of Characteristic variables not set up for MOMENTUMINPRIMITIVEVARIABLES without RECONSTRUCTIONVELOCITY"
-    STOP
-END IF
-#endif
 
 
 
@@ -1987,12 +1922,6 @@ IF (ReconstructedVariable .EQ. 1) THEN
 #ifndef RECONSTRUCTIONPHI
   PRINT*, "Reconstruction of characteristic variables with MULTIFLUID requires RECONSTRUCTIONPHI"
   STOP
-#endif
-#ifdef MOMENTUMINPRIMITIVEVARIABLES
-#ifndef RECONSTRUCTIONVELOCITY
-  PRINT*, "Reconstruction of characteristic variables with MULTIFLUID and MOMENTUMINPRIMITIVEVARIABLES requires RECONSTRUCTIONVELOCITY"
-  STOP
-#endif
 #endif
 ELSE IF (ReconstructedVariable .EQ. 0) THEN
   PRINT*, "You may have selected by chance reconstruction of conserved variables with multifluid"
