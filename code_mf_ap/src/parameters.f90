@@ -1829,19 +1829,6 @@ PRINT*, "--------------------------"
   PRINT*, "YOU'RE NOT SUPPOSED TO USE THIS"
   STOP
 #endif
-#ifdef IMEXL2FULLYUPWINDED
-  PRINT*, "IMEX DeC with L^2 fully upwinded..."
-  IF (timescheme .EQ. -1) THEN
-    PRINT*, "...This feature only works with DeC"
-    STOP
-  END IF
-  PRINT*, "ACTUALLY, THIS FEATURE NEVER WORKS PROPERLY"
-  STOP
-#endif
-#ifdef ALTERNATIVEFORMULATIONPRESSURE
-  PRINT*, "ALTERNATIVEFORMULATIONPRESSURE not compatible with IMEX splitting"
-  STOP
-#endif
   PRINT*, "--------------------------"
 #endif
 
@@ -1894,20 +1881,12 @@ END IF
 
 
 
-#ifdef PRESSUREFORMULATIONFORIMEXMOMENTUM
-PRINT*, "PRESSUREFORMULATIONFORIMEXMOMENTUM not yet coded for MULTIFLUID"
-STOP
-#endif
 
 PRINT*, "--------------------------"
 
 #endif
 
 
-#if defined(CENTEREDPRIMITIVE) &&  defined(RECONSTRUCTIONVELOCITY)
-PRINT*, "CENTEREDPRIMITIVE and RECONSTRUCTIONVELOCITY are incompatible"
-STOP
-#endif
 
 
 

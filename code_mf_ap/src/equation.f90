@@ -5713,34 +5713,12 @@ am=SL
 ap=SR
 
 
-#ifdef NEWANTIDIFFUSIONTERM
-PRINT*, "DO NOT USE"
-STOP
-Q           = 0.0
-Vstar       = ( ap*PrimR - am*PrimL - ( FluxR - FluxL ) ) / ( ap-am )
-Vstar(4)    = 0.0
-Vstar(nVar) = 0.0 !*Only active for MULTIFLUID
-uxstar       = Vstar(2)
-uystar       = Vstar(3)
-IF (uxstar .LT. 0.0) THEN
-  alphastar=ap/(ap-uxstar)
-ELSE
-  alphastar=am/(am-uxstar)
-END IF
-qro=MINMOD( (uxstar-am)*(Vstar(1)-PrimL(1)), (ap-uxstar)*(PrimR(1)-Vstar(1)) )
-Q(1)=alphastar*qro*1.0
-Q(2)=alphastar*uxstar
-Q(3)=alphastar*uystar
-
-Flux = ( ap*FluxL - am*FluxR +ap*am*(PrimR-PrimL) ) / (ap-am) + Q
-#else
 Vstar = ( ap*PrimR - am*PrimL - ( FluxR - FluxL ) ) / ( ap-am )
 dV = 0.0
 Do iVar=1,nVar
   dV(iVar)=MINMOD( Vstar(iVar)-PrimL(iVar), PrimR(iVar)-Vstar(iVar) )
 END DO
 Flux = ( ap*FluxL - am*FluxR +ap*am*(PrimR-PrimL-dV) ) / (ap-am)
-#endif
 
 
 !-------------------------------------------------------------------------------!
@@ -5912,18 +5890,7 @@ Flux(3) = 0.0
 !*=======================
 !*SPLITTING
 !*=======================
-#if defined(ALTERNATIVEFORMULATIONPRESSURE)
-!*PRINT*, "This is a consistent formulation."
-!*PRINT*, "It works but it is not suitable for the splitting."
-!*STOP
-Flux(4) = p*vx
-#ifdef IMEX
-PRINT*, "In particular, for IMEX one really can't do the splitting in this case."
-STOP
-#endif
-#else
 Flux(4) = 0.0 
-#endif
 
 #ifdef MULTIFLUID
 #ifndef PRIMITIVEFORMULATIONLEVELSET
@@ -6124,14 +6091,7 @@ B_Sur(1) =  0.0
 #ifdef IMEX
   !*START IMEX
 
-#ifdef IMEXL2FULLYUPWINDED
-    !*START IMEXL2FULLYUPWINDED
-    B_Sur(2) = -0.5 *             ( 1.0/roL + 1.0/roR ) * ( pR  - pL  )
-#else
-    !*ELSE IMEXL2FULLYUPWINDED
     B_Sur(2) = -0.5 *             ( (max_ro-roL)/(roL*max_ro) + (max_ro-roR)/(roR*max_ro) ) * ( pR  - pL  )
-#endif
-    !*END IMEXL2FULLYUPWINDED
 
 #else
   !*ELSE IMEX
@@ -6152,54 +6112,12 @@ B_Sur(3) = -0.5 *             ( vxL + vxR         ) * ( vyR - vyL )
 !*=======================
 !*SPLITTING
 !*=======================
-#if defined(ALTERNATIVEFORMULATIONPRESSURE)
-!*START ALTERNATIVEFORMULATIONPRESSURE
-
-! PRINT*, "This is a consistent formulation."
-! PRINT*, "It works but it is not suitable for the splitting."
-! STOP
-#ifdef MULTIFLUID
-  !*IF MULTIFLUID
-  B_Sur(4) =  - 0.5 * ( (GmmL-1.0)*(pL) + (GmmR-1.0)*(pR) + GmmL*pinfL + GmmR*pinfR ) * ( vxR  - vxL  )
-#else
-  !*ELSE MULTIFLUID
-  B_Sur(4) =  - 0.5 * (Gmm-1.0)*( pL + pR         ) * ( vxR  - vxL  )
-#endif
-  !*END MULTIFLUID
-
-#ifdef IMEX
-  !*IF IMEX
-  PRINT*, "In particular, for IMEX one really can't do the splitting in this case."
-  STOP
-#endif
-  !*END IMEX
-
-
-
-
-#elif defined(PRESSUREFORMULATIONFORIMEXMOMENTUM)
-!*ELSE ALTERNATIVEFORMULATIONPRESSURE
-
-    B_Sur(4) =  + 0.5 * Gmm* ( pL/roL*vxL + pR/roR*vxR ) * ( roR  - roL  ) &
-            &  - 0.5 * Gmm* (     pL/roL + pR/roR     ) * ( roR*vxR  - roL*vxL  ) &
-            &  - 0.5 *      (        vxL + vxR        ) * (  pR  - pL   )
-
-#else
-!*ELSE ALTERNATIVEFORMULATIONPRESSURE
 
 #ifdef IMEX
   !*START IMEX
 
-#ifdef IMEXL2FULLYUPWINDED
-    !*START IMEXL2FULLYUPWINDED
-    B_Sur(4)  =  -0.5 * Gmm * ( pL  + pR  ) * ( vxR - vxL ) & !*This must be splitted
-              &  -0.5       * ( vxL + vxR ) * ( pR  - pL  )  
-#else
-    !*ELSE IMEXL2FULLYUPWINDED
     B_Sur(4)  =  -0.5 * Gmm * ( (pL - min_p)  + (pR - min_p)  ) * ( vxR - vxL ) & !*This must be splitted 
               &  -0.5       * ( vxL + vxR ) * ( pR  - pL  )                       !*NB: This other one not
-#endif
-    !*END IMEXL2FULLYUPWINDED
 
 #else
   !*ELSE IMEX
@@ -6229,8 +6147,6 @@ B_Sur(3) = -0.5 *             ( vxL + vxR         ) * ( vyR - vyL )
 #endif
   !*END IMEX
 
-#endif
-!*END ALTERNATIVEFORMULATIONPRESSURE
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE PathConservativeLinearPath

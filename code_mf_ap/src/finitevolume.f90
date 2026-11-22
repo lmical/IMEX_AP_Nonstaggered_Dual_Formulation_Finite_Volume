@@ -2700,14 +2700,7 @@ STOP
 #ifdef IMEX
   !*START IMEX
 
-#ifdef IMEXL2FULLYUPWINDED
-    !*START IMEXL2FULLYUPWINDED
-    BVol_in_qp(2,nGPs,nGPs,ii,jj) = -     1.0/ro * dxp
-#else
-    !*ELSE IMEXL2FULLYUPWINDED
     BVol_in_qp(2,nGPs,nGPs,ii,jj) = -     (max_ro-ro)/(ro*max_ro) * dxp
-#endif
-    !*END IMEXL2FULLYUPWINDED
 
 #else
   !*ELSE IMEX
@@ -2738,51 +2731,12 @@ pinf=Get_Pressure_Infinity(roPhi)
 #endif
 
 
-#if defined(ALTERNATIVEFORMULATIONPRESSURE)
-!*START ALTERNATIVEFORMULATIONPRESSURE
-! PRINT*, "This is a consistent formulation."
-! PRINT*, "It works but it is not suitable for the splitting."
-! STOP
-
-#ifdef MULTIFLUID
-  !*START MULTIFLUID
-  BVol_in_qp(4,nGPs,nGPs,ii,jj) = -( (Gmm-1.0)*p + Gmm*pinf ) *dxvx
-#else
-  !*ELSE MULTIFLUID
-  BVol_in_qp(4,nGPs,nGPs,ii,jj) = -( (Gmm-1.0)*p ) *dxvx
-#endif
-  !*END MULTIFLUID 
-
-#ifdef IMEX
-  !*START IMEX
-  PRINT*, "In particular, for IMEX one really can't do the splitting in this case."
-  STOP
-#endif
-  !*END IMEX
-
-#elif defined(PRESSUREFORMULATIONFORIMEXMOMENTUM)
-!*ELSE ALTERNATIVEFORMULATIONPRESSURE
-
-  BVol_in_qp(4,nGPs,nGPs,ii,jj) = Gmm*p/ro*vx * dxro &
-                                & -Gmm*p/vx* dxrovx &
-                                & -vx *dxp
-
-#else
-!*ELSE ALTERNATIVEFORMULATIONPRESSURE
 
 #ifdef IMEX
   !*START IMEX
 
-#ifdef IMEXL2FULLYUPWINDED
-    !*START IMEXL2FULLYUPWINDED
-    BVol_in_qp(4,nGPs,nGPs,ii,jj) = - Gmm * p * dxvx &
-                                      & -       vx * dxp
-#else
-    !*ELSE IMEXL2FULLYUPWINDED
     BVol_in_qp(4,nGPs,nGPs,ii,jj) = - Gmm * (p-min_p) * dxvx & !*This must be splitted 
                                       & -       vx * dxp            !*NB: This other one not
-#endif
-    !*END IMEXL2FULLYUPWINDED
 
 #else
   !*ELSE IMEX
@@ -2817,8 +2771,6 @@ pinf=Get_Pressure_Infinity(roPhi)
 #endif
   !*END IMEX
 
-#endif
-!*END ALTERNATIVEFORMULATIONPRESSURE
 
 
         !*--------------------------
@@ -2996,14 +2948,7 @@ BVol_in_qp(2,nGPs,nGPs,ii,jj) = -         vy * dyvx   !*NB: vy is already the av
 #ifdef IMEX
   !*START IMEX
 
-#ifdef IMEXL2FULLYUPWINDED
-    !*START IMEXL2FULLYUPWINDED
-    BVol_in_qp(3,nGPs,nGPs,ii,jj) = -     1.0/ro * dyp
-#else
-    !*ELSE IMEXL2FULLYUPWINDED
     BVol_in_qp(3,nGPs,nGPs,ii,jj) = -     (max_ro-ro)/(ro*max_ro) * dyp
-#endif
-    !*END IMEXL2FULLYUPWINDED
 
 #else
   !*ELSE IMEX
@@ -3035,52 +2980,12 @@ Gmm=Get_Gamma(roPhi)
 pinf=Get_Pressure_Infinity(roPhi)
 #endif
 
-#if defined(ALTERNATIVEFORMULATIONPRESSURE)
-!*START ALTERNATIVEFORMULATIONPRESSURE
-
-        ! PRINT*, "This is a consistent formulation."
-        ! PRINT*, "It works but it is not suitable for the splitting."
-        ! STOP
-
-#ifdef MULTIFLUID
-  !*START MULTIFLUID
-  BVol_in_qp(4,nGPs,nGPs,ii,jj) = -( (Gmm-1.0)*p + Gmm*pinf ) *dyvy
-#else
-  !*ELSE MULTIFLUID
-  BVol_in_qp(4,nGPs,nGPs,ii,jj) = -( (Gmm-1.0)*p ) *dyvy
-#endif
-  !*END MULTIFLUID
-
-#ifdef IMEX
-  !*START IMEX
-  PRINT*, "In particular, for IMEX one really can't do the splitting in this case."
-  STOP
-#endif
-  !*END IMEX
-
-#elif defined(PRESSUREFORMULATIONFORIMEXMOMENTUM)
-!*ELSE ALTERNATIVEFORMULATIONPRESSURE
-
-  BVol_in_qp(4,nGPs,nGPs,ii,jj) = Gmm*p/ro*vy * dyro &
-                                & -Gmm*p/ro* dyrovy &
-                                & -vy *dyp
-
-#else
-!*ELSE ALTERNATIVEFORMULATIONPRESSURE
 
 #ifdef IMEX
   !*START IMEX
 
-#ifdef IMEXL2FULLYUPWINDED
-    !*START IMEXL2FULLYUPWINDED
-    BVol_in_qp(4,nGPs,nGPs,ii,jj) = - Gmm * p * dyvy &
-                                  & -       vy * dyp
-#else
-    !*ELSE IMEXL2FULLYUPWINDED
     BVol_in_qp(4,nGPs,nGPs,ii,jj) = - Gmm * (p-min_p) * dyvy & !*This must be splitted  
                                   & -       vy * dyp            !*NB: This other one not   
-#endif
-    !*END IMEXL2FULLYUPWINDED
 
 #else
   !*ELSE IMEX
@@ -3114,8 +3019,6 @@ pinf=Get_Pressure_Infinity(roPhi)
 #endif
   !*END IMEX
 
-#endif
-!*END ALTERNATIVEFORMULATIONPRESSURE
 
 
         !*--------------------------

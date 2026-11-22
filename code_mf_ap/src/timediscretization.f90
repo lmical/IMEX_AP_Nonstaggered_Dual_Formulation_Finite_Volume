@@ -367,12 +367,6 @@ WC(1:nVar,1:nElemsX,1:nElemsY)  = K1_WC(1:nVar,1:nElemsX,1:nElemsY)
 ! Second Stage       !
 !--------------------!
 tStage = t + 1.0*dt
-#ifdef POSTPROCESSINGATEACHSTEP
-CALL AF_PostProcessing_Subroutine(tStage)
-K1(1:nVar,1:nElemsX,1:nElemsY)=U(1:nVar,1:nElemsX,1:nElemsY)
-K1_X(1:nVar,1:nElemsX+1,1:nElemsY)=W_X(1:nVar,1:nElemsX+1,1:nElemsY)
-K1_Y(1:nVar,1:nElemsX,1:nElemsY+1)=W_Y(1:nVar,1:nElemsX,1:nElemsY+1)
-#endif
 CALL FVTimeDerivative(tStage)
 K2(1:nVar,1:nElemsX,1:nElemsY) = &
     0.5*K0(1:nVar,1:nElemsX,1:nElemsY) &
@@ -2948,7 +2942,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivative(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -2979,7 +2972,6 @@ DO kk = 1,KCorr
     END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -3014,7 +3006,6 @@ DO kk = 1,KCorr
 
       CALL FVTimeDerivative(tStage(ii))
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -3044,7 +3035,6 @@ DO kk = 1,KCorr
 #endif
 
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -3384,7 +3374,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivative(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -3415,7 +3404,6 @@ DO kk = 1,KCorr
     END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -3447,7 +3435,6 @@ DO kk = 1,KCorr
 
       CALL FVTimeDerivative(tStage(ii))
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -3477,7 +3464,6 @@ DO kk = 1,KCorr
 #endif
 
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -3835,7 +3821,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivative(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -3866,7 +3851,6 @@ DO kk = 1,KCorr
     END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -3901,7 +3885,6 @@ DO kk = 1,KCorr
 
       CALL FVTimeDerivative(tStage(ii))
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -3931,7 +3914,6 @@ DO kk = 1,KCorr
 #endif
 
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -4278,7 +4260,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivative(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -4309,7 +4290,6 @@ DO kk = 1,KCorr
     END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -4344,7 +4324,6 @@ DO kk = 1,KCorr
 
       CALL FVTimeDerivative(tStage(ii))
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -4374,7 +4353,6 @@ DO kk = 1,KCorr
 #endif
 
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -4728,7 +4706,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivative(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -4759,7 +4736,6 @@ DO kk = 1,KCorr
     END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -4794,7 +4770,6 @@ DO kk = 1,KCorr
 
       CALL FVTimeDerivative(tStage(ii))
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -4824,7 +4799,6 @@ DO kk = 1,KCorr
 #endif
 
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -5769,7 +5743,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivativePrimitiveOnly(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -5799,7 +5772,6 @@ DO kk = 1,KCorr
     END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -5825,7 +5797,6 @@ DO kk = 1,KCorr
       !*======================================
       CALL FVTimeDerivativePrimitiveOnly(tStage(ii)) 
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -5854,7 +5825,6 @@ DO kk = 1,KCorr
       END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -6190,7 +6160,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivativePrimitiveOnly(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -6220,7 +6189,6 @@ DO kk = 1,KCorr
     END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -6246,7 +6214,6 @@ DO kk = 1,KCorr
       !*======================================
       CALL FVTimeDerivativePrimitiveOnly(tStage(ii)) 
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -6275,7 +6242,6 @@ DO kk = 1,KCorr
       END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -6611,7 +6577,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivativePrimitiveOnly(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -6641,7 +6606,6 @@ DO kk = 1,KCorr
     END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -6667,7 +6631,6 @@ DO kk = 1,KCorr
       !*======================================
       CALL FVTimeDerivativePrimitiveOnly(tStage(ii)) 
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -6696,7 +6659,6 @@ DO kk = 1,KCorr
       END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -7039,7 +7001,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivativePrimitiveOnly(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -7069,7 +7030,6 @@ DO kk = 1,KCorr
     END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -7095,7 +7055,6 @@ DO kk = 1,KCorr
       !*======================================
       CALL FVTimeDerivativePrimitiveOnly(tStage(ii)) 
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -7124,7 +7083,6 @@ DO kk = 1,KCorr
       END DO
 #endif
 
-#endif
 
 
 #ifdef CENTEREDPRIMITIVE
@@ -7466,7 +7424,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivativePrimitiveOnly(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -7497,7 +7454,6 @@ DO kk = 1,KCorr
 #endif
 
 
-#endif
 
 #ifdef CENTEREDPRIMITIVE
     CALL Impose_BC_on_WCt() !*NB: It is important to impose BCs on the fluxes because they need to be differentiated
@@ -7528,7 +7484,6 @@ DO kk = 1,KCorr
 
       CALL FVTimeDerivativePrimitiveOnly(tStage(ii))
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -7557,7 +7512,6 @@ DO kk = 1,KCorr
 #endif
 
 
-#endif
 
 #ifdef CENTEREDPRIMITIVE
       CALL Impose_BC_on_WCt() !*NB: It is important to impose BCs on the fluxes because they need to be differentiated
@@ -7904,7 +7858,6 @@ DO kk = 1,KCorr
     !*==============================
     CALL FVTimeDerivativePrimitiveOnly(tStage(1)) 
 
-#ifndef IMEXL2FULLYUPWINDED
     !*------------------
     !*Add extra splitted contribution
     !*------------------
@@ -7935,7 +7888,6 @@ DO kk = 1,KCorr
 #endif
 
 
-#endif
 
 #ifdef CENTEREDPRIMITIVE
     CALL Impose_BC_on_WCt() !*NB: It is important to impose BCs on the fluxes because they need to be differentiated
@@ -7963,7 +7915,6 @@ DO kk = 1,KCorr
 
       CALL FVTimeDerivativePrimitiveOnly(tStage(ii))
 
-#ifndef IMEXL2FULLYUPWINDED
       !*------------------
       !*Add extra splitted contribution
       !*------------------
@@ -7992,7 +7943,6 @@ DO kk = 1,KCorr
 #endif
 
 
-#endif
 
 #ifdef CENTEREDPRIMITIVE
       CALL Impose_BC_on_WCt() !*NB: It is important to impose BCs on the fluxes because they need to be differentiated
