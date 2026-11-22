@@ -127,106 +127,9 @@ INTEGER             :: JacobiCounter_WC
 #endif
 
 
-#ifdef ACTIVEFLUX
-!*For staggering in X direction
-REAL,ALLOCATABLE    :: MeshBary_X(:,:,:)
-REAL,ALLOCATABLE    :: MeshGP_X(:,:,:,:,:)
-REAL,ALLOCATABLE    :: W_X(:,:,:)
-REAL,ALLOCATABLE    :: Wt_X(:,:,:)
-REAL,ALLOCATABLE    :: UN0_X(:,:,:)
-REAL,ALLOCATABLE    :: K0_X(:,:,:)
-REAL,ALLOCATABLE    :: K1_X(:,:,:)
-REAL,ALLOCATABLE    :: K2_X(:,:,:)
-REAL,ALLOCATABLE    :: K3_X(:,:,:)
-REAL,ALLOCATABLE    :: K4_X(:,:,:)
-REAL,ALLOCATABLE    :: K5_X(:,:,:)
-REAL,ALLOCATABLE    :: FWp_X(:,:,:,:)
-REAL,ALLOCATABLE    :: Wp_X(:,:,:,:)
-REAL,ALLOCATABLE    :: Wa_X(:,:,:,:)
-
-!*For staggering in Y direction
-REAL,ALLOCATABLE    :: MeshBary_Y(:,:,:)
-REAL,ALLOCATABLE    :: MeshGP_Y(:,:,:,:,:)
-REAL,ALLOCATABLE    :: W_Y(:,:,:)
-REAL,ALLOCATABLE    :: Wt_Y(:,:,:)
-REAL,ALLOCATABLE    :: UN0_Y(:,:,:)
-REAL,ALLOCATABLE    :: K0_Y(:,:,:)
-REAL,ALLOCATABLE    :: K1_Y(:,:,:)
-REAL,ALLOCATABLE    :: K2_Y(:,:,:)
-REAL,ALLOCATABLE    :: K3_Y(:,:,:)
-REAL,ALLOCATABLE    :: K4_Y(:,:,:)
-REAL,ALLOCATABLE    :: K5_Y(:,:,:)
-REAL,ALLOCATABLE    :: FWp_Y(:,:,:,:)
-REAL,ALLOCATABLE    :: Wp_Y(:,:,:,:)
-REAL,ALLOCATABLE    :: Wa_Y(:,:,:,:)
-
-REAL,ALLOCATABLE    :: W_qp_X(:,:,:,:)
-REAL,ALLOCATABLE    :: W_qp_Y(:,:,:,:)
-
-!*The following structures are essential for IMEX, 
-!*but I need them also for the explicit version, for the linear system to initialize the velocity in Gresho
-!*In any case, they are referred to W_X and W_Y and so they are meant to be present if ACTIVEFLUX flag is active
-
-!*Staggering in X direction
-INTEGER              :: NRows_X
-INTEGER, ALLOCATABLE :: From_2Indices_To_1Index_X(:,:) !*ii,jj  -> ll     !*Also for ghosts
-INTEGER, ALLOCATABLE :: From_1Index_To_2Indices_X(:,:) !*ll,1:2 -> ii:jj  !*Also for ghosts
-INTEGER, ALLOCATABLE :: Neighbours_1Index_X(:,:)       !*ll,1:5 ->        !*Just for internal
-
-!*Staggering in Y direction
-INTEGER              :: NRows_Y
-INTEGER, ALLOCATABLE :: From_2Indices_To_1Index_Y(:,:) !*ii,jj  -> ll     !*Also for ghosts
-INTEGER, ALLOCATABLE :: From_1Index_To_2Indices_Y(:,:) !*ll,1:2 -> ii:jj  !*Also for ghosts
-INTEGER, ALLOCATABLE :: Neighbours_1Index_Y(:,:)       !*ll,1:5 ->        !*Just for internal
-
-#if defined(IMEX) || defined(IMEXMOMENTUM)
-!*For staggering in X direction
-!*-> For CRS of the matrix
-INTEGER              :: NNZsparse_X
-REAL,    ALLOCATABLE :: Values_X(:)
-INTEGER, ALLOCATABLE :: Columns_X(:)
-INTEGER, ALLOCATABLE :: RowStart_X(:)
-REAL,    ALLOCATABLE :: Diagonal_X(:)
-!*-> For rhs of the system
-REAL,    ALLOCATABLE :: rhs_X(:)
-!*-> For sol of the system
-REAL,    ALLOCATABLE :: sol_X(:)
-
-INTEGER, ALLOCATABLE:: JacobiIterations_X(:)
-INTEGER             :: JacobiCounter_X
 
 
-!*For staggering in Y direction
-INTEGER              :: NNZsparse_Y
-REAL,    ALLOCATABLE :: Values_Y(:)
-INTEGER, ALLOCATABLE :: Columns_Y(:)
-INTEGER, ALLOCATABLE :: RowStart_Y(:)
-REAL,    ALLOCATABLE :: Diagonal_Y(:)
-!*-> For rhs of the system
-REAL,    ALLOCATABLE :: rhs_Y(:)
-!*-> For sol of the system
-REAL,    ALLOCATABLE :: sol_Y(:)
-
-
-
-
-INTEGER, ALLOCATABLE:: JacobiIterations_Y(:)
-INTEGER             :: JacobiCounter_Y
-
-#endif
-
-
-
-#ifdef MULTIFLUID
-INTEGER, ALLOCATABLE :: Troubled_Cell_U(:,:)
-INTEGER, ALLOCATABLE :: Troubled_Cell_W_X(:,:)
-INTEGER, ALLOCATABLE :: Troubled_Cell_W_Y(:,:)
-INTEGER, ALLOCATABLE :: Which_Fluid_In_Cell_U(:,:)
-#endif
-#endif
-
-
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 !*Shared
 REAL,ALLOCATABLE    :: BX_Vol(:,:,:)
 REAL,ALLOCATABLE    :: BY_Vol(:,:,:)
@@ -249,7 +152,7 @@ INTEGER             :: WhichOutput
 INTEGER             :: nOutputFiles
 INTEGER             :: InitialCondition
 INTEGER             :: BoundaryConditionsType(4)
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
 INTEGER             :: BoundaryConditionsTypeIMEXLinearSystem(4)
 #endif
@@ -287,7 +190,7 @@ REAL                :: Kappa
 
 INTEGER             :: maxTimeSteps
 INTEGER             :: WhichRiemannSolver
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 INTEGER             :: WhichRiemannSolverPrimitiveSystem
 #endif
 REAL                :: computationalTime
@@ -298,7 +201,7 @@ INTEGER, ALLOCATABLE:: JacobiIterations(:)
 INTEGER             :: JacobiCounter
 #endif
 
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
 REAL                :: max_ro, min_p
 #endif
@@ -312,9 +215,6 @@ INTEGER             :: timescheme
 REAL,PARAMETER      :: wLobatto = 1./12.
 REAL,PARAMETER      :: WENOEPS = 1.0E-6
 INTEGER,PARAMETER   :: WENOEXP = 2 !*.0 !*ALERT
-#ifdef ACTIVEFLUX
-INTEGER             :: AF_PostProcessing
-#endif
 
 REAL                :: Ma_shock 
 REAL                :: Ma_vortex
@@ -333,7 +233,7 @@ REAL                :: EPS_LM        !*LM=Low Mach or Lorenzo Micalizzi XD
 #endif
 
 REAL,PARAMETER      :: EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU  = 1e-15 !*When the difference between the wave speeds is bigger than this parameter we switch to Rusanov
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
 REAL                :: SAFETY_K_TO_AVOID_HYPERBOLICITY_LOSS = 0.0!10.0
 #endif
@@ -343,7 +243,7 @@ INTEGER, PARAMETER :: N_Troubled_Neighbors=1
 #endif
 
 CHARACTER(LEN=255)  :: VarNameVisu(1:nVar+1)
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 CHARACTER(LEN=255)  :: VarNameVisu_W(1:nVar+1)
 #endif
 
@@ -368,7 +268,7 @@ REAL, PARAMETER      :: Theta_Standard_Limiting =2.0
 REAL, PARAMETER      :: Tau_Overcompressive     =-0.25
 REAL, PARAMETER      :: Theta_Overcompressive   =2.0
 
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
 LOGICAL             :: HyperbolicityLoss = .FALSE.
 #endif

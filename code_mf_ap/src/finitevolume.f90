@@ -47,7 +47,7 @@ END INTERFACE
 
 
 
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 INTERFACE FVTimeDerivativePrimitiveOnly
   MODULE PROCEDURE FVTimeDerivativePrimitiveOnly
 END INTERFACE
@@ -63,29 +63,6 @@ INTERFACE Compute_Errors_PCSD
 END INTERFACE
 #endif
 
-#ifdef ACTIVEFLUX
-INTERFACE AF_PostProcessing_Subroutine
-  MODULE PROCEDURE AF_PostProcessing_Subroutine
-END INTERFACE
-
-#if defined(IMEX) || defined(IMEXMOMENTUM)
-INTERFACE Put_Matrix_In_Vector_X
-  MODULE PROCEDURE Put_Matrix_In_Vector_X
-END INTERFACE
-
-INTERFACE Put_Vector_In_Matrix_X
-  MODULE PROCEDURE Put_Vector_In_Matrix_X
-END INTERFACE
-
-INTERFACE Put_Matrix_In_Vector_Y
-  MODULE PROCEDURE Put_Matrix_In_Vector_Y
-END INTERFACE
-
-INTERFACE Put_Vector_In_Matrix_Y
-  MODULE PROCEDURE Put_Vector_In_Matrix_Y
-END INTERFACE
-#endif
-#endif
 
 #ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
@@ -113,21 +90,12 @@ PUBLIC :: Overwrite_WC_from_U
 PUBLIC :: Shock_Detector_Based_On_Path_Conservative
 #endif
 #endif
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 PUBLIC :: FVTimeDerivativePrimitiveOnly
 PUBLIC :: FVTimeDerivativeConservedOnly
 #endif
 #if defined(CENTEREDPRIMITIVE)
 PUBLIC :: Compute_Errors_PCSD
-#endif
-#ifdef ACTIVEFLUX
-PUBLIC :: AF_PostProcessing_Subroutine
-#if defined(IMEX) || defined(IMEXMOMENTUM)
-PUBLIC :: Put_Matrix_In_Vector_X
-PUBLIC :: Put_Vector_In_Matrix_X
-PUBLIC :: Put_Matrix_In_Vector_Y
-PUBLIC :: Put_Vector_In_Matrix_Y
-#endif
 #endif
 #ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
@@ -240,7 +208,7 @@ USE MOD_FiniteVolume2D_vars,ONLY: JacobiIterations_WC
 #endif
 #endif
 
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 #if defined(IMEX) || defined(IMEXMOMENTUM)
 USE MOD_FiniteVolume2D_vars,ONLY: BoundaryConditionsTypeIMEXLinearSystem
 USE MOD_FiniteVolume2D_vars,ONLY: maxLenghtJacobiCounter
@@ -257,92 +225,9 @@ USE MOD_FiniteVolume2D_vars,ONLY: Errors_PCSD
 
 
 
-#ifdef ACTIVEFLUX
-!*Staggering in X direction
-USE MOD_FiniteVolume2D_vars,ONLY: MeshBary_X
-USE MOD_FiniteVolume2D_vars,ONLY: MeshGP_X  
-USE MOD_FiniteVolume2D_vars,ONLY: W_X
-USE MOD_FiniteVolume2D_vars,ONLY: Wt_X
-USE MOD_FiniteVolume2D_vars,ONLY: UN0_X
-USE MOD_FiniteVolume2D_vars,ONLY: K0_X
-USE MOD_FiniteVolume2D_vars,ONLY: K1_X
-USE MOD_FiniteVolume2D_vars,ONLY: K2_X
-USE MOD_FiniteVolume2D_vars,ONLY: K3_X
-USE MOD_FiniteVolume2D_vars,ONLY: K4_X
-USE MOD_FiniteVolume2D_vars,ONLY: K5_X
-USE MOD_FiniteVolume2D_vars,ONLY: Wp_X
-USE MOD_FiniteVolume2D_vars,ONLY: Wa_X
-USE MOD_FiniteVolume2D_vars,ONLY: FWp_X
 
-!*Staggering in Y direction
-USE MOD_FiniteVolume2D_vars,ONLY: MeshBary_Y
-USE MOD_FiniteVolume2D_vars,ONLY: MeshGP_Y
-USE MOD_FiniteVolume2D_vars,ONLY: W_Y
-USE MOD_FiniteVolume2D_vars,ONLY: Wt_Y
-USE MOD_FiniteVolume2D_vars,ONLY: UN0_Y
-USE MOD_FiniteVolume2D_vars,ONLY: K0_Y
-USE MOD_FiniteVolume2D_vars,ONLY: K1_Y
-USE MOD_FiniteVolume2D_vars,ONLY: K2_Y
-USE MOD_FiniteVolume2D_vars,ONLY: K3_Y
-USE MOD_FiniteVolume2D_vars,ONLY: K4_Y
-USE MOD_FiniteVolume2D_vars,ONLY: K5_Y
-USE MOD_FiniteVolume2D_vars,ONLY: Wp_Y
-USE MOD_FiniteVolume2D_vars,ONLY: Wa_Y
-USE MOD_FiniteVolume2D_vars,ONLY: FWp_Y
 
-USE MOD_FiniteVolume2D_vars,ONLY: W_qp_X
-USE MOD_FiniteVolume2D_vars,ONLY: W_qp_Y
-
-!*The following structures are essential for IMEX, 
-!*but I need them also for the explicit version, for the linear system to initialize the velocity in Gresho
-!*In any case, they are referred to W_X and W_Y and so they are meant to be present if ACTIVEFLUX flag is active
-
-!*Staggering in X direction
-USE MOD_FiniteVolume2D_vars,ONLY: NRows_X
-USE MOD_FiniteVolume2D_vars,ONLY: From_2Indices_To_1Index_X
-USE MOD_FiniteVolume2D_vars,ONLY: From_1Index_To_2Indices_X
-USE MOD_FiniteVolume2D_vars,ONLY: Neighbours_1Index_X
-
-!*Staggering in Y direction
-USE MOD_FiniteVolume2D_vars,ONLY: NRows_Y
-USE MOD_FiniteVolume2D_vars,ONLY: From_2Indices_To_1Index_Y
-USE MOD_FiniteVolume2D_vars,ONLY: From_1Index_To_2Indices_Y
-USE MOD_FiniteVolume2D_vars,ONLY: Neighbours_1Index_Y
-
-#if defined(IMEX) || defined(IMEXMOMENTUM)
-!*For staggering in X direction
-USE MOD_FiniteVolume2D_vars,ONLY: NNZsparse_X
-USE MOD_FiniteVolume2D_vars,ONLY: RowStart_X
-USE MOD_FiniteVolume2D_vars,ONLY: Values_X
-USE MOD_FiniteVolume2D_vars,ONLY: Columns_X
-USE MOD_FiniteVolume2D_vars,ONLY: Diagonal_X
-USE MOD_FiniteVolume2D_vars,ONLY: rhs_X
-USE MOD_FiniteVolume2D_vars,ONLY: sol_X
-USE MOD_FiniteVolume2D_vars,ONLY: JacobiCounter_X
-USE MOD_FiniteVolume2D_vars,ONLY: JacobiIterations_X
-
-!*For staggering in Y direction
-USE MOD_FiniteVolume2D_vars,ONLY: NNZsparse_Y
-USE MOD_FiniteVolume2D_vars,ONLY: RowStart_Y
-USE MOD_FiniteVolume2D_vars,ONLY: Values_Y
-USE MOD_FiniteVolume2D_vars,ONLY: Columns_Y
-USE MOD_FiniteVolume2D_vars,ONLY: Diagonal_Y
-USE MOD_FiniteVolume2D_vars,ONLY: rhs_Y
-USE MOD_FiniteVolume2D_vars,ONLY: sol_Y
-USE MOD_FiniteVolume2D_vars,ONLY: JacobiCounter_Y
-USE MOD_FiniteVolume2D_vars,ONLY: JacobiIterations_Y
-#endif
-
-#ifdef MULTIFLUID
-USE MOD_FiniteVolume2D_vars,ONLY: Troubled_Cell_U
-USE MOD_FiniteVolume2D_vars,ONLY: Troubled_Cell_W_X
-USE MOD_FiniteVolume2D_vars,ONLY: Troubled_Cell_W_Y
-USE MOD_FiniteVolume2D_vars,ONLY: Which_Fluid_In_Cell_U
-#endif
-
-#endif
-
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 !*Shared
 USE MOD_FiniteVolume2D_vars,ONLY: BX_Vol
 USE MOD_FiniteVolume2D_vars,ONLY: BY_Vol
@@ -379,8 +264,6 @@ INTEGER :: indc
 !-------------------------------------------------------------------------------!
 
 SELECT CASE (Reconstruction)
-#ifndef ACTIVEFLUX
-  !*IF NOT ACTIVE FLUX RECONSTRUCTION IS POSITIVE
   CASE(1,10) ! NONE
     nGhosts = 1
     nGPs    = 1
@@ -396,24 +279,6 @@ SELECT CASE (Reconstruction)
   CASE(7) ! WENO7
     nGhosts = 3
     nGPs    = 4
-#else
-  !*IF ACTIVE FLUX RECONSTRUCTION IS NEGATIVE
-  CASE(-1,-10) ! NONE
-    nGhosts = 1
-    nGPs    = 1
-  CASE(-2,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29) ! MUSCL
-    nGhosts = 1
-    nGPs    = 1
-  CASE(-3) ! WENO3
-    nGhosts = 1
-    nGPs    = 2
-  CASE(-4,-5) ! WENO5
-    nGhosts = 2
-    nGPs    = 4  !*NB: In principle 3 nGPs would have been ok but there were negative weights
-  CASE(-7) ! WENO7
-    nGhosts = 3
-    nGPs    = 4
-#endif
   CASE DEFAULT
     ErrorMessage = "Reconstruction not implemented. NB: Check the sign. It may be my trick to distinguish ACTIVE FLUX and NOT ACTIVE FLUX results"
     WRITE(*,*) ErrorMessage
@@ -495,60 +360,9 @@ ALLOCATE( Errors_PCSD(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts
 #endif
 
 
-#ifdef ACTIVEFLUX
-!*Staggering in X direction
-!*NB: +1 for X
-ALLOCATE(MeshBary_X (1:nDims,       1:nElemsX+1,1:nElemsY))                   !*NB:+1 in X direction with respect to MeshBary
-ALLOCATE(MeshGP_X   (1:nDims,       1:nElemsX+1,1:nElemsY,1:nGPs,1:nGPs))     !*NB:+1 in X direction with respect to MeshGP  
-ALLOCATE(W_X( 1:nVar,-nGhosts:nElemsX+nGhosts+1+1,-nGhosts:nElemsY+nGhosts+1))!*NB:+1 in X direction with respect to U
-ALLOCATE(Wt_X(1:nVar,-nGhosts:nElemsX+nGhosts+1+1,-nGhosts:nElemsY+nGhosts+1))!*NB:made analogous to W_X for IMEX
-
-ALLOCATE(UN0_X(1:nVar,1:nElemsX+1,1:nElemsY))                                 !*NB:+1 in X direction with respect to original counterpart
-ALLOCATE(K0_X(1:nVar,1:nElemsX+1,1:nElemsY))                                  !*NB:+1 in X direction with respect to original counterpart 
-ALLOCATE(K1_X(1:nVar,1:nElemsX+1,1:nElemsY))                                  !*NB:+1 in X direction with respect to original counterpart 
-ALLOCATE(K2_X(1:nVar,1:nElemsX+1,1:nElemsY))                                  !*NB:+1 in X direction with respect to original counterpart 
-ALLOCATE(K3_X(1:nVar,1:nElemsX+1,1:nElemsY))                                  !*NB:+1 in X direction with respect to original counterpart   
-ALLOCATE(K4_X(1:nVar,1:nElemsX+1,1:nElemsY))                                  !*NB:+1 in X direction with respect to original counterpart 
-ALLOCATE(K5_X(1:nVar,1:nElemsX+1,1:nElemsY))                                  !*NB:+1 in X direction with respect to original counterpart 
-ALLOCATE(Wa_X( 1:MStepsMax,1:nVar,-nGhosts:nElemsX+nGhosts+1+1,-nGhosts:nElemsY+nGhosts+1))!*NB:made analogous to W_X for IMEX
-ALLOCATE(Wp_X( 1:MStepsMax,1:nVar,-nGhosts:nElemsX+nGhosts+1+1,-nGhosts:nElemsY+nGhosts+1))!*NB:made analogous to W_X for IMEX
-ALLOCATE(FWp_X(1:MStepsMax,1:nVar,-nGhosts:nElemsX+nGhosts+1+1,-nGhosts:nElemsY+nGhosts+1))!*NB:made analogous to W_X for IMEX
 
 
-!*Staggering in Y direction
-!*NB: +1 for Y
-ALLOCATE(MeshBary_Y (1:nDims,       1:nElemsX,1:nElemsY+1))                   !*NB:+1 in Y direction with respect to MeshBary
-ALLOCATE(MeshGP_Y   (1:nDims,       1:nElemsX,1:nElemsY+1,1:nGPs,1:nGPs))     !*NB:+1 in Y direction with respect to MeshGP  
-ALLOCATE(W_Y(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1+1)) !*NB:+1 in Y direction with respect to U
-ALLOCATE(Wt_Y(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1+1))!*NB:made analogous to W_Y for IMEX
-
-ALLOCATE(UN0_Y(1:nVar,1:nElemsX,1:nElemsY+1))                                 !*NB:+1 in Y direction with respect to original counterpart
-ALLOCATE(K0_Y(1:nVar,1:nElemsX,1:nElemsY+1))                                  !*NB:+1 in Y direction with respect to original counterpart 
-ALLOCATE(K1_Y(1:nVar,1:nElemsX,1:nElemsY+1))                                  !*NB:+1 in Y direction with respect to original counterpart 
-ALLOCATE(K2_Y(1:nVar,1:nElemsX,1:nElemsY+1))                                  !*NB:+1 in Y direction with respect to original counterpart 
-ALLOCATE(K3_Y(1:nVar,1:nElemsX,1:nElemsY+1))                                  !*NB:+1 in Y direction with respect to original counterpart   
-ALLOCATE(K4_Y(1:nVar,1:nElemsX,1:nElemsY+1))                                  !*NB:+1 in Y direction with respect to original counterpart 
-ALLOCATE(K5_Y(1:nVar,1:nElemsX,1:nElemsY+1))                                  !*NB:+1 in Y direction with respect to original counterpart 
-ALLOCATE(Wa_Y( 1:MStepsMax,1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1+1))!*NB:made analogous to W_Y for IMEX
-ALLOCATE(Wp_Y( 1:MStepsMax,1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1+1))!*NB:made analogous to W_Y for IMEX
-ALLOCATE(FWp_Y(1:MStepsMax,1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1+1))!*NB:made analogous to W_Y for IMEX
-
-
-ALLOCATE(W_qp_X(1:nVar,1:nGPs,0:nElemsX,1:nElemsY))                           !*NB: Same dimensions as (original) FluxX 
-ALLOCATE(W_qp_Y(1:nVar,1:nGPs,1:nElemsX,0:nElemsY))                           !*NB: Same dimensions as (original) FluxY 
-
-
-#ifdef MULTIFLUID
-ALLOCATE( Troubled_Cell_U(-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1)) 
-ALLOCATE(Troubled_Cell_W_X(-nGhosts:nElemsX+nGhosts+1+1+1,-nGhosts:nElemsY+nGhosts+1))!*NB:+1 in X direction with respect to U
-ALLOCATE(Troubled_Cell_W_Y(-nGhosts:nElemsX+nGhosts+1+1,-nGhosts:nElemsY+nGhosts+1+1))!*NB:+1 in Y direction with respect to U
-ALLOCATE( Which_Fluid_In_Cell_U(-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1)) 
-#endif
-
-
-#endif
-
-#if defined(ACTIVEFLUX) || defined(CENTEREDPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 !*Shared
 ALLOCATE(BX_Vol(1:nVar,1:nElemsX+1,1:nElemsY+1))                              !*NB: Like S but both dimensions+1
 ALLOCATE(BY_Vol(1:nVar,1:nElemsX+1,1:nElemsY+1))                              !*NB: Like S but both dimensions+1
@@ -630,54 +444,6 @@ Errors_PCSD       =0.0
 #endif
 
 
-#ifdef ACTIVEFLUX
-!*Staggering in X direction
-W_X=0.
-UN0_X = 0.0
-K0_X  = 0.0
-K1_X  = 0.0
-K2_X  = 0.0
-K3_X  = 0.0
-K4_X  = 0.0
-K5_X  = 0.0
-Wa_X  = 0.0
-Wp_X  = 0.0
-FWp_X = 0.0
-
-!*Staggering in Y direction
-W_Y=0.
-UN0_Y = 0.0
-K0_Y  = 0.0
-K1_Y  = 0.0
-K2_Y  = 0.0
-K3_Y  = 0.0
-K4_Y  = 0.0
-K5_Y  = 0.0
-Wa_Y  = 0.0
-Wp_Y  = 0.0
-FWp_Y = 0.0
-
-!*Shared
-BX_Vol    = 0.
-BY_Vol    = 0.
-BX_Sur    = 0.
-BY_Sur    = 0.
-BX_Sur_qp = 0.
-BY_Sur_qp = 0.
-am_qp     = 0.
-ap_qp     = 0.
-
-W_qp_X = 0.
-W_qp_Y = 0.
-
-
-#ifdef MULTIFLUID
-Troubled_Cell_U=0
-Troubled_Cell_W_X=0
-Troubled_Cell_W_Y=0
-#endif
-
-#endif
 
 
 
@@ -985,465 +751,6 @@ sol_WC      = 0.0
 
 
 
-
-
-
-
-
-!*=================================================================
-!* IMEX FOR ACTIVEFLUX
-!*=================================================================
-!*Structures for IMEX linear system
-!*NB: The following is kind of analogous to what previously done
-!*But it is organized slightly differently and more general
-
-!*NB: For some nGhosts, the layers of ghost cells are nGhosts+1
-!*We only care about the first layer
-!*The other one will have -1 (non-physical) values in our structures
-
-
-#ifdef ACTIVEFLUX
-!*The following structures are essential for IMEX, 
-!*but I need them also for the explicit version, for the linear system to initialize the velocity in Gresho
-!*In any case, they are referred to W_X and W_Y and so they are meant to be present if ACTIVEFLUX flag is active
-
-!*Staggering in X direction
-NRows_X=(nElemsX+1)*nElemsY+2*(nElemsX+1)+2*nElemsY
-ALLOCATE(From_2Indices_To_1Index_X(-nGhosts:nElemsX+nGhosts+1+1,-nGhosts:nElemsY+nGhosts+1)) !*ii,jj  -> ll     !*Also for ghosts, same as W_X !*But careful with corners (-1)
-ALLOCATE(From_1Index_To_2Indices_X(1:NRows_X,1:2))                                           !*ll,1:2 -> ii:jj  !*Also for ghosts excluding corners
-ALLOCATE(Neighbours_1Index_X(1:((nElemsX+1)*nElemsY),1:5))                                       !*ll,1:5 ->        !*Just for internal
-
-From_2Indices_To_1Index_X = -1 !*Initialization to -1 meaning non-physical
-From_1Index_To_2Indices_X = -1 !*Initialization to -1 meaning non-physical
-Neighbours_1Index_X       = -1 !*Initialization to -1 meaning non-physical
-
-!*-------------------------
-!*Numeration
-!*-------------------------
-
-indc=0
-!*->Inside the domain
-DO jj=1,nElemsY
-  DO ii=1,nElemsX+1 
-    indc=indc+1
-    From_2Indices_To_1Index_X(ii,jj)=indc
-    ! PRINT*, ii,jj,"->",indc
-    From_1Index_To_2Indices_X(indc,1)=ii
-    From_1Index_To_2Indices_X(indc,2)=jj
-
-  END DO
-END DO
-
-!*->Down boundary
-jj=0
-DO ii=1,nElemsX+1 
-  indc=indc+1
-  From_2Indices_To_1Index_X(ii,jj)=indc
-  ! PRINT*, ii,jj,"->",indc
-  From_1Index_To_2Indices_X(indc,1)=ii
-  From_1Index_To_2Indices_X(indc,2)=jj
-END DO
-
-!*->Right boundary
-ii=nElemsX+2
-DO jj=1,nElemsY
-  indc=indc+1
-  From_2Indices_To_1Index_X(ii,jj)=indc
-  ! PRINT*, ii,jj,"->",indc
-  From_1Index_To_2Indices_X(indc,1)=ii
-  From_1Index_To_2Indices_X(indc,2)=jj
-END DO
-
-!*->Top boundary
-jj=nElemsY+1
-DO ii=1,nElemsX+1 
-  indc=indc+1
-  From_2Indices_To_1Index_X(ii,jj)=indc
-  ! PRINT*, ii,jj,"->",indc
-  From_1Index_To_2Indices_X(indc,1)=ii
-  From_1Index_To_2Indices_X(indc,2)=jj
-END DO
-
-!*->Left boundary
-ii=0
-DO jj=1,nElemsY
-  indc=indc+1
-  From_2Indices_To_1Index_X(ii,jj)=indc
-  ! PRINT*, ii,jj,"->",indc
-  From_1Index_To_2Indices_X(indc,1)=ii
-  From_1Index_To_2Indices_X(indc,2)=jj
-END DO
-
-!*-----------------------------------------
-!*Very useful safety check
-!*-----------------------------------------
-! PRINT*, MAXVAL(From_2Indices_To_1Index_X)
-! PRINT*, From_2Indices_To_1Index_X
-! STOP
-!*-----------------------------------------
-
-
-
-!*Neighbours only for the internal of the domain
-!*->Inside the domain
-indc=0
-DO jj=1,nElemsY
-  DO ii=1,nElemsX+1 
-
-    !*C,B,R,U,L
-    indc=indc+1
-
-    !*-----------------------------------------
-    !*As a safety check this should give ii and jj
-    !*-----------------------------------------
-    ! IF (((From_1Index_To_2Indices_X(indc,1)-ii) .NE. 0) .OR. ((From_1Index_To_2Indices_X(indc,2)-jj) .NE. 0)) THEN
-    !   PRINT*, "Problem in numeration for linear system IMEX", indc
-    !   PRINT*, ii,jj
-    !   PRINT*, From_1Index_To_2Indices_X(indc,:)
-    !   STOP
-    ! END IF
-    ! PRINT*, ii,jj, From_1Index_To_2Indices_X(indc,:)
-    !*-----------------------------------------
-
-    !*NB: The 1-index label of ii,jj is indc
-    !*We do not need to retrieve this information as we are sweeping the cells in the same order we numerated them 
-
-    !*C
-    Neighbours_1Index_X(indc,1)=indc
-
-    !*B
-    Neighbours_1Index_X(indc,2)=From_2Indices_To_1Index_X(ii,jj-1)
-
-    !*R
-    Neighbours_1Index_X(indc,3)=From_2Indices_To_1Index_X(ii+1,jj)
-
-    !*U
-    Neighbours_1Index_X(indc,4)=From_2Indices_To_1Index_X(ii,jj+1)
-
-    !*L
-    Neighbours_1Index_X(indc,5)=From_2Indices_To_1Index_X(ii-1,jj)
-
-    !*-----------------------------------------
-    !*SAFETY CHECK
-    !*-----------------------------------------
-    ! PRINT*
-    ! PRINT*, indc 
-    ! PRINT*, "C", Neighbours_1Index_X(indc,1)
-    ! PRINT*, "B", Neighbours_1Index_X(indc,2)
-    ! PRINT*, "R", Neighbours_1Index_X(indc,3)
-    ! PRINT*, "U", Neighbours_1Index_X(indc,4)
-    ! PRINT*, "L", Neighbours_1Index_X(indc,5)
-    !*-----------------------------------------
-
-  END DO
-END DO
-
-
-!*Staggering in Y direction
-NRows_Y=nElemsX*(nElemsY+1)+2*nElemsX+2*(nElemsY+1)
-ALLOCATE(From_2Indices_To_1Index_Y(-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1+1)) !*ii,jj  -> ll     !*Also for ghosts, same as W_Y !*But careful with corners (-1)
-ALLOCATE(From_1Index_To_2Indices_Y(1:NRows_Y,1:2))                                           !*ll,1:2 -> ii:jj  !*Also for ghosts excluding corners
-ALLOCATE(Neighbours_1Index_Y(1:(nElemsX*(nElemsY+1)),1:5))                                       !*ll,1:5 ->        !*Just for internal
-
-From_2Indices_To_1Index_Y = -1 !*Initialization to -1 meaning non-physical
-From_1Index_To_2Indices_Y = -1 !*Initialization to -1 meaning non-physical
-Neighbours_1Index_Y       = -1 !*Initialization to -1 meaning non-physical
-
-!*-------------------------
-!*Numeration
-!*-------------------------
-
-indc=0
-!*->Inside the domain
-DO jj=1,nElemsY+1
-  DO ii=1,nElemsX 
-    indc=indc+1
-    From_2Indices_To_1Index_Y(ii,jj)=indc
-    ! PRINT*, ii,jj,"->",indc
-    From_1Index_To_2Indices_Y(indc,1)=ii
-    From_1Index_To_2Indices_Y(indc,2)=jj
-
-  END DO
-END DO
-
-!*->Down boundary
-jj=0
-DO ii=1,nElemsX
-  indc=indc+1
-  From_2Indices_To_1Index_Y(ii,jj)=indc
-  ! PRINT*, ii,jj,"->",indc
-  From_1Index_To_2Indices_Y(indc,1)=ii
-  From_1Index_To_2Indices_Y(indc,2)=jj
-END DO
-
-!*->Right boundary
-ii=nElemsX+1
-DO jj=1,nElemsY+1
-  indc=indc+1
-  From_2Indices_To_1Index_Y(ii,jj)=indc
-  ! PRINT*, ii,jj,"->",indc
-  From_1Index_To_2Indices_Y(indc,1)=ii
-  From_1Index_To_2Indices_Y(indc,2)=jj
-END DO
-
-!*->Top boundary
-jj=nElemsY+2
-DO ii=1,nElemsX 
-  indc=indc+1
-  From_2Indices_To_1Index_Y(ii,jj)=indc
-  ! PRINT*, ii,jj,"->",indc
-  From_1Index_To_2Indices_Y(indc,1)=ii
-  From_1Index_To_2Indices_Y(indc,2)=jj
-END DO
-
-!*->Left boundary
-ii=0
-DO jj=1,nElemsY+1
-  indc=indc+1
-  From_2Indices_To_1Index_Y(ii,jj)=indc
-  ! PRINT*, ii,jj,"->",indc
-  From_1Index_To_2Indices_Y(indc,1)=ii
-  From_1Index_To_2Indices_Y(indc,2)=jj
-END DO
-
-!*-----------------------------------------
-!*Very useful safety check
-!*-----------------------------------------
-! PRINT*, MAXVAL(From_2Indices_To_1Index_Y)
-! PRINT*, From_2Indices_To_1Index_Y
-! STOP
-!*-----------------------------------------
-
-!*Neighbours only for the internal of the domain
-!*->Inside the domain
-indc=0
-DO jj=1,nElemsY+1
-  DO ii=1,nElemsX 
-
-    !*C,B,R,U,L
-    indc=indc+1
-
-    !*-----------------------------------------
-    !*As a safety check this should give ii and jj
-    !*-----------------------------------------
-    ! IF (((From_1Index_To_2Indices_Y(indc,1)-ii) .NE. 0) .OR. ((From_1Index_To_2Indices_Y(indc,2)-jj) .NE. 0)) THEN
-    !   PRINT*, "Problem in numeration for linear system IMEX", indc
-    !   PRINT*, ii,jj
-    !   PRINT*, From_1Index_To_2Indices_Y(indc,:)
-    !   STOP
-    ! END IF
-    ! PRINT*, ii,jj, From_1Index_To_2Indices_Y(indc,:)
-    !*-----------------------------------------
-
-    !*NB: The 1-index label of ii,jj is indc
-    !*We do not need to retrieve this information as we are sweeping the cells in the same order we numerated them 
-
-    !*C
-    Neighbours_1Index_Y(indc,1)=indc
-
-    !*B
-    Neighbours_1Index_Y(indc,2)=From_2Indices_To_1Index_Y(ii,jj-1)
-
-    !*R
-    Neighbours_1Index_Y(indc,3)=From_2Indices_To_1Index_Y(ii+1,jj)
-
-    !*U
-    Neighbours_1Index_Y(indc,4)=From_2Indices_To_1Index_Y(ii,jj+1)
-
-    !*L
-    Neighbours_1Index_Y(indc,5)=From_2Indices_To_1Index_Y(ii-1,jj)
-
-    !*-----------------------------------------
-    !*SAFETY CHECK
-    !*-----------------------------------------
-    ! PRINT*
-    ! PRINT*, indc 
-    ! PRINT*, "C", Neighbours_1Index_Y(indc,1)
-    ! PRINT*, "B", Neighbours_1Index_Y(indc,2)
-    ! PRINT*, "R", Neighbours_1Index_Y(indc,3)
-    ! PRINT*, "U", Neighbours_1Index_Y(indc,4)
-    ! PRINT*, "L", Neighbours_1Index_Y(indc,5)
-    !*-----------------------------------------
-
-  END DO
-END DO
-
-
-
-#if defined(IMEX) || defined(IMEXMOMENTUM)
-!*For staggering in X direction
-#ifdef COUNTJACOBI
-JacobiCounter_X = 0
-ALLOCATE(JacobiIterations_X(1:maxLenghtJacobiCounter))
-#endif
-
-!*NB: This is strongly low order because a 5 point stencil is assumed
-!*5=C,D,R,U,L
-NNZsparse_X = (nElemsX+1)*nElemsY*5 !*NB:+1 in X direction 
-
-!*We need to take BCs into account now
-
-!------------------------------!
-! Bottom Boundary Conditions   !
-!------------------------------!
-SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(1))
-  CASE(1,2,5) ! Periodic,Transmissive,Reflecting
-    NNZsparse_X = NNZsparse_X + 2*(nElemsX+1)
-  CASE(3,4) ! Inflow,Outflow
-    NNZsparse_X = NNZsparse_X + nElemsX+1
-  CASE DEFAULT
-    ErrorMessage = "Boundary condition B not implemented"
-    WRITE(*,*) ErrorMessage
-    STOP
-END SELECT
-
-!------------------------------!
-! Right Boundary Conditions    !
-!------------------------------!
-SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(2))
-  CASE(1,2,5) ! Periodic,Transmissive,Reflecting
-    NNZsparse_X = NNZsparse_X + 2*nElemsY
-  CASE(3,4) ! Inflow,Outflow
-    NNZsparse_X = NNZsparse_X + nElemsY
-  CASE DEFAULT
-    ErrorMessage = "Boundary condition R not implemented"
-    WRITE(*,*) ErrorMessage
-    STOP
-END SELECT
-
-!------------------------------!
-! Top Boundary Conditions      !
-!------------------------------!
-SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(3))
-  CASE(1,2,5) ! Periodic,Transmissive,Reflecting
-    NNZsparse_X = NNZsparse_X + 2*(nElemsX+1)
-  CASE(3,4) ! Inflow,Outflow
-    NNZsparse_X = NNZsparse_X + nElemsX+1
-  CASE DEFAULT
-    ErrorMessage = "Boundary condition T not implemented"
-    WRITE(*,*) ErrorMessage
-    STOP
-END SELECT
-
-
-!------------------------------!
-! Left Boundary Conditions     !
-!------------------------------!
-SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(4))
-  CASE(1,2,5) ! Periodic,Transmissive,Reflecting
-    NNZsparse_X = NNZsparse_X + 2*nElemsY
-  CASE(3,4) ! Inflow,Outflow
-    NNZsparse_X = NNZsparse_X + nElemsY
-  CASE DEFAULT
-    ErrorMessage = "Boundary condition L not implemented"
-    WRITE(*,*) ErrorMessage
-    STOP
-END SELECT
-
-ALLOCATE(Values_X(NNZsparse_X) )
-ALLOCATE(Columns_X(NNZsparse_X))
-ALLOCATE(RowStart_X(NRows_X+1) )
-ALLOCATE(Diagonal_X(NRows_X)   )
-ALLOCATE(rhs_X(NRows_X)        )
-ALLOCATE(sol_X(NRows_X)        )
-
-
-Values_X   = 0.0
-Columns_X  = 0
-RowStart_X = 0
-Diagonal_X = 0.0
-rhs_X      = 0.0
-sol_X      = 0.0
-
-!*For staggering in Y direction
-#ifdef COUNTJACOBI
-JacobiCounter_Y = 0
-ALLOCATE(JacobiIterations_Y(1:maxLenghtJacobiCounter))
-#endif
-
-!*NB: This is strongly low order because a 5 point stencil is assumed
-!*5=C,D,R,U,L
-NNZsparse_Y = nElemsX*(nElemsY+1)*5 !*NB:+1 in Y direction 
-
-!*We need to take BCs into account now
-
-!------------------------------!
-! Bottom Boundary Conditions   !
-!------------------------------!
-SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(1))
-  CASE(1,2,5) ! Periodic,Transmissive,Reflecting
-    NNZsparse_Y = NNZsparse_Y + 2*nElemsX
-  CASE(3,4) ! Inflow,Outflow
-    NNZsparse_Y = NNZsparse_Y + nElemsX
-  CASE DEFAULT
-    ErrorMessage = "Boundary condition B not implemented"
-    WRITE(*,*) ErrorMessage
-    STOP
-END SELECT
-
-!------------------------------!
-! Right Boundary Conditions    !
-!------------------------------!
-SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(2))
-  CASE(1,2,5) ! Periodic,Transmissive,Reflecting
-    NNZsparse_Y = NNZsparse_Y + 2*(nElemsY+1)
-  CASE(3,4) ! Inflow,Outflow
-    NNZsparse_Y = NNZsparse_Y + nElemsY+1
-  CASE DEFAULT
-    ErrorMessage = "Boundary condition R not implemented"
-    WRITE(*,*) ErrorMessage
-    STOP
-END SELECT
-
-!------------------------------!
-! Top Boundary Conditions      !
-!------------------------------!
-SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(3))
-  CASE(1,2,5) ! Periodic,Transmissive,Reflecting
-    NNZsparse_Y = NNZsparse_Y + 2*nElemsX
-  CASE(3,4) ! Inflow,Outflow
-    NNZsparse_Y = NNZsparse_Y + nElemsX
-  CASE DEFAULT
-    ErrorMessage = "Boundary condition T not implemented"
-    WRITE(*,*) ErrorMessage
-    STOP
-END SELECT
-
-
-!------------------------------!
-! Left Boundary Conditions     !
-!------------------------------!
-SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(4))
-  CASE(1,2,5) ! Periodic,Transmissive,Reflecting
-    NNZsparse_Y = NNZsparse_Y + 2*(nElemsY+1)
-  CASE(3,4) ! Inflow,Outflow
-    NNZsparse_Y = NNZsparse_Y + nElemsY+1
-  CASE DEFAULT
-    ErrorMessage = "Boundary condition L not implemented"
-    WRITE(*,*) ErrorMessage
-    STOP
-END SELECT
-
-
-ALLOCATE(Values_Y(NNZsparse_Y) )
-ALLOCATE(Columns_Y(NNZsparse_Y))
-ALLOCATE(RowStart_Y(NRows_Y+1) )
-ALLOCATE(Diagonal_Y(NRows_Y)   )
-ALLOCATE(rhs_Y(NRows_Y)        )
-ALLOCATE(sol_Y(NRows_Y)        )
-
-Values_Y   = 0.0
-Columns_Y  = 0
-RowStart_Y = 0
-Diagonal_Y = 0.0
-rhs_Y      = 0.0
-sol_Y      = 0.0
-                                  
-#endif
-#endif
-
-
-
 !-------------------------------------------------------------------------------!
 END SUBROUTINE InitializeFiniteVolume
 !===============================================================================!
@@ -1474,16 +781,6 @@ USE MOD_FiniteVolume2D_vars,ONLY: MESH_DX
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
 #ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: WC
-#endif
-
-#ifdef ACTIVEFLUX
-USE MOD_FiniteVolume2D_vars,ONLY: W_X
-USE MOD_FiniteVolume2D_vars,ONLY: MeshGP_X
-
-USE MOD_FiniteVolume2D_vars,ONLY: W_Y
-USE MOD_FiniteVolume2D_vars,ONLY: MeshGP_Y
-
-USE MOD_Equation           ,ONLY: BoundaryConditions
 #endif
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
