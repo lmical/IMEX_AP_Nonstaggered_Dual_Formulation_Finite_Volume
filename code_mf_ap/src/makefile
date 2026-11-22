@@ -6,7 +6,7 @@
 INFO_COMPILING=\e[1;34m[COMPILING]\e[0m
 INFO_LINKING=\e[1;34m[LINKING]\e[0m
 #-------------------------------------------------------------------------------------------------#
-COMPILER=GNU #DEBUG
+COMPILER=GNU DEBUG
 #--------------------------------------------------------------------------------------------------#
 ifeq ($(findstring GNU,$(COMPILER)),GNU)
   FC=gfortran
