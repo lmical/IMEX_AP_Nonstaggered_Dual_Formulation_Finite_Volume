@@ -1976,7 +1976,7 @@ DO ii=1,nElemsX
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
     CASE DEFAULT
       PRINT*, "Boundary condition B not implemented"
       STOP
@@ -1996,7 +1996,7 @@ DO jj=1,nElemsY
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
     CASE DEFAULT
       PRINT*, "Boundary condition R not implemented"
       STOP
@@ -2016,7 +2016,7 @@ DO ii=1,nElemsX
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
     CASE DEFAULT
       PRINT*, "Boundary condition T not implemented"
       STOP
@@ -2038,7 +2038,7 @@ DO jj=1,nElemsY
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
     CASE DEFAULT
       PRINT*, "Boundary condition L not implemented"
       STOP
@@ -2204,7 +2204,7 @@ DO ii=1,nElemsX
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
     CASE DEFAULT
       PRINT*, "Boundary condition B not implemented"
       STOP
@@ -2224,7 +2224,7 @@ DO jj=1,nElemsY
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
     CASE DEFAULT
       PRINT*, "Boundary condition R not implemented"
       STOP
@@ -2244,7 +2244,7 @@ DO ii=1,nElemsX
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
     CASE DEFAULT
       PRINT*, "Boundary condition T not implemented"
       STOP
@@ -2266,7 +2266,7 @@ DO jj=1,nElemsY
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
     CASE DEFAULT
       PRINT*, "Boundary condition L not implemented"
       STOP
@@ -2473,8 +2473,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -2535,8 +2535,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -2658,7 +2658,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_WC into Wa_WC(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 #endif
 
     !*->Modified update for v
@@ -2672,8 +2672,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -2905,8 +2905,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -2964,8 +2964,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -3087,7 +3087,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_WC into Wa_WC(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 #endif
 
     !*->Modified update for v
@@ -3101,8 +3101,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -3352,8 +3352,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -3414,8 +3414,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -3537,7 +3537,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_WC into Wa_WC(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 #endif
 
     !*->Modified update for v
@@ -3551,8 +3551,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -3791,8 +3791,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -3853,8 +3853,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -3976,7 +3976,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_WC into Wa_WC(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 #endif
 
     !*->Modified update for v
@@ -3990,8 +3990,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -4237,8 +4237,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -4299,8 +4299,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -4422,7 +4422,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_WC into Wa_WC(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 #endif
 
     !*->Modified update for v
@@ -4436,8 +4436,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -5273,8 +5273,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -5326,8 +5326,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -5424,7 +5424,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_X into Wa_X(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 #endif
 
     !*->Modified update for v
@@ -5438,8 +5438,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -5690,8 +5690,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -5743,8 +5743,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -5841,7 +5841,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_X into Wa_X(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 #endif
 
     !*->Modified update for v
@@ -5855,8 +5855,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -6107,8 +6107,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -6160,8 +6160,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -6258,7 +6258,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_X into Wa_X(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 #endif
 
     !*->Modified update for v
@@ -6272,8 +6272,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -6531,8 +6531,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -6584,8 +6584,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -6682,7 +6682,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_X into Wa_X(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 #endif
 
     !*->Modified update for v
@@ -6696,8 +6696,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -6954,8 +6954,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -7012,8 +7012,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -7118,7 +7118,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_WC into Wa_WC(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 
 #endif
 
@@ -7134,8 +7134,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -7388,8 +7388,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
     DO indj=1,nElemsY  
       DO indi=1,nElemsX
-        px=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wp_WC(1,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wp_WC(1,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wp_WC(1,4,indi,indj-1:indj+1),dy)
         part_x=px/max_ro
         part_y=py/max_ro
 #ifdef RELAXATION
@@ -7443,8 +7443,8 @@ DO kk = 1,KCorr
 #ifdef CENTEREDPRIMITIVE
       DO indj=1,nElemsY  
         DO indi=1,nElemsX
-          px=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-          py=First_Derivative_Central_Order2(Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+          px=First_Derivative_Central_Order2(Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+          py=First_Derivative_Central_Order2(Wp_WC(ii,4,indi,indj-1:indj+1),dy)
           part_x=px/max_ro
           part_y=py/max_ro
 #ifdef RELAXATION
@@ -7549,7 +7549,7 @@ DO kk = 1,KCorr
 #endif
 
     !*Copying sol_WC into Wa_WC(ii,4,:,:)
-    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+    CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),Wa_WC(ii,4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 
 #endif
 
@@ -7565,8 +7565,8 @@ DO kk = 1,KCorr
     DO indj=1,nElemsY
       DO indi=1,nElemsX
         Wa_WC(ii,2:3,indi,indj) = Wp_WC(1,2:3,indi,indj) + dt*FLUXES_WC(2:3,indi,indj)
-        px=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi-1:indi+1,indj)-Wp_WC(ii,nVar,indi-1:indi+1,indj),dx)
-        py=First_Derivative_Central_Order2(Wa_WC(ii,nVar,indi,indj-1:indj+1)-Wp_WC(ii,nVar,indi,indj-1:indj+1),dy)
+        px=First_Derivative_Central_Order2(Wa_WC(ii,4,indi-1:indi+1,indj)-Wp_WC(ii,4,indi-1:indi+1,indj),dx)
+        py=First_Derivative_Central_Order2(Wa_WC(ii,4,indi,indj-1:indj+1)-Wp_WC(ii,4,indi,indj-1:indj+1),dy)
 #ifdef RELAXATION
         Wa_WC(ii,2,indi,indj)=Wa_WC(ii,2,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*px
         Wa_WC(ii,3,indi,indj)=Wa_WC(ii,3,indi,indj)-(dt/EPS_LM**2)*betaDeC(ii)/max_ro*py
@@ -7822,7 +7822,7 @@ DO ii=1,nElemsX
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
       ! PRINT*, "TO BE DELETED", rhs(indc)
     CASE DEFAULT
       PRINT*, "Boundary condition B not implemented"
@@ -7842,7 +7842,7 @@ DO jj=1,nElemsY
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
       ! PRINT*, "TO BE DELETED", rhs(indc)
     CASE DEFAULT
       PRINT*, "Boundary condition R not implemented"
@@ -7863,7 +7863,7 @@ DO ii=1,nElemsX
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
       ! PRINT*, "TO BE DELETED", rhs(indc)
     CASE DEFAULT
       PRINT*, "Boundary condition T not implemented"
@@ -7886,7 +7886,7 @@ DO jj=1,nElemsY
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
       ! PRINT*, "TO BE DELETED", rhs(indc)
     CASE DEFAULT
       PRINT*, "Boundary condition L not implemented"
@@ -8074,7 +8074,7 @@ DO ii=1,nElemsX
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
       ! PRINT*, "TO BE DELETED", rhs(indc)
     CASE DEFAULT
       PRINT*, "Boundary condition B not implemented"
@@ -8094,7 +8094,7 @@ DO jj=1,nElemsY
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
       ! PRINT*, "TO BE DELETED", rhs(indc)
     CASE DEFAULT
       PRINT*, "Boundary condition R not implemented"
@@ -8115,7 +8115,7 @@ DO ii=1,nElemsX
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
       ! PRINT*, "TO BE DELETED", rhs(indc)
     CASE DEFAULT
       PRINT*, "Boundary condition T not implemented"
@@ -8138,7 +8138,7 @@ DO jj=1,nElemsY
       CALL ExactFunction(&
         InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
       CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
-      rhs_WC(indc)=Wtemp(nVar)
+      rhs_WC(indc)=Wtemp(4)
       ! PRINT*, "TO BE DELETED", rhs(indc)
     CASE DEFAULT
       PRINT*, "Boundary condition L not implemented"
