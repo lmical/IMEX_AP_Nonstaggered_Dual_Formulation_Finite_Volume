@@ -1767,14 +1767,6 @@ PRINT*, "--------------------------"
   PRINT*, "--------------------------"
   PRINT*, "Momentum in primitive variables"
 #endif
-#ifdef FIRSTORDERPRIMITIVE
-  PRINT*, "--------------------------"
-  PRINT*, "First order primitive (cheaper shock detector)"
-#endif
-#ifdef EVOLVERHOWITHSAMESCHEME
-  PRINT*, "--------------------------"
-  PRINT*, "Evolve rho with same scheme"
-#endif
 #ifdef PATHCONSERVATIVESHOCKDETECTION
   K_coefficient_PCSD = 0.025
   index=index+1
@@ -1805,16 +1797,8 @@ PRINT*, "--------------------------"
       PRINT*, WhichVariableForLimiting_PCSD
       STOP
   END SELECT
-#ifdef SMOOTHINGLIMITER
-      PRINT*, "...smoothing limiter active"
-#else
       PRINT*, "...smoothing limiter NOT active"
-#endif
-#ifdef DETECTEACHSTAGE
-      PRINT*, "...detect at each stage"
-#else
       PRINT*, "...detect only at the beginning of the time step"
-#endif
 #endif
 #ifdef DONOTOVERWRITEPRIMITIVE
       PRINT*, "Not overwriting primitive, basically for debugging"
@@ -1990,35 +1974,13 @@ PRINT*, "CENTEREDPRIMITIVE and RECONSTRUCTIONVELOCITY are incompatible"
 STOP
 #endif
 
-#if defined(FIRSTORDERPRIMITIVE) && !defined(RECONSTRUCTFROMCONSERVED)
-PRINT*, "FIRSTORDERPRIMITIVE requires RECONSTRUCTFROMCONSERVED"
-STOP
-#endif
-
-#if defined(EVOLVERHOWITHSAMESCHEME) && !defined(CENTEREDPRIMITIVE)
-PRINT*, "EVOLVERHOWITHSAMESCHEME requires CENTEREDPRIMITIVE"
-STOP
-#endif
-
-
-#if defined(EVOLVERHOWITHSAMESCHEME) && defined(CENTEREDPRIMITIVE)
-  IF (((WhichRiemannSolverPrimitiveSystem .NE. -1) .AND. (WhichRiemannSolver .NE. -1) ) &
-    & .AND. ( (WhichRiemannSolverPrimitiveSystem .NE. 1) .AND. ((WhichRiemannSolver .NE. 1) .OR. (WhichRiemannSolver .NE. 2)) ) ) THEN
-      PRINT*, "EVOLVERHOWITHSAMESCHEME requires either"
-      PRINT*, "CU for both primitive and conserved"
-      PRINT*, "or"
-      PRINT*, "LDCU for both primitive and conserved"
-  END IF
-#endif
 
 
 
 
-#if defined(EVOLVERHOWITHSAMESCHEME) && defined(OLDEVOLVERHOWITHSAMESCHEME)
-PRINT*, "EVOLVERHOWITHSAMESCHEME and OLDEVOLVERHOWITHSAMESCHEME are incompatible"
-PRINT*, "Select one of the two indicators."
-STOP 
-#endif
+
+
+
 
 #ifdef MULTIFLUID
 IF (ReconstructedVariable .EQ. 1) THEN

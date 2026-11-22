@@ -236,9 +236,6 @@ CALL ComputeTransitionMatricesConservedInput(U( 1:nVar,-nGhosts:nElemsX+nGhosts+
   END SELECT
 
 
-#if defined(CENTEREDPRIMITIVE) && defined(FIRSTORDERPRIMITIVE)
-  CALL FirstOrderEvolutionOnlyPrimitive(t) 
-#endif
 
       ! PRINT*, 1, MAXVAL(u(1,1:nElemsX,1:nElemsY)), MINVAL(u(1,1:nElemsX,1:nElemsY))
       ! PRINT*, 2, MAXVAL(u(2,1:nElemsX,1:nElemsY)), MINVAL(u(2,1:nElemsX,1:nElemsY))
@@ -288,7 +285,7 @@ USE MOD_FiniteVolume2D_vars,ONLY: dt
 USE MOD_FiniteVolume2D_vars,ONLY: nElemsX
 USE MOD_FiniteVolume2D_vars,ONLY: nElemsY
 USE MOD_FiniteVolume2D_vars,ONLY: K0
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: WC
 USE MOD_FiniteVolume2D_vars,ONLY: WCt
 USE MOD_FiniteVolume2D_vars,ONLY: K0_WC
@@ -308,7 +305,7 @@ INTEGER         :: ii, jj
 !-------------------------------------------------------------------------------!
 
 K0(1:nVar,1:nElemsX,1:nElemsY) = U(1:nVar,1:nElemsX,1:nElemsY)
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 K0_WC(1:nVar,1:nElemsX,1:nElemsY) = WC(1:nVar,1:nElemsX,1:nElemsY)
 #endif
 
@@ -319,7 +316,7 @@ tStage = t
 CALL FVTimeDerivative(tStage)
 
 U(1:nVar,1:nElemsX,1:nElemsY) = K0(1:nVar,1:nElemsX,1:nElemsY) + Ut(1:nVar,1:nElemsX,1:nElemsY)*dt
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 WC(1:nVar,1:nElemsX,1:nElemsY) = K0_WC(1:nVar,1:nElemsX,1:nElemsY) + WCt(1:nVar,1:nElemsX,1:nElemsY)*dt
 #endif
 
@@ -331,47 +328,6 @@ END SUBROUTINE TimeDiscretizationByForwardEuler
 !
 !
 !===============================================================================!
-#if defined(CENTEREDPRIMITIVE) && defined(FIRSTORDERPRIMITIVE)
-SUBROUTINE FirstOrderEvolutionOnlyPrimitive(t)
-!-------------------------------------------------------------------------------!
-USE MOD_FiniteVolume2D,     ONLY: FVTimeDerivativePrimitiveOnly
-USE MOD_FiniteVolume2D_vars,ONLY: U
-USE MOD_FiniteVolume2D_vars,ONLY: Ut
-USE MOD_FiniteVolume2D_vars,ONLY: nVar
-USE MOD_FiniteVolume2D_vars,ONLY: dt
-USE MOD_FiniteVolume2D_vars,ONLY: nElemsX
-USE MOD_FiniteVolume2D_vars,ONLY: nElemsY
-USE MOD_FiniteVolume2D_vars,ONLY: K0
-USE MOD_FiniteVolume2D_vars,ONLY: WC
-USE MOD_FiniteVolume2D_vars,ONLY: WCt
-USE MOD_FiniteVolume2D_vars,ONLY: K0_WC
-!-------------------------------------------------------------------------------!
-IMPLICIT NONE
-!-------------------------------------------------------------------------------!
-! >> FORMAL ARGUMENTS                                                           !
-!-------------------------------------------------------------------------------!
-REAL,INTENT(IN) :: t
-!-------------------------------------------------------------------------------!
-! >> LOCAL VARIABLES                                                            !
-!-------------------------------------------------------------------------------!
-REAL            :: tStage
-INTEGER         :: ii, jj
-!-------------------------------------------------------------------------------!
-
-K0_WC(1:nVar,1:nElemsX,1:nElemsY) = WC(1:nVar,1:nElemsX,1:nElemsY)
-
-!--------------------!
-! Forward Euler      !
-!--------------------!
-tStage = t 
-CALL FVTimeDerivativePrimitiveOnly(tStage,ReconstructionInput=1)
-
-WC(1:nVar,1:nElemsX,1:nElemsY) = K0_WC(1:nVar,1:nElemsX,1:nElemsY) + WCt(1:nVar,1:nElemsX,1:nElemsY)*dt
-
-
-!-------------------------------------------------------------------------------!
-END SUBROUTINE FirstOrderEvolutionOnlyPrimitive
-#endif
 !===============================================================================!
 !
 !
@@ -389,7 +345,7 @@ USE MOD_FiniteVolume2D_vars,ONLY: nElemsY
 USE MOD_FiniteVolume2D_vars,ONLY: K0
 USE MOD_FiniteVolume2D_vars,ONLY: K1
 USE MOD_FiniteVolume2D_vars,ONLY: K2
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: WC
 USE MOD_FiniteVolume2D_vars,ONLY: WCt
 USE MOD_FiniteVolume2D_vars,ONLY: K0_WC
@@ -411,7 +367,7 @@ INTEGER         :: ii, jj
 !-------------------------------------------------------------------------------!
 
 K0(1:nVar,1:nElemsX,1:nElemsY) = U(1:nVar,1:nElemsX,1:nElemsY)
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 K0_WC(1:nVar,1:nElemsX,1:nElemsY) = WC(1:nVar,1:nElemsX,1:nElemsY)
 #endif
 
@@ -424,7 +380,7 @@ K1(1:nVar,1:nElemsX,1:nElemsY) = &
     K0(1:nVar,1:nElemsX,1:nElemsY) &
   + Ut(1:nVar,1:nElemsX,1:nElemsY)*dt
 U(1:nVar,1:nElemsX,1:nElemsY)  = K1(1:nVar,1:nElemsX,1:nElemsY)
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 K1_WC(1:nVar,1:nElemsX,1:nElemsY) = &
     K0_WC(1:nVar,1:nElemsX,1:nElemsY) &
   + WCt(1:nVar,1:nElemsX,1:nElemsY)*dt
@@ -449,7 +405,7 @@ K2(1:nVar,1:nElemsX,1:nElemsY) = &
   + 0.5*K1(1:nVar,1:nElemsX,1:nElemsY) &
   + 0.5*Ut(1:nVar,1:nElemsX,1:nElemsY)*dt
 U(1:nVar,1:nElemsX,1:nElemsY)  = K2(1:nVar,1:nElemsX,1:nElemsY)
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 K2_WC(1:nVar,1:nElemsX,1:nElemsY) = &
     0.5*K0_WC(1:nVar,1:nElemsX,1:nElemsY) &
   + 0.5*K1_WC(1:nVar,1:nElemsX,1:nElemsY) &
@@ -477,7 +433,7 @@ USE MOD_FiniteVolume2D_vars,ONLY: K0
 USE MOD_FiniteVolume2D_vars,ONLY: K1
 USE MOD_FiniteVolume2D_vars,ONLY: K2
 USE MOD_FiniteVolume2D_vars,ONLY: K3
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: WC
 USE MOD_FiniteVolume2D_vars,ONLY: WCt
 USE MOD_FiniteVolume2D_vars,ONLY: K0_WC
@@ -499,7 +455,7 @@ INTEGER         :: ii, jj
 !-------------------------------------------------------------------------------!
 
 K0(1:nVar,1:nElemsX,1:nElemsY) = U(1:nVar,1:nElemsX,1:nElemsY)
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 K0_WC(1:nVar,1:nElemsX,1:nElemsY) = WC(1:nVar,1:nElemsX,1:nElemsY)
 #endif
 
@@ -513,7 +469,7 @@ K1(1:nVar,1:nElemsX,1:nElemsY)= Ut(1:nVar,1:nElemsX,1:nElemsY)
 U(1:nVar,1:nElemsX,1:nElemsY) = &
     K0(1:nVar,1:nElemsX,1:nElemsY) &
   + K1(1:nVar,1:nElemsX,1:nElemsY)*dt
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 K1_WC(1:nVar,1:nElemsX,1:nElemsY)= WCt(1:nVar,1:nElemsX,1:nElemsY)
 WC(1:nVar,1:nElemsX,1:nElemsY) = &
     K0_WC(1:nVar,1:nElemsX,1:nElemsY) &
@@ -529,7 +485,7 @@ CALL FVTimeDerivative(tStage)
 K2(1:nVar,1:nElemsX,1:nElemsY) = Ut(1:nVar,1:nElemsX,1:nElemsY)
 U(1:nVar,1:nElemsX,1:nElemsY) = K0(1:nVar,1:nElemsX,1:nElemsY) + &
           0.25*K1(1:nVar,1:nElemsX,1:nElemsY)*dt+0.25*K2(1:nVar,1:nElemsX,1:nElemsY)*dt 
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 K2_WC(1:nVar,1:nElemsX,1:nElemsY) = WCt(1:nVar,1:nElemsX,1:nElemsY)
 WC(1:nVar,1:nElemsX,1:nElemsY) = K0_WC(1:nVar,1:nElemsX,1:nElemsY) + &
           0.25*K1_WC(1:nVar,1:nElemsX,1:nElemsY)*dt+0.25*K2_WC(1:nVar,1:nElemsX,1:nElemsY)*dt 
@@ -545,7 +501,7 @@ U(1:nVar,1:nElemsX,1:nElemsY) = K0(1:nVar,1:nElemsX,1:nElemsY) + &
           1./6.*K1(1:nVar,1:nElemsX,1:nElemsY)*dt+&
           1./6.*K2(1:nVar,1:nElemsX,1:nElemsY)*dt+&
           2./3.*K3(1:nVar,1:nElemsX,1:nElemsY)*dt
-#if defined(CENTEREDPRIMITIVE) && !defined(FIRSTORDERPRIMITIVE)
+#ifdef CENTEREDPRIMITIVE
 K3_WC(1:nVar,1:nElemsX,1:nElemsY) = WCt(1:nVar,1:nElemsX,1:nElemsY)
 WC(1:nVar,1:nElemsX,1:nElemsY) = K0_WC(1:nVar,1:nElemsX,1:nElemsY) + &
           1./6.*K1_WC(1:nVar,1:nElemsX,1:nElemsY)*dt+&

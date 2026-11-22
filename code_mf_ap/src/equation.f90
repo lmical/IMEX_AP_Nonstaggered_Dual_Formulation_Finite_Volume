@@ -4399,15 +4399,6 @@ www=SR-SL
 
 
 
-#ifdef OLDEVOLVERHOWITHSAMESCHEME
-!*Built-in antidiffusion term
-Cstar = ( SR*ConsR - SL*ConsL - ( FluxR - FluxL ) ) / ( SR - SL )
-
-dC = 0.0
-iVar = 1
-dC(iVar)=MINMOD( Cstar(iVar)-ConsL(iVar), ConsR(iVar)-Cstar(iVar) )
-Flux(iVar) = (SR * FluxL(iVar) - SL * FluxR(iVar) + SL * SR * (ConsR(iVar) - ConsL(iVar) - dC(iVar))) / (SR - SL)
-#endif
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE LowDissipationCentralUpwindNewAntidiffusionTerm
@@ -6013,87 +6004,6 @@ END DO
 Flux = ( ap*FluxL - am*FluxR +ap*am*(PrimR-PrimL-dV) ) / (ap-am)
 #endif
 
-#ifndef OLDEVOLVERHOWITHSAMESCHEME
-#ifdef EVOLVERHOWITHSAMESCHEME
-IF (WhichRiemannSolver .EQ. 1) THEN
-  !*Do nothing
-ELSEIF (WhichRiemannSolver .EQ. 2) THEN
-
-  !*Compute new antidiffusion term for first component to make sure the update is done in the same way
-  CALL PrimToCons(PrimL(1:nVar),ConsL(1:nVar))
-  CALL PrimToCons(PrimR(1:nVar),ConsR(1:nVar))
-
-  !*Built-in antidiffusion term
-  CALL EvaluateFlux1D(PrimL,FluxL)
-  CALL EvaluateFlux1D(PrimR,FluxR)
-
-  !*Built-in antidiffusion term
-  !*=============================
-  !*www=axp(j)-axm(j)
-  !*rhost=(axp(j)*uW(1,j1)-axm(j)*uE(1,j)-fW(1,j1)+fE(1,j))/www
-  !*rhoust=(axp(j)*uW(2,j1)-axm(j)*uE(2,j)-fW(2,j1)+fE(2,j))/www
-  !*=============================
-  Cstar = ( SR*ConsR - SL*ConsL - ( FluxR - FluxL ) ) / ( SR - SL )
-
-  !*=============================
-  !*ust=rhoust/rhost
-  !*=============================
-  uxstar = Cstar(2)/Cstar(1)
-  uystar = Cstar(3)/Cstar(1)
-
-  !*=============================
-  !*if(ust<0.d0) then
-  !*  alphast=axp(j)/(axp(j)-ust)
-  !*else
-  !*  alphast=axm(j)/(axm(j)-ust)
-  !*endif
-  !*=============================
-  IF (uxstar .LT. 0.0) THEN
-    alphastar=ap/(ap-uxstar)
-  ELSE
-    alphastar=am/(am-uxstar)
-  END IF
-
-  !*=============================
-  !*w1=(ust-axm(j))*(rhost-vE(1,j))
-  !*w2=(axp(j)-ust)*(vW(1,j1)-rhost)
-  !*=============================
-  w1  = (uxstar-am)*(Cstar(1)-PrimL(1))
-  w2  = (ap-uxstar)*(PrimR(1)-Cstar(1)) 
-
-  !*=============================
-  !*q(1)=alphast*dmm(w1,w2)
-  !*=============================
-  qro = MINMOD(w1,w2)
-  Q(1)=alphastar*qro
-
-  !*=============================
-  !*q(2)=q(1)*ust
-  !*=============================
-  Q(2)=Q(1)*uxstar
-  Q(3)=Q(1)*uystar
-
-  !*=============================
-  !*q(3)=0.5d0*q(2)*ust
-  !*=============================
-  Q(4)=0.5*(q(2)*uxstar+q(3)*uystar)
-
-
-  !*=============================
-  !*do m=1,3
-  !* Hx(m,j)=(axp(j)*fE(m,j)-axm(j)*fW(m,j1)+&
-  !*          axp(j)*axm(j)*(uW(m,j1)-uE(m,j)))/www+q(m)
-  !*enddo
-  !*=============================
-  Flux(1) = ( ap*FluxL(1) - am*FluxR(1) +ap*am*(ConsR(1)-ConsL(1)) ) / (ap-am) + Q(1) !*NB: ONLY FIRST COMPONENT
-
-ELSE
-  PRINT*, "You should not be here in LowDissipationCentralUpwindFluxPrimitiveSystem"
-  PRINT*, "The flag EVOLVERHOWITHSAMESCHEME requires a LowDissipationCentralUpwind also for the conserved system"
-  STOP
-END IF
-#endif
-#endif
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE LowDissipationCentralUpwindFluxPrimitiveSystem

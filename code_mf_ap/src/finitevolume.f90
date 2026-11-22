@@ -1030,14 +1030,6 @@ CALL BoundaryConditions(t)
 !*=========================
 !*U
 !*=========================
-#ifdef DETECTEACHSTAGE
-IF (.NOT.(PRESENT(Optional_Input))) THEN
-  CALL Shock_Detector_Based_On_Path_Conservative()
-  ! PRINT*, "Detect"
-ELSE
-  ! PRINT*, "Not detect"
-END IF
-#endif
 
 
 #ifdef RECONSTRUCTFROMCONSERVED
@@ -1158,7 +1150,6 @@ CALL UpdateTimeDerivative()
 !*=========================
 !*WC
 !*=========================
-#ifndef FIRSTORDERPRIMITIVE
 
 #ifdef RECONSTRUCTFROMCONSERVED
 CALL ReconstructionX_INPUT_CONSERVED(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
@@ -1280,7 +1271,6 @@ CALL UpdateTimeDerivative_W_INPUT(WCt(1:nVar,1:nElemsX,1:nElemsY), &    !*Vector
                                  & 1,nElemsX, &                         !*X bounds loop    
                                  & 1,nElemsY)                           !*Y bounds loop  
 
-#endif
 
 #else
 !*-------------------------
@@ -3648,14 +3638,6 @@ CALL BoundaryConditions(t)
 !*=========================
 !*U
 !*=========================
-#ifdef DETECTEACHSTAGE
-IF (.NOT.(PRESENT(Optional_Input))) THEN
-  CALL Shock_Detector_Based_On_Path_Conservative()
-  ! PRINT*, "Detect"
-ELSE
-  ! PRINT*, "Not detect"
-END IF
-#endif
 
 
 #ifdef RECONSTRUCTFROMCONSERVED
@@ -4283,155 +4265,14 @@ DO jj=1,nElemsY
     !*Error in Conserved variables
     Error_temp(1:nVar)=0.0
 
-#ifndef SMOOTHINGLIMITER
     CALL PrimToCons(WC(1:nVar,ii,jj),WC_temp(1:nVar))
     Error_temp(1:nVar)=ABS(U(1:nVar,ii,jj)-WC_temp(1:nVar))
-#else
-    !*If we are at the boundary, only consider the cell itself, as corners may not be available
-    IF ( (ii .EQ. 1) .OR. (ii .EQ. nElemsX) .OR. (jj .EQ. 1) .OR. (jj .EQ. nElemsY)  ) THEN
-      CALL PrimToCons(WC(1:nVar,ii,jj),WC_temp(1:nVar))
-      Error_temp(1:nVar)=ABS(U(1:nVar,ii,jj)-WC_temp(1:nVar))
-    ELSE
-      !*Cell itself
-      indi=ii
-      indj=jj
-      weight=4.0/9.0
-      CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-      Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-      !*Left
-      indi=ii-1
-      indj=jj
-      weight=1.0/9.0
-      CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-      Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-      !*Right
-      indi=ii+1
-      indj=jj
-      weight=1.0/9.0
-      CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-      Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-      !*Bottom
-      indi=ii
-      indj=jj-1
-      weight=1.0/9.0
-      CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-      Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-      !*Up
-      indi=ii
-      indj=jj+1
-      weight=1.0/9.0
-      CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-      Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-      !*Bottom left
-      indi=ii-1
-      indj=jj-1
-      weight=1.0/36.0
-      CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-      Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-      !*Bottom right
-      indi=ii+1
-      indj=jj-1
-      weight=1.0/36.0
-      CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-      Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-      !*Up left
-      indi=ii-1
-      indj=jj+1
-      weight=1.0/36.0
-      CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-      Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-      !*Up right
-      indi=ii+1
-      indj=jj+1
-      weight=1.0/36.0
-      CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-      Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-    END IF
-#endif
 
     Errors_PCSD(1:nVar,ii,jj)=Error_temp(1:nVar)
 
   END DO
 END DO
 
-#ifdef SMOOTHINGLIMITER
-!*MAKE SURE A 1D TEST IS REALLY A 1D TEST
-#if(1==1)
-IF (   (InitialCondition .EQ. (-302)) .OR. (InitialCondition .EQ. (-303)) .OR. (InitialCondition .EQ. (350)) &
-& .OR. (InitialCondition .EQ. (-304)) .OR. (InitialCondition .EQ. (-305)) ) THEN
-
-#if(1==0)
-PRINT*, "I prefer to keep it deactivated to be consistent with 2D"
-PRINT*, "However, it did not solve the problem with left boundary of tests -302 and -304."
-PRINT*, "Stop in finitevolume in Compute_Errors_PCSD"
-STOP
-
-DO jj=1,nElemsY
-
-  Error_temp(1:nVar)=0.0
-
-  !*===============
-  !*LEFT BOUNDARY
-  !*===============
-  !*Cell itself
-  indi=1
-  indj=jj
-  weight=2.0/3.0
-  CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-  Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-  !*No left
-
-  !*Right
-  indi=2
-  indj=jj
-  weight=1.0/6.0
-  CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-  Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-  Errors_PCSD(1:nVar,1,jj)=Error_temp(1:nVar)
-
-  !*===============
-  !*RIGHT BOUNDARY
-  !*===============
-  Error_temp(1:nVar)=0.0
-
-  !*Cell itself
-  indi=nElemsX
-  indj=jj
-  weight=2.0/3.0
-  CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-  Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-  !*No right
-
-  !*Left
-  indi=nElemsX-1
-  indj=jj
-  weight=1.0/6.0
-  CALL PrimToCons(WC(1:nVar,indi,indj),WC_temp(1:nVar))
-  Error_temp(1:nVar)=Error_temp(1:nVar)+ABS(U(1:nVar,indi,indj)-WC_temp(1:nVar))*weight
-
-  Errors_PCSD(1:nVar,nElemsX,jj)=Error_temp(1:nVar)
-
-END DO
-#endif
-
-  Errors_PCSD(1:nVar,-nGhosts:nElemsX+nGhosts+1,1)       = Errors_PCSD(1:nVar,-nGhosts:nElemsX+nGhosts+1,2)
-  Errors_PCSD(1:nVar,-nGhosts:nElemsX+nGhosts+1,nElemsY) = Errors_PCSD(1:nVar,-nGhosts:nElemsX+nGhosts+1,nElemsY-1)
-
-END IF
-#endif
-#endif
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE Compute_Errors_PCSD
