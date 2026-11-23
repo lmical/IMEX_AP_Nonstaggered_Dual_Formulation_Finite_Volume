@@ -613,13 +613,8 @@ SELECT CASE(InitialCondition)
     BoundaryConditionsTypeIMEXLinearSystem=BoundaryConditionsType
 #endif
 #endif
-#ifdef MULTIFLUID
-    PrimRefState1 = (/2.0, 0.0, 0.0, 1.0, 0.0/)
-    PrimRefState3 = (/1.0, 0.0, 0.0, 2.5, 0.0/)
-#else
-    PrimRefState1 = (/2.0, 0.0, 0.0, 1.0/)
-    PrimRefState3 = (/1.0, 0.0, 0.0, 2.5/)
-#endif
+    PrimRefState1(1:4) = (/2.0, 0.0, 0.0, 1.0/)
+    PrimRefState3(1:4) = (/1.0, 0.0, 0.0, 2.5/)
     GravitationalPotentialFlag = 1       
 #ifdef IMEX
     relaxed_dt                 = 1e-4
@@ -643,11 +638,7 @@ SELECT CASE(InitialCondition)
     Ma_shock  = 1.5
     Ma_vortex = 0.9
     R_EOS     = 287.0
-#ifdef MULTIFLUID
-    PrimRefState4 = (/1.0, SQRT(Gmm)*Ma_shock,0.0, 1.0,0.0/)
-#else
-    PrimRefState4 = (/1.0, SQRT(Gmm)*Ma_shock,0.0, 1.0/)
-#endif
+    PrimRefState4(1:4) = (/1.0, SQRT(Gmm)*Ma_shock,0.0, 1.0/)
     BoundaryConditionsType = (/2,2,2,3/) !*Transmissive all but left
 #ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
@@ -669,11 +660,7 @@ SELECT CASE(InitialCondition)
     !*Efficient implementation of essentially non-oscillatory shock capturing schemes, II, Shu, Osher
     TEnd    = 1.8
     Gmm     = 1.4
-#ifdef MULTIFLUID
-    PrimRefState4 = (/3.857143, 2.629369,0.0, 10.333333,0.0/)
-#else
-    PrimRefState4 = (/3.857143, 2.629369,0.0, 10.333333/)
-#endif
+    PrimRefState4(1:4) = (/3.857143, 2.629369,0.0, 10.333333/)
     nElemsX = 200
     nElemsY = 5
     MESH_X0 = (/ -5.0, -1.0/)
@@ -697,11 +684,7 @@ SELECT CASE(InitialCondition)
     !*Finite-volume WENO schemes for three-dimensional conservation laws, V.A. Titarev, E.F. Toro 
     TEnd    = 5.0
     Gmm     = 1.4
-#ifdef MULTIFLUID
-    PrimRefState4 = (/1.515695,0.523346,0.0,1.80500,0.0/)
-#else
-    PrimRefState4 = (/1.515695,0.523346,0.0,1.80500/)
-#endif
+    PrimRefState4(1:4) = (/1.515695,0.523346,0.0,1.80500/)
     nElemsX = 2000 
     nElemsY = 5
     MESH_X0 = (/ -5.0, -1.0/)
@@ -725,11 +708,7 @@ SELECT CASE(InitialCondition)
   CASE(-302) ! Shock-turbulence interaction Shu-Osher modified example 1
     TEnd    = 5.0
     Gmm     = 1.4
-#ifdef MULTIFLUID
-    PrimRefState4 = (/1.515695,0.523346,0.0,1.80500,0.0/)
-#else
-    PrimRefState4 = (/1.515695,0.523346,0.0,1.80500/)
-#endif
+    PrimRefState4(1:4) = (/1.515695,0.523346,0.0,1.80500/)
     nElemsX = 2000 
     nElemsY = 5
     MESH_X0 = (/ -5.0, -1.0/)
@@ -752,11 +731,7 @@ SELECT CASE(InitialCondition)
   CASE(-303) ! Shock-turbulence interaction Shu-Osher modified example 2
     TEnd    = 5.0
     Gmm     = 1.4
-#ifdef MULTIFLUID
-    PrimRefState4 = (/27.0/7.0,4.0/9.0*SQRT(35.0),0.0,31.0/3.0,0.0/)
-#else
-    PrimRefState4 = (/27.0/7.0,4.0/9.0*SQRT(35.0),0.0,31.0/3.0/)
-#endif
+    PrimRefState4(1:4) = (/27.0/7.0,4.0/9.0*SQRT(35.0),0.0,31.0/3.0/)
     nElemsX = 2000 
     nElemsY = 5
     MESH_X0 = (/   -5.0, -1.0/)
@@ -783,11 +758,7 @@ SELECT CASE(InitialCondition)
     nElemsY = 5
     MESH_X0 = (/ -5.0, -1.0/)
     MESH_X1 = (/  5.0,  1.0/)
-#ifdef MULTIFLUID
-    PrimRefState4 = (/1.515695,0.523346,0.0,1.80500,0.0/)
-#else
-    PrimRefState4 = (/1.515695,0.523346,0.0,1.80500/)
-#endif
+    PrimRefState4(1:4) = (/1.515695,0.523346,0.0,1.80500/)
     BoundaryConditionsType = (/5,2,5,2/) !B wall, R transmissive, U wall, L transmissive
 #ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
@@ -1370,7 +1341,25 @@ SELECT CASE(InitialCondition)
     relaxed_dt                 = 0.0
     NRelaxedTimesteps          = 0
 
+  CASE(202)
+    NameTest = "Periodic level-set advection"
+    TEnd = 0.25
+    Gmm = 1.4
+    nElemsX = 50
+    nElemsY = 50
+    MESH_X0 = (/0.0, 0.0/)
+    MESH_X1 = (/1.0, 1.0/)
+    BoundaryConditionsType = (/1,1,1,1/)
 
+#ifdef CENTEREDPRIMITIVE
+#ifdef IMEX
+    BoundaryConditionsTypeIMEXLinearSystem = BoundaryConditionsType
+#endif
+#endif
+
+    GravitationalPotentialFlag = 0
+    relaxed_dt = 0.0
+    NRelaxedTimesteps = 0
 
   !*------------------------------------------
   !*[200] 2d Low-Mach Vortex
@@ -1614,6 +1603,9 @@ VarNameVisu(4) = "Energy"
 #ifdef MULTIFLUID
 VarNameVisu(5) = "Level_Set_Variable" !*This is actually not going to be updated
 #endif
+#ifdef APMF
+VarNameVisu(5) = "Level_Set_Variable"
+#endif
 VarNameVisu(nVar+1) = "Gravitational_Potential"
 
 #ifdef CENTEREDPRIMITIVE
@@ -1621,6 +1613,9 @@ VarNameVisu_W(1) = "Density"
 VarNameVisu_W(2) = "VelocityX"
 VarNameVisu_W(3) = "VelocityY"
 VarNameVisu_W(4) = "Pressure"
+#ifdef APMF
+VarNameVisu_W(5) = "Level_Set_Variable"
+#endif
 VarNameVisu_W(nVar+1) = "Gravitational_Potential"
 #endif
 

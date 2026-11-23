@@ -7,7 +7,7 @@ PUBLIC
 !-------------------------------------------------------------------------------!
 ! >> GLOBAL VARIABLES                                                           !
 !-------------------------------------------------------------------------------!
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
 INTEGER,PARAMETER   :: nVar  = 5
 #else
 INTEGER,PARAMETER   :: nVar  = 4
@@ -146,10 +146,10 @@ INTEGER             :: BoundaryConditionsType(4)
 INTEGER             :: BoundaryConditionsTypeIMEXLinearSystem(4)
 #endif
 #endif
-REAL                :: PrimRefState1(1:nVar)
-REAL                :: PrimRefState2(1:nVar)
-REAL                :: PrimRefState3(1:nVar)
-REAL                :: PrimRefState4(1:nVar)
+REAL                :: PrimRefState1(1:nVar)=0.0
+REAL                :: PrimRefState2(1:nVar)=0.0
+REAL                :: PrimRefState3(1:nVar)=0.0
+REAL                :: PrimRefState4(1:nVar)=0.0
 
 REAL                :: t
 REAL                :: tGlobal

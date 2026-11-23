@@ -2920,7 +2920,7 @@ SELECT CASE (ReconstructedVariable)
 
 
 
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
         WM(nVar+1,1,ii,jj)=W(nVar,ii,jj)
         WP(nVar+1,1,ii,jj)=W(nVar,ii,jj)
 #endif
@@ -3506,7 +3506,7 @@ SELECT CASE (ReconstructedVariable)
 
 
 
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
         WM(nVar+1,1,ii,jj)=W(nVar,ii,jj)
         WP(nVar+1,1,ii,jj)=W(nVar,ii,jj)
 #endif

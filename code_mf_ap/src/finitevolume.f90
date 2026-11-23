@@ -273,7 +273,7 @@ ALLOCATE( U(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 ALLOCATE( V(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 ALLOCATE(Ut(1:nVar,1:nElemsX,1:nElemsY))
 ALLOCATE(Gravitational_Potential_Averages(1:nElemsX,1:nElemsY))
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
 !*Adding one component for PWC reconstruction of gmm and pinf
 ALLOCATE(WM(1:nVar+1,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)) !*NB: Adding 1 in both dimensions for staggered meshes (used only in ACTIVE FLUX)
 ALLOCATE(WP(1:nVar+1,1:nGPs,0:nElemsX+1+1,0:nElemsY+1+1)) !*NB: Adding 1 in both dimensions for staggered meshes (used only in ACTIVE FLUX)
@@ -1166,8 +1166,13 @@ FluxX = 0.0
 DO jj=1,nElemsY
   DO ii=0,nElemsX
     CALL RiemannSolver(&
+#ifdef APMF
+                       WP(1:nVar+1,1:nGPs,ii+0,jj),&
+                       WM(1:nVar+1,1:nGPs,ii+1,jj),&
+#else
                        WP(1:nVar,1:nGPs,ii+0,jj),&
                        WM(1:nVar,1:nGPs,ii+1,jj),&
+#endif
                        NormVectX(1:nDims),&
                        TangVectX(1:nDims),&
                        FluxX(1:nVar,1:nGPs,ii,jj))
@@ -1216,8 +1221,13 @@ FluxY = 0.0
 DO jj=0,nElemsY
   DO ii=1,nElemsX
     CALL RiemannSolver(&
+#ifdef APMF
+                       WP(1:nVar+1,1:nGPs,ii,jj+0),&
+                       WM(1:nVar+1,1:nGPs,ii,jj+1),&
+#else
                        WP(1:nVar,1:nGPs,ii,jj+0),&
                        WM(1:nVar,1:nGPs,ii,jj+1),&
+#endif
                        NormVectY(1:nDims),&
                        TangVectY(1:nDims),&
                        FluxY(1:nVar,1:nGPs,ii,jj))
@@ -2059,7 +2069,7 @@ FluxX = 0.0
 
 DO jj=lbYs,lbYe
   DO ii=lbXs,lbXe
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
     CALL NumericalFluxPrimitiveSystem(&
                        WP(1:nVar+1,1:nGPs,ii+0,jj),&
                        WM(1:nVar+1,1:nGPs,ii+1,jj),&
@@ -2120,7 +2130,7 @@ FluxY = 0.0
 
 DO jj=lbYs,lbYe
   DO ii=lbXs,lbXe
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
     CALL NumericalFluxPrimitiveSystem(&
                        WP(1:nVar+1,1:nGPs,ii,jj+0),&
                        WM(1:nVar+1,1:nGPs,ii,jj+1),&
@@ -2187,7 +2197,7 @@ ap_qp     = 0.0
 
 DO jj=lbYs,lbYe
   DO ii=lbXs,lbXe
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
     CALL PathConservativeSurfaceContribution(&
                        WP(1:nVar+1,1:nGPs,ii+0,jj),&
                        WM(1:nVar+1,1:nGPs,ii+1,jj),&
@@ -2274,7 +2284,7 @@ ap_qp     = 0.0
 
 DO jj=lbYs,lbYe
   DO ii=lbXs,lbXe
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
     CALL PathConservativeSurfaceContribution(&
                        WP(1:nVar+1,1:nGPs,ii,jj+0),&
                        WM(1:nVar+1,1:nGPs,ii,jj+1),&
@@ -2479,6 +2489,12 @@ pinf=Get_Pressure_Infinity(roPhi)
 
     BVol_in_qp(4,nGPs,nGPs,ii,jj) = - Gmm * (p-min_p) * dxvx & !*This must be splitted 
                                       & -       vx * dxp            !*NB: This other one not
+
+
+#ifdef APMF
+    BVol_in_qp(5,nGPs,nGPs,ii,jj) = -vx * (VtempP(5,nGPs)-VtempM(5,nGPs))
+#endif
+
 
 #else
   !*ELSE IMEX
@@ -2714,6 +2730,10 @@ pinf=Get_Pressure_Infinity(roPhi)
 
     BVol_in_qp(4,nGPs,nGPs,ii,jj) = - Gmm * (p-min_p) * dyvy & !*This must be splitted  
                                   & -       vy * dyp            !*NB: This other one not   
+
+#ifdef APMF
+    BVol_in_qp(5,nGPs,nGPs,ii,jj) = -vy * (VtempP(5,nGPs)-VtempM(5,nGPs))
+#endif
 
 #else
   !*ELSE IMEX
@@ -3133,11 +3153,11 @@ CALL BoundaryConditions(t)
 !*=========================
 
 
-CALL ComputeTransitionMatricesPrimitiveInput(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),  &  !*Vector
-                          & -nGhosts,nElemsX+nGhosts+1, &  !*X bounds vector  
-                          & -nGhosts,nElemsY+nGhosts+1,   &  !*Y bounds vector
-                          & 1,nElemsX, &                   !*X bounds loop    
-                          & 1,nElemsY)                       !*Y bounds loop 
+! CALL ComputeTransitionMatricesPrimitiveInput(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),  &  !*Vector
+!                           & -nGhosts,nElemsX+nGhosts+1, &  !*X bounds vector  
+!                           & -nGhosts,nElemsY+nGhosts+1,   &  !*Y bounds vector
+!                           & 1,nElemsX, &                   !*X bounds loop    
+!                           & 1,nElemsY)                       !*Y bounds loop 
 
 CALL ReconstructionX_INPUT_PRIMITIVE(WC( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), &                          !*Vector
                           &-nGhosts,nElemsX+nGhosts+1,  &  !*X bounds vector
@@ -3426,11 +3446,11 @@ REAL               :: theta
 
 CALL BoundaryConditions(t)
 
-CALL ComputeTransitionMatricesConservedInput(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),  &  !*Vector
-                          & -nGhosts,nElemsX+nGhosts+1, &  !*X bounds vector  
-                          & -nGhosts,nElemsY+nGhosts+1,   &  !*Y bounds vector
-                          & 1,nElemsX, &                   !*X bounds loop    
-                          & 1,nElemsY)                       !*Y bounds loop 
+! CALL ComputeTransitionMatricesConservedInput(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),  &  !*Vector
+!                           & -nGhosts,nElemsX+nGhosts+1, &  !*X bounds vector  
+!                           & -nGhosts,nElemsY+nGhosts+1,   &  !*Y bounds vector
+!                           & 1,nElemsX, &                   !*X bounds loop    
+!                           & 1,nElemsY)                       !*Y bounds loop 
 
 DO jj=1,nElemsY
   DO ii=1,nElemsX
@@ -3441,7 +3461,14 @@ DO jj=1,nElemsY
 #else
         CALL ConsToPrim(U(1:nVar,ii,jj),W_from_U(1:nVar))
         theta=Switching_Function(EPS_LM)
+
+#ifdef APMF
+        WC(1:4,ii,jj)=(1.0-theta)*W_from_U(1:4)+theta*WC(1:4,ii,jj) !*No PP for phi
+        U(5,ii,jj) = U(1,ii,jj)*WC(5,ii,jj) !*Use phi from primitive also in conservative
+#else
         WC(1:nVar,ii,jj)=(1.0-theta)*W_from_U(1:nVar)+theta*WC(1:nVar,ii,jj)
+#endif
+
 #endif
       CASE(3,4,5,7)
 

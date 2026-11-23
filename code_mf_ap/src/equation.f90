@@ -1351,6 +1351,20 @@ SELECT CASE(WhichInitialCondition)
     CALL PrimToCons(Prim,Cons)
 
 
+
+  CASE(202)
+    Prim(1) = 2.0
+    Prim(2) = 1.0
+    Prim(3) = 0.5
+    Prim(4) = 1.0
+
+#ifdef APMF
+    Prim(5) = SIN(2.0*Pi*(x(1)-Prim(2)*t)) * &
+              SIN(2.0*Pi*(x(2)-Prim(3)*t))
+#endif
+
+    CALL PrimToCons(Prim,Cons)
+
   !*------------------------------------------
   !*[200] 2d Low-Mach Vortex
   !*------------------------------------------
@@ -3573,7 +3587,9 @@ END IF
 
 #endif
 
-
+#ifdef APMF
+Prim(5) = Cons(5)/Cons(1)
+#endif
 
 
 !-------------------------------------------------------------------------------!
@@ -3660,6 +3676,9 @@ Cons(4) = Cons(4) + Gmm/(Gmm-1.0)*pinf
 
 #endif
 
+#ifdef APMF
+Cons(5) = Prim(1)*Prim(5)
+#endif
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE PrimToCons
@@ -3668,7 +3687,7 @@ END SUBROUTINE PrimToCons
 !
 !
 !===============================================================================!
-SUBROUTINE EvaluateFlux1D(Prim,Flux)
+SUBROUTINE EvaluateFlux1D(Prim,Flux,status)
 !-------------------------------------------------------------------------------!
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
@@ -3683,6 +3702,7 @@ IMPLICIT NONE
 !-------------------------------------------------------------------------------!
 REAL,INTENT(IN)  :: Prim(1:nVar)
 REAL,INTENT(OUT) :: Flux(1:nVar)
+REAL,INTENT(IN),OPTIONAL :: status
 !-------------------------------------------------------------------------------!
 ! >> LOCAL VARIABLES                                                            !
 !-------------------------------------------------------------------------------!
@@ -3754,6 +3774,11 @@ Flux(5)=vx*roPhi
 Flux(5)=0.0
 #endif
 #endif
+
+#ifdef APMF
+Flux(5) = Prim(1)*Prim(5)*Prim(2)
+#endif
+
 !-------------------------------------------------------------------------------!
 END SUBROUTINE EvaluateFlux1D
 !===============================================================================!
@@ -3777,8 +3802,13 @@ IMPLICIT NONE
 !-------------------------------------------------------------------------------!
 ! >> FORMAL ARGUMENTS                                                           !
 !-------------------------------------------------------------------------------!
-REAL,INTENT(IN)  :: PrimL(1:nVar,1:nGPs)
-REAL,INTENT(IN)  :: PrimR(1:nVar,1:nGPs)
+#ifdef APMF
+REAL,INTENT(IN) :: PrimL(1:nVar+1,1:nGPs)
+REAL,INTENT(IN) :: PrimR(1:nVar+1,1:nGPs)
+#else
+REAL,INTENT(IN) :: PrimL(1:nVar,1:nGPs)
+REAL,INTENT(IN) :: PrimR(1:nVar,1:nGPs)
+#endif
 REAL,INTENT(IN)  :: NormVect(1:nDims)
 REAL,INTENT(IN)  :: TangVect(1:nDims)
 REAL,INTENT(OUT) :: Flux(1:nVar,1:nGPs)
@@ -3812,7 +3842,7 @@ DO iGP=1,nGPs
   PrimLL(2,iGP) = NormVect(1)*PrimL(2,iGP) + NormVect(2)*PrimL(3,iGP)
   PrimLL(3,iGP) = TangVect(1)*PrimL(2,iGP) + TangVect(2)*PrimL(3,iGP)
   PrimLL(4,iGP) = PrimL(4,iGP)
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
   PrimLL(5,iGP) = PrimL(5,iGP)
 #endif
 
@@ -3820,7 +3850,7 @@ DO iGP=1,nGPs
   PrimRR(2,iGP) = NormVect(1)*PrimR(2,iGP) + NormVect(2)*PrimR(3,iGP)
   PrimRR(3,iGP) = TangVect(1)*PrimR(2,iGP) + TangVect(2)*PrimR(3,iGP)
   PrimRR(4,iGP) = PrimR(4,iGP)
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
   PrimRR(5,iGP) = PrimR(5,iGP)
 #endif
 
@@ -3833,13 +3863,27 @@ DO iGP=1,nGPs
         ConsLL(1:nVar,iGP),ConsRR(1:nVar,iGP),&
         PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),Flux(1:nVar,iGP))
     CASE(-1)
+#ifdef APMF
+      CALL CentralUpwind(&
+        ConsLL(1:nVar,iGP),ConsRR(1:nVar,iGP),&
+        PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),Flux(1:nVar,iGP),&
+        statusL=PrimL(6,iGP),statusR=PrimR(6,iGP))
+#else
       CALL CentralUpwind(&
         ConsLL(1:nVar,iGP),ConsRR(1:nVar,iGP),&
         PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),Flux(1:nVar,iGP))
+#endif
     CASE(1)
+#ifdef APMF
+      CALL LowDissipationCentralUpwind(&
+        ConsLL(1:nVar,iGP),ConsRR(1:nVar,iGP),&
+        PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),Flux(1:nVar,iGP),&
+        statusL=PrimL(6,iGP),statusR=PrimR(6,iGP))
+#else
       CALL LowDissipationCentralUpwind(&
         ConsLL(1:nVar,iGP),ConsRR(1:nVar,iGP),&
         PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),Flux(1:nVar,iGP))
+#endif
     CASE(2)
       CALL LowDissipationCentralUpwindNewAntidiffusionTerm(&
         ConsLL(1:nVar,iGP),ConsRR(1:nVar,iGP),&
@@ -3921,7 +3965,7 @@ END SUBROUTINE RiemannSolverByRusanov
 !
 !
 !===============================================================================!
-SUBROUTINE CentralUpwind(ConsL,ConsR,PrimL,PrimR,Flux)
+SUBROUTINE CentralUpwind(ConsL,ConsR,PrimL,PrimR,Flux,statusL,statusR)
 !-------------------------------------------------------------------------------!
 !*New Low-Dissipation Central-Upwind Schemes, Alexander Kurganov, Ruixiao Xin
 !-------------------------------------------------------------------------------!
@@ -3937,6 +3981,7 @@ IMPLICIT NONE
 REAL,INTENT(IN)  :: ConsL(1:nVar), ConsR(1:nVar)
 REAL,INTENT(IN)  :: PrimL(1:nVar), PrimR(1:nVar)
 REAL,INTENT(OUT) :: Flux(1:nVar)
+REAL,INTENT(IN),OPTIONAL :: statusL, statusR
 !-------------------------------------------------------------------------------!
 ! >> LOCAL VARIABLES                                                            !
 !-------------------------------------------------------------------------------!
@@ -3946,13 +3991,28 @@ REAL             :: SL, SM, SR
 REAL             :: dC(1:nVar)                         !*Built-in antidiffusion term
 REAL             :: Cstar(1:nVar)                      !*Intermediate value of C
 INTEGER          :: iVar
+REAL :: PrimSpeedL(1:nVar), PrimSpeedR(1:nVar)
 !-------------------------------------------------------------------------------!
 
+#ifdef APMF
+CALL EvaluateFlux1D(PrimL,FluxL,status=statusL)
+CALL EvaluateFlux1D(PrimR,FluxR,status=statusR)
+#else
 CALL EvaluateFlux1D(PrimL,FluxL)
 CALL EvaluateFlux1D(PrimR,FluxR)
+#endif
 
-CALL WaveSpeeds1D(PrimL,slowest_without_splitting=slowestL,fastest_without_splitting=fastestL)
-CALL WaveSpeeds1D(PrimR,slowest_without_splitting=slowestR,fastest_without_splitting=fastestR)
+PrimSpeedL = PrimL
+PrimSpeedR = PrimR
+
+#ifdef APMF
+IF (PRESENT(statusL)) PrimSpeedL(5) = statusL
+IF (PRESENT(statusR)) PrimSpeedR(5) = statusR
+#endif
+
+CALL WaveSpeeds1D(PrimSpeedL,slowest_without_splitting=slowestL,fastest_without_splitting=fastestL)
+CALL WaveSpeeds1D(PrimSpeedR,slowest_without_splitting=slowestR,fastest_without_splitting=fastestR)
+
 SL=MIN(slowestL,slowestR,-EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU)
 SR=MAX(fastestL,fastestR,+EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU)
 
@@ -3965,7 +4025,7 @@ END SUBROUTINE CentralUpwind
 !
 !
 !===============================================================================!
-SUBROUTINE LowDissipationCentralUpwind(ConsL,ConsR,PrimL,PrimR,Flux)
+SUBROUTINE LowDissipationCentralUpwind(ConsL,ConsR,PrimL,PrimR,Flux,statusL,statusR)
 !-------------------------------------------------------------------------------!
 !*New Low-Dissipation Central-Upwind Schemes, Alexander Kurganov, Ruixiao Xin
 !-------------------------------------------------------------------------------!
@@ -3978,9 +4038,10 @@ IMPLICIT NONE
 !-------------------------------------------------------------------------------!
 ! >> FORMAL ARGUMENTS                                                           !
 !-------------------------------------------------------------------------------!
-REAL,INTENT(IN)  :: ConsL(1:nVar), ConsR(1:nVar)
-REAL,INTENT(IN)  :: PrimL(1:nVar), PrimR(1:nVar)
-REAL,INTENT(OUT) :: Flux(1:nVar)
+REAL,INTENT(IN)          :: ConsL(1:nVar), ConsR(1:nVar)
+REAL,INTENT(IN)          :: PrimL(1:nVar), PrimR(1:nVar)
+REAL,INTENT(OUT)         :: Flux(1:nVar)
+REAL,INTENT(IN),OPTIONAL :: statusL, statusR
 !-------------------------------------------------------------------------------!
 ! >> LOCAL VARIABLES                                                            !
 !-------------------------------------------------------------------------------!
@@ -3990,13 +4051,28 @@ REAL             :: SL, SM, SR
 REAL             :: dC(1:nVar)                         !*Built-in antidiffusion term
 REAL             :: Cstar(1:nVar)                      !*Intermediate value of C
 INTEGER          :: iVar
+REAL :: PrimSpeedL(1:nVar), PrimSpeedR(1:nVar)
 !-------------------------------------------------------------------------------!
 
+#ifdef APMF
+CALL EvaluateFlux1D(PrimL,FluxL,status=statusL)
+CALL EvaluateFlux1D(PrimR,FluxR,status=statusR)
+#else
 CALL EvaluateFlux1D(PrimL,FluxL)
 CALL EvaluateFlux1D(PrimR,FluxR)
+#endif
 
-CALL WaveSpeeds1D(PrimL,slowest_without_splitting=slowestL,fastest_without_splitting=fastestL)
-CALL WaveSpeeds1D(PrimR,slowest_without_splitting=slowestR,fastest_without_splitting=fastestR)
+PrimSpeedL = PrimL
+PrimSpeedR = PrimR
+
+#ifdef APMF
+IF (PRESENT(statusL)) PrimSpeedL(5) = statusL
+IF (PRESENT(statusR)) PrimSpeedR(5) = statusR
+#endif
+
+CALL WaveSpeeds1D(PrimSpeedL,slowest_without_splitting=slowestL,fastest_without_splitting=fastestL)
+CALL WaveSpeeds1D(PrimSpeedR,slowest_without_splitting=slowestR,fastest_without_splitting=fastestR)
+
 SL=MIN(slowestL,slowestR,-EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU)
 SR=MAX(fastestL,fastestR,+EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU)
 
@@ -5178,6 +5254,10 @@ LMat(1:4,4) = (/ 0.0,          0.0,         0.0,      Gmm-1.0         /)
 #endif
 #endif
 
+#ifdef APMF
+LMat(5,5) = 1.0/ro_safe
+#endif
+
 
 #if(1==0)
 PRINT*, "Check TransitionMatrixConsToPrim"
@@ -5273,6 +5353,10 @@ RMat(1:4,4) = (/ 0.0, 0.0,   0.0,    1.0/(Gmm-1.0)    /)
 #endif
 #endif
 
+#ifdef APMF
+RMat(5,5) = ro
+#endif
+
 !-------------------------------------------------------------------------------!
 END SUBROUTINE TransitionMatrixPrimToCons
 !===============================================================================!
@@ -5344,7 +5428,7 @@ IMPLICIT NONE
 !-------------------------------------------------------------------------------!
 ! >> FORMAL ARGUMENTS                                                           !
 !-------------------------------------------------------------------------------!
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
 REAL,INTENT(IN)  :: PrimL(1:nVar+1,1:nGPs)
 REAL,INTENT(IN)  :: PrimR(1:nVar+1,1:nGPs)
 #else
@@ -5370,7 +5454,7 @@ DO iGP=1,nGPs
   PrimLL(2,iGP) = NormVect(1)*PrimL(2,iGP) + NormVect(2)*PrimL(3,iGP)
   PrimLL(3,iGP) = TangVect(1)*PrimL(2,iGP) + TangVect(2)*PrimL(3,iGP)
   PrimLL(4,iGP) = PrimL(4,iGP)
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
   PrimLL(5,iGP) = PrimL(5,iGP)
   FluidL=PrimL(6,iGP)
 #endif
@@ -5379,7 +5463,7 @@ DO iGP=1,nGPs
   PrimRR(2,iGP) = NormVect(1)*PrimR(2,iGP) + NormVect(2)*PrimR(3,iGP)
   PrimRR(3,iGP) = TangVect(1)*PrimR(2,iGP) + TangVect(2)*PrimR(3,iGP)
   PrimRR(4,iGP) = PrimR(4,iGP)
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
   PrimRR(5,iGP) = PrimR(5,iGP)
   FluidR=PrimR(6,iGP)
 #endif
@@ -5389,7 +5473,7 @@ DO iGP=1,nGPs
       CALL RusanovFluxPrimitiveSystem(&
             PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),Flux(1:nVar,iGP))
     CASE(-1)
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
       CALL CentralUpwindFluxPrimitiveSystem(&
             PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),Flux(1:nVar,iGP),statusL=FluidL,statusR=FluidR)
 #else
@@ -5397,7 +5481,7 @@ DO iGP=1,nGPs
             PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),Flux(1:nVar,iGP))
 #endif
     CASE(1)
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
       CALL LowDissipationCentralUpwindFluxPrimitiveSystem(&
             PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),Flux(1:nVar,iGP),statusL=FluidL,statusR=FluidR)
 #else
@@ -5465,8 +5549,13 @@ REAL             :: pinf
 REAL             :: PrimLL(1:nVar), PrimRR(1:nVar)
 !-------------------------------------------------------------------------------!
 
+#ifdef APMF
+CALL EvaluateFluxPrimitiveSystem1D(PrimL,FluxL,status=statusL)
+CALL EvaluateFluxPrimitiveSystem1D(PrimR,FluxR,status=statusR)
+#else
 CALL EvaluateFluxPrimitiveSystem1D(PrimL,FluxL)
 CALL EvaluateFluxPrimitiveSystem1D(PrimR,FluxR)
+#endif
 
 !*Support structures
 roL = PrimL(1)
@@ -5497,6 +5586,11 @@ END IF
 PrimLL(nVar)=statusL
 PrimRR(nVar)=statusR
 #endif
+#endif
+
+#ifdef APMF
+IF (PRESENT(statusL)) PrimLL(5) = statusL
+IF (PRESENT(statusR)) PrimRR(5) = statusR
 #endif
 
 CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L)
@@ -5565,8 +5659,13 @@ REAL             :: Q(1:nVar)                         !*New antidiffusion term
 REAL             :: alphastar, qro, uxstar,uystar
 !-------------------------------------------------------------------------------!
 
+#ifdef APMF
+CALL EvaluateFluxPrimitiveSystem1D(PrimL,FluxL,status=statusL)
+CALL EvaluateFluxPrimitiveSystem1D(PrimR,FluxR,status=statusR)
+#else
 CALL EvaluateFluxPrimitiveSystem1D(PrimL,FluxL)
 CALL EvaluateFluxPrimitiveSystem1D(PrimR,FluxR)
+#endif
 
 !*Support structures
 roL = PrimL(1)
@@ -5598,6 +5697,13 @@ PrimLL(nVar)=statusL
 PrimRR(nVar)=statusR
 #endif
 #endif
+
+
+#ifdef APMF
+IF (PRESENT(statusL)) PrimLL(5) = statusL
+IF (PRESENT(statusR)) PrimRR(5) = statusR
+#endif
+
 
 CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L)
 CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R)
@@ -5706,7 +5812,7 @@ END SUBROUTINE RusanovFluxPrimitiveSystem
 !
 !===============================================================================!
 #ifdef CENTEREDPRIMITIVE
-SUBROUTINE EvaluateFluxPrimitiveSystem1D(Prim,Flux)
+SUBROUTINE EvaluateFluxPrimitiveSystem1D(Prim,Flux,status)
 !-------------------------------------------------------------------------------!
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
@@ -5721,6 +5827,7 @@ IMPLICIT NONE
 !-------------------------------------------------------------------------------!
 REAL,INTENT(IN)  :: Prim(1:nVar)
 REAL,INTENT(OUT) :: Flux(1:nVar)
+REAL,INTENT(IN),OPTIONAL :: status
 !-------------------------------------------------------------------------------!
 ! >> LOCAL VARIABLES                                                            !
 !-------------------------------------------------------------------------------!
@@ -5787,6 +5894,10 @@ Flux(5) = 0.0 !*Non-conserved product in this case
 #endif
 #endif
 
+#ifdef APMF
+Flux(5) = 0.0
+#endif
+
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE EvaluateFluxPrimitiveSystem1D
@@ -5808,7 +5919,7 @@ IMPLICIT NONE
 !-------------------------------------------------------------------------------!
 ! >> FORMAL ARGUMENTS                                                           !
 !-------------------------------------------------------------------------------!
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
 REAL,INTENT(IN)  :: PrimL(1:nVar+1,1:nGPs)
 REAL,INTENT(IN)  :: PrimR(1:nVar+1,1:nGPs)
 #else
@@ -5836,7 +5947,7 @@ DO iGP=1,nGPs
   PrimLL(2,iGP) = NormVect(1)*PrimL(2,iGP) + NormVect(2)*PrimL(3,iGP)
   PrimLL(3,iGP) = TangVect(1)*PrimL(2,iGP) + TangVect(2)*PrimL(3,iGP)
   PrimLL(4,iGP) = PrimL(4,iGP)
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
   PrimLL(5,iGP) = PrimL(5,iGP)
   FluidL=PrimL(6,iGP)
 #endif
@@ -5845,12 +5956,12 @@ DO iGP=1,nGPs
   PrimRR(2,iGP) = NormVect(1)*PrimR(2,iGP) + NormVect(2)*PrimR(3,iGP)
   PrimRR(3,iGP) = TangVect(1)*PrimR(2,iGP) + TangVect(2)*PrimR(3,iGP)
   PrimRR(4,iGP) = PrimR(4,iGP)
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
   PrimRR(5,iGP) = PrimR(5,iGP)
   FluidR=PrimR(6,iGP)
 #endif
 
-#ifdef MULTIFLUID
+#if defined(MULTIFLUID) || defined(APMF)
   CALL PathConservativeLinearPath(PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),B_Sur(1:nVar,iGP),am(iGP),ap(iGP),statusL=FluidL,statusR=fluidR)
 #else
   CALL PathConservativeLinearPath(PrimLL(1:nVar,iGP),PrimRR(1:nVar,iGP),B_Sur(1:nVar,iGP),am(iGP),ap(iGP))
@@ -5959,6 +6070,11 @@ GmmR=Gmm
 pinfR=pinf
 #endif
 
+#ifdef APMF
+IF (PRESENT(statusL)) PrimLL(5) = statusL
+IF (PRESENT(statusR)) PrimRR(5) = statusR
+#endif
+
 CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L)
 CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R)
 
@@ -6002,6 +6118,11 @@ B_Sur(3) = -0.5 *             ( vxL + vxR         ) * ( vyR - vyL )
 
     B_Sur(4)  =  -0.5 * Gmm * ( (pL - min_p)  + (pR - min_p)  ) * ( vxR - vxL ) & !*This must be splitted 
               &  -0.5       * ( vxL + vxR ) * ( pR  - pL  )                       !*NB: This other one not
+
+
+#ifdef APMF
+    B_Sur(5) = -0.5 * (vxL + vxR) * (PrimR(5) - PrimL(5))
+#endif
 
 #else
   !*ELSE IMEX
