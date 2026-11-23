@@ -89,8 +89,9 @@ global_min = 100.
 iStep = 0
 DO WHILE ( iStep .LT. maxTimeSteps)
 
-#ifdef CENTEREDPRIMITIVE
+#if defined(CENTEREDPRIMITIVE) && !defined(IMEX)
 #ifndef DONOTOVERWRITEPRIMITIVE
+  !*FOR IMEX IT IS INSIDE THE TIME INTEGRATION AT EACH STAGE
   CALL Overwrite_WC_from_U()
 #endif
 #endif
@@ -1264,6 +1265,7 @@ USE MOD_FiniteVolume2D_vars,ONLY: MESH_DX
 USE MOD_FiniteVolume2D_vars,ONLY: WC
 USE MOD_FiniteVolume2D_vars,ONLY: WCt
 USE MOD_FiniteVolume2D_vars,ONLY: K0_WC
+USE MOD_FiniteVolume2D, ONLY: Overwrite_WC_from_U
 #endif
 
 USE MOD_JacobiIteration,    ONLY: jacobi_2
@@ -1482,6 +1484,13 @@ DO jj=1,nElemsY
   END DO
 END DO
 #endif
+
+#ifdef CENTEREDPRIMITIVE
+#ifndef DONOTOVERWRITEPRIMITIVE
+CALL Overwrite_WC_from_U()
+#endif
+#endif
+
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE TimeDiscretizationByIMEXEuler
@@ -2671,16 +2680,12 @@ DO kk = 1,KCorr
 #endif
 
 #ifndef DONOTOVERWRITEPRIMITIVE
-  !*To prevent double post-processing of last stage.
-  !*Remember that there is an extra post-processing of the final solution outside
-  IF (kk .NE. KCorr) THEN 
     ! PRINT*, kk
     WC(1:nVar,1:nElemsX,1:nElemsY) = Wa_WC(ii,1:nVar,1:nElemsX,1:nElemsY)
     U(1:nVar,1:nElemsX,1:nElemsY)  = Ua(ii,1:nVar,1:nElemsX,1:nElemsY)
     CALL Overwrite_WC_from_U()
     Wa_WC(ii,1:nVar,1:nElemsX,1:nElemsY) = WC(1:nVar,1:nElemsX,1:nElemsY)
     Ua(ii,1:nVar,1:nElemsX,1:nElemsY)    = U(1:nVar,1:nElemsX,1:nElemsY) 
-  END IF
 #endif
 
   END DO
