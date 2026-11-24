@@ -54,6 +54,9 @@ USE MOD_FiniteVolume2D     ,ONLY: Compute_Errors_PCSD
 #endif
 #ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: VarNameVisu_W
+#ifdef APMF
+USE MOD_FiniteVolume2D_vars, ONLY: InterfaceStatus
+#endif
 #endif
 #ifdef CENTEREDPRIMITIVE
 USE MOD_FiniteVolume2D_vars,ONLY: WC
@@ -180,7 +183,11 @@ PRINT*, "=========================="
 DO jj=1,nElemsY
   DO ii=1,nElemsX
     WC_NVisu(1:nVar,ii,jj) = WC(1:nVar,ii,jj)
+#ifdef APMF
+    WC_NVisu(nVar+1,ii,jj) = REAL(InterfaceStatus(ii,jj))
+#else
     WC_NVisu(nVar+1,ii,jj) = 0.0
+#endif
   END DO
 END DO
 #endif

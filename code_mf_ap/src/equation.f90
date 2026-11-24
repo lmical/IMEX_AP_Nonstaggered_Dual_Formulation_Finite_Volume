@@ -209,6 +209,9 @@ PUBLIC :: PathConservativeSurfaceContribution
 
 #ifdef IMEX
 PUBLIC :: Compute_min_p_max_ro
+#ifdef APMF
+PUBLIC :: Get_Eps, Get_max_ro, Get_min_p
+#endif
 #endif
 #endif
 
@@ -1352,18 +1355,7 @@ SELECT CASE(WhichInitialCondition)
 
 
 
-  CASE(202)
-    Prim(1) = 2.0
-    Prim(2) = 1.0
-    Prim(3) = 0.5
-    Prim(4) = 1.0
 
-#ifdef APMF
-    Prim(5) = SIN(2.0*Pi*(x(1)-Prim(2)*t)) * &
-              SIN(2.0*Pi*(x(2)-Prim(3)*t))
-#endif
-
-    CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
   !*[200] 2d Low-Mach Vortex
@@ -1470,6 +1462,40 @@ SELECT CASE(WhichInitialCondition)
     Prim(5)=0.0
     Cons(5)=0.0
 #endif
+
+
+  CASE(202)
+    Prim(1) = 2.0
+    Prim(2) = 1.0
+    Prim(3) = 0.5
+    Prim(4) = 1.0
+
+#ifdef APMF
+    Prim(5) = SIN(2.0*Pi*(x(1)-Prim(2)*t)) * &
+              SIN(2.0*Pi*(x(2)-Prim(3)*t))
+#endif
+
+    CALL PrimToCons(Prim,Cons)
+
+  !*Multifluid contact
+  CASE(203)
+    Prim(2) = 1.0
+    Prim(3) = 0.0
+    Prim(4) = 1.0
+
+    level_set = x(1) - (0.4 + Prim(2)*t)
+
+    IF (level_set >= 0.0) THEN
+      Prim(1) = 1.0       ! Air: fluid 1
+    ELSE
+      Prim(1) = 1000.0    ! Water: fluid 2
+    END IF
+
+#ifdef APMF
+    Prim(5) = level_set
+#endif
+
+    CALL PrimToCons(Prim,Cons)
 
   !*------------------------------------------
   !*[300] Double Shear Layer
@@ -3225,7 +3251,7 @@ END FUNCTION TimeStep
 !
 !
 !===============================================================================!
-SUBROUTINE WaveSpeeds1D(Prim,slowest,fastest,fastest_in_absolute_value,slowest_without_splitting,fastest_without_splitting,fastest_in_absolute_value_without_splitting)
+SUBROUTINE WaveSpeeds1D(Prim,slowest,fastest,fastest_in_absolute_value,slowest_without_splitting,fastest_without_splitting,fastest_in_absolute_value_without_splitting,status)
 !-------------------------------------------------------------------------------!
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
@@ -3249,6 +3275,7 @@ REAL,INTENT(OUT),OPTIONAL :: fastest_in_absolute_value
 REAL,INTENT(OUT),OPTIONAL :: slowest_without_splitting
 REAL,INTENT(OUT),OPTIONAL :: fastest_without_splitting
 REAL,INTENT(OUT),OPTIONAL :: fastest_in_absolute_value_without_splitting
+REAL, INTENT(IN), OPTIONAL :: status
 !-------------------------------------------------------------------------------!
 ! >> LOCAL VARIABLES                                                            !
 !-------------------------------------------------------------------------------!
@@ -3271,7 +3298,17 @@ roPhi = Prim(5)
 Gmm=Get_Gamma(roPhi)
 pinf=Get_Pressure_Infinity(roPhi)
 #endif
-
+#ifdef APMF
+IF (PRESENT(status)) THEN
+  EPS_LM = Get_Eps(status)
+  max_ro = Get_max_ro(status)
+  min_p  = Get_min_p(status)
+ELSE
+  EPS_LM = Get_Eps(Prim(5))
+  max_ro = Get_max_ro(Prim(5))
+  min_p  = Get_min_p(Prim(5))
+END IF
+#endif
 
 !*Defining the sound speed
 
@@ -3397,6 +3434,11 @@ roPhi  = Prim(5)
 Gmm=Get_Gamma(roPhi)
 pinf=Get_Pressure_Infinity(roPhi)
 #endif
+#ifdef APMF
+EPS_LM = Get_Eps(Prim(5))
+max_ro = Get_max_ro(Prim(5))
+min_p  = Get_min_p(Prim(5))
+#endif
 
 !*Defining the sound speed
 
@@ -3495,7 +3537,7 @@ END SUBROUTINE WaveSpeeds2D
 !
 !
 !===============================================================================!
-SUBROUTINE ConsToPrim(Cons, Prim)
+SUBROUTINE ConsToPrim(Cons,Prim,status)
 !-------------------------------------------------------------------------------!
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
@@ -3510,6 +3552,7 @@ IMPLICIT NONE
 !-------------------------------------------------------------------------------!
 REAL,INTENT(IN)  :: Cons(1:nVar)
 REAL,INTENT(OUT) :: Prim(1:nVar)
+REAL,INTENT(IN),OPTIONAL :: status
 !-------------------------------------------------------------------------------!
 ! >> LOCAL VARIABLES                                                            !
 !-------------------------------------------------------------------------------!
@@ -3531,6 +3574,13 @@ Energy = Cons(4)
 roPhi=Cons(5)
 Gmm=Get_Gamma(roPhi)
 pinf=Get_Pressure_Infinity(roPhi)
+#endif
+#ifdef APMF
+IF (PRESENT(status)) THEN
+  EPS_LM = Get_Eps(status)
+ELSE
+  EPS_LM = Get_Eps(Cons(5)/Cons(1))
+END IF
 #endif
 
 #ifdef POSITIVITYCHECKS
@@ -3599,7 +3649,7 @@ END SUBROUTINE ConsToPrim
 !
 !
 !===============================================================================!
-SUBROUTINE PrimToCons(Prim, Cons)
+SUBROUTINE PrimToCons(Prim,Cons,status)
 !-------------------------------------------------------------------------------!
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 USE MOD_FiniteVolume2D_vars,ONLY: Gmm
@@ -3614,6 +3664,7 @@ IMPLICIT NONE
 !-------------------------------------------------------------------------------!
 REAL,INTENT(IN)  :: Prim(1:nVar)
 REAL,INTENT(OUT) :: Cons(1:nVar)
+REAL,INTENT(IN),OPTIONAL :: status
 !-------------------------------------------------------------------------------!
 ! >> LOCAL VARIABLES                                                            !
 !-------------------------------------------------------------------------------!
@@ -3632,6 +3683,13 @@ p   = Prim(4)
 roPhi=Prim(5)
 Gmm =Get_Gamma(roPhi)
 pinf=Get_Pressure_Infinity(roPhi)
+#endif
+#ifdef APMF
+IF (PRESENT(status)) THEN
+  EPS_LM = Get_Eps(status)
+ELSE
+  EPS_LM = Get_Eps(Prim(5))
+END IF
 #endif
 
 
@@ -3721,6 +3779,13 @@ p  = Prim(4)
 roPhi=Prim(5)
 Gmm=Get_Gamma(roPhi)
 pinf=Get_Pressure_Infinity(roPhi)
+#endif
+#ifdef APMF
+IF (PRESENT(status)) THEN
+  EPS_LM = Get_Eps(status)
+ELSE
+  EPS_LM = Get_Eps(Prim(5))
+END IF
 #endif
 
 #ifdef POSITIVITYCHECKS
@@ -3854,8 +3919,13 @@ DO iGP=1,nGPs
   PrimRR(5,iGP) = PrimR(5,iGP)
 #endif
 
+#ifdef APMF
+  CALL PrimToCons(PrimLL(1:nVar,iGP),ConsLL(1:nVar,iGP),status=PrimL(6,iGP))
+  CALL PrimToCons(PrimRR(1:nVar,iGP),ConsRR(1:nVar,iGP),status=PrimR(6,iGP))
+#else
   CALL PrimToCons(PrimLL(1:nVar,iGP),ConsLL(1:nVar,iGP))
   CALL PrimToCons(PrimRR(1:nVar,iGP),ConsRR(1:nVar,iGP))
+#endif
 
   SELECT CASE(WhichRiemannSolver)
     CASE(0) !*Rusanov
@@ -3991,7 +4061,6 @@ REAL             :: SL, SM, SR
 REAL             :: dC(1:nVar)                         !*Built-in antidiffusion term
 REAL             :: Cstar(1:nVar)                      !*Intermediate value of C
 INTEGER          :: iVar
-REAL :: PrimSpeedL(1:nVar), PrimSpeedR(1:nVar)
 !-------------------------------------------------------------------------------!
 
 #ifdef APMF
@@ -4002,16 +4071,13 @@ CALL EvaluateFlux1D(PrimL,FluxL)
 CALL EvaluateFlux1D(PrimR,FluxR)
 #endif
 
-PrimSpeedL = PrimL
-PrimSpeedR = PrimR
 
-#ifdef APMF
-IF (PRESENT(statusL)) PrimSpeedL(5) = statusL
-IF (PRESENT(statusR)) PrimSpeedR(5) = statusR
-#endif
 
-CALL WaveSpeeds1D(PrimSpeedL,slowest_without_splitting=slowestL,fastest_without_splitting=fastestL)
-CALL WaveSpeeds1D(PrimSpeedR,slowest_without_splitting=slowestR,fastest_without_splitting=fastestR)
+
+CALL WaveSpeeds1D(PrimL,slowest_without_splitting=slowestL, &
+                 fastest_without_splitting=fastestL,status=statusL)
+CALL WaveSpeeds1D(PrimR,slowest_without_splitting=slowestR, &
+                 fastest_without_splitting=fastestR,status=statusR)
 
 SL=MIN(slowestL,slowestR,-EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU)
 SR=MAX(fastestL,fastestR,+EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU)
@@ -4051,7 +4117,6 @@ REAL             :: SL, SM, SR
 REAL             :: dC(1:nVar)                         !*Built-in antidiffusion term
 REAL             :: Cstar(1:nVar)                      !*Intermediate value of C
 INTEGER          :: iVar
-REAL :: PrimSpeedL(1:nVar), PrimSpeedR(1:nVar)
 !-------------------------------------------------------------------------------!
 
 #ifdef APMF
@@ -4062,16 +4127,11 @@ CALL EvaluateFlux1D(PrimL,FluxL)
 CALL EvaluateFlux1D(PrimR,FluxR)
 #endif
 
-PrimSpeedL = PrimL
-PrimSpeedR = PrimR
 
-#ifdef APMF
-IF (PRESENT(statusL)) PrimSpeedL(5) = statusL
-IF (PRESENT(statusR)) PrimSpeedR(5) = statusR
-#endif
-
-CALL WaveSpeeds1D(PrimSpeedL,slowest_without_splitting=slowestL,fastest_without_splitting=fastestL)
-CALL WaveSpeeds1D(PrimSpeedR,slowest_without_splitting=slowestR,fastest_without_splitting=fastestR)
+CALL WaveSpeeds1D(PrimL,slowest_without_splitting=slowestL, &
+                 fastest_without_splitting=fastestL,status=statusL)
+CALL WaveSpeeds1D(PrimR,slowest_without_splitting=slowestR, &
+                 fastest_without_splitting=fastestR,status=statusR)
 
 SL=MIN(slowestL,slowestR,-EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU)
 SR=MAX(fastestL,fastestR,+EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU)
@@ -5588,14 +5648,9 @@ PrimRR(nVar)=statusR
 #endif
 #endif
 
-#ifdef APMF
-IF (PRESENT(statusL)) PrimLL(5) = statusL
-IF (PRESENT(statusR)) PrimRR(5) = statusR
-#endif
 
-CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L)
-CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R)
-
+CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L,status=statusL)
+CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R,status=statusR)
 
 !*One-sided local speeds of propagation
 am = MIN( slowest_L, slowest_R, -EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU )
@@ -5699,14 +5754,9 @@ PrimRR(nVar)=statusR
 #endif
 
 
-#ifdef APMF
-IF (PRESENT(statusL)) PrimLL(5) = statusL
-IF (PRESENT(statusR)) PrimRR(5) = statusR
-#endif
 
-
-CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L)
-CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R)
+CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L,status=statusL)
+CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R,status=statusR)
 
 
 !*One-sided local speeds of propagation
@@ -6018,6 +6068,11 @@ REAL             :: pinfL, pinfR
 REAL             :: pinf
 #endif
 REAL             :: PrimLL(1:nVar), PrimRR(1:nVar)
+#ifdef APMF
+REAL :: epsL, epsR
+REAL :: max_roL, max_roR
+REAL :: min_pL, min_pR
+#endif
 !-------------------------------------------------------------------------------!
 
 B_Sur=0.0
@@ -6073,10 +6128,17 @@ pinfR=pinf
 #ifdef APMF
 IF (PRESENT(statusL)) PrimLL(5) = statusL
 IF (PRESENT(statusR)) PrimRR(5) = statusR
+
+epsL    = Get_Eps(PrimLL(5))
+epsR    = Get_Eps(PrimRR(5))
+max_roL = Get_max_ro(PrimLL(5))
+max_roR = Get_max_ro(PrimRR(5))
+min_pL  = Get_min_p(PrimLL(5))
+min_pR  = Get_min_p(PrimRR(5))
 #endif
 
-CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L)
-CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R)
+CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L,status=statusL)
+CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R,status=statusR)
 
 
 !*One-sided local speeds of propagation
@@ -6087,6 +6149,11 @@ ap = MAX( fastest_L, fastest_R, +EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU )
 B_Sur(1) =  0.0
 
 
+#ifdef APMF
+
+  B_Sur(2) = -0.5 * ( (max_roL-roL)/(roL*max_roL*epsL**2) + (max_roR-roR)/(roR*max_roR*epsR**2) ) * (pR-pL)
+
+#else
 
 #ifdef IMEX
   !*START IMEX
@@ -6105,6 +6172,8 @@ B_Sur(1) =  0.0
 #endif
   !*END RELAXATION
 
+#endif
+
 B_Sur(3) = -0.5 *             ( vxL + vxR         ) * ( vyR - vyL )
 
 
@@ -6113,12 +6182,21 @@ B_Sur(3) = -0.5 *             ( vxL + vxR         ) * ( vyR - vyL )
 !*SPLITTING
 !*=======================
 
+
 #ifdef IMEX
   !*START IMEX
+
+#ifdef APMF
+
+  B_Sur(4) = -0.5 * Gmm * ((pL-min_pL) + (pR-min_pR)) * (vxR-vxL) -0.5 * (vxL+vxR) * (pR-pL)
+
+#else
+
 
     B_Sur(4)  =  -0.5 * Gmm * ( (pL - min_p)  + (pR - min_p)  ) * ( vxR - vxL ) & !*This must be splitted 
               &  -0.5       * ( vxL + vxR ) * ( pR  - pL  )                       !*NB: This other one not
 
+#endif
 
 #ifdef APMF
     B_Sur(5) = -0.5 * (vxL + vxR) * (PrimR(5) - PrimL(5))
@@ -6178,6 +6256,11 @@ USE MOD_FiniteVolume2D_vars,ONLY: min_p, max_ro
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
 #endif
 USE MOD_FiniteVolume2D_vars,ONLY: SAFETY_K_TO_AVOID_HYPERBOLICITY_LOSS
+#ifdef APMF
+USE MOD_FiniteVolume2D_vars, ONLY: max_ro_1, min_p_1
+USE MOD_FiniteVolume2D_vars, ONLY: max_ro_2, min_p_2
+USE MOD_FiniteVolume2D_vars, ONLY: EPS_LM_1, EPS_LM_2
+#endif
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -6190,42 +6273,47 @@ INTEGER :: ii, jj
 REAL    :: Prim(1:nVar)
 !-------------------------------------------------------------------------------!
 
+#ifdef APMF
+min_p_1  = HUGE(1.0)
+max_ro_1 = 0.0
+min_p_2  = HUGE(1.0)
+max_ro_2 = 0.0
+#else
 min_p  = HUGE(1.0)
 max_ro = 0.0
-
-#if(1==0)
-!*=======================
-!*ALERT: CONSERVED VARIABLES EXCLUDED
-!*=======================
-!*U
-DO jj=1,nElemsY
-  DO ii=1,nElemsX
-    CALL ConsToPrim(U(1:nVar,ii,jj),Prim(1:nVar))
-    max_ro = MAX(max_ro,U(1,ii,jj))
-    min_p  = MIN(min_p,Prim(4))
-  END DO
-END DO
 #endif
-
 
 
 #ifdef CENTEREDPRIMITIVE
 DO jj=1,nElemsY
   DO ii=1,nElemsX
+#ifdef APMF
+    IF (WC(5,ii,jj) .GE. 0) THEN
+      max_ro_1 = MAX(max_ro_1,WC(1,ii,jj))
+      min_p_1  = MIN(min_p_1,WC(4,ii,jj))
+    ELSE
+      max_ro_2 = MAX(max_ro_2,WC(1,ii,jj))
+      min_p_2  = MIN(min_p_2,WC(4,ii,jj))
+    END IF
+#else
     max_ro = MAX(max_ro,WC(1,ii,jj))
     min_p  = MIN(min_p,WC(4,ii,jj))
+#endif
   END DO
 END DO
+
 #endif
 
 
 
-#ifdef NOMODIFICATIONWAVESPEEDIMEX
 
-!*DO NOT TOUCH max_ro AND min_p
+#ifdef APMF
+max_ro_1 = max_ro_1*(1.0+K_function(EPS_LM_1))
+min_p_1  = min_p_1 *(1.0-K_function(EPS_LM_1))
 
-#elif HYPERBOLICITYTRICKMODIFIED
-
+max_ro_2 = max_ro_2*(1.0+K_function(EPS_LM_2))
+min_p_2  = min_p_2 *(1.0-K_function(EPS_LM_2))
+#else
 #ifdef RELAXATION
 max_ro = max_ro*(1.0+K_function(EPS_LM))
 min_p  = min_p *(1.0-K_function(EPS_LM))
@@ -6233,17 +6321,6 @@ min_p  = min_p *(1.0-K_function(EPS_LM))
 max_ro = max_ro*(1.0+K_function(1.0))
 min_p  = min_p *(1.0-K_function(1.0))
 #endif
-
-#else
-
-#ifdef RELAXATION
-max_ro = max_ro+EPS_LM*SAFETY_K_TO_AVOID_HYPERBOLICITY_LOSS
-min_p  = min_p -EPS_LM*SAFETY_K_TO_AVOID_HYPERBOLICITY_LOSS
-#else
-max_ro = max_ro+1.0*SAFETY_K_TO_AVOID_HYPERBOLICITY_LOSS
-min_p  = min_p -1.0*SAFETY_K_TO_AVOID_HYPERBOLICITY_LOSS
-#endif
-
 #endif
 
 !-------------------------------------------------------------------------------!
@@ -7110,5 +7187,59 @@ REAL, PARAMETER :: x1=0.4
 
 !-------------------------------------------------------------------------------!
 END FUNCTION Switching_Function
+!===============================================================================!
+!
+!
+!
+!===============================================================================!
+#ifdef APMF
+REAL FUNCTION Get_Eps(phi)
+  USE MOD_FiniteVolume2D_vars, ONLY: EPS_LM_1, EPS_LM_2
+  IMPLICIT NONE
+  REAL, INTENT(IN) :: phi
+
+  IF (phi >= 0.0) THEN
+    Get_Eps = EPS_LM_1
+  ELSE
+    Get_Eps = EPS_LM_2
+  END IF
+END FUNCTION Get_Eps
+#endif
+!===============================================================================!
+!
+!
+!
+!===============================================================================!
+#ifdef APMF
+REAL FUNCTION Get_max_ro(phi)
+  USE MOD_FiniteVolume2D_vars, ONLY: max_ro_1, max_ro_2
+  IMPLICIT NONE
+  REAL, INTENT(IN) :: phi
+
+  IF (phi >= 0.0) THEN
+    Get_max_ro = max_ro_1
+  ELSE
+    Get_max_ro = max_ro_2
+  END IF
+END FUNCTION Get_max_ro
+#endif
+!===============================================================================!
+!
+!
+!
+!===============================================================================!
+#ifdef APMF
+REAL FUNCTION Get_min_p(phi)
+  USE MOD_FiniteVolume2D_vars, ONLY: min_p_1, min_p_2
+  IMPLICIT NONE
+  REAL, INTENT(IN) :: phi
+
+  IF (phi >= 0.0) THEN
+    Get_min_p = min_p_1
+  ELSE
+    Get_min_p = min_p_2
+  END IF
+END FUNCTION Get_min_p
+#endif
 END MODULE MOD_Equation
 !-------------------------------------------------------------------------------!

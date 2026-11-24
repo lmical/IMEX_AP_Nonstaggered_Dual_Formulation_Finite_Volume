@@ -6,7 +6,7 @@
 INFO_COMPILING=\e[1;34m[COMPILING]\e[0m
 INFO_LINKING=\e[1;34m[LINKING]\e[0m
 #-------------------------------------------------------------------------------------------------#
-COMPILER=GNU DEBUG
+COMPILER=GNU #DEBUG
 #--------------------------------------------------------------------------------------------------#
 ifeq ($(findstring GNU,$(COMPILER)),GNU)
   FC=gfortran
@@ -47,14 +47,14 @@ MAIN_LIB = libmain.a
 #--------------------------------------------------------------------------------------------------#
 # FCFLAGS += -I. -DTRICKSTOAVOIDDIVISIONSBYZERO
 FCFLAGS += -I. -DCENTEREDPRIMITIVE
-# FCFLAGS += -I. -DDONOTOVERWRITEPRIMITIVE
+FCFLAGS += -I. -DDONOTOVERWRITEPRIMITIVE
 FCFLAGS += -I. -DRELAXATION
 FCFLAGS += -I. -DIMEX
 FCFLAGS += -I. -DAPMF
 # FCFLAGS += -I. -DNOMODIFICATIONWAVESPEEDIMEX
 FCFLAGS += -I. -DHYPERBOLICITYTRICKMODIFIED
 # FCFLAGS += -I. -DNORMALIZELINEARSYSTEMS
-FCFLAGS += -I. -DNORMALIZEALL
+# FCFLAGS += -I. -DNORMALIZEALL
 # FCFLAGS += -I. -DMULTIFLUID
 # FCFLAGS += -I. -DRECONSTRUCTIONPHI
 # FCFLAGS += -I. -DLEVELSETINU

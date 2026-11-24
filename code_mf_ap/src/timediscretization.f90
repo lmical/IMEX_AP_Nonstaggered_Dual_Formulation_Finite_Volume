@@ -102,18 +102,6 @@ DO WHILE ( iStep .LT. maxTimeSteps)
 #endif
 #endif
 
-#if(1==0)
-PRINT*, "I DO NOT WANT TO RUN IN THIS MODE (TIME STEP COMPUTATION AS ALEX)"
-PRINT*, "Stopping in timediscretization"
-STOP
-!*NB: This is needed if I compute dt based on the reconstructed values
-CALL BoundaryConditions(t)
-CALL ComputeTransitionMatricesConservedInput(U( 1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),  &  !*Vector
-                          & -nGhosts,nElemsX+nGhosts+1, &  !*X bounds vector  
-                          & -nGhosts,nElemsY+nGhosts+1,   &  !*Y bounds vector
-                          & 1,nElemsX, &                   !*X bounds loop    
-                          & 1,nElemsY)                       !*Y bounds loop 
-#endif
 
   iStep = iStep + 1
   dt_min = TimeStep(t)
@@ -1301,6 +1289,13 @@ USE MOD_FiniteVolume2D     ,ONLY: Put_Matrix_In_Vector
 USE MOD_FiniteVolume2D     ,ONLY: Put_Vector_In_Matrix
 #endif
 
+#ifdef APMF
+USE MOD_FiniteVolume2D_vars, ONLY: InterfaceStatus
+USE MOD_FiniteVolume2D_vars, ONLY: OldInterfaceStatus
+USE MOD_FiniteVolume2D,      ONLY: DetectInterface
+USE MOD_Equation,            ONLY: Get_Eps, Get_max_ro
+#endif
+
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -1344,9 +1339,17 @@ old_WC(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1)=WC(1:nVar,-
 !*=============================================
 #endif
 
+
+
+#ifdef APMF
+CALL DetectInterface()
+OldInterfaceStatus = InterfaceStatus
+#endif
+
+
 K0(1:nVar,1:nElemsX,1:nElemsY) = U(1:nVar,1:nElemsX,1:nElemsY)
 #ifdef CENTEREDPRIMITIVE
-K0_WC(1:nVar,1:nElemsX,1:nElemsY) = WC(1:nVar,1:nElemsX,1:nElemsY) 
+K0_WC = WC
 #endif
 
 tStage = t 
@@ -1397,9 +1400,14 @@ WC(nVar,1:nElemsX,1:nElemsY) = K0_WC(nVar,1:nElemsX,1:nElemsY) + WCt(nVar,1:nEle
 !*IMEX linear system WC <=============
 !*----------------------
 !*Assembly IMEX Matrix Euler 
-CALL IMEX_Matrix(dt) 
+#ifdef APMF
+CALL IMEX_Matrix_APMF(dt, K0_WC)
+CALL IMEX_Euler_rhs_APMF(K0_WC(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),WCt(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),t+dt)
+#else
+CALL IMEX_Matrix(dt)
 !*Assembly IMEX rhs Euler
 CALL IMEX_Euler_rhs(WCt(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1),t+dt)
+#endif
 
 !*Jacobi
 iterations=0
@@ -1455,7 +1463,7 @@ DEALLOCATE(sol_debug)
 !*Copying sol_WC into WC(4,ii,jj)
 CALL Put_Vector_In_Matrix(sol_WC(1:NRows_WC),WC(4,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
 
-
+CALL BoundaryConditions(t+dt)
 #endif
 
 
@@ -1474,6 +1482,10 @@ DO jj=1,nElemsY
     WC(2:3,ii,jj) = K0_WC(2:3,ii,jj) + WCt(2:3,ii,jj)*dt
     px=First_Derivative_Central_Order2(WC(4,ii-1:ii+1,jj),dx)
     py=First_Derivative_Central_Order2(WC(4,ii,jj-1:jj+1),dy)
+#ifdef APMF
+    EPS_LM = Get_Eps(K0_WC(5,ii,jj))
+    max_ro = Get_max_ro(K0_WC(5,ii,jj))
+#endif
 #ifdef RELAXATION
     WC(2,ii,jj)=WC(2,ii,jj)-(dt/EPS_LM**2)/max_ro*px
     WC(3,ii,jj)=WC(3,ii,jj)-(dt/EPS_LM**2)/max_ro*py
@@ -1487,7 +1499,13 @@ END DO
 
 #ifdef CENTEREDPRIMITIVE
 #ifndef DONOTOVERWRITEPRIMITIVE
+
+#ifdef APMF
+CALL BoundaryConditions(t+dt)
+CALL DetectInterface()
+#endif
 CALL Overwrite_WC_from_U()
+
 #endif
 #endif
 
@@ -1536,12 +1554,16 @@ USE MOD_FiniteVolume2D_vars,ONLY: max_ro
 #ifdef RELAXATION
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
 #endif
+#ifdef APMF
+USE MOD_Equation, ONLY: Get_Eps, Get_max_ro, Get_min_p
+#endif
+USE MOD_FiniteVolume2D_vars, ONLY: nVar, nGhosts
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
 ! >> FORMAL ARGUMENTS                                                           !
 !-------------------------------------------------------------------------------!
-REAL,INTENT(IN) :: delta_t
+REAL, INTENT(IN)           :: delta_t
 !-------------------------------------------------------------------------------!
 ! >> LOCAL VARIABLES                                                            !
 !-------------------------------------------------------------------------------!
@@ -1803,6 +1825,324 @@ END SUBROUTINE IMEX_Matrix
 !
 !
 !===============================================================================!
+#ifdef APMF
+SUBROUTINE IMEX_Matrix_APMF(delta_t, W_coeff)
+!-------------------------------------------------------------------------------!
+USE MOD_FiniteVolume2D_vars,ONLY: nElemsX
+USE MOD_FiniteVolume2D_vars,ONLY: nElemsY
+
+USE MOD_FiniteVolume2D_vars,ONLY: NNZsparse_WC
+USE MOD_FiniteVolume2D_vars,ONLY: NRows_WC
+USE MOD_FiniteVolume2D_vars,ONLY: Values_WC
+USE MOD_FiniteVolume2D_vars,ONLY: Columns_WC
+USE MOD_FiniteVolume2D_vars,ONLY: RowStart_WC
+USE MOD_FiniteVolume2D_vars,ONLY: Diagonal_WC
+USE MOD_FiniteVolume2D_vars,ONLY: rhs_WC
+USE MOD_FiniteVolume2D_vars,ONLY: sol_WC
+USE MOD_FiniteVolume2D_vars,ONLY: From_2Indices_To_1Index_WC
+USE MOD_FiniteVolume2D_vars,ONLY: From_1Index_To_2Indices_WC
+USE MOD_FiniteVolume2D_vars,ONLY: Neighbours_1Index_WC
+
+USE MOD_FiniteVolume2D_vars,ONLY: MESH_DX
+USE MOD_FiniteVolume2D_vars,ONLY: BoundaryConditionsTypeIMEXLinearSystem
+
+USE MOD_FiniteVolume2D_vars,ONLY: Gmm
+USE MOD_FiniteVolume2D_vars,ONLY: min_p
+USE MOD_FiniteVolume2D_vars,ONLY: max_ro
+#ifdef RELAXATION
+USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
+#endif
+#ifdef APMF
+USE MOD_Equation, ONLY: Get_Eps, Get_max_ro, Get_min_p
+#endif
+USE MOD_FiniteVolume2D_vars, ONLY: nVar, nGhosts
+!-------------------------------------------------------------------------------!
+IMPLICIT NONE
+!-------------------------------------------------------------------------------!
+! >> FORMAL ARGUMENTS                                                           !
+!-------------------------------------------------------------------------------!
+REAL, INTENT(IN)           :: delta_t
+REAL, INTENT(IN) :: W_coeff(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1)
+!-------------------------------------------------------------------------------!
+! >> LOCAL VARIABLES                                                            !
+!-------------------------------------------------------------------------------!
+INTEGER          :: ii, jj
+INTEGER          :: inde, indc, ind, indB, indR, indU, indL
+REAL             :: dx, dy
+REAL             :: a, a_neighbour
+REAL             :: aB, aR, aU, aL 
+REAL             :: b
+REAL             :: EPS_LM_neighbour, max_ro_neighbour, min_p_neighbour
+REAL             :: a1, a2
+!-------------------------------------------------------------------------------!
+
+dx = MESH_DX(1)
+dy = MESH_DX(2)
+
+
+
+
+!*First equations->Inside the domain
+
+indc=0 !*index cell
+inde=0 !*index element
+
+DO jj=1,nElemsY
+  DO ii=1,nElemsX
+
+    !*C,B,R,U,L
+    indc=indc+1
+    inde=inde+1
+
+    RowStart_WC(indc)=inde
+
+    !*-----------------------------------------
+    !*As a safety check this should give ii and jj
+    !*-----------------------------------------
+    ! IF (((From_1Index_To_2Indices_WC(indc,1)-ii) .NE. 0) .OR. ((From_1Index_To_2Indices_WC(indc,2)-jj) .NE. 0)) THEN
+    !   PRINT*, "Problem in numeration for linear system IMEX", indc
+    !   PRINT*, ii,jj
+    !   PRINT*, From_1Index_To_2Indices_WC(indc,:)
+    !   STOP
+    ! END IF
+    ! PRINT*, ii,jj, From_1Index_To_2Indices_WC(indc,:)
+    !*-----------------------------------------
+
+    !*NB: The 1-index label of ii,jj is indc
+    !*We do not need to retrieve this information as we are sweeping the cells in the same order we numerated them 
+
+    !*C
+    ! ind=Neighbours_1Index_WC(indc,1) !*NB: This is equal to indc
+    !*-----------------------------------------
+    !*As a safety check this should give ii and jj
+    !*-----------------------------------------
+    ! IF ((indc-ind) .NE. 0) THEN
+    !   PRINT*, "Problem"
+    !   PRINT*, ind-indc
+    !   STOP
+    ! END IF
+    !*-----------------------------------------
+
+    EPS_LM = Get_Eps(W_coeff(5,ii,jj))
+    max_ro = Get_max_ro(W_coeff(5,ii,jj))
+    min_p  = Get_min_p(W_coeff(5,ii,jj))
+
+    b=Gmm*min_p
+    a=1.0/(EPS_LM**2*max_ro)
+
+    !*B (ii,jj-1)
+    EPS_LM_neighbour = Get_Eps(W_coeff(5,ii,jj-1))
+    max_ro_neighbour = Get_max_ro(W_coeff(5,ii,jj-1))
+    min_p_neighbour  = Get_min_p(W_coeff(5,ii,jj-1))
+
+    a_neighbour=1.0/(EPS_LM_neighbour**2*max_ro_neighbour)
+
+    aB=2.0*a*a_neighbour/(a+a_neighbour)
+
+    !*R (ii+1,jj)
+    EPS_LM_neighbour = Get_Eps(W_coeff(5,ii+1,jj))
+    max_ro_neighbour = Get_max_ro(W_coeff(5,ii+1,jj))
+    min_p_neighbour  = Get_min_p(W_coeff(5,ii+1,jj))
+
+    a_neighbour=1.0/(EPS_LM_neighbour**2*max_ro_neighbour)
+
+    aR=2.0*a*a_neighbour/(a+a_neighbour)
+
+    !*U (ii,jj+1)
+    EPS_LM_neighbour = Get_Eps(W_coeff(5,ii,jj+1))
+    max_ro_neighbour = Get_max_ro(W_coeff(5,ii,jj+1))
+    min_p_neighbour  = Get_min_p(W_coeff(5,ii,jj+1))
+
+    a_neighbour=1.0/(EPS_LM_neighbour**2*max_ro_neighbour)
+
+    aU=2.0*a*a_neighbour/(a+a_neighbour)
+
+    !*L (ii-1,jj)
+    EPS_LM_neighbour = Get_Eps(W_coeff(5,ii-1,jj))
+    max_ro_neighbour = Get_max_ro(W_coeff(5,ii-1,jj))
+    min_p_neighbour  = Get_min_p(W_coeff(5,ii-1,jj))
+
+    a_neighbour=1.0/(EPS_LM_neighbour**2*max_ro_neighbour)
+
+    aL=2.0*a*a_neighbour/(a+a_neighbour)
+
+
+    Columns_WC(inde)  = indc
+    Values_WC(inde)   = 1.0+(delta_t/dx)**2*b*(aR+aL)+(delta_t/dy)**2*b*(aU+aB)
+    Diagonal_WC(indc) = Values_WC(inde)
+
+    !*B (ii,jj-1)
+    inde=inde+1
+    indB=Neighbours_1Index_WC(indc,2) !*From_2Indices_To_1Index_WC(ii,jj-1)
+    Columns_WC(inde) = indB
+    Values_WC(inde)  = -(delta_t/dy)**2*b*aB
+
+    !*R (ii+1,jj)
+    inde=inde+1
+    indR=Neighbours_1Index_WC(indc,3) !*From_2Indices_To_1Index_WC(ii+1,jj)
+    Columns_WC(inde) = indR
+    Values_WC(inde)  = -(delta_t/dx)**2*b*aR
+
+    !*U (ii,jj+1)
+    inde=inde+1
+    indU=Neighbours_1Index_WC(indc,4) !*From_2Indices_To_1Index_WC(ii,jj+1)
+    Columns_WC(inde) = indU
+    Values_WC(inde)  = -(delta_t/dy)**2*b*aU
+
+    !*L (ii-1,jj)
+    inde=inde+1
+    indL=Neighbours_1Index_WC(indc,5) !*From_2Indices_To_1Index_WC(ii-1,jj)
+    Columns_WC(inde) = indL
+    Values_WC(inde)  = -(delta_t/dx)**2*b*aL
+
+    !*-----------------------------------------
+    !*SAFETY CHECK
+    !*-----------------------------------------
+    ! PRINT*
+    ! PRINT*, indc 
+    ! PRINT*, "C", indc, Neighbours_1Index_WC(indc,1)
+    ! PRINT*, "B", indB, Neighbours_1Index_WC(indc,2)
+    ! PRINT*, "R", indR, Neighbours_1Index_WC(indc,3)
+    ! PRINT*, "U", indU, Neighbours_1Index_WC(indc,4)
+    ! PRINT*, "L", indL, Neighbours_1Index_WC(indc,5)
+    !*-----------------------------------------
+
+  END DO
+END DO
+
+
+!*Later equations->Boundary conditions
+!*->Down boundary
+jj=0
+DO ii=1,nElemsX 
+  indc=indc+1
+  inde=inde+1
+  RowStart_WC(indc) = inde
+  Columns_WC(inde)  = indc
+  Values_WC(inde)   = 1.0
+  Diagonal_WC(indc) = Values_WC(inde)
+
+  SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(1))
+    CASE(1)   ! Periodic u=u
+      inde=inde+1
+      Columns_WC(inde) = From_2Indices_To_1Index_WC(ii,nElemsY)
+      Values_WC(inde)  = -1.0
+    CASE(2,5) ! Transmissive,Reflecting u=u
+      inde=inde+1
+      Columns_WC(inde) = From_2Indices_To_1Index_WC(ii,1)
+      Values_WC(inde)  = -1.0
+    CASE(3,4) ! Inflow,Outflow u=something
+      !*Nothing
+    CASE DEFAULT
+      PRINT*, "Boundary condition B not implemented"
+      STOP
+  END SELECT
+END DO
+
+
+!*->Right boundary
+ii=nElemsX+1
+DO jj=1,nElemsY
+  indc=indc+1
+  inde=inde+1
+  RowStart_WC(indc) = inde
+  Columns_WC(inde)  = indc
+  Values_WC(inde)   = 1.0
+  Diagonal_WC(indc) = Values_WC(inde)
+
+  SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(2))
+    CASE(1) ! Periodic u=u
+      inde=inde+1
+      Columns_WC(inde) = From_2Indices_To_1Index_WC(1,jj) !*ADJUSTED BC
+      Values_WC(inde)  = -1.0
+    CASE(2,5) ! Transmissive,Reflecting u=u
+      inde=inde+1
+      Columns_WC(inde) = From_2Indices_To_1Index_WC(nElemsX,jj) !*ADJUSTED BC !*NO CHANGES
+      Values_WC(inde)  = -1.0
+    CASE(3,4) ! Inflow,Outflow u=something
+      !*Nothing
+    CASE DEFAULT
+      PRINT*, "Boundary condition R not implemented"
+      STOP
+  END SELECT
+END DO
+
+!*->Top boundary
+jj=nElemsY+1
+DO ii=1,nElemsX
+  indc=indc+1
+  inde=inde+1
+  RowStart_WC(indc) = inde
+  Columns_WC(inde)  = indc
+  Values_WC(inde)   = 1.0
+  Diagonal_WC(indc) = Values_WC(inde)
+
+  SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(3))
+    CASE(1)   ! Periodic u=u
+      inde=inde+1
+      Columns_WC(inde) = From_2Indices_To_1Index_WC(ii,1)
+      Values_WC(inde)  = -1.0
+    CASE(2,5) ! Transmissive,Reflecting u=u
+      inde=inde+1
+      Columns_WC(inde) = From_2Indices_To_1Index_WC(ii,nElemsY)
+      Values_WC(inde)  = -1.0
+    CASE(3,4) ! Inflow,Outflow u=something
+      !*Nothing
+    CASE DEFAULT
+      PRINT*, "Boundary condition T not implemented"
+      STOP
+  END SELECT
+END DO
+
+
+
+!*->Left boundary
+ii=0
+DO jj=1,nElemsY
+  indc=indc+1
+  inde=inde+1
+  RowStart_WC(indc) = inde
+  Columns_WC(inde)  = indc
+  Values_WC(inde)   = 1.0
+  Diagonal_WC(indc) = Values_WC(inde)
+
+  SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(4))
+    CASE(1)   ! Periodic u=u
+      inde=inde+1
+      Columns_WC(inde) = From_2Indices_To_1Index_WC(nElemsX,jj) !*ADJUSTED BC !*NO CHANGES
+      Values_WC(inde)  = -1.0
+    CASE(2,5) ! Transmissive,Reflecting u=u
+      inde=inde+1
+      Columns_WC(inde) = From_2Indices_To_1Index_WC(1,jj) !*ADJUSTED BC
+      Values_WC(inde)  = -1.0
+    CASE(3,4) ! Inflow,Outflow u=something
+      !*Nothing
+    CASE DEFAULT
+      PRINT*, "Boundary condition L not implemented"
+      STOP
+  END SELECT
+END DO
+
+
+RowStart_WC(NRows_WC+1)=NNZsparse_WC+1
+
+!*-----------------------------------------
+!*SAFETY CHECK
+!*-----------------------------------------
+! PRINT*, Columns_WC
+! PRINT*, Values_WC
+! PRINT*, RowStart_WC
+! PRINT*, Diagonal_WC
+! STOP
+!*-----------------------------------------
+
+END SUBROUTINE IMEX_Matrix_APMF
+#endif
+!===============================================================================!
+!
+!
+!
+!===============================================================================!
 !===============================================================================!
 !
 !
@@ -2035,6 +2375,220 @@ END DO
 
 !-------------------------------------------------------------------------------!
 END SUBROUTINE IMEX_Euler_rhs
+#endif
+!===============================================================================!
+!
+!
+!
+!===============================================================================!
+#ifdef APMF
+SUBROUTINE IMEX_Euler_rhs_APMF(W_coeff,Wt,t)
+!-------------------------------------------------------------------------------!
+USE MOD_FiniteVolume2D_vars,ONLY: rhs_WC
+USE MOD_FiniteVolume2D_vars,ONLY: WC
+USE MOD_FiniteVolume2D_vars,ONLY: dt
+USE MOD_FiniteVolume2D_vars,ONLY: MESH_DX
+USE MOD_FiniteVolume2D_vars,ONLY: nVar
+USE MOD_FiniteVolume2D_vars,ONLY: nElemsX
+USE MOD_FiniteVolume2D_vars,ONLY: nElemsY
+USE MOD_FiniteVolume2D_vars,ONLY: nGhosts
+USE MOD_FiniteVolume2D_vars,ONLY: Gmm
+USE MOD_FiniteVolume2D_vars,ONLY: min_p
+USE MOD_FiniteVolume2D_vars,ONLY: max_ro
+USE MOD_FiniteVolume2D_vars,ONLY: BoundaryConditionsTypeIMEXLinearSystem
+USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState1
+USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState2
+USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState3
+USE MOD_FiniteVolume2D_vars,ONLY: PrimRefState4
+USE MOD_FiniteVolume2D_vars,ONLY: MeshGP
+USE MOD_FiniteVolume2D_vars,ONLY: InitialCondition
+
+USE MOD_Reconstruction,     ONLY: First_Derivative_Central_Order2
+USE MOD_Reconstruction,     ONLY: First_Derivative_Central_Order2
+USE MOD_Reconstruction,     ONLY: Second_Derivative_Central_Order2
+USE MOD_Reconstruction,     ONLY: Second_Mixed_Derivative_Central_Order2
+USE MOD_Reconstruction,     ONLY: Laplacian_Central_Order2
+
+USE MOD_Equation,           ONLY: ConsToPrim
+USE MOD_Equation,           ONLY: ExactFunction
+
+#ifdef RELAXATION
+USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM, max_ro, min_p
+#endif
+#ifdef APMF
+USE MOD_Equation,           ONLY: Get_Eps, Get_max_ro, Get_min_p
+
+#endif
+!-------------------------------------------------------------------------------!
+IMPLICIT NONE
+!-------------------------------------------------------------------------------!
+! >> FORMAL ARGUMENTS                                                           !
+!-------------------------------------------------------------------------------!
+REAL, DIMENSION(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), INTENT(IN) :: W_coeff
+REAL, DIMENSION(1:nVar,-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1), INTENT(IN) :: Wt
+REAL                                                                           , INTENT(IN) :: t
+!-------------------------------------------------------------------------------!
+! >> LOCAL VARIABLES                                                            !
+!-------------------------------------------------------------------------------!
+INTEGER               :: ii, jj
+INTEGER               :: indc
+REAL                  :: dx,dy
+REAL                  :: u, v, ux, vx, uy, vy, uxx, vxx, uyy, vyy, uxy, vxy
+REAL                  :: p, px, py, lapp
+REAL                  :: et, etx, ety !*Extra term=et=(ro*-ro)/ro/ro* divided by (in case relaxation is active) eps_lm**2
+REAL                  :: supp(-1:1)
+REAL                  :: div_v_grad_v
+REAL                  :: ro_p_contribution
+REAL                  :: dx_part, dy_part, div_vn
+REAL, DIMENSION(nVar) :: Utemp, Wtemp
+!-------------------------------------------------------------------------------!
+
+dx=MESH_DX(1)
+dy=MESH_DX(2)
+
+!*RMK: +1 in X direction
+
+rhs_WC=0.0
+
+!*Let us start by the known contribution inside the domain
+
+!*Inside the domain
+indc=0
+DO jj=1,nElemsY
+  DO ii=1,nElemsX
+    indc=indc+1
+
+    !*NB: We are sweeping the elements in the same order we gave
+    !*Thus, we do not need to retrive the global number of ii,jj.
+    !*It is indc
+
+    rhs_WC(indc)=WC(4,ii,jj) + dt*Wt(4,ii,jj)
+
+  END DO !ii
+END DO !jj
+
+
+!*Now let us add the extra contribution to be computed
+indc=0
+DO jj=1,nElemsY
+  DO ii=1,nElemsX
+    indc=indc+1
+
+    !*NB: We are sweeping the elements in the same order we gave
+    !*Thus, we do not need to retrive the global number of ii,jj.
+    !*It is indc
+
+    !*Alex's suggestion with upwinded (already computed operators)
+    !*NB: It is important to have BCs here
+    dx_part=First_Derivative_Central_Order2(Wt(2,ii-1:ii+1,jj),dx)
+    dy_part=First_Derivative_Central_Order2(Wt(3,ii,jj-1:jj+1),dy)
+
+    ux=First_Derivative_Central_Order2(WC(2,ii-1:ii+1,jj),dx)
+    vy=First_Derivative_Central_Order2(WC(3,ii,jj-1:jj+1),dy)
+
+    div_vn=ux+vy
+
+    EPS_LM = Get_Eps(W_coeff(5,ii,jj))
+    max_ro = Get_max_ro(W_coeff(5,ii,jj))
+    min_p  = Get_min_p(W_coeff(5,ii,jj))
+
+    rhs_WC(indc)=rhs_WC(indc)-dt*Gmm*min_p*div_vn                 &
+                          &-(dt**2)*Gmm*min_p*(dx_part+dy_part) !*NB: It should be - because in Wt I already have "-"
+
+  END DO !ii
+END DO !jj
+
+
+
+
+
+!*Later equations->Boundary conditions
+!*->Down boundary
+jj=0
+DO ii=1,nElemsX 
+  indc=indc+1
+
+  SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(1))
+    CASE(1,2,5) ! Periodic,Transmissive,Reflecting u=u
+      !*Do nothing, keep 0
+    CASE(3,4) ! Inflow,Outflow u=something
+      !*rhs_WC(indc)=PrimRefState1(nVar)
+      CALL ExactFunction(&
+        InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
+      CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
+      rhs_WC(indc)=Wtemp(4)
+    CASE DEFAULT
+      PRINT*, "Boundary condition B not implemented"
+      STOP
+  END SELECT
+END DO
+
+
+!*->Right boundary
+ii=nElemsX+1
+DO jj=1,nElemsY
+  indc=indc+1
+  SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(2))
+    CASE(1,2,5) ! Periodic,Transmissive,Reflecting u=u
+      !*Do nothing, keep 0
+    CASE(3,4) ! Inflow,Outflow u=something
+      !*rhs_X(indc)=PrimRefState2(nVar)
+      CALL ExactFunction(&
+        InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
+      CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
+      rhs_WC(indc)=Wtemp(4)
+    CASE DEFAULT
+      PRINT*, "Boundary condition R not implemented"
+      STOP
+  END SELECT
+END DO
+
+!*->Top boundary
+jj=nElemsY+1
+DO ii=1,nElemsX 
+  indc=indc+1
+
+  SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(3))
+    CASE(1,2,5) ! Periodic,Transmissive,Reflecting u=u
+      !*Do nothing, keep 0
+    CASE(3,4) ! Inflow,Outflow u=something
+      !*rhs_WC(indc)=PrimRefState3(nVar)
+      CALL ExactFunction(&
+        InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
+      CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
+      rhs_WC(indc)=Wtemp(4)
+    CASE DEFAULT
+      PRINT*, "Boundary condition T not implemented"
+      STOP
+  END SELECT
+END DO
+
+
+
+!*->Left boundary
+ii=0
+DO jj=1,nElemsY
+  indc=indc+1
+
+  SELECT CASE(BoundaryConditionsTypeIMEXLinearSystem(4))
+    CASE(1,2,5) ! Periodic,Transmissive,Reflecting u=u
+      !*Do nothing, keep 0
+    CASE(3,4) ! Inflow,Outflow u=something
+      !*rhs_WC(indc)=PrimRefState4(nVar)
+      CALL ExactFunction(&
+        InitialCondition,t,MeshGP(:,ii,jj,1,1),Utemp(1:nVar))
+      CALL ConsToPrim(Utemp(1:nVar),Wtemp(1:nVar))
+      rhs_WC(indc)=Wtemp(4)
+    CASE DEFAULT
+      PRINT*, "Boundary condition L not implemented"
+      STOP
+  END SELECT
+END DO
+
+
+
+!-------------------------------------------------------------------------------!
+END SUBROUTINE IMEX_Euler_rhs_APMF
 #endif
 !===============================================================================!
 !

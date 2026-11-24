@@ -38,6 +38,13 @@ INTERFACE Overwrite_WC_from_U
   MODULE PROCEDURE Overwrite_WC_from_U
 END INTERFACE
 
+#ifdef IMEX
+#ifdef APMF
+INTERFACE DetectInterface
+  MODULE PROCEDURE DetectInterface
+END INTERFACE
+#endif
+#endif
 #endif
 
 
@@ -68,6 +75,10 @@ END INTERFACE
 INTERFACE Put_Vector_In_Matrix
   MODULE PROCEDURE Put_Vector_In_Matrix
 END INTERFACE
+
+#ifdef APMF
+PUBLIC :: DetectInterface
+#endif
 #endif
 #endif
 
@@ -197,6 +208,10 @@ USE MOD_FiniteVolume2D_vars,ONLY: rhs_WC
 USE MOD_FiniteVolume2D_vars,ONLY: sol_WC
 USE MOD_FiniteVolume2D_vars,ONLY: JacobiCounter_WC
 USE MOD_FiniteVolume2D_vars,ONLY: JacobiIterations_WC
+#ifdef APMF
+USE MOD_FiniteVolume2D_vars, ONLY: InterfaceStatus
+USE MOD_FiniteVolume2D_vars, ONLY: OldInterfaceStatus
+#endif
 #endif
 #endif
 
@@ -634,6 +649,13 @@ RowStart_WC = 0
 Diagonal_WC = 0.0
 rhs_WC      = 0.0
 sol_WC      = 0.0                                  
+
+#ifdef APMF
+ALLOCATE(InterfaceStatus(-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+ALLOCATE(OldInterfaceStatus(-nGhosts:nElemsX+nGhosts+1,-nGhosts:nElemsY+nGhosts+1))
+InterfaceStatus = 0
+OldInterfaceStatus = 0
+#endif
 #endif
 #endif
 
@@ -1917,6 +1939,10 @@ USE MOD_FiniteVolume2D_vars,ONLY: am_qp
 USE MOD_FiniteVolume2D_vars,ONLY: ap_qp
 #endif
 
+#if defined(CENTEREDPRIMITIVE) && defined(IMEX) && defined(APMF)
+USE MOD_FiniteVolume2D_vars, ONLY: InterfaceStatus
+USE MOD_FiniteVolume2D_vars, ONLY: InterfaceStatus, OldInterfaceStatus
+#endif
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -1992,6 +2018,10 @@ DEALLOCATE(rhs_WC)
 DEALLOCATE(sol_WC)
 #ifdef COUNTJACOBI
 DEALLOCATE(JacobiIterations_WC)
+#endif
+#ifdef APMF
+DEALLOCATE(InterfaceStatus)
+DEALLOCATE(OldInterfaceStatus)
 #endif
 #endif
 
@@ -2365,6 +2395,9 @@ USE MOD_FiniteVolume2D_vars,ONLY: timescheme
 USE MOD_Equation           ,ONLY: Get_Gamma
 USE MOD_Equation           ,ONLY: Get_Pressure_Infinity
 #endif
+#ifdef APMF
+USE MOD_Equation, ONLY: Get_Eps, Get_max_ro, Get_min_p
+#endif
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -2444,7 +2477,11 @@ DO jj=lbYs,lbYe
         p  = W(4,ii,jj)
         vx = W(2,ii,jj)
         vy = W(3,ii,jj)
-
+#ifdef APMF
+        EPS_LM = Get_Eps(W(5,ii,jj))
+        max_ro = Get_max_ro(W(5,ii,jj))
+        min_p  = Get_min_p(W(5,ii,jj))
+#endif
 
         BVol_in_qp(1,nGPs,nGPs,ii,jj) =  0.
 
@@ -2605,6 +2642,9 @@ USE MOD_FiniteVolume2D_vars,ONLY: timescheme
 USE MOD_Equation           ,ONLY: Get_Gamma
 USE MOD_Equation           ,ONLY: Get_Pressure_Infinity
 #endif
+#ifdef APMF
+USE MOD_Equation, ONLY: Get_Eps, Get_max_ro, Get_min_p
+#endif
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -2683,6 +2723,11 @@ DO jj=lbYs,lbYe
         p  = W(4,ii,jj)
         vx = W(2,ii,jj)
         vy = W(3,ii,jj)
+#ifdef APMF
+        EPS_LM = Get_Eps(W(5,ii,jj))
+        max_ro = Get_max_ro(W(5,ii,jj))
+        min_p  = Get_min_p(W(5,ii,jj))
+#endif
 
         BVol_in_qp(1,nGPs,nGPs,ii,jj) =  0.
 
@@ -3081,6 +3126,85 @@ END SUBROUTINE Put_Vector_In_Matrix
 !
 !===============================================================================!
 #ifdef CENTEREDPRIMITIVE
+#ifdef IMEX
+#ifdef APMF
+SUBROUTINE DetectInterface()
+USE MOD_FiniteVolume2D_vars, ONLY: WC, InterfaceStatus
+USE MOD_FiniteVolume2D_vars, ONLY: nElemsX, nElemsY
+!-------------------------------------------------------------------------------!
+IMPLICIT NONE
+!-------------------------------------------------------------------------------!
+! >> FORMAL ARGUMENTS                                                           !
+!-------------------------------------------------------------------------------!
+!-------------------------------------------------------------------------------!
+! >> LOCAL VARIABLES                                                            !
+!-------------------------------------------------------------------------------!
+INTEGER :: ii, jj, idir, indn
+INTEGER, PARAMETER :: di(4) = (/-1, 1, 0, 0/)
+INTEGER, PARAMETER :: dj(4) = (/0, 0, -1, 1/)
+REAL :: phi_cell, phi_neighbor
+LOGICAL :: crosses
+INTEGER, PARAMETER :: N_neighbors=1
+
+InterfaceStatus = 0
+
+DO jj=1,nElemsY
+  DO ii=1,nElemsX
+    phi_cell = WC(5,ii,jj)
+
+    DO idir=1,4
+      phi_neighbor = WC(5,ii+di(idir),jj+dj(idir))
+
+      IF( (phi_cell  < 0.0 .AND. phi_neighbor >= 0.0) .OR. &
+          (phi_cell >= 0.0 .AND. phi_neighbor  < 0.0) ) THEN
+
+          InterfaceStatus(ii,jj) = 1
+
+      END IF
+
+    END DO
+  END DO
+END DO
+
+DO indn=1,N_neighbors
+  !*NB: It does not enter here if N_neighbors==0
+  DO jj=1,nElemsY
+    DO ii=1,nElemsX
+      IF ( InterfaceStatus(ii,jj) .EQ. indn ) THEN !* Check neighbors
+       
+        IF ( InterfaceStatus(ii-1,jj) .EQ. 0 ) THEN
+          InterfaceStatus(ii-1,jj)=indn+1
+        END IF
+
+        IF ( InterfaceStatus(ii+1,jj) .EQ. 0 ) THEN
+          InterfaceStatus(ii+1,jj)=indn+1
+        END IF
+
+        IF ( InterfaceStatus(ii,jj-1) .EQ. 0 ) THEN
+          InterfaceStatus(ii,jj-1)=indn+1
+        END IF
+
+        IF ( InterfaceStatus(ii,jj+1) .EQ. 0 ) THEN
+          InterfaceStatus(ii,jj+1)=indn+1
+        END IF
+
+      END IF
+
+    END DO
+  END DO
+END DO
+
+
+END SUBROUTINE DetectInterface
+#endif
+#endif
+#endif
+!===============================================================================!
+!
+!
+!
+!===============================================================================!
+#ifdef CENTEREDPRIMITIVE
 SUBROUTINE FVTimeDerivativeConservedOnly(t,Optional_Input)
 !-------------------------------------------------------------------------------!
 USE MOD_Equation,       ONLY: BoundaryConditions
@@ -3426,6 +3550,10 @@ USE MOD_Reconstruction     ,ONLY: WENO_In_Quadrature_Points
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
 #endif
 USE MOD_Equation           ,ONLY: Switching_Function
+#ifdef APMF
+USE MOD_FiniteVolume2D_vars, ONLY: InterfaceStatus, OldInterfaceStatus
+USE MOD_Equation,            ONLY: PrimToCons
+#endif
 !-------------------------------------------------------------------------------!
 IMPLICIT NONE
 !-------------------------------------------------------------------------------!
@@ -3439,6 +3567,7 @@ REAL               :: W_qp(1:nVar,1:nGPs,1:nGPs)
 REAL               :: WsupportBox(1:nVar,-nGhosts:nGhosts,-nGhosts:nGhosts)
 CHARACTER(LEN=255) :: ErrorMessage
 REAL               :: W_from_U(1:nVar)
+REAL               :: U_from_W(1:nVar)
 REAL               :: theta
 !-------------------------------------------------------------------------------!
 
@@ -3459,13 +3588,29 @@ DO jj=1,nElemsY
 #if !defined(IMEX) || !defined(RELAXATION)
         CALL ConsToPrim(U(1:nVar,ii,jj),WC(1:nVar,ii,jj))
 #else
-        CALL ConsToPrim(U(1:nVar,ii,jj),W_from_U(1:nVar))
-        theta=Switching_Function(EPS_LM)
 
 #ifdef APMF
-        WC(1:4,ii,jj)=(1.0-theta)*W_from_U(1:4)+theta*WC(1:4,ii,jj) !*No PP for phi
+
+
+
+        IF ((InterfaceStatus(ii,jj) .NE. 0) .OR. (OldInterfaceStatus(ii,jj) .NE. 0)) THEN
+          !*Do not touch WC at all
+          !*U unreliable
+          CALL PrimToCons(WC(1:nVar,ii,jj),U_from_W(1:nVar))
+          U(1:nVar,ii,jj)=U_from_W(1:nVar)
+        ELSE
+          !*U reliable (in high-Mach)
+          !*Post-processing
+          CALL ConsToPrim(U(1:nVar,ii,jj),W_from_U(1:nVar),status=WC(5,ii,jj))
+          theta = Switching_Function(EPS_LM)
+          WC(1:4,ii,jj)=(1.0-theta)*W_from_U(1:4)+theta*WC(1:4,ii,jj) !*No PP for phi
+        END IF
         U(5,ii,jj) = U(1,ii,jj)*WC(5,ii,jj) !*Use phi from primitive also in conservative
+
+
 #else
+        CALL ConsToPrim(U(1:nVar,ii,jj),W_from_U(1:nVar))
+        theta=Switching_Function(EPS_LM)
         WC(1:nVar,ii,jj)=(1.0-theta)*W_from_U(1:nVar)+theta*WC(1:nVar,ii,jj)
 #endif
 

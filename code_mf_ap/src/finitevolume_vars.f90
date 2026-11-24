@@ -185,6 +185,12 @@ REAL                :: global_min
 #ifdef CENTEREDPRIMITIVE
 #ifdef IMEX
 REAL                :: max_ro, min_p
+#ifdef APMF
+REAL                :: max_ro_1, min_p_1
+REAL                :: max_ro_2, min_p_2
+INTEGER,ALLOCATABLE :: InterfaceStatus(:,:)
+INTEGER,ALLOCATABLE :: OldInterfaceStatus(:,:)
+#endif
 #endif
 #endif
 
@@ -211,6 +217,9 @@ REAL,PARAMETER      :: MIN_SPEED    = 0.0
 REAL,PARAMETER      :: MIN_TIMESTEP = 1.0E-30
 #ifdef RELAXATION
 REAL                :: EPS_LM        !*LM=Low Mach or Lorenzo Micalizzi XD
+#ifdef APMF
+REAL                :: EPS_LM_1, EPS_LM_2
+#endif
 #endif
 
 REAL,PARAMETER      :: EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU  = 1e-15 !*When the difference between the wave speeds is bigger than this parameter we switch to Rusanov

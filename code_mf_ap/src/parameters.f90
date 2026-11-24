@@ -60,6 +60,9 @@ USE MOD_FiniteVolume2D_vars,ONLY: SAFETY_K_TO_AVOID_HYPERBOLICITY_LOSS
 #endif
 #ifdef RELAXATION
 USE MOD_FiniteVolume2D_vars,ONLY: EPS_LM
+#ifdef APMF
+USE MOD_FiniteVolume2D_vars, ONLY: EPS_LM_1, EPS_LM_2
+#endif
 #endif
 USE MOD_FiniteVolume2D_vars,ONLY: nVar
 #ifdef MULTIFLUID
@@ -1341,6 +1344,32 @@ SELECT CASE(InitialCondition)
     relaxed_dt                 = 0.0
     NRelaxedTimesteps          = 0
 
+
+  CASE(203)
+    NameTest = "Two-material advected contact"
+    TEnd = 0.1
+    Gmm = 1.4
+    nElemsX = 200
+    nElemsY = 4
+    MESH_X0 = (/0.0, 0.0/)
+    MESH_X1 = (/1.0, 0.1/)
+
+    EPS_LM_1 = 1
+    EPS_LM_2 = 1e-3
+
+    ! Periodic in Y, transmissive in X
+    BoundaryConditionsType = (/1,2,1,2/)
+
+#ifdef CENTEREDPRIMITIVE
+#ifdef IMEX
+    BoundaryConditionsTypeIMEXLinearSystem = BoundaryConditionsType
+#endif
+#endif
+
+    GravitationalPotentialFlag = 0
+    relaxed_dt = 0.0
+    NRelaxedTimesteps = 0
+
   CASE(202)
     NameTest = "Periodic level-set advection"
     TEnd = 0.25
@@ -1593,7 +1622,7 @@ ENDIF
 
 
 WhichOutput  = 1 ! 0 Nothing, 1 Octave, 2 Tecplot, 3 Both
-nOutputFiles = 1 !*1
+nOutputFiles = 100 !*1
 PRINT*, "N OUTPUT FILES", nOutputFiles
 
 VarNameVisu(1) = "Density"
@@ -1616,7 +1645,11 @@ VarNameVisu_W(4) = "Pressure"
 #ifdef APMF
 VarNameVisu_W(5) = "Level_Set_Variable"
 #endif
+#ifdef APMF
+VarNameVisu_W(nVar+1) = "InterfaceStatus"
+#else
 VarNameVisu_W(nVar+1) = "Gravitational_Potential"
+#endif
 #endif
 
 
@@ -1724,8 +1757,12 @@ PRINT*, "--------------------------"
     CALL get_command_ARGUMENT(index+1, arg)
     READ(arg, *) iarg_real   
     EPS_LM = iarg_real
-  ENDIF
+#ifdef APMF
+    EPS_LM_1 = EPS_LM
+    EPS_LM_2 = EPS_LM
+#endif
 
+  ENDIF
 
   PRINT*, "eps = ", EPS_LM
 
