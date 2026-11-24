@@ -1488,7 +1488,7 @@ SELECT CASE(WhichInitialCondition)
     IF (level_set >= 0.0) THEN
       Prim(1) = 1.0       ! Air: fluid 1
     ELSE
-      Prim(1) = 1000.0    ! Water: fluid 2
+      Prim(1) = 10.0    ! Water: fluid 2
     END IF
 
 #ifdef APMF
@@ -2932,6 +2932,9 @@ INTEGER :: ii, jj
 REAL    :: PrimL(1:nVar), PrimR(1:nVar)
 REAL    :: PrimLL(1:nVar), PrimRR(1:nVar)
 REAL    :: NormVect(nDims), TangVect(nDims)
+#ifdef WAVESPEEDAVERAGE
+REAL :: slowest_L, fastest_L, slowest_R, fastest_R
+#endif
 !-------------------------------------------------------------------------------!
 
 LambdaMaxX = 0.0
@@ -2955,6 +2958,57 @@ DO jj=1,nElemsY
     TimeStep  = MIN(TimeStep,MESH_DX(1)/LambdaMaxX,MESH_DX(2)/LambdaMaxY)
   END DO
 END DO
+
+#ifdef WAVESPEEDAVERAGE
+CALL BoundaryConditions(t)
+
+DO jj=1,nElemsY
+  DO ii=0,nElemsX
+    PrimLL = WC(:,ii,jj)
+    PrimRR = WC(:,ii+1,jj)
+
+    CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L)
+    CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R)
+
+    CALL IncludeAverageWaveSpeeds(PrimLL,PrimRR, &
+        slowest_L,fastest_L,slowest_R,fastest_R)
+
+    LambdaMaxX = MAX(LambdaMaxX,ABS(slowest_L),ABS(fastest_L),ABS(slowest_R),ABS(fastest_R))
+  END DO
+END DO
+
+IF (LambdaMaxX > 0.0) THEN
+  TimeStep = MIN(TimeStep,MESH_DX(1)/LambdaMaxX)
+END IF
+
+DO jj=0,nElemsY
+  DO ii=1,nElemsX
+    PrimLL = WC(:,ii,jj)
+    PrimRR = WC(:,ii,jj+1)
+
+    ! Rotate velocities into normal/tangential components.
+    PrimLL(2) = SUM(NormVectY*WC(2:3,ii,jj))
+    PrimLL(3) = SUM(TangVectY*WC(2:3,ii,jj))
+    PrimRR(2) = SUM(NormVectY*WC(2:3,ii,jj+1))
+    PrimRR(3) = SUM(TangVectY*WC(2:3,ii,jj+1))
+
+    CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L)
+    CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R)
+
+    CALL IncludeAverageWaveSpeeds(PrimLL,PrimRR, &
+        slowest_L,fastest_L,slowest_R,fastest_R)
+
+    LambdaMaxY = MAX(LambdaMaxY,ABS(slowest_L),ABS(fastest_L), &
+                                 ABS(slowest_R),ABS(fastest_R))
+  END DO
+END DO
+
+IF (LambdaMaxY > 0.0) THEN
+  TimeStep = MIN(TimeStep,MESH_DX(2)/LambdaMaxY)
+END IF
+
+#endif
+
 
 #else
 
@@ -3235,8 +3289,7 @@ END DO
 
 END IF
 
-#ifdef IMEX
-#endif
+
 
 TimeStep = CFL*TimeStep
 
@@ -5651,6 +5704,11 @@ PrimRR(nVar)=statusR
 
 CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L,status=statusL)
 CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R,status=statusR)
+#ifdef WAVESPEEDAVERAGE
+CALL IncludeAverageWaveSpeeds(PrimLL,PrimRR, &
+    slowest_L,fastest_L,slowest_R,fastest_R, &
+    statusL=statusL,statusR=statusR)
+#endif
 
 !*One-sided local speeds of propagation
 am = MIN( slowest_L, slowest_R, -EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU )
@@ -5757,7 +5815,12 @@ PrimRR(nVar)=statusR
 
 CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L,status=statusL)
 CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R,status=statusR)
-
+#ifdef WAVESPEEDAVERAGE
+!*It keeps into account the original values of the imputs
+CALL IncludeAverageWaveSpeeds(PrimLL,PrimRR, &
+    slowest_L,fastest_L,slowest_R,fastest_R, &
+    statusL=statusL,statusR=statusR)
+#endif
 
 !*One-sided local speeds of propagation
 SL = MIN( slowest_L, slowest_R, -EPS_AVOIDING_DIVISION_BY_ZERO_IN_CU )
@@ -6139,6 +6202,11 @@ min_pR  = Get_min_p(PrimRR(5))
 
 CALL WaveSpeeds1D(PrimLL,slowest=slowest_L,fastest=fastest_L,status=statusL)
 CALL WaveSpeeds1D(PrimRR,slowest=slowest_R,fastest=fastest_R,status=statusR)
+#ifdef WAVESPEEDAVERAGE
+CALL IncludeAverageWaveSpeeds(PrimLL,PrimRR, &
+    slowest_L,fastest_L,slowest_R,fastest_R, &
+    statusL=statusL,statusR=statusR)
+#endif
 
 
 !*One-sided local speeds of propagation
@@ -7241,5 +7309,50 @@ REAL FUNCTION Get_min_p(phi)
   END IF
 END FUNCTION Get_min_p
 #endif
+!===============================================================================!
+!
+!
+!
+!===============================================================================!
+SUBROUTINE IncludeAverageWaveSpeeds(PrimL,PrimR,slowest_L,fastest_L,slowest_R,fastest_R,statusL,statusR)
+
+USE MOD_FiniteVolume2D_vars, ONLY: nVar, Gmm
+IMPLICIT NONE
+
+REAL, INTENT(IN)           :: PrimL(nVar), PrimR(nVar)
+REAL, INTENT(INOUT)        :: slowest_L, fastest_L
+REAL, INTENT(INOUT)        :: slowest_R, fastest_R
+REAL, INTENT(IN), OPTIONAL :: statusL, statusR
+
+REAL :: phiL, phiR
+REAL :: epsL, epsR, max_roL, max_roR, min_pL, min_pR
+REAL :: rL, rR, sL, sR, c_average, u_average
+
+phiL = PrimL(5)
+phiR = PrimR(5)
+IF (PRESENT(statusL)) phiL = statusL
+IF (PRESENT(statusR)) phiR = statusR
+
+epsL    = Get_Eps(phiL)
+epsR    = Get_Eps(phiR)
+max_roL = Get_max_ro(phiL)
+max_roR = Get_max_ro(phiR)
+min_pL  = Get_min_p(phiL)
+min_pR  = Get_min_p(phiR)
+
+rL = (max_roL-PrimL(1))/(epsL**2*PrimL(1)*max_roL)
+rR = (max_roR-PrimR(1))/(epsR**2*PrimR(1)*max_roR)
+sL = Gmm*(PrimL(4)-min_pL)
+sR = Gmm*(PrimR(4)-min_pR)
+
+c_average = SQRT(ABS(0.5*(rL+rR)*0.5*(sL+sR)))
+u_average = 0.5*(PrimL(2)+PrimR(2))
+
+slowest_L = MIN(slowest_L,u_average-c_average)
+slowest_R = MIN(slowest_R,u_average-c_average)
+fastest_L = MAX(fastest_L,u_average+c_average)
+fastest_R = MAX(fastest_R,u_average+c_average)
+
+END SUBROUTINE IncludeAverageWaveSpeeds
 END MODULE MOD_Equation
 !-------------------------------------------------------------------------------!

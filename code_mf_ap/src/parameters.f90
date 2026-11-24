@@ -1354,8 +1354,8 @@ SELECT CASE(InitialCondition)
     MESH_X0 = (/0.0, 0.0/)
     MESH_X1 = (/1.0, 0.1/)
 
-    EPS_LM_1 = 1
-    EPS_LM_2 = 1e-3
+    EPS_LM_1 = 1.0
+    EPS_LM_2 = 5.0e-2
 
     ! Periodic in Y, transmissive in X
     BoundaryConditionsType = (/1,2,1,2/)
@@ -1622,7 +1622,7 @@ ENDIF
 
 
 WhichOutput  = 1 ! 0 Nothing, 1 Octave, 2 Tecplot, 3 Both
-nOutputFiles = 100 !*1
+nOutputFiles = 10 !*1
 PRINT*, "N OUTPUT FILES", nOutputFiles
 
 VarNameVisu(1) = "Density"
